@@ -1,6 +1,10 @@
+import "dotenv/config"
 import { z } from "zod"
 
 const apiConfigSchema = z.object({
+	cors: z.object({
+		origin: z.array(z.string()),
+	}),
 	services: z.object({
 		auth: z.object({
 			totp: z.object({
@@ -8,15 +12,24 @@ const apiConfigSchema = z.object({
 			}),
 		}),
 	}),
+	server: z.object({
+		port: z.string().transform((arg) => parseInt(arg)),
+	}),
 })
 
 const data = {
+	cors: {
+		origin: process.env.API_CORS_ORIGIN!.split(","),
+	},
 	services: {
 		auth: {
 			totp: {
 				issuer: "a-little-byte",
 			},
 		},
+	},
+	server: {
+		port: process.env.API_SERVER_PORT!,
 	},
 } satisfies z.input<typeof apiConfigSchema>
 
