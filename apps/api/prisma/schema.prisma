@@ -40,7 +40,7 @@ model Service {
 model CreditCard {
   id             String   @id @default(uuid())
   userId         String
-  user           User     @relation(fields: [userId], references: [id])
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   cardNumber     String
   expirationDate DateTime
   cvvCode        String
