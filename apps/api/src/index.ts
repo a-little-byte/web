@@ -1,7 +1,7 @@
 import { apiConfig } from "@alittlebyte/api/config"
-import prismaDb from "@alittlebyte/api/lib/prisma"
 import { authMiddleware } from "@alittlebyte/api/middlewares/auth"
 import { corsMiddleware } from "@alittlebyte/api/middlewares/cors"
+import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
 import { authRouter } from "@alittlebyte/api/routes/auth"
 import { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { serve } from "@hono/node-server"
@@ -12,11 +12,7 @@ const app = new Hono<{ Variables: PublicContextVariables }>()
 
 app
 	.use(corsMiddleware)
-	.use(async (ctx, next) => {
-		ctx.set("prisma", prismaDb)
-
-		await next()
-	})
+	.use(dbMiddleware)
 	.route("/auth", authRouter())
 	.use(authMiddleware)
 

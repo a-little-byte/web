@@ -6,7 +6,7 @@ export const dbMiddleware = async (
 	ctx: Context<{ Variables: PublicContextVariables }>,
 	next: Next,
 ) => {
-	ctx.set("db", prismaDb)
+	ctx.set("prisma", prismaDb)
 
 	return await next()
 }
