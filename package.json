@@ -4,14 +4,15 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"postinstall": "pnpm exec simple-git-hooks",
-		"dev": "pnpm -r --parallel run dev",
+		"clean": "rm -rf apps/*/node_modules packages/*/node_modules node_modules",
 		"dev:compose": "docker compose up",
+		"dev": "pnpm -r --parallel run dev",
 		"dev:seed": "pnpm --filter api exec prisma db seed",
-		"format": "prettier -c {apps,packages}/**/*.{ts,tsx}",
 		"format:fix": "prettier -w {apps,packages}/**/*.{ts,tsx}",
+		"format": "prettier -c {apps,packages}/**/*.{ts,tsx}",
+		"lint:fix": "pnpm -r --parallel run lint:fix",
 		"lint": "pnpm -r --parallel run lint",
-		"lint:fix": "pnpm -r --parallel run lint:fix"
+		"postinstall": "pnpm exec simple-git-hooks"
 	},
 	"keywords": [],
 	"author": "",

@@ -7,23 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id              String    @id @default(uuid())
-  firstName       String
-  lastName        String
-  email           String
-  passwordHash    String
-  passwordSalt    String
-  verifiedToken   String?
-  emailVerifiedAt DateTime?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-
-  creditCards CreditCard[]
-
-  @@unique([firstName, lastName, email])
-}
-
 model Service {
   id                         String   @id @default(uuid())
   name                       String
@@ -37,6 +20,70 @@ model Service {
   updatedAt                  DateTime @updatedAt
 }
 
+model User {
+  id               String      @id @default(uuid())
+  name             String
+  firstName        String
+  lastName         String
+  email            String
+  emailVerified    Boolean
+  image            String?
+  createdAt        DateTime
+  updatedAt        DateTime
+  twoFactorEnabled Boolean?
+  sessions         Session[]
+  accounts         Account[]
+  twoFactors       TwoFactor[]
+  creditCards CreditCard[]
+
+  @@unique([email, name])
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id           String    @id @default(uuid())
+  accountId    String
+  providerId   String
+  userId       String
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+  expiresAt    DateTime?
+  password     String?
+
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(uuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@map("verification")
+}
+
+model TwoFactor {
+  id          String @id @default(uuid())
+  secret      String
+  backupCodes String
+  userId      String
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("twoFactor")
+}
 model CreditCard {
   id             String   @id @default(uuid())
   userId         String

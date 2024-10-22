@@ -1,6 +1,9 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
+		"noEmit": true,
+		"strict": true,
+		"strictNullChecks": true,
 		"paths": {
 			"@alittlebyte/admin/*": ["./apps/admin/src/*"],
 			"@alittlebyte/api/*": ["./apps/api/src/*"],

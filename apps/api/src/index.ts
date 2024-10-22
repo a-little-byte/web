@@ -1,24 +1,27 @@
-import prismaDb from "@alittlebyte/api/lib/prisma"
+import { apiConfig } from "@alittlebyte/api/config"
+import { authMiddleware } from "@alittlebyte/api/middlewares/auth"
+import { corsMiddleware } from "@alittlebyte/api/middlewares/cors"
+import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
+import { authRouter } from "@alittlebyte/api/routes/auth"
 import { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { serve } from "@hono/node-server"
 import { Hono } from "hono"
 
+const { port } = apiConfig.server
 const app = new Hono<{ Variables: PublicContextVariables }>()
 
-app.use(async (ctx, next) => {
-	ctx.set("prisma", prismaDb)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const router = app
+	.use(corsMiddleware)
+	.use(dbMiddleware)
+	.route("/auth", authRouter())
+	.use(authMiddleware)
 
-	await next()
-})
-
-app.get("/", (c) => {
-	return c.text("Hello Hono!")
-})
-
-const port = 3000
 console.log(`Server is running on port ${port}`)
 
 serve({
 	fetch: app.fetch,
 	port,
 })
+
+export type ApiRouter = typeof router
