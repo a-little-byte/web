@@ -10,7 +10,8 @@ import { Hono } from "hono"
 const { port } = apiConfig.server
 const app = new Hono<{ Variables: PublicContextVariables }>()
 
-app
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const router = app
 	.use(corsMiddleware)
 	.use(dbMiddleware)
 	.route("/auth", authRouter())
@@ -22,3 +23,5 @@ serve({
 	fetch: app.fetch,
 	port,
 })
+
+export type ApiRouter = typeof router
