@@ -34,6 +34,7 @@ model User {
   sessions         Session[]
   accounts         Account[]
   twoFactors       TwoFactor[]
+  creditCards CreditCard[]
 
   @@unique([email, name])
   @@map("users")
@@ -82,4 +83,16 @@ model TwoFactor {
   user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("twoFactor")
+}
+model CreditCard {
+  id             String   @id @default(uuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardNumber     String
+  expirationDate DateTime
+  cvvCode        String
+  createdAt      DateTime
+  updatedAt      DateTime @updatedAt
+
+  @@unique([cardNumber])
 }
