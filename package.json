@@ -4,13 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"postinstall": "pnpm exec simple-git-hooks",
-		"dev": "pnpm -r --parallel run dev",
+		"clean": "rm -rf apps/*/node_modules packages/*/node_modules node_modules",
 		"dev:compose": "docker compose up",
-		"format": "prettier -c {apps,packages}/**/*.{ts,tsx}",
+		"dev": "pnpm -r --parallel run dev",
 		"format:fix": "prettier -w {apps,packages}/**/*.{ts,tsx}",
+		"format": "prettier -c {apps,packages}/**/*.{ts,tsx}",
+		"lint:fix": "pnpm -r --parallel run lint:fix",
 		"lint": "pnpm -r --parallel run lint",
-		"lint:fix": "pnpm -r --parallel run lint:fix"
+		"postinstall": "pnpm exec simple-git-hooks"
 	},
 	"keywords": [],
 	"author": "",
