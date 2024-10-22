@@ -1,7 +1,7 @@
 {
 	"name": "@alittlebyte/api",
 	"prisma": {
-		"seed": "pnpx tsx prisma/seed/seed.ts"
+		"seed": "pnpx tsx prisma/seed.ts"
 	},
 	"scripts": {
 		"postinstall": "prisma generate",
