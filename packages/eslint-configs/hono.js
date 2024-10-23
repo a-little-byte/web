@@ -1,11 +1,14 @@
-import baseConfig from "@alittlebyte/eslint-configs/base.js"
 import honoPlugin from "@hono/eslint-config"
+import globals from "globals"
+import base from "./base.js"
 
 export default [
-	...baseConfig,
+	{ languageOptions: { globals: globals.node } },
+	...base,
+	...honoPlugin,
 	{
-		plugins: {
-			hono: honoPlugin,
+		rules: {
+			quotes: ["error", "double"],
 		},
 	},
 ]

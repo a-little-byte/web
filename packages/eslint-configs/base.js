@@ -1,34 +1,23 @@
-import pluginJs from "@eslint/js"
-import importPlugin from "eslint-plugin-import"
+// @ts-check
+
+import eslint from "@eslint/js"
 import eslintPluginPrettier from "eslint-plugin-prettier/recommended"
-import globals from "globals"
+import path from "node:path"
 import tseslint from "typescript-eslint"
 
 export default tseslint.config(
-	{ ignores: ["dist/**", "build/**"] },
-	pluginJs.configs.recommended,
+	{ files: ["**/*.{js,mjs,cjs,ts}"] },
+	eslint.configs.recommended,
+	...tseslint.configs.strictTypeChecked,
+	...tseslint.configs.stylisticTypeChecked,
 	eslintPluginPrettier,
-	importPlugin.flatConfigs.recommend,
-	importPlugin.flatConfigs.typescript,
 	{
-		files: ["**/*.ts"],
-		plugins: {
-			"@typescript-eslint": tseslint.plugin,
-		},
 		languageOptions: {
 			parserOptions: {
 				projectService: true,
-				ecmaVersion: "latest",
-				project: "**/tsconfig.json",
-				tsconfigRootDir: import.meta.dirname,
+				tsconfigRootDir: path.join(import.meta.dirname, "../../"),
 			},
-			globals: globals.node,
-			parser: tseslint.parser,
 		},
-		extends: [
-			...tseslint.configs.strictTypeChecked,
-			...tseslint.configs.stylisticTypeChecked,
-		],
 		rules: {
 			"array-callback-return": [
 				"error",
