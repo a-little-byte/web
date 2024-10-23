@@ -51,4 +51,3 @@ export const creditCardValidator = z.object({
 	expirationDate: expirationDateValidator,
 	cvvCode: cvvCodeValidator,
 })
-
