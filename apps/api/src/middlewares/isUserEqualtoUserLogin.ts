@@ -3,6 +3,7 @@ import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
 import type { Next } from "hono"
 import { z } from "zod"
 import { idValidator } from "@alittlebyte/common/validators"
+import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 
 type UserIdInput = {
 	in: {
@@ -27,7 +28,7 @@ export const isUserEqualtoUserLogin = async (
 ) => {
 	const { userId } = req.valid("param")
 	if (userId !== user.id) {
-		return json({ error: "Forbidden" }, 403)
+		return json({ error: "Forbidden" }, HTTP_STATUS_CODES.FORBIDDEN)
 	}
 
 	await next()

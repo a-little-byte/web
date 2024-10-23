@@ -6,6 +6,7 @@ import {
 	creditCardValidator,
 	idValidator,
 } from "@alittlebyte/common/validators"
+import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 
 export const creditCardRouter = () =>
 	new Hono<{ Variables: PrivateContextVariables }>().post(
@@ -23,10 +24,13 @@ export const creditCardRouter = () =>
 						userId,
 					},
 				})
-				return c.json(newCreditCard, 201)
+				return c.json(newCreditCard, HTTP_STATUS_CODES.CREATED)
 			} catch (error) {
 				console.error(error)
-				return c.json({ error: "Failed to create credit card" }, 500)
+				return c.json(
+					{ error: "Failed to create credit card" },
+					HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+				)
 			}
 		},
 	)
