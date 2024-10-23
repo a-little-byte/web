@@ -35,7 +35,6 @@ export default tseslint.config(
 			"no-template-curly-in-string": "error",
 			"no-unmodified-loop-condition": "error",
 			"no-unreachable-loop": "error",
-			"prettier/prettier": "error",
 			"no-unused-private-class-members": "error",
 			"require-atomic-updates": "error",
 			"arrow-body-style": ["error", "as-needed"],
