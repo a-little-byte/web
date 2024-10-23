@@ -5,6 +5,7 @@ import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
 import { authRouter } from "@alittlebyte/api/routes/auth"
 import { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { serve } from "@hono/node-server"
+import { servicesRouter } from "@alittlebyte/api/routes/serviceRoute"
 import { Hono } from "hono"
 
 const { port } = apiConfig.server
@@ -15,6 +16,7 @@ const router = app
 	.use(corsMiddleware)
 	.use(dbMiddleware)
 	.route("/auth", authRouter())
+	.route("/services", servicesRouter())
 	.use(authMiddleware)
 
 console.log(`Server is running on port ${port}`)
