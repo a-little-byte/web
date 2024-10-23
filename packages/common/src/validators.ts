@@ -1,4 +1,10 @@
 import { z } from "zod"
+import { UUID } from "node:crypto"
+
+export const idValidator = z
+	.string()
+	.uuid()
+	.transform((arg) => arg as UUID)
 
 export const urlValidator = z.string().url()
 
