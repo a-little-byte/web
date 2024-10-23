@@ -5,7 +5,7 @@ import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
 import { authRouter } from "@alittlebyte/api/routes/auth"
 import { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { serve } from "@hono/node-server"
-import { servicesRouter } from "@alittlebyte/api/routes/serviceRoute"
+import { servicesRouter } from "@alittlebyte/api/routes/services"
 import { Hono } from "hono"
 
 const { port } = apiConfig.server

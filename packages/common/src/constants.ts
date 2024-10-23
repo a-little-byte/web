@@ -1,6 +1,6 @@
 export const FULL_NAME_SEPARATOR = "_"
 
-export const HttpErrorStatusCodes = {
+export const HTTP_STATUS_CODES = {
 	BAD_REQUEST: 400,
 	UNAUTHORIZED: 401,
 	PAYMENT_REQUIRED: 402,

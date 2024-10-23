@@ -2,13 +2,14 @@ import { Hono } from "hono"
 import { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { zValidator } from "@hono/zod-validator"
 import { idValidator, serviceValidator } from "@alittlebyte/common/validators"
+import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import { z } from "zod"
 
 export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
 		.get("/", async ({ json, var: { prisma } }) => {
 			const services = await prisma.service.findMany()
-			return json({ message: services }, 200)
+			return json({ message: services })
 		})
 		.get(
 			"/:serviceId",
@@ -19,9 +20,13 @@ export const servicesRouter = () =>
 					where: { id: serviceId },
 				})
 
-				if (!service) return json({ message: "Unknown Service" }, 404)
+				if (!service)
+					return json(
+						{ message: "Unknown Service" },
+						HTTP_STATUS_CODES.NOT_FOUND,
+					)
 
-				return json({ message: service }, 200)
+				return json({ data: service })
 			},
 		)
 		.post(
@@ -31,7 +36,7 @@ export const servicesRouter = () =>
 				const data = req.valid("json")
 				const postService = await prisma.service.create({ data })
 
-				return json({ message: postService }, 200)
+				return json({ message: postService })
 			},
 		)
 		.put(
@@ -46,14 +51,17 @@ export const servicesRouter = () =>
 				})
 
 				if (!foundService)
-					return json({ message: "This survice does not exsist" }, 400)
+					return json(
+						{ message: "This survice does not exsist" },
+						HTTP_STATUS_CODES.NOT_FOUND,
+					)
 
 				const updateService = await prisma.service.update({
 					where: { id: serviceId },
 					data,
 				})
 
-				return json({ message: updateService }, 200)
+				return json({ message: updateService })
 			},
 		)
 		.delete(
@@ -66,12 +74,15 @@ export const servicesRouter = () =>
 				})
 
 				if (!foundService)
-					return json({ message: "This survice does not exsist" }, 400)
+					return json(
+						{ message: "This survice does not exsist" },
+						HTTP_STATUS_CODES.NOT_FOUND,
+					)
 
 				await prisma.service.delete({
 					where: { id: serviceId },
 				})
 
-				return json({ message: "Succsessfully Deleted" }, 200)
+				return json({ message: "Succsessfully Deleted" })
 			},
 		)
