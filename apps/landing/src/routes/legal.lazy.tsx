@@ -8,7 +8,7 @@ type Section = {
 
 const Legal = () => {
 	const [t] = useTranslation("legal")
-	const section = t("legal:section", { returnObjects: true }) as Section[]
+	const sections = t("legal:sections", { returnObjects: true }) as Section[]
 
 	return (
 		<div className="mx-auto my-10 max-w-4xl rounded-lg bg-white p-8 shadow-lg">
@@ -21,10 +21,10 @@ const Legal = () => {
 			</p>
 
 			<p className="mb-6 leading-relaxed text-gray-700">
-				{t("legal:welcome_legal")}
+				{t("legal:welcomeLegal")}
 			</p>
 
-			{section.map((item: Section, index: number) => (
+			{sections.map((item, index) => (
 				<div key={index}>
 					<h2 className="mb-4 text-xl font-semibold text-gray-800">
 						{item.title}

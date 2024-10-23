@@ -1,8 +1,8 @@
 {
 	"title": "Conditions Générales pour alittlebyte.dev",
 	"effectiveDate": "Date d'entrée en vigueur: 23/10/2024",
-	"welcome_legal": "Bienvenue sur alittlebyte.dev. En accédant ou en utilisant notre site web et nos services, vous acceptez de vous conformer et d'être lié par ces Conditions Générales. Veuillez les lire attentivement. Si vous n'êtes pas d'accord avec ces conditions, vous ne devez pas utiliser notre site ou nos services.",
-	"section": [
+	"welcomeLegal": "Bienvenue sur alittlebyte.dev. En accédant ou en utilisant notre site web et nos services, vous acceptez de vous conformer et d'être lié par ces Conditions Générales. Veuillez les lire attentivement. Si vous n'êtes pas d'accord avec ces conditions, vous ne devez pas utiliser notre site ou nos services.",
+	"sections": [
 		{
 			"title": "1. Acceptation des conditions",
 			"content": "En utilisant alittlebyte.dev, vous affirmez que vous avez atteint l'âge de la majorité dans votre juridiction et que vous avez la capacité légale d'accepter ces conditions."

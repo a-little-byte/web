@@ -1,8 +1,8 @@
 {
 	"title": "Terms and Conditions for alittlebyte.dev",
 	"effectiveDate": "Effective Date: 23/10/2024",
-	"welcome_legal": "Welcome to alittlebyte.dev. By accessing or using our website and services, you agree to comply with and be bound by these Terms and Conditions. Please read them carefully. If you do not agree to these Terms, you must not use our website or services.",
-	"section": [
+	"welcomeLegal": "Welcome to alittlebyte.dev. By accessing or using our website and services, you agree to comply with and be bound by these Terms and Conditions. Please read them carefully. If you do not agree to these Terms, you must not use our website or services.",
+	"sections": [
 		{
 			"title": "1. Acceptance of Terms",
 			"content": "By using alittlebyte.dev, you affirm that you are at least the age of majority in your jurisdiction and have the legal capacity to enter into these Terms."
