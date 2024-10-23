@@ -1,6 +1,7 @@
-import * as React from "react"
+/* eslint-disable */
 import * as LabelPrimitive from "@radix-ui/react-label"
 import { Slot } from "@radix-ui/react-slot"
+import * as React from "react"
 import {
 	Controller,
 	ControllerProps,
@@ -15,10 +16,10 @@ import { Label } from "@alittlebyte/components/ui/label"
 
 const Form = FormProvider
 
-type FormFieldContextValue<
+interface FormFieldContextValue<
 	TFieldValues extends FieldValues = FieldValues,
 	TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
-> = {
+> {
 	name: TName
 }
 
@@ -62,7 +63,7 @@ const useFormField = () => {
 	}
 }
 
-type FormItemContextValue = {
+interface FormItemContextValue {
 	id: string
 }
 
@@ -112,9 +113,7 @@ const FormControl = React.forwardRef<
 			ref={ref}
 			id={formItemId}
 			aria-describedby={
-				!error
-					? `${formDescriptionId}`
-					: `${formDescriptionId} ${formMessageId}`
+				!error ? formDescriptionId : `${formDescriptionId} ${formMessageId}`
 			}
 			aria-invalid={!!error}
 			{...props}
@@ -145,7 +144,7 @@ const FormMessage = React.forwardRef<
 	React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
 	const { error, formMessageId } = useFormField()
-	const body = error ? String(error?.message) : children
+	const body = error ? String(error.message) : children
 
 	if (!body) {
 		return null
@@ -165,12 +164,12 @@ const FormMessage = React.forwardRef<
 FormMessage.displayName = "FormMessage"
 
 export {
-	useFormField,
 	Form,
-	FormItem,
-	FormLabel,
 	FormControl,
 	FormDescription,
-	FormMessage,
 	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+	useFormField,
 }

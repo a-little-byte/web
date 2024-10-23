@@ -16,12 +16,13 @@ const SignIn = () => {
 		mutationFn: async (data) => {
 			setInvalidEmailOrPassword(false)
 			const res = await signIn.email(data)
+
 			if (res.error) {
 				throw new Error(res.error.message)
 			}
 		},
 		onSuccess: () => {
-			navigate({
+			void navigate({
 				to: "/",
 			})
 		},
@@ -29,7 +30,6 @@ const SignIn = () => {
 			setInvalidEmailOrPassword(true)
 		},
 	})
-
 	const onSubmit = useCallback<SubmitHandler<SignInValidatorOutput>>(
 		(values) => {
 			mutate(values)

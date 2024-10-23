@@ -1,5 +1,6 @@
 import { cn } from "@alittlebyte/components/lib/cn"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { HTMLAttributes } from "react"
 import { UseFormProps, useForm as useReactForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -18,7 +19,7 @@ export const useForm = (
 export const Form = ({
 	className,
 	...otherProps
-}: React.HTMLAttributes<HTMLFormElement>) => (
+}: HTMLAttributes<HTMLFormElement>) => (
 	<form
 		noValidate
 		className={cn("flex flex-col gap-2", className)}

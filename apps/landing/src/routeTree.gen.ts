@@ -1,4 +1,4 @@
-/* prettier-ignore-start */
+/* Prettier-ignore-start */
 
 /* eslint-disable */
 
