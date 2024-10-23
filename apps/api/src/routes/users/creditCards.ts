@@ -2,22 +2,27 @@ import { Hono } from "hono"
 import { z } from "zod"
 import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
 import { zValidator } from "@hono/zod-validator"
-import { idValidator } from "@alittlebyte/common/validators"
+import {
+	creditCardValidator,
+	idValidator,
+} from "@alittlebyte/common/validators"
 
 export const creditCardRouter = () =>
 	new Hono<{ Variables: PrivateContextVariables }>().post(
 		"/",
 		zValidator("param", z.object({ userId: idValidator })),
+		zValidator("json", creditCardValidator),
 		async (c) => {
 			const { userId } = c.req.valid("param")
-			const { prisma, user } = c.var
-			const data = await c.req.json()
+			const { prisma } = c.var
+			const data = c.req.valid("json")
 			try {
-				if (userId != user.id) {
-					c.json({ error: "Forbidden" }, 403)
-				}
-
-				const newCreditCard = await prisma.creditCard.create({ data })
+				const newCreditCard = await prisma.creditCard.create({
+					data: {
+						...data,
+						userId,
+					},
+				})
 				return c.json(newCreditCard, 201)
 			} catch (error) {
 				console.error(error)

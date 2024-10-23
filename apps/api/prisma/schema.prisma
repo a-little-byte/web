@@ -21,7 +21,7 @@ model Service {
 }
 
 model User {
-  id               String      @id @default(uuid())
+  id               String       @id @default(uuid())
   name             String
   firstName        String
   lastName         String
@@ -34,7 +34,7 @@ model User {
   sessions         Session[]
   accounts         Account[]
   twoFactors       TwoFactor[]
-  creditCards CreditCard[]
+  creditCards      CreditCard[]
 
   @@unique([email, name])
   @@map("users")
@@ -84,6 +84,7 @@ model TwoFactor {
 
   @@map("twoFactor")
 }
+
 model CreditCard {
   id             String   @id @default(uuid())
   userId         String
@@ -91,7 +92,7 @@ model CreditCard {
   cardNumber     String
   expirationDate DateTime
   cvvCode        String
-  createdAt      DateTime
+  createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   @@unique([cardNumber])
