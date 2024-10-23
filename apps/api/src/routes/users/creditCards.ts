@@ -1,4 +1,4 @@
-import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
+import type { PrivateContextVariables } from "@alittlebyte/api/utils/types"
 import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import {
 	creditCardValidator,
@@ -28,6 +28,9 @@ export const creditCardRouter = () =>
 
 				return c.json(newCreditCard, HTTP_STATUS_CODES.CREATED)
 			} catch (error) {
+				// eslint-disable-next-line no-console
+				console.error(error)
+
 				return c.json(
 					{ error: "Failed to create credit card" },
 					HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,

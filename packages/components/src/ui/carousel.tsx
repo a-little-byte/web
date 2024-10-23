@@ -1,8 +1,9 @@
-import * as React from "react"
+/* eslint-disable */
 import useEmblaCarousel, {
 	type UseEmblaCarouselType,
 } from "embla-carousel-react"
 import { ArrowLeft, ArrowRight } from "lucide-react"
+import * as React from "react"
 
 import { cn } from "@alittlebyte/components/lib/cn"
 import { Button } from "@alittlebyte/components/ui/button"
@@ -12,7 +13,7 @@ type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
 type CarouselOptions = UseCarouselParameters[0]
 type CarouselPlugin = UseCarouselParameters[1]
 
-type CarouselProps = {
+interface CarouselProps {
 	opts?: CarouselOptions
 	plugins?: CarouselPlugin
 	orientation?: "horizontal" | "vertical"
@@ -114,7 +115,7 @@ const Carousel = React.forwardRef<
 			api.on("select", onSelect)
 
 			return () => {
-				api?.off("select", onSelect)
+				api.off("select", onSelect)
 			}
 		}, [api, onSelect])
 
@@ -251,10 +252,10 @@ const CarouselNext = React.forwardRef<
 CarouselNext.displayName = "CarouselNext"
 
 export {
-	type CarouselApi,
 	Carousel,
 	CarouselContent,
 	CarouselItem,
-	CarouselPrevious,
 	CarouselNext,
+	CarouselPrevious,
+	type CarouselApi,
 }

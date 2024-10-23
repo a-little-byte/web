@@ -18,6 +18,7 @@ export const signUpValidator = z.object({
 })
 
 type TSignUpValidatorInput = z.input<typeof signUpValidator>
+
 export type SignUpValidatorOutput = z.output<typeof signUpValidator>
 
 export const SignUpForm = ({
@@ -36,7 +37,7 @@ export const SignUpForm = ({
 
 	return (
 		<FormProvider {...signUpForm}>
-			<Form onSubmit={signUpForm.handleSubmit(onSubmit)}>
+			<Form onSubmit={void signUpForm.handleSubmit(onSubmit)}>
 				<InputField<TSignUpValidatorInput>
 					control={signUpForm.control}
 					name="firstName"

@@ -1,8 +1,8 @@
-import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
+import type { PrivateContextVariables } from "@alittlebyte/api/utils/types"
 import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
-import { idValidator } from "@alittlebyte/common/validators"
-import { type Next, Context } from "hono"
-import { z } from "zod"
+import type { idValidator } from "@alittlebyte/common/validators"
+import type { Context, Next } from "hono"
+import type { z } from "zod"
 
 interface UserIdInput {
 	in: {

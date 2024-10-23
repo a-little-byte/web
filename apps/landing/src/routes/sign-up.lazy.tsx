@@ -13,21 +13,19 @@ const SignUp = () => {
 	const navigate = useNavigate()
 	const { signUp } = useAuthClient()
 	const { mutateAsync } = useMutation<unknown, Error, SignUpValidatorOutput>({
-		mutationFn: (data) => {
-			return signUp.email({
+		mutationFn: (data) =>
+			signUp.email({
 				name: `${data.firstName}${FULL_NAME_SEPARATOR}${data.lastName}`,
 				firstName: data.firstName,
 				lastName: data.lastName,
 				email: data.email,
 				password: data.password,
-			})
-		},
+			}),
 	})
-
 	const onSubmit = useCallback<SubmitHandler<SignUpValidatorOutput>>(
 		async (values) => {
 			await mutateAsync(values)
-			navigate({
+			void navigate({
 				to: "/",
 			})
 		},

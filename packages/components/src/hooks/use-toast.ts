@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as React from "react"
 
 import type {
@@ -15,7 +16,6 @@ type ToasterToast = ToastProps & {
 	action?: ToastActionElement
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const actionTypes = {
 	ADD_TOAST: "ADD_TOAST",
 	UPDATE_TOAST: "UPDATE_TOAST",
@@ -71,7 +71,6 @@ const addToRemoveQueue = (toastId: string) => {
 	toastTimeouts.set(toastId, timeout)
 }
 
-// eslint-disable-next-line consistent-return
 export const reducer = (state: State, action: Action): State => {
 	switch (action.type) {
 		case "ADD_TOAST":
@@ -96,7 +95,6 @@ export const reducer = (state: State, action: Action): State => {
 			if (toastId) {
 				addToRemoveQueue(toastId)
 			} else {
-				// eslint-disable-next-line no-shadow
 				state.toasts.forEach((toast) => {
 					addToRemoveQueue(toast.id)
 				})
@@ -105,7 +103,6 @@ export const reducer = (state: State, action: Action): State => {
 			return {
 				...state,
 				toasts: state.toasts.map((t) =>
-					// eslint-disable-next-line no-undefined
 					t.id === toastId || toastId === undefined
 						? {
 								...t,
@@ -117,7 +114,6 @@ export const reducer = (state: State, action: Action): State => {
 		}
 
 		case "REMOVE_TOAST":
-			// eslint-disable-next-line no-undefined
 			if (action.toastId === undefined) {
 				return {
 					...state,
@@ -146,7 +142,6 @@ type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
 	const id = genId()
-	// eslint-disable-next-line no-shadow
 	const update = (props: ToasterToast) => {
 		dispatch({
 			type: "UPDATE_TOAST",

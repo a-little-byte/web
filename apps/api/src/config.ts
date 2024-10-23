@@ -14,7 +14,7 @@ const apiConfigSchema = z.object({
 		}),
 	}),
 	server: z.object({
-		port: z.string().transform((arg) => parseInt(arg, 10)),
+		port: z.string(),
 	}),
 })
 const data = {

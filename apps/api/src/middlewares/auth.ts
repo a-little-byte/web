@@ -1,6 +1,6 @@
 import { auth } from "@alittlebyte/api/lib/auth"
-import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
-import { Context, Next } from "hono"
+import type { PrivateContextVariables } from "@alittlebyte/api/utils/types"
+import type { Context, Next } from "hono"
 
 export const authMiddleware = async (
 	c: Context<{ Variables: PrivateContextVariables }>,
@@ -15,6 +15,5 @@ export const authMiddleware = async (
 	c.set("user", session.user)
 	c.set("session", session.session)
 
-	
-return next()
+	return next()
 }

@@ -1,8 +1,8 @@
-import { Hono } from "hono"
-import { PublicContextVariables } from "@alittlebyte/api/utils/types"
-import { zValidator } from "@hono/zod-validator"
-import { idValidator, serviceValidator } from "@alittlebyte/common/validators"
+import type { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
+import { idValidator, serviceValidator } from "@alittlebyte/common/validators"
+import { zValidator } from "@hono/zod-validator"
+import { Hono } from "hono"
 import { z } from "zod"
 
 export const servicesRouter = () =>
@@ -10,8 +10,7 @@ export const servicesRouter = () =>
 		.get("/", async ({ json, var: { prisma } }) => {
 			const services = await prisma.service.findMany()
 
-			
-return json({ data: services })
+			return json({ data: services })
 		})
 		.get(
 			"/:serviceId",
@@ -22,11 +21,12 @@ return json({ data: services })
 					where: { id: serviceId },
 				})
 
-				if (!service)
-					{return json(
+				if (!service) {
+					return json(
 						{ message: "Unknown Service" },
 						HTTP_STATUS_CODES.NOT_FOUND,
-					)}
+					)
+				}
 
 				return json({ data: service })
 			},
@@ -52,11 +52,12 @@ return json({ data: services })
 					where: { id: serviceId },
 				})
 
-				if (!foundService)
-					{return json(
+				if (!foundService) {
+					return json(
 						{ data: "This survice does not exsist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
-					)}
+					)
+				}
 
 				const updateService = await prisma.service.update({
 					where: { id: serviceId },
@@ -75,11 +76,12 @@ return json({ data: services })
 					where: { id: serviceId },
 				})
 
-				if (!foundService)
-					{return json(
+				if (!foundService) {
+					return json(
 						{ message: "This survice does not exsist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
-					)}
+					)
+				}
 
 				await prisma.service.delete({
 					where: { id: serviceId },

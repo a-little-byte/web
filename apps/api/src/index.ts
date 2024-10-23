@@ -5,7 +5,7 @@ import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
 import { authRouter } from "@alittlebyte/api/routes/auth"
 import { servicesRouter } from "@alittlebyte/api/routes/services"
 import { usersRouter } from "@alittlebyte/api/routes/users"
-import { PublicContextVariables } from "@alittlebyte/api/utils/types"
+import type { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { serve } from "@hono/node-server"
 import { Hono } from "hono"
 
@@ -25,7 +25,7 @@ console.log(`Server is running on port ${port}`)
 
 serve({
 	fetch: app.fetch,
-	port,
+	port: parseInt(port, 10),
 })
 
 export type ApiRouter = typeof router
