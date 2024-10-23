@@ -11,13 +11,11 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
-		"@eslint/js": "^9.11.1",
+		"@alittlebyte/eslint-configs": "workspace:*",
 		"@types/node": "^20.11.17",
 		"eslint": "^9.11.1",
-		"globals": "^15.9.0",
 		"tsx": "^4.7.1",
-		"typescript": "^5.5.3",
-		"typescript-eslint": "^8.7.0"
+		"typescript": "^5.5.3"
 	},
 	"dependencies": {
 		"hono": "^4.6.3",
