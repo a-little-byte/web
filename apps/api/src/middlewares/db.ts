@@ -8,5 +8,5 @@ export const dbMiddleware = async (
 ) => {
 	ctx.set("prisma", prismaDb)
 
-	return await next()
+	await next()
 }

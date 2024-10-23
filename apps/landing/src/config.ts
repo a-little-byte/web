@@ -9,7 +9,6 @@ const landingConfigSchema = z.object({
 		}),
 	}),
 })
-
 const data = {
 	services: {
 		auth: {

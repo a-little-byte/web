@@ -14,5 +14,7 @@ export const authMiddleware = async (
 
 	c.set("user", session.user)
 	c.set("session", session.session)
-	return next()
+
+	
+return next()
 }

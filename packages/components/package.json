@@ -1,7 +1,6 @@
 {
 	"name": "@alittlebyte/components",
 	"version": "1.0.0",
-	"description": "",
 	"type": "module",
 	"scripts": {
 		"lint": "eslint src/** && tsc",
@@ -11,9 +10,6 @@
 		"./tailwind.config": "./src/tailwind.config.ts",
 		"./shadcn-ui.css": "./shadcn-ui.css"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
 	"dependencies": {
 		"@hookform/resolvers": "^3.9.0",
 		"@radix-ui/react-accordion": "^1.2.0",
@@ -39,15 +35,13 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.11.1",
+		"@alittlebyte/eslint-configs": "workspace:*",
 		"@types/node": "^20.11.17",
 		"@types/react": "^18.3.3",
 		"eslint": "^9.11.1",
-		"globals": "^15.9.0",
 		"react": "^18.3.1",
 		"tailwindcss": "^3.4.13",
 		"tsx": "^4.7.1",
-		"typescript": "^5.5.3",
-		"typescript-eslint": "^8.7.0"
+		"typescript": "^5.5.3"
 	}
 }

@@ -9,7 +9,9 @@ export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
 		.get("/", async ({ json, var: { prisma } }) => {
 			const services = await prisma.service.findMany()
-			return json({ data: services })
+
+			
+return json({ data: services })
 		})
 		.get(
 			"/:serviceId",
@@ -21,10 +23,10 @@ export const servicesRouter = () =>
 				})
 
 				if (!service)
-					return json(
+					{return json(
 						{ message: "Unknown Service" },
 						HTTP_STATUS_CODES.NOT_FOUND,
-					)
+					)}
 
 				return json({ data: service })
 			},
@@ -51,10 +53,10 @@ export const servicesRouter = () =>
 				})
 
 				if (!foundService)
-					return json(
+					{return json(
 						{ data: "This survice does not exsist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
-					)
+					)}
 
 				const updateService = await prisma.service.update({
 					where: { id: serviceId },
@@ -74,10 +76,10 @@ export const servicesRouter = () =>
 				})
 
 				if (!foundService)
-					return json(
+					{return json(
 						{ message: "This survice does not exsist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
-					)
+					)}
 
 				await prisma.service.delete({
 					where: { id: serviceId },
