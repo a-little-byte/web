@@ -9,7 +9,7 @@ export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
 		.get("/", async ({ json, var: { prisma } }) => {
 			const services = await prisma.service.findMany()
-			return json({ message: services })
+			return json({ data: services })
 		})
 		.get(
 			"/:serviceId",
@@ -33,10 +33,10 @@ export const servicesRouter = () =>
 			"/",
 			zValidator("json", serviceValidator),
 			async ({ json, req, var: { prisma } }) => {
-				const data = req.valid("json")
-				const postService = await prisma.service.create({ data })
+				const postJson = req.valid("json")
+				const postService = await prisma.service.create({ data: postJson })
 
-				return json({ message: postService })
+				return json({ data: postService })
 			},
 		)
 		.put(
@@ -52,7 +52,7 @@ export const servicesRouter = () =>
 
 				if (!foundService)
 					return json(
-						{ message: "This survice does not exsist" },
+						{ data: "This survice does not exsist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
 					)
 
@@ -61,7 +61,7 @@ export const servicesRouter = () =>
 					data,
 				})
 
-				return json({ message: updateService })
+				return json({ data: updateService })
 			},
 		)
 		.delete(
