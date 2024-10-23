@@ -26,13 +26,11 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.11.1",
 		"@types/node": "^20.11.17",
 		"eslint": "^9.11.1",
 		"prisma": "^5.20.1",
 		"react-email": "3.0.1",
 		"tsx": "^4.7.1",
-		"typescript": "^5.5.3",
-		"typescript-eslint": "^8.7.0"
+		"typescript": "^5.5.3"
 	}
 }

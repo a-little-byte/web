@@ -118,9 +118,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.11.1
-        version: 9.11.1
       '@types/node':
         specifier: ^20.11.17
         version: 20.16.9
@@ -139,9 +136,6 @@ importers:
       typescript:
         specifier: ^5.5.3
         version: 5.6.2
-      typescript-eslint:
-        specifier: ^8.7.0
-        version: 8.7.0(eslint@9.11.1(jiti@2.3.3))(typescript@5.6.2)
 
   apps/landing:
     dependencies:
@@ -185,12 +179,6 @@ importers:
         specifier: ^3.23.8
         version: 3.23.8
     devDependencies:
-      '@eslint/js':
-        specifier: ^9.11.1
-        version: 9.11.1
-      '@tanstack/eslint-plugin-query':
-        specifier: ^5.57.2
-        version: 5.57.2(eslint@9.11.1(jiti@2.3.3))(typescript@5.6.2)
       '@tanstack/react-query-devtools':
         specifier: ^5.58.0
         version: 5.58.0(@tanstack/react-query@5.56.2(react@18.3.1))(react@18.3.1)
@@ -215,27 +203,12 @@ importers:
       eslint:
         specifier: ^9.11.1
         version: 9.11.1(jiti@2.3.3)
-      eslint-plugin-react:
-        specifier: ^7.36.1
-        version: 7.36.1(eslint@9.11.1(jiti@2.3.3))
-      eslint-plugin-react-hooks:
-        specifier: ^5.1.0-rc.0
-        version: 5.1.0-rc-fb9a90fa48-20240614(eslint@9.11.1(jiti@2.3.3))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.9
-        version: 0.4.12(eslint@9.11.1(jiti@2.3.3))
-      globals:
-        specifier: ^15.9.0
-        version: 15.9.0
       tailwindcss:
         specifier: ^3.4.13
         version: 3.4.13
       typescript:
         specifier: ^5.5.3
         version: 5.6.2
-      typescript-eslint:
-        specifier: ^8.7.0
-        version: 8.7.0(eslint@9.11.1(jiti@2.3.3))(typescript@5.6.2)
       vite:
         specifier: ^5.4.1
         version: 5.4.8(@types/node@20.16.9)
