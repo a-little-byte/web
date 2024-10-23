@@ -6,6 +6,7 @@ import { authRouter } from "@alittlebyte/api/routes/auth"
 import { usersRouter } from "@alittlebyte/api/routes/users"
 import { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { serve } from "@hono/node-server"
+import { servicesRouter } from "@alittlebyte/api/routes/services"
 import { Hono } from "hono"
 
 const { port } = apiConfig.server
@@ -16,6 +17,7 @@ const router = app
 	.use(corsMiddleware)
 	.use(dbMiddleware)
 	.route("/auth", authRouter())
+	.route("/services", servicesRouter())
 	.use(authMiddleware)
 	.route("/users", usersRouter())
 
