@@ -39,3 +39,15 @@ export const serviceValidator = z.object({
 	perDevice: perDeviceValidator,
 	available: availableValidator,
 })
+
+export const cardNumberValidator = z.string().min(16).max(16)
+
+export const expirationDateValidator = z.date()
+
+export const cvvCodeValidator = z.string().min(3).max(3)
+
+export const creditCardValidator = z.object({
+	cardNumber: cardNumberValidator,
+	expirationDate: expirationDateValidator,
+	cvvCode: cvvCodeValidator,
+})
