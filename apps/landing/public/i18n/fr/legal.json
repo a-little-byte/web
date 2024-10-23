@@ -1,0 +1,52 @@
+{
+	"title": "Conditions Générales pour alittlebyte.dev",
+	"effectiveDate": "Date d'entrée en vigueur: 23/10/2024",
+	"welcome_legal": "Bienvenue sur alittlebyte.dev. En accédant ou en utilisant notre site web et nos services, vous acceptez de vous conformer et d'être lié par ces Conditions Générales. Veuillez les lire attentivement. Si vous n'êtes pas d'accord avec ces conditions, vous ne devez pas utiliser notre site ou nos services.",
+	"section": [
+		{
+			"title": "1. Acceptation des conditions",
+			"content": "En utilisant alittlebyte.dev, vous affirmez que vous avez atteint l'âge de la majorité dans votre juridiction et que vous avez la capacité légale d'accepter ces conditions."
+		},
+		{
+			"title": "2. Modifications des conditions",
+			"content": "Nous nous réservons le droit de modifier ces conditions à tout moment. Toute modification sera effective immédiatement après sa publication sur cette page. Votre utilisation continue du site après les modifications constitue votre acceptation des nouvelles conditions."
+		},
+		{
+			"title": "3. Services",
+			"content": "alittlebyte.dev fournit des solutions de logiciels en tant que service (SaaS). Les fonctionnalités spécifiques des services peuvent varier, et nous nous réservons le droit de modifier ou de cesser toute fonctionnalité à tout moment."
+		},
+		{
+			"title": "4. Comptes d'utilisateur",
+			"content": "Pour accéder à certaines fonctionnalités de nos services, vous devrez peut-être créer un compte. Vous acceptez de fournir des informations exactes, actuelles et complètes lors de l'inscription et de mettre à jour ces informations. Vous êtes responsable de la protection de votre mot de passe et de toute activité ou action sous votre compte."
+		},
+		{
+			"title": "5. Utilisation des services",
+			"content": "Vous acceptez d'utiliser les services uniquement à des fins légales et conformément à ces conditions. Vous ne devez pas utiliser les services de manière à violer les lois fédérales, étatiques, locales ou internationales applicables."
+		},
+		{
+			"title": "6. Propriété intellectuelle",
+			"content": "Tout le contenu, les fonctionnalités et les fonctionnalités sur alittlebyte.dev, y compris mais sans s'y limiter, les textes, graphiques, logos et logiciels, sont la propriété exclusive de alittlebyte.dev ou de ses concédants de licence et sont protégés par le droit d'auteur, la marque et d'autres lois sur la propriété intellectuelle."
+		},
+		{
+			"title": "7. Limitation de responsabilité",
+			"content": "Dans toute la mesure permise par la loi applicable, alittlebyte.dev ne sera pas responsable des dommages indirects, accessoires, spéciaux, consécutifs ou punitifs, y compris mais sans s'y limiter à la perte de bénéfices, de données ou d'utilisation, résultant de l'utilisation des services."
+		},
+		{
+			"title": "8. Exclusion de garanties",
+			"content": "Les services sont fournis 'tels quels' et 'tels que disponibles', sans aucune garantie, expresse ou implicite. Nous ne garantissons pas que les services seront ininterrompus, sécurisés ou exempts d'erreurs."
+		},
+		{
+			"title": "9. Indemnisation",
+			"content": "Vous acceptez de défendre, d'indemniser et de dégager de toute responsabilité alittlebyte.dev ainsi que ses affiliés, concédants de licence et prestataires de services contre toute réclamation, dommage, responsabilité, perte et dépense, y compris les honoraires d'avocat, résultant de votre utilisation des services ou de la violation de ces conditions."
+		},
+		{
+			"title": "10. Droit applicable",
+			"content": "Ces conditions seront régies et interprétées conformément aux lois de [Insérer la juridiction], sans égard aux principes de conflits de lois. Vous acceptez de vous soumettre à la juridiction exclusive des tribunaux situés dans [Insérer la juridiction] pour résoudre tout litige découlant de ces conditions."
+		},
+		{
+			"title": "11. Informations de contact",
+			"content": "Si vous avez des questions concernant ces conditions, veuillez nous contacter à [Insérer les informations de contact]."
+		}
+	],
+	"acknowledgement": "En utilisant alittlebyte.dev, vous reconnaissez avoir lu, compris et accepté d'être lié par ces Conditions Générales."
+}

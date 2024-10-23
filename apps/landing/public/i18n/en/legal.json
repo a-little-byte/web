@@ -1,0 +1,52 @@
+{
+	"title": "Terms and Conditions for alittlebyte.dev",
+	"effectiveDate": "Effective Date: 23/10/2024",
+	"welcome_legal": "Welcome to alittlebyte.dev. By accessing or using our website and services, you agree to comply with and be bound by these Terms and Conditions. Please read them carefully. If you do not agree to these Terms, you must not use our website or services.",
+	"section": [
+		{
+			"title": "1. Acceptance of Terms",
+			"content": "By using alittlebyte.dev, you affirm that you are at least the age of majority in your jurisdiction and have the legal capacity to enter into these Terms."
+		},
+		{
+			"title": "2. Changes to Terms",
+			"content": "We reserve the right to modify these Terms at any time. Any changes will be effective immediately upon posting on this page. Your continued use of the website after changes are made constitutes your acceptance of the new Terms."
+		},
+		{
+			"title": "3. Services",
+			"content": "alittlebyte.dev provides software as a service (SaaS) solutions. The specific features and functionalities of the services may vary, and we reserve the right to modify or discontinue any aspect of the services at any time."
+		},
+		{
+			"title": "4. User Accounts",
+			"content": "To access certain features of our services, you may need to create an account. You agree to provide accurate, current, and complete information during the registration process and to update such information to keep it accurate, current, and complete. You are responsible for safeguarding your password and for any activities or actions under your account."
+		},
+		{
+			"title": "5. Use of Services",
+			"content": "You agree to use the services only for lawful purposes and in accordance with these Terms. You shall not use the services in any way that violates any applicable federal, state, local, or international law or regulation."
+		},
+		{
+			"title": "6. Intellectual Property",
+			"content": "All content, features, and functionality on alittlebyte.dev, including but not limited to text, graphics, logos, and software, are the exclusive property of alittlebyte.dev or its licensors and are protected by copyright, trademark, and other intellectual property laws."
+		},
+		{
+			"title": "7. Limitation of Liability",
+			"content": "To the fullest extent permitted by applicable law, alittlebyte.dev shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, data, or use, arising from or related to your use of the services."
+		},
+		{
+			"title": "8. Disclaimer of Warranties",
+			"content": "The services are provided on an 'as is' and 'as available' basis, without any warranties of any kind, either express or implied. We do not warrant that the services will be uninterrupted, secure, or error-free."
+		},
+		{
+			"title": "9. Indemnification",
+			"content": "You agree to defend, indemnify, and hold harmless alittlebyte.dev and its affiliates, licensors, and service providers from and against any claims, damages, liabilities, losses, and expenses, including reasonable attorney's fees, arising out of or related to your use of the services or violation of these Terms."
+		},
+		{
+			"title": "10. Governing Law",
+			"content": "These Terms shall be governed by and construed in accordance with the laws of [Insert Jurisdiction], without regard to its conflict of law principles. You agree to submit to the exclusive jurisdiction of the courts located within [Insert Jurisdiction] to resolve any legal matter arising from these Terms."
+		},
+		{
+			"title": "11. Contact Information",
+			"content": "If you have any questions about these Terms, please contact us at [Insert Contact Information]."
+		}
+	],
+	"acknowledgement": "By using alittlebyte.dev, you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions."
+}
