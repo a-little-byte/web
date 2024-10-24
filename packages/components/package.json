@@ -36,6 +36,7 @@
 	},
 	"devDependencies": {
 		"@alittlebyte/eslint-configs": "workspace:*",
+		"@alittlebyte/typescript-configs": "workspace:*",
 		"@types/node": "^20.11.17",
 		"@types/react": "^18.3.3",
 		"eslint": "^9.11.1",

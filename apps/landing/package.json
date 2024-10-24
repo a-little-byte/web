@@ -27,6 +27,7 @@
 	},
 	"devDependencies": {
 		"@alittlebyte/eslint-configs": "workspace:*",
+		"@alittlebyte/typescript-configs": "workspace:*",
 		"@tanstack/react-query-devtools": "^5.58.0",
 		"@tanstack/router-devtools": "^1.58.9",
 		"@tanstack/router-plugin": "^1.58.10",

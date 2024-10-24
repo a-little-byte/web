@@ -28,6 +28,7 @@
 	},
 	"devDependencies": {
 		"@alittlebyte/eslint-configs": "workspace:*",
+		"@alittlebyte/typescript-configs": "workspace:*",
 		"@types/node": "^20.11.17",
 		"eslint": "^9.11.1",
 		"prisma": "^5.20.1",
