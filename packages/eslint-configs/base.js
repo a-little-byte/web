@@ -48,11 +48,6 @@ export default tseslint.config(
 					ignoreGlobals: true,
 				},
 			],
-			"capitalized-comments": [
-				"error",
-				"always",
-				{ ignoreConsecutiveComments: true },
-			],
 			"class-methods-use-this": ["error", { enforceForClassFields: true }],
 			"consistent-return": "error",
 			curly: ["error", "all"],
