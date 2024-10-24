@@ -1,24 +1,17 @@
-import pluginQuery from "@tanstack/eslint-plugin-query"
-import pluginRouter from "@tanstack/eslint-plugin-router"
+import base from "@alittlebyte/eslint-configs/base.js"
 import importPlugin from "eslint-plugin-import"
 import pluginReact from "eslint-plugin-react"
 import pluginReactHook from "eslint-plugin-react-hooks"
 import pluginReactRefresh from "eslint-plugin-react-refresh"
 import globals from "globals"
-import base from "./base.js"
 
 export default [
-	{
-		ignores: ["routeTree.gen.ts"],
-	},
 	{ languageOptions: { globals: globals.browser } },
 	...base,
 	importPlugin.flatConfigs.react,
 	pluginReact.configs.flat.recommended,
 	pluginReact.configs.flat["jsx-runtime"],
 	pluginReact.configs.flat.recommended,
-	...pluginQuery.configs["flat/recommended"],
-	...pluginRouter.configs["flat/recommended"],
 	{
 		plugins: {
 			"react-hooks": pluginReactHook,

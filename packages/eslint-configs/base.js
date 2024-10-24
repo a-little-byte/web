@@ -155,7 +155,6 @@ export default tseslint.config(
 			"symbol-description": "error",
 			yoda: "error",
 			"line-comment-position": ["error", { position: "above" }],
-			// recommended rules overwrite
 			indent: "off",
 			"linebreak-style": ["error", "unix"],
 			"newline-before-return": "error",
@@ -246,6 +245,7 @@ export default tseslint.config(
 				{ checksVoidReturn: { attributes: false } },
 			],
 			"@typescript-eslint/no-require-imports": "error",
+			"@typescript-eslint/consistent-type-definitions": "off",
 		},
 		settings: {
 			"import/parsers": {
