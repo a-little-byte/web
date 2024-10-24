@@ -5,7 +5,8 @@
 	"files": [
 		"./base.js",
 		"./react.js",
-		"./hono.js"
+		"./hono.js",
+		"./vite.js"
 	],
 	"devDependencies": {
 		"@eslint/js": "^9.11.1",
