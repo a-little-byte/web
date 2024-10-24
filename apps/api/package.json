@@ -17,7 +17,8 @@
 		"@faker-js/faker": "^9.0.3",
 		"@hono/node-server": "^1.13.1",
 		"@hono/zod-validator": "^0.4.1",
-		"@prisma/client": "^5.20.0",
+		"@prisma/client": "^5.20.1",
+		"@prisma/engines": "^5.21.1",
 		"@react-email/components": "0.0.25",
 		"better-auth": "0.5.2-beta.10",
 		"dotenv": "^16.4.5",
@@ -25,14 +26,12 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@eslint/js": "^9.11.1",
+		"@alittlebyte/eslint-configs": "workspace:*",
 		"@types/node": "^20.11.17",
 		"eslint": "^9.11.1",
-		"globals": "^15.9.0",
-		"prisma": "^5.20.0",
+		"prisma": "^5.20.1",
 		"react-email": "3.0.1",
 		"tsx": "^4.7.1",
-		"typescript": "^5.5.3",
-		"typescript-eslint": "^8.7.0"
+		"typescript": "^5.5.3"
 	}
 }

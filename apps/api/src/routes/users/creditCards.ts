@@ -1,12 +1,12 @@
-import { Hono } from "hono"
-import { z } from "zod"
-import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
-import { zValidator } from "@hono/zod-validator"
+import type { PrivateContextVariables } from "@alittlebyte/api/utils/types"
+import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import {
 	creditCardValidator,
 	idValidator,
 } from "@alittlebyte/common/validators"
-import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
+import { zValidator } from "@hono/zod-validator"
+import { Hono } from "hono"
+import { z } from "zod"
 
 export const creditCardRouter = () =>
 	new Hono<{ Variables: PrivateContextVariables }>()

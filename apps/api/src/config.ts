@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import "dotenv/config"
 import { z } from "zod"
 
@@ -13,10 +14,9 @@ const apiConfigSchema = z.object({
 		}),
 	}),
 	server: z.object({
-		port: z.string().transform((arg) => parseInt(arg)),
+		port: z.string(),
 	}),
 })
-
 const data = {
 	cors: {
 		origin: process.env.API_CORS_ORIGIN!.split(","),
