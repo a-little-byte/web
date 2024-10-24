@@ -243,19 +243,5 @@ export default tseslint.config(
 			"@typescript-eslint/no-require-imports": "error",
 			"@typescript-eslint/consistent-type-definitions": "off",
 		},
-		settings: {
-			"import/parsers": {
-				"@typescript-eslint/parser": [".ts", ".tsx"],
-			},
-			"import/resolver": {
-				typescript: {
-					project: [
-						"../*/tsconfig.json",
-						"../../apps/*/tsconfig.json",
-						"../../tsconfig.json",
-					],
-				},
-			},
-		},
 	},
 )

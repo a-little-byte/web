@@ -1,19 +1,5 @@
 {
-	"exclude": ["node_modules", "tailwind.config.ts"],
-	"include": ["**/*.tsx", "**/*.ts"],
-	"extends": ["../../tsconfig.json"],
-	"compilerOptions": {
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
-		"module": "ESNext",
-		"skipLibCheck": true,
-		"moduleResolution": "bundler",
-		"isolatedModules": true,
-		"moduleDetection": "force",
-		"jsx": "react-jsx",
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
-	}
+	"extends": "@alittlebyte/typescript-configs/react.json",
+	"exclude": ["node_modules"],
+	"include": ["src"]
 }

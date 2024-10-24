@@ -1,18 +1,5 @@
 {
-	"extends": ["../../tsconfig.json"],
-	"exclude": ["node_modules", "dist"],
-	"include": ["**/*.tsx", "**/*.ts"],
-	"compilerOptions": {
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"lib": ["ES2020", "DOM", "DOM.Iterable"],
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"isolatedModules": true,
-		"moduleDetection": "force",
-		"jsx": "react-jsx",
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
-	}
+	"extends": "@alittlebyte/typescript-configs/vite.json",
+	"include": ["src"],
+	"exclude": ["node_modules", "dist"]
 }

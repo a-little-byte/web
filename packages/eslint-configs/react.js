@@ -21,6 +21,18 @@ export default [
 			react: {
 				version: "detect",
 			},
+			"import/parsers": {
+				"@typescript-eslint/parser": [".ts", ".tsx"],
+			},
+			"import/resolver": {
+				typescript: {
+					project: [
+						"../*/tsconfig.json",
+						"../../apps/*/tsconfig.json",
+						"../../tsconfig.json",
+					],
+				},
+			},
 		},
 		rules: {
 			"react/prop-types": 0,

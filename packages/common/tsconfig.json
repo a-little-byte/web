@@ -1,8 +1,5 @@
 {
+	"extends": "@alittlebyte/typescript-configs/base.json",
 	"exclude": ["node_modules", "dist"],
-	"include": ["**/*.ts"],
-	"extends": ["../../tsconfig.json"],
-	"compilerOptions": {
-		"skipLibCheck": true
-	}
+	"include": ["src"]
 }
