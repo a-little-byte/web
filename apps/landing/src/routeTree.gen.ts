@@ -23,19 +23,16 @@ const IndexLazyImport = createFileRoute('/')()
 // Create/Update Routes
 
 const SignUpLazyRoute = SignUpLazyImport.update({
-  id: '/sign-up',
   path: '/sign-up',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/sign-up.lazy').then((d) => d.Route))
 
 const SignInLazyRoute = SignInLazyImport.update({
-  id: '/sign-in',
   path: '/sign-in',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/sign-in.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
-  id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
