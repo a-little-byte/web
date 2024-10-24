@@ -1,7 +1,6 @@
 import { createLazyFileRoute } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 type Section = {
 	title: string
 	content: string
