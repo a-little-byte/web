@@ -1,4 +1,4 @@
-/* Prettier-ignore-start */
+/* prettier-ignore-start */
 
 /* eslint-disable */
 
@@ -34,11 +34,9 @@ const SignInLazyRoute = SignInLazyImport.update({
 } as any).lazy(() => import('./routes/sign-in.lazy').then((d) => d.Route))
 
 const LegalLazyRoute = LegalLazyImport.update({
-  id: '/legal',
   path: '/legal',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/legal.lazy').then((d) => d.Route))
-
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
@@ -63,7 +61,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalLazyImport
       parentRoute: typeof rootRoute
     }
-
     '/sign-in': {
       id: '/sign-in'
       path: '/sign-in'
