@@ -2,6 +2,7 @@
 
 import eslint from "@eslint/js"
 import path from "node:path"
+import { fileURLToPath } from "node:url"
 import tseslint from "typescript-eslint"
 
 export default tseslint.config(
@@ -13,7 +14,7 @@ export default tseslint.config(
 		languageOptions: {
 			parserOptions: {
 				projectService: true,
-				tsconfigRootDir: path.join(import.meta.dirname, "../../"),
+				tsconfigRootDir: path.join(fileURLToPath(import.meta.url), "../../"),
 			},
 		},
 		rules: {
@@ -46,11 +47,6 @@ export default tseslint.config(
 					ignoreImports: true,
 					ignoreGlobals: true,
 				},
-			],
-			"capitalized-comments": [
-				"error",
-				"always",
-				{ ignoreConsecutiveComments: true },
 			],
 			"class-methods-use-this": ["error", { enforceForClassFields: true }],
 			"consistent-return": "error",
