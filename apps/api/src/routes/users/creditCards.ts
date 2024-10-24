@@ -42,11 +42,24 @@ export const creditCardRouter = () =>
 				const { cardId } = c.req.valid("param")
 				const { prisma } = c.var
 				try {
+					const creditCard = await prisma.creditCard.findUnique({
+						where: {
+							id: cardId,
+						},
+					})
+
+					if (!creditCard) {
+						return c.json(
+							"Credit card doesn't exists",
+							HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
+						)
+					}
 					const deleteCreditCard = await prisma.creditCard.delete({
 						where: {
 							id: cardId,
 						},
 					})
+
 					return c.json(deleteCreditCard)
 				} catch (error) {
 					console.error(error)
