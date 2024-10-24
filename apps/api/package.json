@@ -1,5 +1,6 @@
 {
 	"name": "@alittlebyte/api",
+	"type": "module",
 	"prisma": {
 		"seed": "pnpx tsx prisma/seed.ts"
 	},
