@@ -1,0 +1,27 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - limerio
+      - WookiesRpeople2
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - limerio
+  - package-ecosystem: "docker"
+    directory: "/"
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - limerio
