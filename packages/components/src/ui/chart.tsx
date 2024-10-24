@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
 
@@ -16,7 +17,7 @@ export type ChartConfig = {
 	)
 }
 
-type ChartContextProps = {
+interface ChartContextProps {
 	config: ChartConfig
 }
 
@@ -67,7 +68,6 @@ ChartContainer.displayName = "Chart"
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 	const colorConfig = Object.entries(config).filter(
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		([_, config]) => config.theme || config.color,
 	)
 
@@ -142,7 +142,7 @@ const ChartTooltipContent = React.forwardRef<
 			const itemConfig = getPayloadConfigFromPayload(config, item, key)
 			const value =
 				!labelKey && typeof label === "string"
-					? config[label as keyof typeof config]?.label || label
+					? config[label].label || label
 					: itemConfig?.label
 
 			if (labelFormatter) {
@@ -197,7 +197,7 @@ const ChartTooltipContent = React.forwardRef<
 									indicator === "dot" && "items-center",
 								)}
 							>
-								{formatter && item?.value !== undefined && item.name ? (
+								{formatter && item.value !== undefined && item.name ? (
 									formatter(item.value, item.name, item, index, item.payload)
 								) : (
 									<>
@@ -349,9 +349,7 @@ function getPayloadConfigFromPayload(
 		] as string
 	}
 
-	return configLabelKey in config
-		? config[configLabelKey]
-		: config[key as keyof typeof config]
+	return configLabelKey in config ? config[configLabelKey] : config[key]
 }
 
 export {

@@ -5,7 +5,6 @@ import { ChevronDown } from "lucide-react"
 import { cn } from "@alittlebyte/components/lib/cn"
 
 const Accordion = AccordionPrimitive.Root
-
 const AccordionItem = React.forwardRef<
 	React.ElementRef<typeof AccordionPrimitive.Item>,
 	React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
@@ -16,6 +15,7 @@ const AccordionItem = React.forwardRef<
 		{...props}
 	/>
 ))
+
 AccordionItem.displayName = "AccordionItem"
 
 const AccordionTrigger = React.forwardRef<
@@ -36,6 +36,7 @@ const AccordionTrigger = React.forwardRef<
 		</AccordionPrimitive.Trigger>
 	</AccordionPrimitive.Header>
 ))
+
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
 
 const AccordionContent = React.forwardRef<

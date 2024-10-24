@@ -1,11 +1,10 @@
-import { Context } from "hono"
-import { PrivateContextVariables } from "@alittlebyte/api/utils/types"
-import type { Next } from "hono"
-import { z } from "zod"
-import { idValidator } from "@alittlebyte/common/validators"
+import type { PrivateContextVariables } from "@alittlebyte/api/utils/types"
 import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
+import type { idValidator } from "@alittlebyte/common/validators"
+import type { Context, Next } from "hono"
+import type { z } from "zod"
 
-type UserIdInput = {
+interface UserIdInput {
 	in: {
 		param: {
 			userId: z.input<typeof idValidator>
@@ -25,11 +24,13 @@ export const isUserEqualtoUserLogin = async (
 		json,
 	}: Context<{ Variables: PrivateContextVariables }, string, UserIdInput>,
 	next: Next,
+	// eslint-disable-next-line require-await
 ) => {
 	const { userId } = req.valid("param")
+
 	if (userId !== user.id) {
 		return json({ error: "Forbidden" }, HTTP_STATUS_CODES.FORBIDDEN)
 	}
 
-	await next()
+	return next()
 }
