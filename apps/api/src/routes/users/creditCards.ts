@@ -14,7 +14,7 @@ export const creditCardRouter = () =>
 			"/",
 			zValidator("param", z.object({ userId: idValidator })),
 			zValidator("json", creditCardValidator),
-			async ({ var: { prisma }, req, json }) => {
+			async ({ json, var: { prisma }, req }) => {
 				const data = req.valid("json")
 				const { userId } = req.valid("param")
 
