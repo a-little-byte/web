@@ -1,6 +1,6 @@
+import base from "@alittlebyte/eslint-configs/base.js"
 import honoPlugin from "@hono/eslint-config"
 import globals from "globals"
-import base from "./base.js"
 
 export default [
 	{ languageOptions: { globals: globals.node } },
