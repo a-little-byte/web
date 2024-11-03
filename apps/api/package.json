@@ -5,6 +5,7 @@
 		"seed": "pnpx tsx prisma/seed.ts"
 	},
 	"scripts": {
+		"build": "bun build ./src/index.ts --compile --outfile ./dist/api",
 		"postinstall": "prisma generate",
 		"dev": "tsx watch src/index.ts",
 		"dev:email": "email dev",
