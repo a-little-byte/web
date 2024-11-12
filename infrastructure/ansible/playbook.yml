@@ -1,0 +1,62 @@
+- name: Install Single Node K3s
+  hosts: k3s-single
+  become: true
+  tasks:
+    - name: Install required packages
+      apt:
+        name:
+          - curl
+          - python3
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Download K3s installation script
+      get_url:
+        url: https://get.k3s.io
+        dest: /tmp/k3s-install.sh
+        mode: "0755"
+
+    - name: Install K3s server
+      shell: |
+        INSTALL_K3S_VERSION={{ k3s_version }} /tmp/k3s-install.sh server \
+          --disable traefik \
+          --node-name k3s-single \
+          --tls-san {{ server_ip }}
+      args:
+        creates: /usr/local/bin/k3s
+
+    - name: Wait for node to be ready
+      shell: k3s kubectl get nodes
+      register: node_status
+      until: node_status.rc == 0 and node_status.stdout.find("NotReady") == -1
+      retries: 30
+      delay: 10
+
+    - name: Get cluster info
+      shell: k3s kubectl get nodes -o wide
+      register: cluster_info
+
+    - name: Display cluster info
+      debug:
+        var: cluster_info.stdout_lines
+
+    - name: Create .kube directory
+      file:
+        path: /root/.kube
+        state: directory
+        mode: "0700"
+
+    - name: Copy kubeconfig locally
+      fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: ./kubeconfig.yaml
+        flat: yes
+
+    - name: Update kubeconfig server address
+      replace:
+        path: ./kubeconfig.yaml
+        regexp: "https://127.0.0.1:6443"
+        replace: "https://{{ server_ip }}:6443"
+      delegate_to: localhost
+      become: false

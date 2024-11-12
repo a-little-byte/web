@@ -1,0 +1,4 @@
+server_ip: "your-server-ip"
+ssh_user: ubuntu # or your SSH user
+ssh_private_key_path: ~/.ssh/your-key.pem
+k3s_version: v1.28.7+k3s1
