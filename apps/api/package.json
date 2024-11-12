@@ -6,11 +6,11 @@
 	},
 	"scripts": {
 		"postinstall": "prisma generate",
-		"db:migrate": "bun -b prisma migrate dev",
-		"db:seed": "bun -b prisma seed",
+		"dev:migration:generate": "bun -b prisma migrate dev",
+		"dev:db": "bun -b prisma db",
 		"dev": "bun run --watch src/index.ts",
 		"dev:email": "email dev",
-		"generate": "bun -b @better-auth/cli generate",
+		"dev:auth:generate": "bun -b @better-auth/cli generate",
 		"lint": "eslint src/** && tsc",
 		"lint:fix": "eslint src/** --fix && tsc"
 	},
