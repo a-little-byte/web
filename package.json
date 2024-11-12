@@ -1,21 +1,21 @@
 {
 	"name": "a_little_byte-web",
 	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
-		"clean": "rm -rf apps/*/node_modules packages/*/node_modules node_modules",
+		"clean": "rm -rf apps/*/node_modules packages/*/node_modules node_modules bun.lockd",
 		"dev:compose": "docker compose up",
-		"dev": "pnpm -r --parallel run dev",
-		"dev:seed": "pnpm --filter api exec prisma db seed",
+		"dev": "bun --filter '*' dev",
+		"dev:seed": "bun --filter './apps/api' db:seed",
 		"format:fix": "prettier -w {apps,packages}/**/*.{ts,tsx}",
 		"format": "prettier -c {apps,packages}/**/*.{ts,tsx}",
-		"lint:fix": "pnpm -r --parallel run lint:fix",
-		"lint": "pnpm -r --parallel run lint",
-		"postinstall": "pnpm exec simple-git-hooks"
+		"lint:fix": "bun --filter '*' lint:fix",
+		"lint": "bun --filter '*' lint",
+		"postinstall": "bun exec simple-git-hooks"
 	},
-	"keywords": [],
-	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"prettier": "^3.3.3",
@@ -23,6 +23,6 @@
 		"simple-git-hooks": "^2.11.1"
 	},
 	"simple-git-hooks": {
-		"pre-commit": "pnpm run format:fix && pnpm run lint:fix"
+		"pre-commit": "bun format:fix && bun lint:fix"
 	}
 }
