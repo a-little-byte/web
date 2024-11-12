@@ -1,5 +1,5 @@
 {
-	"extends": "@alittlebyte/typescript-configs/hono.json",
+	"extends": "../../packages/typescript-configs/hono.json",
 	"include": ["src"],
 	"exclude": ["node_modules", "dist"]
 }

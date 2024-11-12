@@ -4,11 +4,11 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "vite --port 5173",
-		"build": "tsc -b && vite build",
+		"dev": "bun -b vite --port 5173",
+		"build": "tsc -b && bun -b vite build",
 		"lint": "eslint src/** && tsc",
 		"lint:fix": "eslint src/** --fix && tsc",
-		"preview": "vite preview"
+		"preview": "bun -b vite preview"
 	},
 	"dependencies": {
 		"@alittlebyte/common": "workspace:*",
