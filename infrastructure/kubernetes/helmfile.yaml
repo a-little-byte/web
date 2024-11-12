@@ -1,0 +1,110 @@
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: istio
+    url: https://istio-release.storage.googleapis.com/charts
+
+helmDefaults:
+  timeout: 600
+  wait: true
+  atomic: true
+  cleanupOnFail: true
+
+environments:
+  default:
+    values:
+      - env/default.yaml
+  production:
+    values:
+      - env/default.yaml
+      - env/production.yaml
+
+releases:
+  - name: cert-manager
+    namespace: cert-manager
+    chart: jetstack/cert-manager
+    version: v1.13.1
+    needs:
+      - default/namespace-cert-manager
+    set:
+      - name: installCRDs
+        value: true
+
+  - name: istio-base
+    namespace: istio-system
+    chart: istio/base
+    version: 1.20.0
+    needs:
+      - default/namespace-istio-system
+    set:
+      - name: defaultRevision
+        value: default
+
+  - name: istiod
+    namespace: istio-system
+    chart: istio/istiod
+    version: 1.20.0
+    wait: true
+    needs:
+      - istio-system/istio-base
+    values:
+      - values/istio-values.yaml
+
+  - name: prometheus
+    namespace: monitoring
+    chart: prometheus-community/kube-prometheus-stack
+    version: 55.0.0
+    needs:
+      - default/namespace-monitoring
+    values:
+      - values/prometheus-values.yaml
+
+  - name: argocd
+    namespace: argocd
+    chart: argo/argo-cd
+    version: 5.46.7
+    needs:
+      - default/namespace-argocd
+    values:
+      - values/argocd-values.yaml
+
+  - name: argo-rollouts
+    namespace: argo-rollouts
+    chart: argo/argo-rollouts
+    version: 2.31.3
+    needs:
+      - default/namespace-argo-rollouts
+
+  - name: namespace-cert-manager
+    chart: ./charts/namespace
+    version: 0.1.0
+    values:
+      - namespaceName: cert-manager
+
+  - name: namespace-istio-system
+    chart: ./charts/namespace
+    version: 0.1.0
+    values:
+      - namespaceName: istio-system
+
+  - name: namespace-monitoring
+    chart: ./charts/namespace
+    version: 0.1.0
+    values:
+      - namespaceName: monitoring
+
+  - name: namespace-argocd
+    chart: ./charts/namespace
+    version: 0.1.0
+    values:
+      - namespaceName: argocd
+
+  - name: namespace-argo-rollouts
+    chart: ./charts/namespace
+    version: 0.1.0
+    values:
+      - namespaceName: argo-rollouts

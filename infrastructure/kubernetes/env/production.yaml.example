@@ -1,0 +1,8 @@
+environments:
+  clusterName: prod-cluster
+  domain: prod.example.com
+  certManager:
+    email: admin@prod.example.com
+  monitoring:
+    retention: 30d
+    storage: 500Gi
