@@ -1,0 +1,84 @@
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: istio
+    url: https://istio-release.storage.googleapis.com/charts
+  - name: oneuptime
+    url: https://helm-chart.oneuptime.com/
+
+helmDefaults:
+  timeout: 600
+  wait: true
+  atomic: true
+  cleanupOnFail: true
+
+environments:
+  default:
+    values:
+      - env/default.yaml
+  production:
+    values:
+      - env/default.yaml
+      - env/production.yaml
+
+releases:
+  - name: cert-manager
+    namespace: cert-manager
+    createNamespace: true
+    chart: jetstack/cert-manager
+    version: v1.16.1
+    set:
+      - name: installCRDs
+        value: true
+
+  - name: istio-base
+    namespace: istio-system
+    chart: istio/base
+    version: 1.24.0
+    createNamespace: true
+    needs:
+      - default/namespace-istio-system
+    set:
+      - name: defaultRevision
+        value: default
+
+  - name: istiod
+    namespace: istio-system
+    createNamespace: true
+    chart: istio/istiod
+    version: 1.24.0
+    wait: true
+    values:
+      - values/istio-values.yaml
+
+  - name: prometheus
+    namespace: monitoring
+    createNamespace: true
+    chart: prometheus-community/kube-prometheus-stack
+    version: 66.1.1
+    values:
+      - values/prometheus-values.yaml
+
+  - name: argocd
+    namespace: argocd
+    createNamespace: true
+    chart: argo/argo-cd
+    version: 7.7.3
+    values:
+      - values/argocd-values.yaml
+
+  - name: argo-rollouts
+    namespace: argo-rollouts
+    createNamespace: true
+    chart: argo/argo-rollouts
+    version: 2.37.8
+
+  - name: oneuptime
+    namespace: oneuptime
+    createNamespace: true
+    chart: oneuptime/oneuptime
+    version: 7.0.3233
