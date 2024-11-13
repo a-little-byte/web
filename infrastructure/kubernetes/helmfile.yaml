@@ -7,6 +7,8 @@ repositories:
     url: https://charts.jetstack.io
   - name: istio
     url: https://istio-release.storage.googleapis.com/charts
+  - name: oneuptime
+    url: https://helm-chart.oneuptime.com/
 
 helmDefaults:
   timeout: 600
@@ -26,10 +28,9 @@ environments:
 releases:
   - name: cert-manager
     namespace: cert-manager
+    createNamespace: true
     chart: jetstack/cert-manager
-    version: v1.13.1
-    needs:
-      - default/namespace-cert-manager
+    version: v1.16.1
     set:
       - name: installCRDs
         value: true
@@ -37,7 +38,8 @@ releases:
   - name: istio-base
     namespace: istio-system
     chart: istio/base
-    version: 1.20.0
+    version: 1.24.0
+    createNamespace: true
     needs:
       - default/namespace-istio-system
     set:
@@ -46,65 +48,37 @@ releases:
 
   - name: istiod
     namespace: istio-system
+    createNamespace: true
     chart: istio/istiod
-    version: 1.20.0
+    version: 1.24.0
     wait: true
-    needs:
-      - istio-system/istio-base
     values:
       - values/istio-values.yaml
 
   - name: prometheus
     namespace: monitoring
+    createNamespace: true
     chart: prometheus-community/kube-prometheus-stack
-    version: 55.0.0
-    needs:
-      - default/namespace-monitoring
+    version: 66.1.1
     values:
       - values/prometheus-values.yaml
 
   - name: argocd
     namespace: argocd
+    createNamespace: true
     chart: argo/argo-cd
-    version: 5.46.7
-    needs:
-      - default/namespace-argocd
+    version: 7.7.3
     values:
       - values/argocd-values.yaml
 
   - name: argo-rollouts
     namespace: argo-rollouts
+    createNamespace: true
     chart: argo/argo-rollouts
-    version: 2.31.3
-    needs:
-      - default/namespace-argo-rollouts
+    version: 2.37.8
 
-  - name: namespace-cert-manager
-    chart: ./charts/namespace
-    version: 0.1.0
-    values:
-      - namespaceName: cert-manager
-
-  - name: namespace-istio-system
-    chart: ./charts/namespace
-    version: 0.1.0
-    values:
-      - namespaceName: istio-system
-
-  - name: namespace-monitoring
-    chart: ./charts/namespace
-    version: 0.1.0
-    values:
-      - namespaceName: monitoring
-
-  - name: namespace-argocd
-    chart: ./charts/namespace
-    version: 0.1.0
-    values:
-      - namespaceName: argocd
-
-  - name: namespace-argo-rollouts
-    chart: ./charts/namespace
-    version: 0.1.0
-    values:
-      - namespaceName: argo-rollouts
+  - name: oneuptime
+    namespace: oneuptime
+    createNamespace: true
+    chart: oneuptime/oneuptime
+    version: 7.0.3233
