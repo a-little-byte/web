@@ -1,8 +1,11 @@
+import { repositories } from "@alittlebyte/api/database"
+import { Database } from "@alittlebyte/api/database/types"
 import type { Session, User } from "@alittlebyte/api/lib/auth"
-import type { PrismaClient } from "@prisma/client"
+import { Kysely } from "kysely"
 
 export interface PublicContextVariables {
-	prisma: PrismaClient
+	db: Kysely<Database>
+	repositories: typeof repositories
 }
 
 export type PrivateContextVariables = PublicContextVariables & {
