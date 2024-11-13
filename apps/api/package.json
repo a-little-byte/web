@@ -1,11 +1,7 @@
 {
 	"name": "@alittlebyte/api",
 	"type": "module",
-	"prisma": {
-		"seed": "bun run prisma/seed.ts"
-	},
 	"scripts": {
-		"postinstall": "prisma generate",
 		"dev:db": "bun -b kysely",
 		"dev": "bun run --watch src/index.ts",
 		"dev:email": "email dev",
