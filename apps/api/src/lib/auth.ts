@@ -1,11 +1,10 @@
 import { apiConfig } from "@alittlebyte/api/config"
-import prismaDb from "@alittlebyte/api/lib/prisma"
+import { dialect } from "@alittlebyte/api/database"
 import {
 	firstNameValidator,
 	lastNameValidator,
 } from "@alittlebyte/common/validators"
 import { betterAuth } from "better-auth"
-import { prismaAdapter } from "better-auth/adapters/prisma"
 import { twoFactor } from "better-auth/plugins"
 
 export const auth = betterAuth({
@@ -26,9 +25,11 @@ export const auth = betterAuth({
 			},
 		},
 	},
-	database: prismaAdapter(prismaDb, {
-		provider: "postgresql",
-	}),
+	database: {
+		dialect,
+		type: "postgres",
+		generateId: false,
+	},
 	plugins: [
 		twoFactor({
 			issuer: apiConfig.services.auth.totp.issuer,

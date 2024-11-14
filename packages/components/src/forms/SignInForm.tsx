@@ -31,7 +31,7 @@ export const SignInForm = ({
 
 	return (
 		<FormProvider {...signInForm}>
-			<Form onSubmit={void signInForm.handleSubmit(onSubmit)}>
+			<Form onSubmit={signInForm.handleSubmit(onSubmit)}>
 				<InputField<TSignInValidatorInput>
 					control={signInForm.control}
 					name="email"

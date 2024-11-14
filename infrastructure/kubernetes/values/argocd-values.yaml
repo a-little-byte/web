@@ -1,0 +1,52 @@
+server:
+  metrics:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+  ingress:
+    enabled: true
+    hosts:
+      - argocd.{{ .Environment.Values.domain }}
+    annotations:
+      kubernetes.io/ingress.class: istio
+  extraArgs:
+    - --insecure
+configs:
+  secret:
+    argocdServerAdminPassword: "{{ .Environment.Values.argocd.adminPassword }}"
+
+repoServer:
+  metrics:
+  serviceMonitor:
+    enabled: true
+    namespace: monitoring
+
+controller:
+  metrics:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+
+dex:
+  metrics:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+
+redis:
+  metrics:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+
+applicationSet:
+  metrics:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring
+
+notifications:
+  metrics:
+    serviceMonitor:
+      enabled: true
+      namespace: monitoring

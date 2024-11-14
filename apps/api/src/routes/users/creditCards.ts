@@ -14,19 +14,23 @@ export const creditCardRouter = () =>
 			"/",
 			zValidator("param", z.object({ userId: idValidator })),
 			zValidator("json", creditCardValidator),
-			async ({ json, var: { prisma }, req }) => {
+			async ({
+				json,
+				var: {
+					repositories: { creditCards },
+				},
+				req,
+			}) => {
 				const data = req.valid("json")
 				const { userId } = req.valid("param")
 
 				try {
-					const newCreditCard = await prisma.creditCard.create({
-						data: {
-							...data,
-							userId,
-						},
+					const newCreditCard = await creditCards.create({
+						...data,
+						userId,
 					})
 
-					return json(newCreditCard, HTTP_STATUS_CODES.CREATED)
+					return json({ data: newCreditCard }, HTTP_STATUS_CODES.CREATED)
 				} catch (error) {
 					return json(
 						{ error: "Failed to create credit card" },
@@ -38,28 +42,28 @@ export const creditCardRouter = () =>
 		.delete(
 			"/:cardId",
 			zValidator("param", z.object({ cardId: idValidator })),
-			async ({ req, json, var: { prisma } }) => {
+			async ({
+				req,
+				json,
+				var: {
+					repositories: { creditCards },
+				},
+			}) => {
 				const { cardId } = req.valid("param")
 
 				try {
-					const credit = await prisma.creditCard.findFirst({
-						where: { id: cardId },
-					})
+					const creditCard = await creditCards.findById(cardId)
 
-					if (!credit) {
+					if (!creditCard) {
 						return json(
 							"Credit card doesn't exists",
 							HTTP_STATUS_CODES.INTERNAL_SERVER_ERROR,
 						)
 					}
 
-					const deleteCreditCard = await prisma.creditCard.delete({
-						where: {
-							id: cardId,
-						},
-					})
+					const deleteCreditCard = await creditCards.delete(cardId)
 
-					return json(deleteCreditCard)
+					return json({ data: deleteCreditCard })
 				} catch (error) {
 					return json(
 						{ error: "Failed to delete credit card" },

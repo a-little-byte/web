@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { urlValidator } from "@alittlebyte/common/validators"
 import "dotenv/config"
 import { z } from "zod"
 
@@ -16,6 +17,9 @@ const apiConfigSchema = z.object({
 	server: z.object({
 		port: z.string(),
 	}),
+	db: z.object({
+		connectionString: urlValidator,
+	}),
 })
 const data = {
 	cors: {
@@ -27,6 +31,9 @@ const data = {
 				issuer: "a-little-byte",
 			},
 		},
+	},
+	db: {
+		connectionString: process.env.DATABASE_URL!,
 	},
 	server: {
 		port: process.env.API_SERVER_PORT!,

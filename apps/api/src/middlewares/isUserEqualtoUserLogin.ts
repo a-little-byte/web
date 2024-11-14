@@ -17,7 +17,7 @@ interface UserIdInput {
 	}
 }
 
-export const isUserEqualtoUserLogin = async (
+export const isUserEqualToUserLogin = async (
 	{
 		req,
 		var: { user },

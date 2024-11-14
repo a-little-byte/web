@@ -1,0 +1,10 @@
+environments:
+  clusterName: dev-cluster
+  domain: dev.example.com
+  certManager:
+    email: admin@dev.example.com
+  monitoring:
+    retention: 5d
+    storage: 50Gi
+  argocd:
+    adminPassword: ENC[AES256_GCM,data:your-encrypted-password]
