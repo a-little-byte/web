@@ -20,6 +20,10 @@ const apiConfigSchema = z.object({
 	db: z.object({
 		connectionString: urlValidator,
 	}),
+	cache: z.object({
+		port: z.string(),
+		hostname: z.string(),
+	}),
 })
 const data = {
 	cors: {
@@ -34,6 +38,10 @@ const data = {
 	},
 	db: {
 		connectionString: process.env.DATABASE_URL!,
+	},
+	cache: {
+		port: process.env.CACHE_PORT!,
+		hostname: process.env.CACHE_HOSTNAME!,
 	},
 	server: {
 		port: process.env.API_SERVER_PORT!,
