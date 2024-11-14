@@ -1,4 +1,4 @@
-import { isUserEqualtoUserLogin } from "@alittlebyte/api/middlewares/isUserEqualtoUserLogin"
+import { isUserEqualToUserLogin } from "@alittlebyte/api/middlewares/isUserEqualtoUserLogin"
 import { creditCardRouter } from "@alittlebyte/api/routes/users/creditCards"
 import type { PrivateContextVariables } from "@alittlebyte/api/utils/types"
 import { idValidator } from "@alittlebyte/common/validators"
@@ -11,6 +11,6 @@ export const usersRouter = () =>
 		.use(
 			"/:userId/*",
 			zValidator("param", z.object({ userId: idValidator })),
-			isUserEqualtoUserLogin,
+			isUserEqualToUserLogin,
 		)
 		.route("/:userId/credit-cards", creditCardRouter())

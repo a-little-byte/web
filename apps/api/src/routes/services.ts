@@ -7,19 +7,27 @@ import { z } from "zod"
 
 export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
-		.get("/", async ({ json, var: { prisma } }) => {
-			const services = await prisma.service.findMany()
-
-			return json({ data: services })
-		})
+		.get(
+			"/",
+			async ({
+				json,
+				var: {
+					repositories: { services },
+				},
+			}) => json({ data: await services.findAll({}) }),
+		)
 		.get(
 			"/:serviceId",
 			zValidator("param", z.object({ serviceId: idValidator })),
-			async ({ json, req, var: { prisma } }) => {
+			async ({
+				json,
+				req,
+				var: {
+					repositories: { services },
+				},
+			}) => {
 				const { serviceId } = req.valid("param")
-				const service = await prisma.service.findFirst({
-					where: { id: serviceId },
-				})
+				const service = await services.findById(serviceId)
 
 				if (!service) {
 					return json(
@@ -34,35 +42,41 @@ export const servicesRouter = () =>
 		.post(
 			"/",
 			zValidator("json", serviceValidator),
-			async ({ json, req, var: { prisma } }) => {
+			async ({
+				json,
+				req,
+				var: {
+					repositories: { services },
+				},
+			}) => {
 				const postJson = req.valid("json")
-				const postService = await prisma.service.create({ data: postJson })
 
-				return json({ data: postService })
+				return json({ data: await services.create(postJson) })
 			},
 		)
 		.put(
 			"/:serviceId",
 			zValidator("json", serviceValidator.partial()),
 			zValidator("param", z.object({ serviceId: idValidator })),
-			async ({ json, req, var: { prisma } }) => {
+			async ({
+				json,
+				req,
+				var: {
+					repositories: { services },
+				},
+			}) => {
 				const data = req.valid("json")
 				const { serviceId } = req.valid("param")
-				const foundService = await prisma.service.findFirst({
-					where: { id: serviceId },
-				})
+				const foundService = await services.findById(serviceId)
 
 				if (!foundService) {
 					return json(
-						{ data: "This survice does not exsist" },
+						{ data: "This service does not exist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
 					)
 				}
 
-				const updateService = await prisma.service.update({
-					where: { id: serviceId },
-					data,
-				})
+				const updateService = await services.updateReturn(serviceId, data)
 
 				return json({ data: updateService })
 			},
@@ -70,23 +84,25 @@ export const servicesRouter = () =>
 		.delete(
 			"/:serviceId",
 			zValidator("param", z.object({ serviceId: idValidator })),
-			async ({ json, req, var: { prisma } }) => {
+			async ({
+				json,
+				req,
+				var: {
+					repositories: { services },
+				},
+			}) => {
 				const { serviceId } = req.valid("param")
-				const foundService = await prisma.service.findFirst({
-					where: { id: serviceId },
-				})
+				const foundService = await services.findById(serviceId)
 
 				if (!foundService) {
 					return json(
-						{ message: "This survice does not exsist" },
+						{ message: "This service does not exist" },
 						HTTP_STATUS_CODES.NOT_FOUND,
 					)
 				}
 
-				await prisma.service.delete({
-					where: { id: serviceId },
-				})
+				await services.delete(serviceId)
 
-				return json({ message: "Succsessfully Deleted" })
+				return json({ message: "Successfully Deleted" })
 			},
 		)
