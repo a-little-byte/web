@@ -38,4 +38,4 @@ runs:
         context: ${{ inputs.context }}
         file: ${{ inputs.path }}
         push: true
-        tags: ${{ inputs.registry }}/${{ inputs.image }}:latest
+        tags: ghcr.io/a-little-byte/{{ inputs.image }}:latest
