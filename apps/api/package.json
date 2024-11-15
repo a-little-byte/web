@@ -2,6 +2,7 @@
 	"name": "@alittlebyte/api",
 	"type": "module",
 	"scripts": {
+		"build": "bun build --compile --minify --sourcemap --target bun-linux-amd64 ./src/index.ts --outfile ./dist/api",
 		"dev:db": "bun -b kysely",
 		"dev": "bun run --watch src/index.ts",
 		"dev:email": "email dev",
