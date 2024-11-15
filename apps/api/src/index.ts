@@ -6,12 +6,19 @@ import { authRouter } from "@alittlebyte/api/routes/auth"
 import { servicesRouter } from "@alittlebyte/api/routes/services"
 import { usersRouter } from "@alittlebyte/api/routes/users"
 import type { PublicContextVariables } from "@alittlebyte/api/utils/types"
+import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import { Hono } from "hono"
 
 const { port } = apiConfig.server
 const app = new Hono<{ Variables: PublicContextVariables }>()
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const router = app
+	.onError((err, c) => {
+		// eslint-disable-next-line no-console
+		console.error(err)
+
+		return c.json("SERVER ERROR", HTTP_STATUS_CODES.BAD_GATEWAY)
+	})
 	.use(corsMiddleware)
 	.use(dbMiddleware)
 	.route("/auth", authRouter())

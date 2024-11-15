@@ -3,6 +3,8 @@
 	"extends": "../../packages/typescript-configs/base.json",
 	"compilerOptions": {
 		"moduleResolution": "Node",
+		"jsx": "react-jsx",
+		"jsxImportSource": "react",
 		"skipLibCheck": true,
 		"types": ["node"]
 	}
