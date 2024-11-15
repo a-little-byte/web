@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: API docker Build
-        uses: ./.github/actions/build-and-push
+        uses: ./.github/actions/docker
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Landing docker Build
-        uses: ./.github/actions/build-and-push
+        uses: ./.github/actions/docker
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
@@ -52,7 +52,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Admin docker Build
-        uses: ./.github/actions/build-and-push
+        uses: ./.github/actions/docker
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
