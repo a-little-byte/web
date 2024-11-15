@@ -9,13 +9,6 @@ jobs:
   build-code:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
-      - name: Install
-        run: bun i
-      - name: Build applications
-        run: bun run build
       - name: Api Cache
         uses: actions/cache@v4
         with:
@@ -34,6 +27,13 @@ jobs:
           path: |
             ./apps/landing/dist
           key: build-landing-cache
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Install
+        run: bun i
+      - name: Build applications
+        run: bun run build
   build-api:
     runs-on: ubuntu-latest
     needs:
