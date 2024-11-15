@@ -34,4 +34,4 @@ runs:
         context: ./apps/${{ inputs.image }}
         file: ./apps/${{ inputs.image }}/Dockerfile
         push: true
-        tags: ghcr.io/a-little-byte/${{ inputs.image }}:latest
+        tags: ghcr.io/a-little-byte/web:${{ inputs.image }}-latest
