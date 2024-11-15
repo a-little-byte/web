@@ -1,5 +1,6 @@
 import { apiConfig } from "@alittlebyte/api/config"
 import { dialect } from "@alittlebyte/api/database"
+import { redis } from "@alittlebyte/api/lib/caching"
 import {
 	firstNameValidator,
 	lastNameValidator,
@@ -29,6 +30,17 @@ export const auth = betterAuth({
 		dialect,
 		type: "postgres",
 		generateId: false,
+	},
+	secondaryStorage: {
+		get: redis.get,
+		set: async (key, value, ttl) => {
+			if (ttl) {
+				await redis.set(key, JSON.stringify(value), { EX: ttl })
+			} else {
+				await redis.set(key, JSON.stringify(value))
+			}
+		},
+		delete: async (key) => (await redis.del(key)).toString(),
 	},
 	plugins: [
 		twoFactor({
