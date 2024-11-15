@@ -42,7 +42,7 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image: api
+          image: landing
           context: ./apps/landing
   build-admin:
     runs-on: ubuntu-latest
@@ -56,5 +56,5 @@ jobs:
         with:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image: api
+          image: admin
           context: ./apps/admin
