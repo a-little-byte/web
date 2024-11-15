@@ -8,6 +8,7 @@
 		"inlineSources": false,
 		"isolatedModules": true,
 		"module": "ESNext",
+		"jsx": "react-jsx",
 		"moduleResolution": "Bundler",
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,

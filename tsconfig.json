@@ -6,7 +6,7 @@
 			"@alittlebyte/api/*": ["./apps/api/src/*"],
 			"@alittlebyte/landing/*": ["./apps/landing/src/*"],
 			"@alittlebyte/common/*": ["./packages/common/src/*"],
-			"@alittlebyte/components/*": ["./packages/components/src/*"]
+			"@alittlebyte/components/*": ["./packages/components/src/*"],
 		}
 	}
 }

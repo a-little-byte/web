@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "grpc-go-server/proto";
+
+service EmailService {
+  rpc SendEmail (EmailRequest) returns (EmailResponse);
+}
+
+message EmailRequest {
+  string to = 1;
+  string subject = 2;
+  string body = 3;
+}
+
+message EmailResponse {
+  bool success = 1;
+  string message = 2;
+}

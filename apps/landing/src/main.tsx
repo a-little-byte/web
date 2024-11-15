@@ -6,6 +6,7 @@ import { RouterProvider, createRouter } from "@tanstack/react-router"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
 import { I18nextProvider } from "react-i18next"
+import { Toaster } from "@alittlebyte/components/ui/toaster"
 
 const queryClient = new QueryClient()
 const router = createRouter({ routeTree, context: { queryClient } })
@@ -26,6 +27,7 @@ if (rootElement && !rootElement.innerHTML) {
 			<I18nextProvider i18n={i18n}>
 				<QueryClientProvider client={queryClient}>
 					<RouterProvider router={router} />
+					<Toaster />
 				</QueryClientProvider>
 			</I18nextProvider>
 		</StrictMode>,

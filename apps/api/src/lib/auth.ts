@@ -1,18 +1,42 @@
 import { apiConfig } from "@alittlebyte/api/config"
 import { dialect } from "@alittlebyte/api/database"
-import { redis } from "@alittlebyte/api/lib/caching"
+import { sendEmail } from "@alittlebyte/api/grpc/emails/emailClient"
 import {
 	firstNameValidator,
 	lastNameValidator,
 } from "@alittlebyte/common/validators"
+import { forgotPasswordTemplate } from "@alittlebyte/components/templates/ForgotPasswordTemplate"
 import { betterAuth } from "better-auth"
 import { twoFactor } from "better-auth/plugins"
 
+const {
+	trustedOrigins,
+	totp: { issuer },
+} = apiConfig.services.auth
+
 export const auth = betterAuth({
+	trustedOrigins,
 	emailAndPassword: {
 		enabled: true,
+		sendResetPassword: async ({ url, user }) => {
+			await sendEmail(
+				user.email,
+				"Reset Your Password",
+				await forgotPasswordTemplate(url),
+			)
+		},
+	},
+	account: {
+		modelName: "accounts",
+	},
+	session: {
+		modelName: "sessions",
+	},
+	verification: {
+		modelName: "verifications",
 	},
 	user: {
+		modelName: "users",
 		additionalFields: {
 			firstName: {
 				type: "string",
@@ -31,20 +55,21 @@ export const auth = betterAuth({
 		type: "postgres",
 		generateId: false,
 	},
-	secondaryStorage: {
-		get: redis.get,
-		set: async (key, value, ttl) => {
-			if (ttl) {
-				await redis.set(key, JSON.stringify(value), { EX: ttl })
-			} else {
-				await redis.set(key, JSON.stringify(value))
-			}
-		},
-		delete: async (key) => (await redis.del(key)).toString(),
-	},
+	// secondaryStorage: {
+	// 	get: async (key) => await redis.get(key),
+	// 	set: async (key, value, ttl) => {
+	// 		if (ttl) {
+	// 			await redis.set(key, JSON.stringify(value), { EX: ttl })
+	// 		} else {
+	// 			await redis.set(key, JSON.stringify(value))
+	// 		}
+	// 	},
+	// 	delete: async (key) => (await redis.del(key)).toString(),
+	// },
 	plugins: [
 		twoFactor({
-			issuer: apiConfig.services.auth.totp.issuer,
+			issuer,
+			twoFactorTable: "twoFactors",
 		}),
 	],
 })

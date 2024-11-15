@@ -5,13 +5,14 @@ import { z } from "zod"
 
 const apiConfigSchema = z.object({
 	cors: z.object({
-		origin: z.array(z.string()),
+		origin: z.array(urlValidator),
 	}),
 	services: z.object({
 		auth: z.object({
 			totp: z.object({
 				issuer: z.string(),
 			}),
+			trustedOrigins: z.array(urlValidator),
 		}),
 	}),
 	server: z.object({
@@ -24,6 +25,9 @@ const apiConfigSchema = z.object({
 		port: z.string(),
 		hostname: z.string(),
 	}),
+	landing: z.object({
+		landingUrl: urlValidator,
+	}),
 })
 const data = {
 	cors: {
@@ -34,6 +38,7 @@ const data = {
 			totp: {
 				issuer: "a-little-byte",
 			},
+			trustedOrigins: process.env.BETTER_AUTH_TRUSTED_ORIGINS!.split(","),
 		},
 	},
 	db: {
@@ -45,6 +50,9 @@ const data = {
 	},
 	server: {
 		port: process.env.API_SERVER_PORT!,
+	},
+	landing: {
+		landingUrl: process.env.LANDING_URL!,
 	},
 } satisfies z.input<typeof apiConfigSchema>
 
