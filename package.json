@@ -6,6 +6,7 @@
 		"packages/*"
 	],
 	"scripts": {
+		"build": "bun run --filter '*' build",
 		"clean": "rm -rf apps/*/node_modules packages/*/node_modules node_modules bun.lockd",
 		"dev:compose": "docker compose up",
 		"dev": "bun --filter '*' dev",
