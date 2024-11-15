@@ -10,10 +10,6 @@ inputs:
   image:
     required: true
     description: "Image name"
-  path:
-    required: false
-    description: "Image path"
-    default: "./Dockerfile"
   context:
     required: false
     description: "Context folder path"
@@ -35,7 +31,7 @@ runs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        context: ${{ inputs.context }}
-        file: ${{ inputs.path }}
+        context: .
+        file: ./apps/${{ inputs.image }}/Dockerfile
         push: true
         tags: ghcr.io/a-little-byte/${{ inputs.image }}:latest
