@@ -1,5 +1,5 @@
-import * as fs from "fs";
-import { defineConfig } from "tsup";
+import * as fs from "fs"
+import { defineConfig } from "tsup"
 
 export default defineConfig((env) => {
 	return {
@@ -35,5 +35,5 @@ export default defineConfig((env) => {
 		splitting: false,
 		cjsInterop: true,
 		skipNodeModulesBundle: true,
-	};
-});
+	}
+})
