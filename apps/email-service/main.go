@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	grpcgoserver "grpc-server/grpc-go-server"
 	"grpc-server/grpc-go-server/proto"
 	"log"
@@ -31,7 +32,7 @@ func main() {
 	resend_client := resend.NewClient(apiKey)
 	email_server := grpcgoserver.NewEmailServer(resend_client)
 
-	lis, err := net.Listen("tcp", port)
+	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%s", port))
 	if err != nil {
 		log.Fatalf("Failed to listen on port %s: %v", port, err)
 	}
