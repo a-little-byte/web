@@ -9,13 +9,11 @@ import {
 import { FC } from "react"
 
 type CardCarouselProps = {
-	data: [
-		{
-			title: string
-			description: string
-			image: string
-		},
-	]
+	data: Array<{
+		title: string
+		description: string
+		image: string
+	}>
 }
 
 export const CardCarousel: FC<CardCarouselProps> = ({ data }) => (

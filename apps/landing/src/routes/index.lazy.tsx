@@ -9,20 +9,17 @@ type Content = {
 		image: string
 		subtitle: string
 	}
-	carousel: [
-		{
-			title: string
-			description: string
-			image: string
-		},
-	]
-	catagories: [
-		{
-			title: string
-			link: string
-			description: string
-		},
-	]
+	carousel: Array<{
+		title: string
+		description: string
+		image: string
+	}>
+
+	catagories: Array<{
+		title: string
+		link: string
+		description: string
+	}>
 }
 
 function Index() {
