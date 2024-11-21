@@ -34,12 +34,18 @@ export const auth = betterAuth({
 			firstName: {
 				type: "string",
 				required: true,
-				validator: firstNameValidator,
+				validator: {
+					input: firstNameValidator,
+					output: firstNameValidator,
+				},
 			},
 			lastName: {
 				type: "string",
 				required: true,
-				validator: lastNameValidator,
+				validator: {
+					input: lastNameValidator,
+					output: lastNameValidator,
+				},
 			},
 		},
 	},
