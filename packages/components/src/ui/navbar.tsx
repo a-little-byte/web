@@ -1,15 +1,15 @@
 import { FC } from "react"
-import { cn } from "../lib/cn"
+import { cn } from "@alittlebyte/components/lib/cn"
 import { Link } from "@tanstack/react-router"
 
-type Links = {
+type Link = {
 	label: string
 	href: string
 	isActive: boolean
 }
 
 type NavbarProps = {
-	links: Links[]
+	links: Link[]
 }
 
 export const Navbar: FC<NavbarProps> = ({ links }) => (
