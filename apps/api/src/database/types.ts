@@ -81,7 +81,7 @@ export type SessionTable = {
 	expiresAt: Date
 	ipAddress?: string
 	userAgent?: string
-	userId: string
+	userId: UUID
 }
 
 export type Session = Selectable<SessionTable>

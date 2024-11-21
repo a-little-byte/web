@@ -31,6 +31,16 @@ const links = [
 		href: "/about",
 		isActive: window.location.pathname === "/about",
 	},
+	{
+		label: "sign-up",
+		href: "/sign-up",
+		isActive: window.location.pathname === "/sign-up",
+	},
+	{
+		label: "sign-in",
+		href: "/sign-in",
+		isActive: window.location.pathname === "/sign-in",
+	},
 ]
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
