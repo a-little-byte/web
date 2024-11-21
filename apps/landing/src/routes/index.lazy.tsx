@@ -49,7 +49,7 @@ function Index() {
 			<Hero
 				imageUrl={data.title.image}
 				title="Cyna"
-				discription={data.title.subtitle}
+				description={data.title.subtitle}
 			/>
 			<div className="p-6">
 				<h1 className="text-4xl">Featured solutions</h1>
