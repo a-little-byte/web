@@ -3,13 +3,13 @@ import { FC, PropsWithChildren } from "react"
 type HeroProps = {
 	imageUrl: string
 	title: string
-	discription: string
+	description: string
 }
 
 export const Hero: FC<PropsWithChildren<HeroProps>> = ({
 	imageUrl,
 	title,
-	discription,
+	description,
 	children,
 }) => (
 	<div className="relative h-96">
@@ -20,7 +20,7 @@ export const Hero: FC<PropsWithChildren<HeroProps>> = ({
 					<h1 className="mb-4 text-4xl font-bold text-white md:text-6xl">
 						{title}
 					</h1>
-					<p className="font-bold text-white">{discription}</p>
+					<p className="font-bold text-white">{description}</p>
 				</div>
 				{children}
 			</div>
