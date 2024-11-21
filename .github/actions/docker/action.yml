@@ -1,5 +1,5 @@
 name: "Docker build and push step"
-description: ""
+description: "Composite action to build a docker image and push it to the registry"
 inputs:
   username:
     required: true
@@ -10,10 +10,6 @@ inputs:
   image:
     required: true
     description: "Image name"
-  path:
-    required: false
-    description: "Image path"
-    default: "./Dockerfile"
   context:
     required: false
     description: "Context folder path"
@@ -31,11 +27,10 @@ runs:
         username: ${{ inputs.username }}
         password: ${{ inputs.password }}
         registry: ghcr.io
-
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        context: ${{ inputs.context }}
-        file: ${{ inputs.path }}
+        context: ./apps/${{ inputs.image }}
+        file: ./apps/${{ inputs.image }}/Dockerfile
         push: true
-        tags: ${{ inputs.registry }}/${{ inputs.image }}:latest
+        tags: ghcr.io/a-little-byte/web:${{ inputs.image }}-latest

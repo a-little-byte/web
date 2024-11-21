@@ -15,6 +15,9 @@ const {
 } = apiConfig.services.auth
 
 export const auth = betterAuth({
+	onAPIError: {
+		throw: true,
+	},
 	trustedOrigins,
 	emailAndPassword: {
 		enabled: true,
@@ -26,17 +29,7 @@ export const auth = betterAuth({
 			)
 		},
 	},
-	account: {
-		modelName: "accounts",
-	},
-	session: {
-		modelName: "sessions",
-	},
-	verification: {
-		modelName: "verifications",
-	},
 	user: {
-		modelName: "users",
 		additionalFields: {
 			firstName: {
 				type: "string",
@@ -53,23 +46,10 @@ export const auth = betterAuth({
 	database: {
 		dialect,
 		type: "postgres",
-		generateId: false,
 	},
-	// secondaryStorage: {
-	// 	get: async (key) => await redis.get(key),
-	// 	set: async (key, value, ttl) => {
-	// 		if (ttl) {
-	// 			await redis.set(key, JSON.stringify(value), { EX: ttl })
-	// 		} else {
-	// 			await redis.set(key, JSON.stringify(value))
-	// 		}
-	// 	},
-	// 	delete: async (key) => (await redis.del(key)).toString(),
-	// },
 	plugins: [
 		twoFactor({
 			issuer,
-			twoFactorTable: "twoFactors",
 		}),
 	],
 })
