@@ -32,12 +32,12 @@ const links = [
 		isActive: window.location.pathname === "/about",
 	},
 	{
-		label: "sign-up",
+		label: "Sign up",
 		href: "/sign-up",
 		isActive: window.location.pathname === "/sign-up",
 	},
 	{
-		label: "sign-in",
+		label: "Sign in",
 		href: "/sign-in",
 		isActive: window.location.pathname === "/sign-in",
 	},
