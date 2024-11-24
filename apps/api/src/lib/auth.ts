@@ -6,6 +6,7 @@ import {
 	lastNameValidator,
 } from "@alittlebyte/common/validators"
 import { forgotPasswordTemplate } from "@alittlebyte/components/templates/ForgotPasswordTemplate"
+import { verifyEmailTemplate } from "@alittlebyte/components/templates/VerifyEmailTemplate"
 import { betterAuth } from "better-auth"
 import { twoFactor } from "better-auth/plugins"
 
@@ -19,6 +20,15 @@ export const auth = betterAuth({
 		throw: true,
 	},
 	trustedOrigins,
+	emailVerification: {
+		sendVerificationEmail: async ({ user, url }) => {
+			await sendEmail(
+				user.email,
+				"Verify your email address",
+				await verifyEmailTemplate(url),
+			)
+		},
+	},
 	emailAndPassword: {
 		enabled: true,
 		sendResetPassword: async ({ url, user }) => {
@@ -28,8 +38,10 @@ export const auth = betterAuth({
 				await forgotPasswordTemplate(url),
 			)
 		},
+		requireEmailVerification: true,
 	},
 	user: {
+		modelName: "users",
 		additionalFields: {
 			firstName: {
 				type: "string",
@@ -49,9 +61,16 @@ export const auth = betterAuth({
 			},
 		},
 	},
+	account: {
+		modelName: "accounts",
+	},
+	session: {
+		modelName: "sessions",
+	},
 	database: {
 		dialect,
 		type: "postgres",
+		generateId: () => crypto.randomUUID(),
 	},
 	plugins: [
 		twoFactor({
