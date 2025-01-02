@@ -4,6 +4,7 @@ import { idValidator, serviceValidator } from "@alittlebyte/common/validators"
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 import { z } from "zod"
+import { randomUUID } from "crypto"
 
 export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
@@ -23,7 +24,7 @@ export const servicesRouter = () =>
 				json,
 				req,
 				var: {
-					repositories: { services },
+					repositories: { services, translations },
 				},
 			}) => {
 				const { serviceId } = req.valid("param")
@@ -36,7 +37,22 @@ export const servicesRouter = () =>
 					)
 				}
 
-				return json({ data: service })
+				const [description, technicalSpecifications] = await Promise.all([
+					translations.findByKey(service.descriptionKey),
+					translations.findByKey(service.technicalSpecificationsKey),
+				])
+				const enrichedService = {
+					id: service.id,
+					name: service.name,
+					description: description?.content,
+					technicalSpecifications: technicalSpecifications?.content,
+					price: service.price,
+					perUser: service.perUser,
+					perDevice: service.perDevice,
+					available: service.available,
+				}
+
+				return json({ data: enrichedService })
 			},
 		)
 		.post(
@@ -46,12 +62,36 @@ export const servicesRouter = () =>
 				json,
 				req,
 				var: {
-					repositories: { services },
+					repositories: { services, translations },
 				},
 			}) => {
 				const postJson = req.valid("json")
+				const { description, technicalSpecifications, ...rest } = postJson
+				const descriptionKey = randomUUID()
+				const technicalSpecificationsKey = randomUUID()
+				const service = await services.create({
+					...rest,
+					descriptionKey,
+					technicalSpecificationsKey,
+				})
 
-				return json({ data: await services.create(postJson) })
+				// add translations for french in db
+				await Promise.all([
+					translations.create({
+						key: descriptionKey,
+						languageCode: "en",
+						content: description,
+						serviceId: service.id,
+					}),
+					translations.create({
+						key: technicalSpecificationsKey,
+						languageCode: "en",
+						content: technicalSpecifications,
+						serviceId: service.id,
+					}),
+				])
+
+				return json({ data: postJson })
 			},
 		)
 		.put(
@@ -62,10 +102,11 @@ export const servicesRouter = () =>
 				json,
 				req,
 				var: {
-					repositories: { services },
+					repositories: { services, translations },
 				},
 			}) => {
 				const data = req.valid("json")
+				const { description, technicalSpecifications, ...rest } = data
 				const { serviceId } = req.valid("param")
 				const foundService = await services.findById(serviceId)
 
@@ -76,9 +117,23 @@ export const servicesRouter = () =>
 					)
 				}
 
-				const updateService = await services.updateReturn(serviceId, data)
+				if (description) {
+					await translations.update(foundService.descriptionKey, {
+						content: description,
+					})
+				}
 
-				return json({ data: updateService })
+				if (technicalSpecifications) {
+					await translations.update(foundService.technicalSpecificationsKey, {
+						content: technicalSpecifications,
+					})
+				}
+
+				if (Object.keys(rest).length > 0) {
+					await services.updateReturn(serviceId, rest)
+				}
+
+				return json({ data })
 			},
 		)
 		.delete(
