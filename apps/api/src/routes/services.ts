@@ -69,7 +69,8 @@ export const servicesRouter = () =>
 				const { description, technicalSpecifications, ...rest } = postJson
 				const descriptionKey = randomUUID()
 				const technicalSpecificationsKey = randomUUID()
-				const service = await services.create({
+
+				await services.create({
 					...rest,
 					descriptionKey,
 					technicalSpecificationsKey,
@@ -81,13 +82,11 @@ export const servicesRouter = () =>
 						key: descriptionKey,
 						languageCode: "en",
 						content: description,
-						serviceId: service.id,
 					}),
 					translations.create({
 						key: technicalSpecificationsKey,
 						languageCode: "en",
 						content: technicalSpecifications,
-						serviceId: service.id,
 					}),
 				])
 
@@ -143,7 +142,7 @@ export const servicesRouter = () =>
 				json,
 				req,
 				var: {
-					repositories: { services },
+					repositories: { services, translations },
 				},
 			}) => {
 				const { serviceId } = req.valid("param")
@@ -156,7 +155,11 @@ export const servicesRouter = () =>
 					)
 				}
 
-				await services.delete(serviceId)
+				await Promise.all([
+					services.delete(serviceId),
+					translations.delete(foundService.descriptionKey),
+					translations.delete(foundService.technicalSpecificationsKey),
+				])
 
 				return json({ message: "Successfully Deleted" })
 			},

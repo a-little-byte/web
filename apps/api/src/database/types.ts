@@ -49,7 +49,6 @@ export type TranslationTable = {
 	languageCode: string
 	key: string
 	content: string
-	serviceId: UUID
 	createdAt: ColumnType<Date, string | undefined, never>
 	updatedAt: ColumnType<Date, never, string | Date>
 }

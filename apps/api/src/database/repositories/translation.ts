@@ -16,6 +16,12 @@ const translationCreate = (translation: NewTranslation) =>
 		.values(translation)
 		.returningAll()
 		.executeTakeFirstOrThrow()
+const deleteTranslation = (key: string) =>
+	db
+		.deleteFrom("translations")
+		.where("key", "=", key)
+		.returningAll()
+		.executeTakeFirst()
 const translationUpdateReturn = (key: string, updateWith: TranslationUpdate) =>
 	db
 		.updateTable("translations")
@@ -37,6 +43,7 @@ const translationUpdate = async (
 export const translationRepository = {
 	findByKey: translationFindById,
 	create: translationCreate,
+	delete: deleteTranslation,
 	updateReturn: translationUpdateReturn,
 	update: translationUpdate,
 } as const
