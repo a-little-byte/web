@@ -15,7 +15,10 @@ export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
 		.get(
 			"/",
-			zValidator("query", z.object({ orderBy: OrderByEnum })),
+			zValidator(
+				"query",
+				z.object({ search: productSearchValidator, orderBy: OrderByEnum }),
+			),
 			async ({
 				json,
 				req,
@@ -27,7 +30,7 @@ export const servicesRouter = () =>
 
 				return json({
 					data: await services.findAll({
-						criteria: {},
+						criteria: query.search ? { nameLike: query.search } : {},
 						...query,
 					}),
 				})
@@ -107,26 +110,6 @@ export const servicesRouter = () =>
 				])
 
 				return json({ data: postJson })
-			},
-		)
-		.post(
-			"/search",
-			zValidator("json", z.object({ name: productSearchValidator })),
-			async ({
-				json,
-				req,
-				var: {
-					repositories: { services },
-				},
-			}) => {
-				const { name } = req.valid("json")
-				const data = await services.findAll({
-					criteria: {
-						nameLike: name.toLowerCase(),
-					},
-				})
-
-				return json({ data })
 			},
 		)
 		.put(

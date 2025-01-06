@@ -4,6 +4,7 @@ import {
 	Service,
 	ServiceUpdate,
 } from "@alittlebyte/api/database/types"
+import { sql } from "kysely"
 import { UUID } from "node:crypto"
 
 const findAll = async ({
@@ -28,7 +29,7 @@ const findAll = async ({
 	}
 
 	if (criteria.nameLike) {
-		query = query.where("name", "like", `${criteria.nameLike}%`)
+		query = query.where(sql`LOWER(name)`, "like", `${criteria.nameLike}%`)
 	}
 
 	if (orderBy) {

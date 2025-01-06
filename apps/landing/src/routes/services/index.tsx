@@ -1,6 +1,7 @@
 import { apiClient } from "@alittlebyte/common/lib/apiClient"
 import { CardCatagorie } from "@alittlebyte/components/ui/cardCatagorie"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { getQueryParams } from "../../hooks/getQueryParams"
 
 const ServiceError = () => {
 	const navigate = useNavigate()
@@ -24,16 +25,10 @@ const Services = () => {
 		))
 }
 
-export const Route = createFileRoute("/services")({
+export const Route = createFileRoute("/services/")({
 	loader: async () => {
-		const urlParams = new URLSearchParams(window.location.search)
-		const orderBy = urlParams.get("orderBy") as
-			| "price"
-			| "newest"
-			| "availability"
-			| undefined
 		const response = await apiClient.services.$get({
-			query: !orderBy ? {} : { orderBy },
+			query: getQueryParams(),
 		})
 
 		if (!response.ok) {

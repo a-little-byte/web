@@ -13,8 +13,8 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ServicesImport } from './routes/services'
-import { Route as ServicesServiceIdImport } from './routes/services.$serviceId'
+import { Route as ServicesIndexImport } from './routes/services/index'
+import { Route as ServicesServiceIdImport } from './routes/services/$serviceId'
 
 // Create Virtual Routes
 
@@ -61,22 +61,22 @@ const ForgotPasswordLazyRoute = ForgotPasswordLazyImport.update({
   import('./routes/forgot-password.lazy').then((d) => d.Route),
 )
 
-const ServicesRoute = ServicesImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const ServicesIndexRoute = ServicesIndexImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ServicesServiceIdRoute = ServicesServiceIdImport.update({
-  id: '/$serviceId',
-  path: '/$serviceId',
-  getParentRoute: () => ServicesRoute,
+  id: '/services/$serviceId',
+  path: '/services/$serviceId',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -88,13 +88,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesImport
       parentRoute: typeof rootRoute
     }
     '/forgot-password': {
@@ -134,114 +127,111 @@ declare module '@tanstack/react-router' {
     }
     '/services/$serviceId': {
       id: '/services/$serviceId'
-      path: '/$serviceId'
+      path: '/services/$serviceId'
       fullPath: '/services/$serviceId'
       preLoaderRoute: typeof ServicesServiceIdImport
-      parentRoute: typeof ServicesImport
+      parentRoute: typeof rootRoute
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesIndexImport
+      parentRoute: typeof rootRoute
     }
   }
 }
 
 // Create and export the route tree
 
-interface ServicesRouteChildren {
-  ServicesServiceIdRoute: typeof ServicesServiceIdRoute
-}
-
-const ServicesRouteChildren: ServicesRouteChildren = {
-  ServicesServiceIdRoute: ServicesServiceIdRoute,
-}
-
-const ServicesRouteWithChildren = ServicesRoute._addFileChildren(
-  ServicesRouteChildren,
-)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '/services': typeof ServicesRouteWithChildren
   '/forgot-password': typeof ForgotPasswordLazyRoute
   '/legal': typeof LegalLazyRoute
   '/reset-password': typeof ResetPasswordLazyRoute
   '/sign-in': typeof SignInLazyRoute
   '/sign-up': typeof SignUpLazyRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/services': typeof ServicesIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '/services': typeof ServicesRouteWithChildren
   '/forgot-password': typeof ForgotPasswordLazyRoute
   '/legal': typeof LegalLazyRoute
   '/reset-password': typeof ResetPasswordLazyRoute
   '/sign-in': typeof SignInLazyRoute
   '/sign-up': typeof SignUpLazyRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/services': typeof ServicesIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
-  '/services': typeof ServicesRouteWithChildren
   '/forgot-password': typeof ForgotPasswordLazyRoute
   '/legal': typeof LegalLazyRoute
   '/reset-password': typeof ResetPasswordLazyRoute
   '/sign-in': typeof SignInLazyRoute
   '/sign-up': typeof SignUpLazyRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/services/': typeof ServicesIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/services'
     | '/forgot-password'
     | '/legal'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/services/$serviceId'
+    | '/services'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/services'
     | '/forgot-password'
     | '/legal'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/services/$serviceId'
+    | '/services'
   id:
     | '__root__'
     | '/'
-    | '/services'
     | '/forgot-password'
     | '/legal'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/services/$serviceId'
+    | '/services/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
-  ServicesRoute: typeof ServicesRouteWithChildren
   ForgotPasswordLazyRoute: typeof ForgotPasswordLazyRoute
   LegalLazyRoute: typeof LegalLazyRoute
   ResetPasswordLazyRoute: typeof ResetPasswordLazyRoute
   SignInLazyRoute: typeof SignInLazyRoute
   SignUpLazyRoute: typeof SignUpLazyRoute
+  ServicesServiceIdRoute: typeof ServicesServiceIdRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
-  ServicesRoute: ServicesRouteWithChildren,
   ForgotPasswordLazyRoute: ForgotPasswordLazyRoute,
   LegalLazyRoute: LegalLazyRoute,
   ResetPasswordLazyRoute: ResetPasswordLazyRoute,
   SignInLazyRoute: SignInLazyRoute,
   SignUpLazyRoute: SignUpLazyRoute,
+  ServicesServiceIdRoute: ServicesServiceIdRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -255,22 +245,17 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/services",
         "/forgot-password",
         "/legal",
         "/reset-password",
         "/sign-in",
-        "/sign-up"
+        "/sign-up",
+        "/services/$serviceId",
+        "/services/"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
-    },
-    "/services": {
-      "filePath": "services.tsx",
-      "children": [
-        "/services/$serviceId"
-      ]
     },
     "/forgot-password": {
       "filePath": "forgot-password.lazy.tsx"
@@ -288,8 +273,10 @@ export const routeTree = rootRoute
       "filePath": "sign-up.lazy.tsx"
     },
     "/services/$serviceId": {
-      "filePath": "services.$serviceId.tsx",
-      "parent": "/services"
+      "filePath": "services/$serviceId.tsx"
+    },
+    "/services/": {
+      "filePath": "services/index.tsx"
     }
   }
 }
