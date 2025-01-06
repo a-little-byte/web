@@ -6,7 +6,13 @@ import {
 } from "@alittlebyte/api/database/types"
 import { UUID } from "node:crypto"
 
-const findAll = async (criteria: Partial<Service>) => {
+const findAll = async ({
+	criteria,
+	orderBy,
+}: {
+	criteria: Partial<Service>
+	orderBy?: "price" | "newest" | "availability"
+}) => {
 	let query = db.selectFrom("services")
 
 	if (criteria.id) {
@@ -19,6 +25,25 @@ const findAll = async (criteria: Partial<Service>) => {
 
 	if (criteria.createdAt) {
 		query = query.where("createdAt", "=", criteria.createdAt)
+	}
+
+	if (orderBy) {
+		switch (orderBy) {
+			case "price":
+				query = query.orderBy("price")
+
+				break
+
+			case "newest":
+				query = query.orderBy("createdAt", "desc")
+
+				break
+
+			case "availability":
+				query = query.orderBy("available", "desc")
+
+				break
+		}
 	}
 
 	return await query.selectAll().execute()

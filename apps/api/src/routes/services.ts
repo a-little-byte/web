@@ -1,6 +1,10 @@
 import type { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
-import { idValidator, serviceValidator } from "@alittlebyte/common/validators"
+import {
+	idValidator,
+	OrderByEnum,
+	serviceValidator,
+} from "@alittlebyte/common/validators"
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 import { z } from "zod"
@@ -10,12 +14,31 @@ export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
 		.get(
 			"/",
+			zValidator("query", z.object({ orderBy: OrderByEnum })),
 			async ({
 				json,
+				req,
 				var: {
 					repositories: { services },
 				},
-			}) => json({ data: await services.findAll({}) }),
+			}) => {
+				const query = req.valid("query")
+
+				if (query.orderBy) {
+					const data = await services.findAll({
+						criteria: {},
+						orderBy: query.orderBy,
+					})
+
+					return json({ data })
+				}
+
+				return json({
+					data: await services.findAll({
+						criteria: {},
+					}),
+				})
+			},
 		)
 		.get(
 			"/:serviceId",
