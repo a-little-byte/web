@@ -1,27 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { AvalibleBadge } from "@alittlebyte/components/ui/badges"
+import { AvalibleBadge } from "@alittlebyte/components/ui/AvalibleBadge"
 import { CardOverview } from "@alittlebyte/components/ui/cardOverview"
+import { apiClient } from "@alittlebyte/common/lib/apiClient"
 
-type Service = {
-	id: string
-	name: string
-	description: string
-	technicalSpecifications: string
-	price: number
-	perUser: boolean
-	perDevice: boolean
-	available: boolean
-}
-
-const fetchService = async (id: string): Promise<{ data: Service }> => {
-	const response = await fetch(`http://localhost:3000/services/${id}`)
-
-	if (!response.ok) {
-		throw new Error(`Failed to fetch service with ID: ${id}`)
-	}
-
-	return (await response.json()) as { data: Service }
-}
 const ServiceError = () => {
 	const navigate = useNavigate()
 
@@ -38,7 +19,7 @@ const ServiceDetails = () => {
 		perUser,
 		perDevice,
 		available,
-	}: Service = Route.useLoaderData()
+	} = Route.useLoaderData()
 	const pricingUser = perUser && "per user"
 	const priceingDevice = perDevice && "per device"
 	const priceingFlat = (!perUser || !perDevice) && "Flat Rate"
@@ -63,9 +44,13 @@ const ServiceDetails = () => {
 						</CardOverview>
 
 						<CardOverview title="Technical Specifications">
-							<div
-								dangerouslySetInnerHTML={{ __html: technicalSpecifications }}
-							/>
+							{technicalSpecifications && (
+								<div
+									dangerouslySetInnerHTML={{
+										__html: technicalSpecifications,
+									}}
+								/>
+							)}
 						</CardOverview>
 					</div>
 
@@ -89,10 +74,20 @@ const ServiceDetails = () => {
 }
 
 export const Route = createFileRoute("/services/$serviceId")({
-	loader: async ({ params: { serviceId } }): Promise<Service> => {
-		const response = await fetchService(serviceId)
+	loader: async ({ params: { serviceId } }) => {
+		const response = await apiClient.services[":serviceId"].$get({
+			param: {
+				serviceId,
+			},
+		})
 
-		return response.data
+		if (!response.ok) {
+			throw new Error("Could not fetch service")
+		}
+
+		const json = await response.json()
+
+		return json.data
 	},
 	errorComponent: ServiceError,
 	component: ServiceDetails,

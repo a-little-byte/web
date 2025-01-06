@@ -9,7 +9,7 @@ export const up = async (db: Kysely<Database>): Promise<void> => {
 		.$call(baseTable)
 		.$call(notNullColumn("key"))
 		.$call(notNullColumn("languageCode"))
-		.$call(notNullColumn("content", "text"))
+		.$call(notNullColumn("content"))
 		.execute()
 }
 

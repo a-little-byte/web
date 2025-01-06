@@ -5,7 +5,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@alittlebyte/components/ui/card"
-import { cn } from "../lib/cn"
+import { cn } from "@alittlebyte/components/lib/cn"
 
 type CardOverviewProps = {
 	title: string

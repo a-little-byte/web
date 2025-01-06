@@ -4,7 +4,7 @@ import {
 	TranslationUpdate,
 } from "@alittlebyte/api/database/types"
 
-const translationFindById = (key: string) =>
+const translationFindByKey = (key: string) =>
 	db
 		.selectFrom("translations")
 		.where("key", "=", key)
@@ -41,7 +41,7 @@ const translationUpdate = async (
 }
 
 export const translationRepository = {
-	findByKey: translationFindById,
+	findByKey: translationFindByKey,
 	create: translationCreate,
 	delete: deleteTranslation,
 	updateReturn: translationUpdateReturn,
