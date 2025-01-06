@@ -13,6 +13,7 @@ export type Database = {
 	creditCards: CreditCardTable
 	"creditCards.user": UserTable
 	services: ServiceTable
+	translations: TranslationTable
 	sessions: SessionTable
 	twoFactors: TwoFactorTable
 	"twoFactors.user": UserTable
@@ -42,6 +43,21 @@ export type Service = Selectable<ServiceTable>
 export type NewService = Insertable<ServiceTable>
 
 export type ServiceUpdate = Updateable<ServiceTable>
+
+export type TranslationTable = {
+	id: Generated<UUID>
+	languageCode: string
+	key: string
+	content: string
+	createdAt: ColumnType<Date, string | undefined, never>
+	updatedAt: ColumnType<Date, never, string | Date>
+}
+
+export type Translation = Selectable<TranslationTable>
+
+export type NewTranslation = Insertable<TranslationTable>
+
+export type TranslationUpdate = Updateable<TranslationTable>
 
 export type CreditCardTable = {
 	id: Generated<UUID>

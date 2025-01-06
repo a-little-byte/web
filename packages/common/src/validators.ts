@@ -32,8 +32,8 @@ export const availableValidator = z.boolean()
 
 export const serviceValidator = z.object({
 	name: productNameValidator,
-	descriptionKey: descriptionKeyValidator,
-	technicalSpecificationsKey: technicalSpecificationsKeyValidator,
+	description: descriptionKeyValidator,
+	technicalSpecifications: technicalSpecificationsKeyValidator,
 	price: priceValidator,
 	perUser: perUserValidator,
 	perDevice: perDeviceValidator,

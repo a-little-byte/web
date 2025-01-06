@@ -16,6 +16,7 @@ const generateService = (): NewService => ({
 export const seed = async (db: Kysely<Database>) => {
 	await db
 		.insertInto("services")
-		.values(Array(MAX_ITER).map(() => generateService()))
+		.values(Array.from({ length: MAX_ITER }, () => generateService()))
+		.returningAll()
 		.execute()
 }

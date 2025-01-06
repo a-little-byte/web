@@ -5,18 +5,14 @@ import { Kysely } from "kysely"
 
 export const up = async (db: Kysely<Database>): Promise<void> => {
 	await db.schema
-		.createTable("services")
+		.createTable("translations")
 		.$call(baseTable)
-		.$call(notNullColumn("name"))
-		.$call(notNullColumn("descriptionKey"))
-		.$call(notNullColumn("technicalSpecificationsKey"))
-		.$call(notNullColumn("price", "float8"))
-		.$call(notNullColumn("perUser", "boolean"))
-		.$call(notNullColumn("perDevice", "boolean"))
-		.$call(notNullColumn("available", "boolean"))
+		.$call(notNullColumn("key"))
+		.$call(notNullColumn("languageCode"))
+		.$call(notNullColumn("content"))
 		.execute()
 }
 
 export const down = async (db: Kysely<Database>): Promise<void> => {
-	await db.schema.dropTable("services").execute()
+	await db.schema.dropTable("translations").execute()
 }
