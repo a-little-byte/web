@@ -26,7 +26,15 @@ const Services = () => {
 
 export const Route = createFileRoute("/services")({
 	loader: async () => {
-		const response = await apiClient.services.$get()
+		const urlParams = new URLSearchParams(window.location.search)
+		const orderBy = urlParams.get("orderBy") as
+			| "price"
+			| "newest"
+			| "availability"
+			| undefined
+		const response = await apiClient.services.$get({
+			query: !orderBy ? {} : { orderBy },
+		})
 
 		if (!response.ok) {
 			throw new Error("Could not fetch service")

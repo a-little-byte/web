@@ -46,6 +46,10 @@ export const expirationDateValidator = z.string().datetime()
 
 export const cvvCodeValidator = z.string().min(3).max(3)
 
+export const OrderByEnum = z
+	.enum(["price", "newest", "availability"])
+	.optional()
+
 export const creditCardValidator = z.object({
 	cardNumber: cardNumberValidator,
 	expirationDate: expirationDateValidator,
