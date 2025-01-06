@@ -32,9 +32,7 @@ export const Route = createFileRoute("/services")({
 			throw new Error("Could not fetch service")
 		}
 
-		const json = await response.json()
-
-		return json
+		return await response.json()
 	},
 	errorComponent: ServiceError,
 	component: Services,
