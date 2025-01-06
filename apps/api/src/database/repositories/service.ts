@@ -4,13 +4,14 @@ import {
 	Service,
 	ServiceUpdate,
 } from "@alittlebyte/api/database/types"
+import { sql } from "kysely"
 import { UUID } from "node:crypto"
 
 const findAll = async ({
 	criteria,
 	orderBy,
 }: {
-	criteria: Partial<Service>
+	criteria: Partial<Service & { nameLike: string }>
 	orderBy?: "price" | "newest" | "availability"
 }) => {
 	let query = db.selectFrom("services")
@@ -25,6 +26,10 @@ const findAll = async ({
 
 	if (criteria.createdAt) {
 		query = query.where("createdAt", "=", criteria.createdAt)
+	}
+
+	if (criteria.nameLike) {
+		query = query.where(sql`LOWER(name)`, "like", `${criteria.nameLike}%`)
 	}
 
 	if (orderBy) {

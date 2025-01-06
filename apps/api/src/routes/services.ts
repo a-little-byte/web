@@ -3,6 +3,7 @@ import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import {
 	idValidator,
 	OrderByEnum,
+	productSearchValidator,
 	serviceValidator,
 } from "@alittlebyte/common/validators"
 import { zValidator } from "@hono/zod-validator"
@@ -106,6 +107,26 @@ export const servicesRouter = () =>
 				])
 
 				return json({ data: postJson })
+			},
+		)
+		.post(
+			"/search",
+			zValidator("json", z.object({ name: productSearchValidator })),
+			async ({
+				json,
+				req,
+				var: {
+					repositories: { services },
+				},
+			}) => {
+				const { name } = req.valid("json")
+				const data = await services.findAll({
+					criteria: {
+						nameLike: name.toLowerCase(),
+					},
+				})
+
+				return json({ data })
 			},
 		)
 		.put(
