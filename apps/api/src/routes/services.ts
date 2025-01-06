@@ -9,7 +9,7 @@ import {
 import { zValidator } from "@hono/zod-validator"
 import { Hono } from "hono"
 import { z } from "zod"
-import { randomUUID } from "crypto"
+import { randomUUID } from "node:crypto"
 
 export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
@@ -130,7 +130,7 @@ export const servicesRouter = () =>
 
 				if (!foundService) {
 					return json(
-						{ data: "This service does not exist" },
+						{ message: "Unknown Service" },
 						HTTP_STATUS_CODES.NOT_FOUND,
 					)
 				}

@@ -22,11 +22,11 @@ const router = app
 	})
 	.use(corsMiddleware)
 	.use(dbMiddleware)
-	.route("/auth", authRouter())
-	.route("/services", servicesRouter())
-	.route("/example", backofficeExample())
+	.route("/auth", authRouter)
+	.route("/services", servicesRouter)
+	.route("/example", backofficeExample)
 	.use(authMiddleware)
-	.route("/users", usersRouter())
+	.route("/users", usersRouter)
 
 export default {
 	fetch: app.fetch,
