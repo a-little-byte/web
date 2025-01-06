@@ -24,18 +24,10 @@ export const servicesRouter = () =>
 			}) => {
 				const query = req.valid("query")
 
-				if (query.orderBy) {
-					const data = await services.findAll({
-						criteria: {},
-						orderBy: query.orderBy,
-					})
-
-					return json({ data })
-				}
-
 				return json({
 					data: await services.findAll({
 						criteria: {},
+						...query,
 					}),
 				})
 			},
