@@ -1,5 +1,0 @@
-{
-	"extends": "@alittlebyte/typescript-configs/vite.json",
-	"include": ["src"],
-	"exclude": ["node_modules", "dist"]
-}
