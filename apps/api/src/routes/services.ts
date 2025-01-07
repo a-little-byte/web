@@ -3,6 +3,7 @@ import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import {
 	idValidator,
 	OrderByEnum,
+	productSearchValidator,
 	serviceValidator,
 } from "@alittlebyte/common/validators"
 import { zValidator } from "@hono/zod-validator"
@@ -14,7 +15,10 @@ export const servicesRouter = () =>
 	new Hono<{ Variables: PublicContextVariables }>()
 		.get(
 			"/",
-			zValidator("query", z.object({ orderBy: OrderByEnum })),
+			zValidator(
+				"query",
+				z.object({ search: productSearchValidator, orderBy: OrderByEnum }),
+			),
 			async ({
 				json,
 				req,
@@ -26,7 +30,7 @@ export const servicesRouter = () =>
 
 				return json({
 					data: await services.findAll({
-						criteria: {},
+						criteria: query.search ? { nameLike: query.search } : {},
 						...query,
 					}),
 				})

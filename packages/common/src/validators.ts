@@ -18,6 +18,8 @@ export const lastNameValidator = z.string().min(2)
 
 export const productNameValidator = z.string().min(6)
 
+export const productSearchValidator = z.string().min(2).optional()
+
 export const descriptionKeyValidator = z.string().min(6)
 
 export const technicalSpecificationsKeyValidator = z.string().min(6)
