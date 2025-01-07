@@ -1,7 +1,7 @@
 import { apiClient } from "@alittlebyte/common/lib/apiClient"
 import { CardCatagorie } from "@alittlebyte/components/ui/cardCatagorie"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { getQueryParams } from "@alittlebyte/landing/hooks/getQueryParams"
+import { getQueryParams } from "@alittlebyte/common/utils/getQueryParams"
 
 const ServiceError = () => {
 	const navigate = useNavigate()

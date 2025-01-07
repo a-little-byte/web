@@ -4,7 +4,9 @@ type QueryParams = {
 }
 
 export const getQueryParams = (): QueryParams => {
-	const urlParams = new URLSearchParams(window.location.search)
+	const { window } = globalThis
+	const location = window.location.search
+	const urlParams = new URLSearchParams(location)
 	const params = Object.fromEntries(urlParams)
 	const hasParams = Object.keys(params).length > 0
 
