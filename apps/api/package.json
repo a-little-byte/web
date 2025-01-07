@@ -18,13 +18,14 @@
 		"@grpc/proto-loader": "^0.7.13",
 		"@hono/zod-validator": "^0.4.1",
 		"@react-email/components": "0.0.25",
-		"better-auth": "^0.8.7-beta.3",
+		"better-auth": "^1.1.10",
 		"dotenv": "^16.4.5",
 		"hono": "^4.6.3",
 		"kysely": "^0.27.4",
 		"pg": "^8.13.1",
 		"redis": "^4.7.0",
-		"resend": "^4.0.1-alpha.0",
+		"resend": "^4.0.1",
+		"stripe": "^17.5.0",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {

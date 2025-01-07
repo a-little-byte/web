@@ -4,6 +4,7 @@ import { corsMiddleware } from "@alittlebyte/api/middlewares/cors"
 import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
 import { authRouter } from "@alittlebyte/api/routes/auth"
 import { backofficeExample } from "@alittlebyte/api/routes/backofficeExample"
+import { checkoutRouter } from "@alittlebyte/api/routes/checkout"
 import { servicesRouter } from "@alittlebyte/api/routes/services"
 import { usersRouter } from "@alittlebyte/api/routes/users"
 import type { PublicContextVariables } from "@alittlebyte/api/utils/types"
@@ -27,6 +28,7 @@ const router = app
 	.route("/example", backofficeExample)
 	.use(authMiddleware)
 	.route("/users", usersRouter)
+	.route("/checkout", checkoutRouter)
 
 export default {
 	fetch: app.fetch,

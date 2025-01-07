@@ -9,7 +9,7 @@ export const authMiddleware = async (
 	const session = await auth.api.getSession({ headers: c.req.raw.headers })
 
 	if (!session) {
-		throw new Error("Unauthorized")
+		return c.json({ error: "Unauthorized" }, 403)
 	}
 
 	c.set("user", session.user)
