@@ -7,20 +7,13 @@ import { createAuthClient } from "better-auth/react"
 
 export const authClient = ({
 	baseURL,
-	twoFactorPage,
 }: {
 	baseURL: string
 	twoFactorPage: string
 }) =>
 	createAuthClient({
 		baseURL,
-		plugins: [
-			inferAdditionalFields<typeof auth>(),
-			twoFactorClient({
-				redirect: true,
-				twoFactorPage,
-			}),
-		],
+		plugins: [inferAdditionalFields<typeof auth>(), twoFactorClient({})],
 		fetchOptions: {
 			onError(e) {
 				if (e.error.status === 429) {
