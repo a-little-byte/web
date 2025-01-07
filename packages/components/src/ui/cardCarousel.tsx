@@ -3,10 +3,9 @@ import {
 	Carousel,
 	CarouselContent,
 	CarouselItem,
-	CarouselPrevious,
 	CarouselNext,
+	CarouselPrevious,
 } from "@alittlebyte/components/ui/carousel"
-import { FC } from "react"
 
 type CardCarouselProps = {
 	data: Array<{
@@ -16,7 +15,7 @@ type CardCarouselProps = {
 	}>
 }
 
-export const CardCarousel: FC<CardCarouselProps> = ({ data }) => (
+export const CardCarousel = ({ data }: CardCarouselProps) => (
 	<div className="w-full">
 		<Carousel
 			className="w-full"

@@ -1,12 +1,11 @@
-import i18n from "@alittlebyte/common/lib/i18n"
+import "@alittlebyte/common/lib/i18n"
 import "@alittlebyte/components/shadcn-ui.css"
+import { Toaster } from "@alittlebyte/components/ui/toaster"
 import { routeTree } from "@alittlebyte/landing/routeTree.gen"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { RouterProvider, createRouter } from "@tanstack/react-router"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { I18nextProvider } from "react-i18next"
-import { Toaster } from "@alittlebyte/components/ui/toaster"
 
 const queryClient = new QueryClient()
 const router = createRouter({ routeTree, context: { queryClient } })
@@ -24,12 +23,10 @@ if (rootElement && !rootElement.innerHTML) {
 
 	root.render(
 		<StrictMode>
-			<I18nextProvider i18n={i18n}>
-				<QueryClientProvider client={queryClient}>
-					<RouterProvider router={router} />
-					<Toaster />
-				</QueryClientProvider>
-			</I18nextProvider>
+			<QueryClientProvider client={queryClient}>
+				<RouterProvider router={router} />
+				<Toaster />
+			</QueryClientProvider>
 		</StrictMode>,
 	)
 }

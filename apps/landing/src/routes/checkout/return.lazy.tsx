@@ -5,5 +5,5 @@ export const Route = createLazyFileRoute("/checkout/return")({
 })
 
 function RouteComponent() {
-	return <div>Thank you for paying us love youuuu ❤️</div>
+	return <div>Thank you so much for your business ❤️</div>
 }

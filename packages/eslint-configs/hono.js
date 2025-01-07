@@ -36,23 +36,6 @@ export default [
 			],
 			"import-x/no-duplicates": "error",
 			"import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
-			"import-x/order": [
-				"error",
-				{
-					groups: [
-						"external",
-						"builtin",
-						"internal",
-						"parent",
-						"sibling",
-						"index",
-					],
-					alphabetize: {
-						order: "asc",
-						caseInsensitive: true,
-					},
-				},
-			],
 			"@typescript-eslint/no-empty-object-type": "off",
 			"@typescript-eslint/no-unsafe-function-type": "off",
 			"@typescript-eslint/no-empty-function": [

@@ -1,7 +1,7 @@
 import { apiClient } from "@alittlebyte/common/lib/apiClient"
-import { CardCatagorie } from "@alittlebyte/components/ui/cardCatagorie"
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { getQueryParams } from "@alittlebyte/common/utils/getQueryParams"
+import { CardCategory } from "@alittlebyte/components/ui/cardCategory"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 
 const ServiceError = () => {
 	const navigate = useNavigate()
@@ -16,7 +16,7 @@ const Services = () => {
 	return data
 		.filter(({ available }) => available)
 		.map(({ id, name, price }) => (
-			<CardCatagorie
+			<CardCategory
 				key={id}
 				title={name}
 				link={id}

@@ -48,7 +48,7 @@ export const backofficeExample = new Hono<{
 					"https://imgs.search.brave.com/65oLuJH1pHCnQtL9pCzLL3oc42QhMfwvKKkU9cXKVWs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTA4/ODE1NTkwOC9waG90/by9hcXVhLWFuZC1n/cmVlbi1wc3ljaGVk/ZWxpYy1mcmFjdGFs/LWJhY2tncm91bmQt/bGlrZS1mbG9yYWwt/cGV0YWwuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPUw0cjA1/LXEtRUNSMDBMNTRf/SnNDYWNzY0huV2I4/QTFNYVhIbDFGa2Vs/dXc9",
 			},
 		],
-		catagories: [
+		categories: [
 			{
 				title: "Lorem",
 				link: "/security",
