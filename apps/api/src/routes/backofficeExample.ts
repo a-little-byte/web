@@ -13,7 +13,7 @@ export const backofficeExample = new Hono<{
 		carousel: [
 			{
 				title: "Prévention",
-				description: "Prévention contre de cyberatques",
+				description: "Prévention contre de cyberattaques",
 				image:
 					"https://imgs.search.brave.com/6Te28zpjAmVsJUC_OtA5vQ15rBDquHXBCz58Gi_2gs8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTE4/MDQ5NDEzMi9waG90/by9kYW5kZWxpb24u/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PURNYUdsRmgydWlB/ZnFDRGpIb3M3NFl0/bW1tU1pqRE9UeFU5/YmpqWDMzRDg9",
 			},
@@ -25,7 +25,7 @@ export const backofficeExample = new Hono<{
 			},
 			{
 				title: "Réponse",
-				description: "Réponse de cyberatques",
+				description: "Réponse de cyberattaques",
 				image:
 					"https://imgs.search.brave.com/TWDy-M1-5BBGmtucKofWn2uw_njHZTxfJ-H7DWam8fA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTI4/Mzg1MjY2Ny9waG90/by90b3VjaC1vZi1m/cmVzaC1tb3NzLWlu/LXRoZS1mb3Jlc3Qu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PUk5MUlWX0l0X3hE/RVVsVUNPZzloY29F/dzgzeW03UTItMWhz/Q1h0Ty1sN0E9",
 			},
@@ -43,7 +43,7 @@ export const backofficeExample = new Hono<{
 			},
 			{
 				title: "Phishing",
-				description: "protection contre des attaque phising",
+				description: "protection contre des attaques phising",
 				image:
 					"https://imgs.search.brave.com/65oLuJH1pHCnQtL9pCzLL3oc42QhMfwvKKkU9cXKVWs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTA4/ODE1NTkwOC9waG90/by9hcXVhLWFuZC1n/cmVlbi1wc3ljaGVk/ZWxpYy1mcmFjdGFs/LWJhY2tncm91bmQt/bGlrZS1mbG9yYWwt/cGV0YWwuanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPUw0cjA1/LXEtRUNSMDBMNTRf/SnNDYWNzY0huV2I4/QTFNYVhIbDFGa2Vs/dXc9",
 			},
@@ -51,7 +51,7 @@ export const backofficeExample = new Hono<{
 		catagories: [
 			{
 				title: "Lorem",
-				link: "/secrity",
+				link: "/security",
 				description: "lorem ipsum",
 			},
 			{
