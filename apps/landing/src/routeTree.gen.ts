@@ -24,6 +24,8 @@ const ResetPasswordLazyImport = createFileRoute('/reset-password')()
 const LegalLazyImport = createFileRoute('/legal')()
 const ForgotPasswordLazyImport = createFileRoute('/forgot-password')()
 const IndexLazyImport = createFileRoute('/')()
+const CheckoutIndexLazyImport = createFileRoute('/checkout/')()
+const CheckoutReturnLazyImport = createFileRoute('/checkout/return')()
 
 // Create/Update Routes
 
@@ -67,11 +69,27 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const CheckoutIndexLazyRoute = CheckoutIndexLazyImport.update({
+  id: '/checkout/',
+  path: '/checkout/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/checkout/index.lazy').then((d) => d.Route),
+)
+
 const ServicesIndexRoute = ServicesIndexImport.update({
   id: '/services/',
   path: '/services/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const CheckoutReturnLazyRoute = CheckoutReturnLazyImport.update({
+  id: '/checkout/return',
+  path: '/checkout/return',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/checkout/return.lazy').then((d) => d.Route),
+)
 
 const ServicesServiceIdRoute = ServicesServiceIdImport.update({
   id: '/services/$serviceId',
@@ -132,11 +150,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesServiceIdImport
       parentRoute: typeof rootRoute
     }
+    '/checkout/return': {
+      id: '/checkout/return'
+      path: '/checkout/return'
+      fullPath: '/checkout/return'
+      preLoaderRoute: typeof CheckoutReturnLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/services/': {
       id: '/services/'
       path: '/services'
       fullPath: '/services'
       preLoaderRoute: typeof ServicesIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/checkout/': {
+      id: '/checkout/'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutIndexLazyImport
       parentRoute: typeof rootRoute
     }
   }
@@ -152,7 +184,9 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInLazyRoute
   '/sign-up': typeof SignUpLazyRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/checkout/return': typeof CheckoutReturnLazyRoute
   '/services': typeof ServicesIndexRoute
+  '/checkout': typeof CheckoutIndexLazyRoute
 }
 
 export interface FileRoutesByTo {
@@ -163,7 +197,9 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInLazyRoute
   '/sign-up': typeof SignUpLazyRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/checkout/return': typeof CheckoutReturnLazyRoute
   '/services': typeof ServicesIndexRoute
+  '/checkout': typeof CheckoutIndexLazyRoute
 }
 
 export interface FileRoutesById {
@@ -175,7 +211,9 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInLazyRoute
   '/sign-up': typeof SignUpLazyRoute
   '/services/$serviceId': typeof ServicesServiceIdRoute
+  '/checkout/return': typeof CheckoutReturnLazyRoute
   '/services/': typeof ServicesIndexRoute
+  '/checkout/': typeof CheckoutIndexLazyRoute
 }
 
 export interface FileRouteTypes {
@@ -188,7 +226,9 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/services/$serviceId'
+    | '/checkout/return'
     | '/services'
+    | '/checkout'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -198,7 +238,9 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/services/$serviceId'
+    | '/checkout/return'
     | '/services'
+    | '/checkout'
   id:
     | '__root__'
     | '/'
@@ -208,7 +250,9 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/services/$serviceId'
+    | '/checkout/return'
     | '/services/'
+    | '/checkout/'
   fileRoutesById: FileRoutesById
 }
 
@@ -220,7 +264,9 @@ export interface RootRouteChildren {
   SignInLazyRoute: typeof SignInLazyRoute
   SignUpLazyRoute: typeof SignUpLazyRoute
   ServicesServiceIdRoute: typeof ServicesServiceIdRoute
+  CheckoutReturnLazyRoute: typeof CheckoutReturnLazyRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  CheckoutIndexLazyRoute: typeof CheckoutIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -231,7 +277,9 @@ const rootRouteChildren: RootRouteChildren = {
   SignInLazyRoute: SignInLazyRoute,
   SignUpLazyRoute: SignUpLazyRoute,
   ServicesServiceIdRoute: ServicesServiceIdRoute,
+  CheckoutReturnLazyRoute: CheckoutReturnLazyRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  CheckoutIndexLazyRoute: CheckoutIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -251,7 +299,9 @@ export const routeTree = rootRoute
         "/sign-in",
         "/sign-up",
         "/services/$serviceId",
-        "/services/"
+        "/checkout/return",
+        "/services/",
+        "/checkout/"
       ]
     },
     "/": {
@@ -275,8 +325,14 @@ export const routeTree = rootRoute
     "/services/$serviceId": {
       "filePath": "services/$serviceId.tsx"
     },
+    "/checkout/return": {
+      "filePath": "checkout/return.lazy.tsx"
+    },
     "/services/": {
       "filePath": "services/index.tsx"
+    },
+    "/checkout/": {
+      "filePath": "checkout/index.lazy.tsx"
     }
   }
 }

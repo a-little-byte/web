@@ -1,9 +1,9 @@
+import { Footer } from "@alittlebyte/components/ui/footer"
+import { Navbar } from "@alittlebyte/components/ui/navbar"
 import { QueryClient } from "@tanstack/react-query"
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
-import { Navbar } from "@alittlebyte/components/ui/navbar"
-import { Footer } from "@alittlebyte/components/ui/footer"
 
 const links = [
 	{

@@ -22,5 +22,3 @@ void i18n
 			transSupportBasicHtmlNodes: false,
 		},
 	})
-
-export default i18n

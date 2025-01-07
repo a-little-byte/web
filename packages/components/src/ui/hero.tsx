@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from "react"
+import { PropsWithChildren } from "react"
 
 type HeroProps = {
 	imageUrl: string
@@ -6,12 +6,12 @@ type HeroProps = {
 	description: string
 }
 
-export const Hero: FC<PropsWithChildren<HeroProps>> = ({
+export const Hero = ({
 	imageUrl,
 	title,
 	description,
 	children,
-}) => (
+}: PropsWithChildren<HeroProps>) => (
 	<div className="relative h-96">
 		<img src={imageUrl} alt="Hero" className="h-full w-full object-cover" />
 		<div className="absolute inset-0 flex items-center bg-black bg-opacity-50">

@@ -14,6 +14,10 @@ const apiConfigSchema = z.object({
 			}),
 			trustedOrigins: z.array(urlValidator),
 		}),
+		stripe: z.object({
+			secretKey: z.string(),
+			publishKey: z.string(),
+		}),
 	}),
 	server: z.object({
 		port: z.string(),
@@ -26,7 +30,7 @@ const apiConfigSchema = z.object({
 		hostname: z.string(),
 	}),
 	landing: z.object({
-		landingUrl: urlValidator,
+		url: urlValidator,
 	}),
 })
 const data = {
@@ -40,6 +44,10 @@ const data = {
 			},
 			trustedOrigins: process.env.BETTER_AUTH_TRUSTED_ORIGINS!.split(","),
 		},
+		stripe: {
+			secretKey: process.env.STRIPE_SECRET_KEY!,
+			publishKey: process.env.STRIPE_PUBLISH_KEY!,
+		},
 	},
 	db: {
 		connectionString: process.env.DATABASE_URL!,
@@ -52,7 +60,7 @@ const data = {
 		port: process.env.API_SERVER_PORT!,
 	},
 	landing: {
-		landingUrl: process.env.LANDING_URL!,
+		url: process.env.LANDING_URL!,
 	},
 } satisfies z.input<typeof apiConfigSchema>
 

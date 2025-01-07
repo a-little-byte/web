@@ -7,7 +7,6 @@ import { toast } from "@alittlebyte/components/hooks/use-toast"
 import { useAuthClient } from "@alittlebyte/landing/hooks/useAuthClient"
 import { useMutation } from "@tanstack/react-query"
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
-import { useCallback } from "react"
 import { SubmitHandler } from "react-hook-form"
 
 const SignUp = () => {
@@ -34,12 +33,9 @@ const SignUp = () => {
 			await navigate({ to: "/" })
 		},
 	})
-	const onSubmit = useCallback<SubmitHandler<SignUpValidatorOutput>>(
-		async (values) => {
-			await mutateAsync(values)
-		},
-		[mutateAsync],
-	)
+	const onSubmit: SubmitHandler<SignUpValidatorOutput> = async (values) => {
+		await mutateAsync(values)
+	}
 
 	return (
 		<div className="p-2">
