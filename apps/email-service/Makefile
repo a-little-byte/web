@@ -4,7 +4,7 @@ GOCLEAN=$(GOCMD) clean
 GOGET=$(GOCMD) get
 GOMOD=$(GOCMD) mod
 GOVENDOR=$(GOMOD) vendor
-BINARY_NAME=server
+BINARY_NAME=grpc-server
 
 
 VENDOR_DIR=vendor
