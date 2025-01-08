@@ -2,26 +2,11 @@ import { apiClient } from "@alittlebyte/common/lib/apiClient"
 import { CardCarousel } from "@alittlebyte/components/ui/cardCarousel"
 import { CardCategory } from "@alittlebyte/components/ui/cardCategory"
 import { Hero } from "@alittlebyte/components/ui/hero"
-import { useQuery } from "@tanstack/react-query"
-import { createLazyFileRoute } from "@tanstack/react-router"
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
 
 function Index() {
-	const { data, isPending, error } = useQuery({
-		queryKey: ["image"],
-		queryFn: async () => {
-			const response = await apiClient.example.$get()
-
-			if (!response.ok) {
-				throw new Error("Network response was not ok")
-			}
-
-			return response.json()
-		},
-	})
-
-	if (isPending) {
-		return <div>Loading...</div>
-	}
+	const { data, error } = useSuspenseQuery(postsQueryOptions())
 
 	if (error) {
 		return <div>Error: {error.message}</div>
@@ -55,6 +40,24 @@ function Index() {
 	)
 }
 
-export const Route = createLazyFileRoute("/")({
+const postsQueryOptions = () =>
+	queryOptions({
+		queryKey: ["image"],
+		queryFn: async () => {
+			const response = await apiClient.example.$get()
+
+			if (!response.ok) {
+				throw new Error("Network response was not ok")
+			}
+
+			return response.json()
+		},
+	})
+
+export const Route = createFileRoute("/")({
+	pendingComponent: () => "Loading",
+	loader: async ({ context }) => {
+		await context.queryClient.prefetchQuery(postsQueryOptions())
+	},
 	component: Index,
 })

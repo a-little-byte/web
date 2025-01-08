@@ -5,7 +5,7 @@ import {
 import { useAuthClient } from "@alittlebyte/landing/hooks/useAuthClient"
 import { useMutation } from "@tanstack/react-query"
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
-import { useCallback, useState } from "react"
+import { useState } from "react"
 import { SubmitHandler } from "react-hook-form"
 
 const SignIn = () => {
@@ -30,12 +30,9 @@ const SignIn = () => {
 			setInvalidEmailOrPassword(true)
 		},
 	})
-	const onSubmit = useCallback<SubmitHandler<SignInValidatorOutput>>(
-		(values) => {
-			mutate(values)
-		},
-		[mutate],
-	)
+	const onSubmit: SubmitHandler<SignInValidatorOutput> = (values) => {
+		mutate(values)
+	}
 
 	return (
 		<div className="p-2">

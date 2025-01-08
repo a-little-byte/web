@@ -1,7 +1,7 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { AvalibleBadge } from "@alittlebyte/components/ui/AvalibleBadge"
-import { CardOverview } from "@alittlebyte/components/ui/cardOverview"
 import { apiClient } from "@alittlebyte/common/lib/apiClient"
+import { AvailableBadge } from "@alittlebyte/components/ui/AvailableBadge"
+import { CardOverview } from "@alittlebyte/components/ui/cardOverview"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 
 const ServiceError = () => {
 	const navigate = useNavigate()
@@ -21,8 +21,8 @@ const ServiceDetails = () => {
 		available,
 	} = Route.useLoaderData()
 	const pricingUser = perUser && "per user"
-	const priceingDevice = perDevice && "per device"
-	const priceingFlat = (!perUser || !perDevice) && "Flat Rate"
+	const pricingDevice = perDevice && "per device"
+	const pricingFlat = (!perUser || !perDevice) && "Flat Rate"
 
 	return (
 		<div className="mb-80 h-5/6 p-24">
@@ -32,7 +32,7 @@ const ServiceDetails = () => {
 						<h1 className="text-4xl font-extrabold tracking-tight text-gray-900">
 							{name}
 						</h1>
-						<AvalibleBadge available={available} />
+						<AvailableBadge available={available} />
 					</div>
 					<div className="h-1 w-20 rounded-full bg-[#302082]"></div>
 				</header>
@@ -58,7 +58,7 @@ const ServiceDetails = () => {
 						<CardOverview title="Pricing">
 							<div className="flex items-baseline space-x-2">
 								<span className="text-4xl font-bold">€{price}</span>
-								<span>{pricingUser || priceingDevice || priceingFlat}</span>
+								<span>{pricingUser || pricingDevice || pricingFlat}</span>
 							</div>
 							<div className="border-t border-gray-200 pt-4">
 								<p className="text-center text-sm text-gray-100">

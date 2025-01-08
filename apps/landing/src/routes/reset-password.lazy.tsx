@@ -2,12 +2,11 @@ import {
 	ResetPasswordForm,
 	ResetPasswordValidatorOutput,
 } from "@alittlebyte/components/forms/ResetPasswordForm"
-import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
-import { useCallback } from "react"
-import { useAuthClient } from "../hooks/useAuthClient"
-import { useMutation } from "@tanstack/react-query"
-import { SubmitHandler } from "react-hook-form"
 import { useToast } from "@alittlebyte/components/hooks/use-toast"
+import { useMutation } from "@tanstack/react-query"
+import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
+import { SubmitHandler } from "react-hook-form"
+import { useAuthClient } from "../hooks/useAuthClient"
 
 const ResetPassword = () => {
 	const { resetPassword } = useAuthClient()
@@ -43,17 +42,14 @@ const ResetPassword = () => {
 		},
 		onError: (error) => {
 			toast({
-				title: "An error occured",
+				title: "An error occurred",
 				description: error.message,
 			})
 		},
 	})
-	const onSubmit = useCallback<SubmitHandler<ResetPasswordValidatorOutput>>(
-		(values) => {
-			mutate(values)
-		},
-		[mutate],
-	)
+	const onSubmit: SubmitHandler<ResetPasswordValidatorOutput> = (values) => {
+		mutate(values)
+	}
 
 	return (
 		<div className="p-2">
