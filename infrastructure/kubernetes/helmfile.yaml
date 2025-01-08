@@ -9,6 +9,10 @@ repositories:
     url: https://istio-release.storage.googleapis.com/charts
   - name: oneuptime
     url: https://helm-chart.oneuptime.com/
+  - name: redis-stack
+    url: https://redis-stack.github.io/helm-redis-stack/
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
 
 helmDefaults:
   timeout: 600
@@ -82,3 +86,15 @@ releases:
     createNamespace: true
     chart: oneuptime/oneuptime
     version: 7.0.3233
+
+  - name: redis-stack
+    namespace: databases
+    createNamespace: true
+    chart: redis-stack/redis-stack-server
+    version: 0.4.15
+
+  - name: postgres
+    namespace: databases
+    createNamespace: true
+    chart: bitnami/postgresql
+    version: 16.3.5
