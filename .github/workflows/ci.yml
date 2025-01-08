@@ -1,11 +1,8 @@
 name: CI
 on:
   push:
-    paths:
-      - "**.ts"
-
 jobs:
-  build:
+  build-js:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -18,3 +15,14 @@ jobs:
         run: bun format
       - name: Check lint
         run: bun lint
+  build-go:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.23"
+      - name: Build
+        run: cd apps/email-service && make

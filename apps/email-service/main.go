@@ -17,7 +17,7 @@ import (
 func main() {
 
 	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
+		fmt.Println("Warning: .env file is not used. Instead the env var of the system will be use.")
 	}
 
 	apiKey := os.Getenv("RESEND_API_KEY")
