@@ -6,6 +6,7 @@ const landingConfigSchema = z.object({
 		auth: z.object({
 			baseURL: urlValidator,
 			twoFactorPage: z.string(),
+			sessionKey: z.string(),
 		}),
 	}),
 })
@@ -14,6 +15,7 @@ const data = {
 		auth: {
 			baseURL: import.meta.env.VITE_SERVICES_AUTH_BASEURL,
 			twoFactorPage: "",
+			sessionKey: "SESSION_KEY",
 		},
 	},
 } satisfies z.input<typeof landingConfigSchema>

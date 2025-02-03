@@ -3,13 +3,11 @@ import {
 	ForgotPasswordValidatorOutput,
 } from "@alittlebyte/components/forms/ForgotPasswordForm"
 import { useToast } from "@alittlebyte/components/hooks/use-toast"
-import { useAuthClient } from "@alittlebyte/landing/hooks/useAuthClient"
 import { useMutation } from "@tanstack/react-query"
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
 import { SubmitHandler } from "react-hook-form"
 
 const ForgotPassword = () => {
-	const { forgetPassword } = useAuthClient()
 	const { toast } = useToast()
 	const navigate = useNavigate()
 	const { mutateAsync } = useMutation<
@@ -17,15 +15,8 @@ const ForgotPassword = () => {
 		Error,
 		ForgotPasswordValidatorOutput
 	>({
-		mutationFn: async ({ email }) => {
-			const res = await forgetPassword({
-				email,
-				redirectTo: `${window.location.origin}/reset-password`,
-			})
-
-			if (res.error) {
-				throw new Error(res.error.message)
-			}
+		mutationFn: async () => {
+			//
 		},
 		onSuccess: async () => {
 			toast({

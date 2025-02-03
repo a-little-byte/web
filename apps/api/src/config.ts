@@ -9,6 +9,7 @@ const apiConfigSchema = z.object({
 	}),
 	services: z.object({
 		auth: z.object({
+			jwtSecret: z.string(),
 			totp: z.object({
 				issuer: z.string(),
 			}),
@@ -39,6 +40,7 @@ const data = {
 	},
 	services: {
 		auth: {
+			jwtSecret: "its-a-secret",
 			totp: {
 				issuer: "a-little-byte",
 			},

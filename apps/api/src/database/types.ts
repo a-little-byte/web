@@ -9,20 +9,10 @@ import type { UUID } from "node:crypto"
 
 export type Database = {
 	accounts: AccountTable
-	"accounts.user": UserTable
 	creditCards: CreditCardTable
-	"creditCards.user": UserTable
 	services: ServiceTable
 	translations: TranslationTable
-	sessions: SessionTable
-	twoFactors: TwoFactorTable
-	"twoFactors.user": UserTable
 	users: UserTable
-	"users.accounts": AccountTable
-	"users.creditCards": CreditCardTable
-	"users.sessions": SessionTable
-	"users.twoFactors": TwoFactorTable
-	verifications: VerificationTable
 }
 
 export type ServiceTable = {
@@ -74,14 +64,11 @@ export type CreditCardUpdate = Updateable<CreditCardTable>
 
 export type UserTable = {
 	id: Generated<UUID>
-	name: string
 	firstName: string
 	lastName: string
 	email: string
-	emailVerified: boolean
-	image?: string
-	twoFactorEnabled?: boolean
-	creditCards: CreditCard[]
+	passwordHash: string
+	passwordSalt: string
 	createdAt: ColumnType<Date, string | undefined, never>
 	updatedAt: ColumnType<Date, never, string | Date>
 }

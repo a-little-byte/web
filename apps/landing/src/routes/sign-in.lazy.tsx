@@ -1,8 +1,9 @@
+import { apiClient } from "@alittlebyte/common/lib/apiClient"
 import {
 	SignInForm,
 	SignInValidatorOutput,
 } from "@alittlebyte/components/forms/SignInForm"
-import { useAuthClient } from "@alittlebyte/landing/hooks/useAuthClient"
+import { landingConfig } from "@alittlebyte/landing/config"
 import { useMutation } from "@tanstack/react-query"
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
@@ -11,15 +12,16 @@ import { SubmitHandler } from "react-hook-form"
 const SignIn = () => {
 	const [invalidEmailOrPassword, setInvalidEmailOrPassword] = useState(false)
 	const navigate = useNavigate()
-	const { signIn } = useAuthClient()
 	const { mutate } = useMutation<unknown, Error, SignInValidatorOutput>({
 		mutationFn: async (data) => {
 			setInvalidEmailOrPassword(false)
-			const res = await signIn.email(data)
 
-			if (res.error) {
-				throw new Error(res.error.message)
-			}
+			const res = await apiClient.auth["sign-in"].$post({
+				json: data,
+			})
+			const { token } = await res.json()
+
+			localStorage.setItem(landingConfig.services.auth.sessionKey, token)
 		},
 		onSuccess: () => {
 			void navigate({
