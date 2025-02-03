@@ -2,7 +2,7 @@ import { db } from "@alittlebyte/api/database"
 import { NewUser, User, UserUpdate } from "@alittlebyte/api/database/types"
 import { UUID } from "node:crypto"
 
-const findAll = async (criteria: Partial<User>) => {
+const findAll = (criteria: Partial<User>) => {
 	let query = db.selectFrom("users")
 
 	if (criteria.id) {
@@ -21,7 +21,28 @@ const findAll = async (criteria: Partial<User>) => {
 		query = query.where("createdAt", "=", criteria.createdAt)
 	}
 
-	return await query.selectAll().execute()
+	return query.selectAll().execute()
+}
+const findOne = (criteria: Partial<User>) => {
+	let query = db.selectFrom("users")
+
+	if (criteria.id) {
+		query = query.where("id", "=", criteria.id)
+	}
+
+	if (criteria.firstName) {
+		query = query.where("firstName", "=", criteria.firstName)
+	}
+
+	if (criteria.lastName) {
+		query = query.where("lastName", "=", criteria.lastName)
+	}
+
+	if (criteria.createdAt) {
+		query = query.where("createdAt", "=", criteria.createdAt)
+	}
+
+	return query.selectAll().executeTakeFirst()
 }
 const findById = (id: UUID) =>
 	db.selectFrom("users").where("id", "=", id).selectAll().executeTakeFirst()
@@ -47,4 +68,5 @@ export const usersRepository = {
 	update,
 	updateReturn,
 	delete: deleteUser,
+	findOne,
 } as const

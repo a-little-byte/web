@@ -1,0 +1,7 @@
+export const AUTH_CONSTANTS = {
+	SALT_ROUNDS: 12,
+	TOKEN_EXPIRY: "30 days",
+	MIN_PASSWORD_LENGTH: 8,
+	MAX_USERNAME_LENGTH: 30,
+	DEFAULT_SKIN_NAME: "default",
+} as const

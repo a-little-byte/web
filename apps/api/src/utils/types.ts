@@ -1,6 +1,6 @@
 import { repositories } from "@alittlebyte/api/database"
 import { Database } from "@alittlebyte/api/database/types"
-import type { Session, User } from "@alittlebyte/api/lib/auth"
+import { UUID } from "crypto"
 import { Kysely } from "kysely"
 
 export interface PublicContextVariables {
@@ -9,6 +9,8 @@ export interface PublicContextVariables {
 }
 
 export type PrivateContextVariables = PublicContextVariables & {
-	user: User
-	session: Session
+	user: {
+		id: UUID
+		email: string
+	}
 }

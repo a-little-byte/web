@@ -1,5 +1,4 @@
 import { apiConfig } from "@alittlebyte/api/config"
-import { authMiddleware } from "@alittlebyte/api/middlewares/auth"
 import { corsMiddleware } from "@alittlebyte/api/middlewares/cors"
 import { dbMiddleware } from "@alittlebyte/api/middlewares/db"
 import { authRouter } from "@alittlebyte/api/routes/auth"
@@ -10,6 +9,7 @@ import { usersRouter } from "@alittlebyte/api/routes/users"
 import type { PublicContextVariables } from "@alittlebyte/api/utils/types"
 import { HTTP_STATUS_CODES } from "@alittlebyte/common/constants"
 import { Hono } from "hono"
+import { jwt } from "hono/jwt"
 
 const { port } = apiConfig.server
 const app = new Hono<{ Variables: PublicContextVariables }>()
@@ -26,7 +26,12 @@ const router = app
 	.route("/auth", authRouter)
 	.route("/services", servicesRouter)
 	.route("/example", backofficeExample)
-	.use(authMiddleware)
+	.use(
+		jwt({
+			secret: apiConfig.services.auth.jwtSecret,
+			alg: "RS512",
+		}),
+	)
 	.route("/users", usersRouter)
 	.route("/checkout", checkoutRouter)
 

@@ -6,10 +6,8 @@ import { useToast } from "@alittlebyte/components/hooks/use-toast"
 import { useMutation } from "@tanstack/react-query"
 import { createLazyFileRoute, useNavigate } from "@tanstack/react-router"
 import { SubmitHandler } from "react-hook-form"
-import { useAuthClient } from "../hooks/useAuthClient"
 
 const ResetPassword = () => {
-	const { resetPassword } = useAuthClient()
 	const navigate = useNavigate()
 	const queryParams = new URLSearchParams(window.location.search)
 	const token = queryParams.get("token")
@@ -20,19 +18,8 @@ const ResetPassword = () => {
 	}
 
 	const { mutate } = useMutation<unknown, Error, ResetPasswordValidatorOutput>({
-		mutationFn: async ({ password }) => {
-			const res = await resetPassword({
-				newPassword: password,
-				fetchOptions: {
-					query: {
-						token,
-					},
-				},
-			})
-
-			if (res.error) {
-				throw new Error(res.error.message)
-			}
+		mutationFn: async () => {
+			//
 		},
 		onSuccess: async () => {
 			toast({
