@@ -1,0 +1,113 @@
+"use server";
+
+import { getCurrentUser } from "@/app/[locale]/api/auth/actions";
+import { supabase } from "@/lib/supabase";
+import bcrypt from "bcryptjs";
+
+export async function updateProfile({
+  fullName,
+  email,
+}: {
+  fullName: string;
+  email: string;
+}) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    // Check if email is already taken (if it's different from current email)
+    if (email !== user.email) {
+      const { data: existingUser, error: searchError } = await supabase
+        .from("users")
+        .select("*")
+        .eq("email", email)
+        .single();
+
+      if (searchError) throw searchError;
+      if (existingUser) {
+        return { error: "Email already taken" };
+      }
+    }
+
+    // Update user profile
+    const { error: updateError } = await supabase
+      .from("users")
+      .update({
+        full_name: fullName,
+        email,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id);
+
+    if (updateError) throw updateError;
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return { error: "Failed to update profile" };
+  }
+}
+
+export async function changePassword({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string;
+  newPassword: string;
+}) {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    // Verify current password
+    const validPassword = await bcrypt.compare(currentPassword, user.password);
+    if (!validPassword) {
+      return { error: "Current password is incorrect" };
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update password
+    const { error: updateError } = await supabase
+      .from("users")
+      .update({
+        password: hashedPassword,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", user.id);
+
+    if (updateError) throw updateError;
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return { error: "Failed to change password" };
+  }
+}
+
+export async function deleteAccount() {
+  try {
+    const user = await getCurrentUser();
+    if (!user) {
+      return { error: "Not authenticated" };
+    }
+
+    // Delete user
+    const { error: deleteError } = await supabase
+      .from("users")
+      .delete()
+      .eq("id", user.id);
+
+    if (deleteError) throw deleteError;
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting account:", error);
+    return { error: "Failed to delete account" };
+  }
+}

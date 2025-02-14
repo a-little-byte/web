@@ -1,0 +1,164 @@
+{
+  "navigation": {
+    "solutions": "Solutions",
+    "pricing": "Pricing",
+    "about": "About",
+    "contact": "Contact",
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "dashboard": "Dashboard"
+  },
+  "home": {
+    "hero": {
+      "title": "Enterprise Security Made Simple",
+      "description": "Protect your business with enterprise-grade cybersecurity solutions. Our comprehensive suite of tools keeps your data safe and your business secure.",
+      "exploreSolutions": "Explore Solutions",
+      "contactSales": "Contact Sales"
+    },
+    "features": {
+      "soc": {
+        "title": "SOC as a Service",
+        "description": "Advanced security operations center monitoring your infrastructure 24/7."
+      },
+      "edr": {
+        "title": "EDR Protection",
+        "description": "Next-generation endpoint detection and response for comprehensive security."
+      },
+      "xdr": {
+        "title": "XDR Platform",
+        "description": "Extended detection and response across your entire technology stack."
+      },
+      "global": {
+        "title": "Global Coverage",
+        "description": "Worldwide threat intelligence and protection for your business."
+      }
+    },
+    "cta": {
+      "title": "Ready to secure your business?",
+      "description": "Get started with our enterprise-grade security solutions today. Our team of experts is ready to help protect your business.",
+      "button": "Start Free Trial"
+    }
+  },
+  "solutions": {
+    "title": "Security Solutions",
+    "description": "Choose the security solution that best fits your organization's needs. All our products come with enterprise-grade support and SLA guarantees.",
+    "subscribeNow": "Subscribe Now",
+    "processing": "Processing..."
+  },
+  "legal": {
+    "title": "Legal Notices",
+    "copyright": {
+      "title": "Copyright Notice",
+      "content": "© 2025 Cyna. All rights reserved. All content, design, graphics, and other intellectual materials on this website are owned by Cyna and protected by applicable copyright laws."
+    },
+    "trademark": {
+      "title": "Trademark Information",
+      "content": "All Cyna trademarks, service marks, trade names, and logos displayed on this website are the property of Cyna or their respective owners. Nothing contained on this website should be construed as granting any license or right to use any trademark without the prior written permission of Cyna."
+    },
+    "disclaimer": {
+      "title": "Disclaimer of Warranties",
+      "content": "This website and all information, content, materials, and services included on or otherwise made available to you through this website are provided on an \"as is\" and \"as available\" basis.",
+      "additional": "CYNA MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, AS TO THE OPERATION OF THIS WEBSITE OR THE INFORMATION, CONTENT, MATERIALS, OR SERVICES INCLUDED ON OR OTHERWISE MADE AVAILABLE TO YOU THROUGH THIS WEBSITE."
+    },
+    "liability": {
+      "title": "Limitation of Liability",
+      "content": "TO THE FULL EXTENT PERMISSIBLE BY APPLICABLE LAW, CYNA DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.",
+      "additional": "CYNA DOES NOT WARRANT THAT THIS WEBSITE, ITS SERVERS, OR E-MAIL SENT FROM CYNA ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS."
+    },
+    "export": {
+      "title": "Export Control",
+      "content": "The software and technology provided through our services may be subject to U.S. export controls administered by the U.S. Department of Commerce, U.S. Department of Treasury Office of Foreign Assets Control, and other U.S. agencies.",
+      "additional": "You acknowledge and agree that the service shall not be used, and none of the underlying information, software, or technology may be transferred or otherwise exported or re-exported to countries as to which the United States maintains an embargo."
+    },
+    "governing": {
+      "title": "Governing Law",
+      "content": "These legal notices and your use of this website shall be governed by and construed in accordance with the laws of the United States and the State of Delaware, without giving effect to any principles of conflicts of law."
+    },
+    "contact": {
+      "title": "Contact Information",
+      "content": "If you have any questions about these legal notices, please contact us:",
+      "company": "Cyna Corporation",
+      "address": {
+        "line1": "1234 Cyber Security Avenue",
+        "line2": "Suite 500",
+        "line3": "Wilmington, DE 19801",
+        "line4": "United States"
+      },
+      "email": "Email: legal@cyna.com",
+      "phone": "Phone: +1 (555) 123-4567"
+    },
+    "changes": {
+      "title": "Changes to Legal Notices",
+      "content": "Cyna reserves the right to modify these legal notices at any time. We will post any changes to these legal notices on this page and, if the changes are significant, we will provide a more prominent notice.",
+      "additional": "Your continued use of our website following the posting of changes to these legal notices will mean you accept those changes."
+    },
+    "lastUpdated": {
+      "title": "Last Updated",
+      "content": "These legal notices were last updated on March 14, 2025."
+    }
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last updated: March 14, 2025",
+    "intro": {
+      "title": "Introduction",
+      "content": "Welcome to Cyna (\"Company\", \"we\", \"our\", \"us\"). These Terms of Service (\"Terms\", \"Terms of Service\") govern your use of our website and services (collectively, the \"Service\") operated by Cyna.",
+      "agreement": "By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, then you may not access the Service."
+    },
+    "service": {
+      "title": "Service Description",
+      "content": "Cyna provides enterprise-grade cybersecurity solutions, including but not limited to:",
+      "items": [
+        "SOC as a Service",
+        "EDR Protection",
+        "XDR Platform",
+        "Threat Intelligence Services"
+      ]
+    },
+    "accounts": {
+      "title": "User Accounts",
+      "content": "When you create an account with us, you must provide accurate, complete, and current information. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account.",
+      "responsibility": "You are responsible for safeguarding the password and for all activities that occur under your account."
+    },
+    "subscription": {
+      "title": "Subscription and Payments",
+      "content": "Some parts of the Service are billed on a subscription basis. You will be billed in advance on a recurring and periodic basis (\"Billing Cycle\").",
+      "payment": "Payment methods accepted include credit cards, wire transfers, and other methods as specified. You agree to provide current, complete, and accurate purchase and account information."
+    },
+    "sla": {
+      "title": "Service Level Agreement",
+      "content": "We commit to maintaining a high level of service availability and performance. Specific service levels are detailed in your service agreement.",
+      "disruption": "In case of service disruption, we follow established procedures for incident response and resolution as outlined in our SLA."
+    },
+    "data": {
+      "title": "Data Protection",
+      "content": "We implement appropriate technical and organizational measures to ensure a level of security appropriate to the risk, including:",
+      "measures": [
+        "Encryption of personal data",
+        "Ability to ensure ongoing confidentiality, integrity, availability",
+        "Regular testing of security measures",
+        "Compliance with relevant data protection regulations"
+      ]
+    },
+    "ip": {
+      "title": "Intellectual Property",
+      "content": "The Service and its original content, features, and functionality are and will remain the exclusive property of Cyna and its licensors."
+    },
+    "termination": {
+      "title": "Termination",
+      "content": "We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms."
+    },
+    "liability": {
+      "title": "Limitation of Liability",
+      "content": "In no event shall Cyna, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages."
+    },
+    "changes": {
+      "title": "Changes",
+      "content": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide notice of any changes by posting the new Terms on this page."
+    },
+    "accept": "Accept Terms",
+    "processing": "Processing...",
+    "accepted": "Terms Accepted",
+    "acceptedMessage": "Thank you for accepting our terms and conditions."
+  }
+}

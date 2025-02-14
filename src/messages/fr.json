@@ -1,0 +1,164 @@
+{
+  "navigation": {
+    "solutions": "Solutions",
+    "pricing": "Tarifs",
+    "about": "À propos",
+    "contact": "Contact",
+    "signIn": "Se connecter",
+    "signUp": "S'inscrire",
+    "dashboard": "Tableau de bord"
+  },
+  "home": {
+    "hero": {
+      "title": "Sécurité d'Entreprise Simplifiée",
+      "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
+      "exploreSolutions": "Explorer les Solutions",
+      "contactSales": "Contacter les Ventes"
+    },
+    "features": {
+      "soc": {
+        "title": "SOC en tant que Service",
+        "description": "Centre des opérations de sécurité avancé surveillant votre infrastructure 24h/24 et 7j/7."
+      },
+      "edr": {
+        "title": "Protection EDR",
+        "description": "Détection et réponse aux menaces sur les terminaux de nouvelle génération pour une sécurité complète."
+      },
+      "xdr": {
+        "title": "Plateforme XDR",
+        "description": "Détection et réponse étendues à travers toute votre pile technologique."
+      },
+      "global": {
+        "title": "Couverture Mondiale",
+        "description": "Renseignement sur les menaces et protection mondiale pour votre entreprise."
+      }
+    },
+    "cta": {
+      "title": "Prêt à sécuriser votre entreprise ?",
+      "description": "Commencez dès aujourd'hui avec nos solutions de sécurité professionnelles. Notre équipe d'experts est prête à protéger votre entreprise.",
+      "button": "Commencer l'Essai Gratuit"
+    }
+  },
+  "solutions": {
+    "title": "Solutions de Sécurité",
+    "description": "Choisissez la solution de sécurité qui correspond le mieux aux besoins de votre organisation. Tous nos produits sont accompagnés d'un support professionnel et de garanties SLA.",
+    "subscribeNow": "S'abonner Maintenant",
+    "processing": "En cours de traitement..."
+  },
+  "legal": {
+    "title": "Mentions Légales",
+    "copyright": {
+      "title": "Avis de Copyright",
+      "content": "© 2025 Cyna. Tous droits réservés. Tout le contenu, le design, les graphiques et autres éléments intellectuels de ce site web appartiennent à Cyna et sont protégés par les lois sur le droit d'auteur applicables."
+    },
+    "trademark": {
+      "title": "Informations sur les Marques",
+      "content": "Toutes les marques déposées, marques de service, noms commerciaux et logos de Cyna affichés sur ce site web sont la propriété de Cyna ou de leurs propriétaires respectifs. Rien sur ce site web ne doit être interprété comme accordant une licence ou un droit d'utilisation d'une marque sans l'autorisation écrite préalable de Cyna."
+    },
+    "disclaimer": {
+      "title": "Clause de Non-Responsabilité",
+      "content": "Ce site web et toutes les informations, contenus, matériels et services inclus ou autrement mis à votre disposition via ce site web sont fournis \"tels quels\" et \"selon disponibilité\".",
+      "additional": "CYNA NE FAIT AUCUNE DÉCLARATION NI GARANTIE D'AUCUNE SORTE, EXPLICITE OU IMPLICITE, QUANT AU FONCTIONNEMENT DE CE SITE WEB OU AUX INFORMATIONS, CONTENUS, MATÉRIELS OU SERVICES INCLUS OU AUTREMENT MIS À VOTRE DISPOSITION VIA CE SITE WEB."
+    },
+    "liability": {
+      "title": "Limitation de Responsabilité",
+      "content": "DANS TOUTE LA MESURE PERMISE PAR LA LOI APPLICABLE, CYNA DÉCLINE TOUTE GARANTIE, EXPLICITE OU IMPLICITE, Y COMPRIS, MAIS SANS S'Y LIMITER, LES GARANTIES IMPLICITES DE QUALITÉ MARCHANDE ET D'ADÉQUATION À UN USAGE PARTICULIER.",
+      "additional": "CYNA NE GARANTIT PAS QUE CE SITE WEB, SES SERVEURS OU LES E-MAILS ENVOYÉS PAR CYNA SONT EXEMPTS DE VIRUS OU D'AUTRES COMPOSANTS NUISIBLES."
+    },
+    "export": {
+      "title": "Contrôle des Exportations",
+      "content": "Les logiciels et la technologie fournis via nos services peuvent être soumis aux contrôles d'exportation américains administrés par le Département du Commerce des États-Unis, le Bureau du Contrôle des Avoirs Étrangers du Département du Trésor des États-Unis et d'autres agences américaines.",
+      "additional": "Vous reconnaissez et acceptez que le service ne doit pas être utilisé, et qu'aucune des informations, logiciels ou technologies sous-jacents ne peut être transférée ou autrement exportée ou réexportée vers des pays faisant l'objet d'un embargo américain."
+    },
+    "governing": {
+      "title": "Droit Applicable",
+      "content": "Ces mentions légales et votre utilisation de ce site web sont régies et interprétées conformément aux lois des États-Unis et de l'État du Delaware, sans donner effet à aucun principe de conflit de lois."
+    },
+    "contact": {
+      "title": "Informations de Contact",
+      "content": "Si vous avez des questions concernant ces mentions légales, veuillez nous contacter :",
+      "company": "Cyna Corporation",
+      "address": {
+        "line1": "1234 Cyber Security Avenue",
+        "line2": "Suite 500",
+        "line3": "Wilmington, DE 19801",
+        "line4": "États-Unis"
+      },
+      "email": "Email : legal@cyna.com",
+      "phone": "Téléphone : +1 (555) 123-4567"
+    },
+    "changes": {
+      "title": "Modifications des Mentions Légales",
+      "content": "Cyna se réserve le droit de modifier ces mentions légales à tout moment. Nous publierons toute modification de ces mentions légales sur cette page et, si les modifications sont importantes, nous fournirons un avis plus visible.",
+      "additional": "Votre utilisation continue de notre site web après la publication des modifications de ces mentions légales signifiera que vous acceptez ces modifications."
+    },
+    "lastUpdated": {
+      "title": "Dernière Mise à Jour",
+      "content": "Ces mentions légales ont été mises à jour pour la dernière fois le 14 mars 2025."
+    }
+  },
+  "terms": {
+    "title": "Conditions Générales",
+    "lastUpdated": "Dernière mise à jour : 14 mars 2025",
+    "intro": {
+      "title": "Introduction",
+      "content": "Bienvenue chez Cyna (\"Société\", \"nous\", \"notre\", \"nos\"). Ces Conditions d'Utilisation (\"Conditions\", \"Conditions d'Utilisation\") régissent votre utilisation de notre site web et services (collectivement, le \"Service\") exploités par Cyna.",
+      "agreement": "En accédant ou en utilisant le Service, vous acceptez d'être lié par ces Conditions. Si vous n'êtes pas d'accord avec une partie des conditions, vous ne pouvez pas accéder au Service."
+    },
+    "service": {
+      "title": "Description du Service",
+      "content": "Cyna fournit des solutions de cybersécurité de niveau entreprise, incluant mais non limité à :",
+      "items": [
+        "SOC en tant que Service",
+        "Protection EDR",
+        "Plateforme XDR",
+        "Services de Renseignement sur les Menaces"
+      ]
+    },
+    "accounts": {
+      "title": "Comptes Utilisateurs",
+      "content": "Lorsque vous créez un compte chez nous, vous devez fournir des informations exactes, complètes et à jour. Le non-respect de cette obligation constitue une violation des Conditions, qui peut entraîner la résiliation immédiate de votre compte.",
+      "responsibility": "Vous êtes responsable de la protection du mot de passe et de toutes les activités qui se produisent sous votre compte."
+    },
+    "subscription": {
+      "title": "Abonnement et Paiements",
+      "content": "Certaines parties du Service sont facturées sur la base d'un abonnement. Vous serez facturé à l'avance sur une base récurrente et périodique (\"Cycle de Facturation\").",
+      "payment": "Les moyens de paiement acceptés incluent les cartes de crédit, les virements bancaires et d'autres méthodes spécifiées. Vous acceptez de fournir des informations d'achat et de compte actuelles, complètes et exactes."
+    },
+    "sla": {
+      "title": "Accord de Niveau de Service",
+      "content": "Nous nous engageons à maintenir un niveau élevé de disponibilité et de performance du service. Les niveaux de service spécifiques sont détaillés dans votre contrat de service.",
+      "disruption": "En cas d'interruption de service, nous suivons des procédures établies pour la réponse et la résolution des incidents comme décrit dans notre SLA."
+    },
+    "data": {
+      "title": "Protection des Données",
+      "content": "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour assurer un niveau de sécurité adapté au risque, notamment :",
+      "measures": [
+        "Chiffrement des données personnelles",
+        "Capacité à assurer la confidentialité, l'intégrité et la disponibilité continues",
+        "Tests réguliers des mesures de sécurité",
+        "Conformité aux réglementations pertinentes sur la protection des données"
+      ]
+    },
+    "ip": {
+      "title": "Propriété Intellectuelle",
+      "content": "Le Service et son contenu original, ses fonctionnalités et sa fonctionnalité sont et resteront la propriété exclusive de Cyna et de ses concédants."
+    },
+    "termination": {
+      "title": "Résiliation",
+      "content": "Nous pouvons résilier ou suspendre votre compte immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris, sans limitation, si vous violez les Conditions."
+    },
+    "liability": {
+      "title": "Limitation de Responsabilité",
+      "content": "En aucun cas Cyna, ni ses directeurs, employés, partenaires, agents, fournisseurs ou affiliés, ne seront responsables de tout dommage indirect, accessoire, spécial, consécutif ou punitif."
+    },
+    "changes": {
+      "title": "Modifications",
+      "content": "Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Nous vous informerons de tout changement en publiant les nouvelles Conditions sur cette page."
+    },
+    "accept": "Accepter les Conditions",
+    "processing": "En cours de traitement...",
+    "accepted": "Conditions Acceptées",
+    "acceptedMessage": "Merci d'avoir accepté nos conditions générales."
+  }
+}

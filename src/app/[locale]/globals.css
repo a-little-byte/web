@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Avenir LT Std';
+  src: url('https://fonts.cdnfonts.com/css/avenir-lt-std') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+}
+
+:root {
+  --background: 240, 240, 242;
+  --foreground: 0, 0, 0;
+  
+  /* Primary: Bleu foncé #302082 */
+  --primary: 240, 71%, 32%;
+  --primary-foreground: 0, 0%, 100%;
+  
+  /* Secondary: Orange vif #FF6B00 */
+  --secondary: 24, 100%, 50%;
+  --secondary-foreground: 0, 0%, 100%;
+  
+  /* Muted: Gris clair #F2F2F2 */
+  --muted: 0, 0%, 95%;
+  --muted-foreground: 240, 71%, 32%;
+  
+  --card: 0, 0%, 100%;
+  --card-foreground: 240, 71%, 32%;
+  
+  --popover: 0, 0%, 100%;
+  --popover-foreground: 240, 71%, 32%;
+  
+  --accent: 24, 100%, 50%;
+  --accent-foreground: 0, 0%, 100%;
+  
+  --destructive: 0, 84.2%, 60.2%;
+  --destructive-foreground: 0, 0%, 98%;
+  
+  --border: 240, 71%, 32%, 0.1;
+  --input: 240, 71%, 32%, 0.1;
+  --ring: 240, 71%, 32%;
+  
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 240, 71%, 32%;
+  --foreground: 0, 0%, 100%;
+  
+  --primary: 0, 0%, 100%;
+  --primary-foreground: 240, 71%, 32%;
+  
+  --secondary: 24, 100%, 50%;
+  --secondary-foreground: 0, 0%, 100%;
+  
+  --muted: 240, 71%, 40%;
+  --muted-foreground: 0, 0%, 100%, 0.8;
+  
+  --card: 240, 71%, 35%;
+  --card-foreground: 0, 0%, 100%;
+  
+  --popover: 240, 71%, 35%;
+  --popover-foreground: 0, 0%, 100%;
+  
+  --accent: 24, 100%, 50%;
+  --accent-foreground: 0, 0%, 100%;
+  
+  --destructive: 0, 62.8%, 30.6%;
+  --destructive-foreground: 0, 0%, 100%;
+  
+  --border: 0, 0%, 100%, 0.1;
+  --input: 0, 0%, 100%, 0.1;
+  --ring: 0, 0%, 100%, 0.8;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Avenir LT Std', Arial, Helvetica, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-black uppercase tracking-tight;
+  }
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+  .btn, button {
+    @apply uppercase tracking-wide;
+  }
+}
