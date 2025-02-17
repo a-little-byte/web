@@ -18,7 +18,6 @@ export default function ConfirmEmail() {
       try {
         if (!token) throw new Error("No verification token found");
 
-        // Update the user's email_verified status
         const { error } = await supabase
           .from("auth.users")
           .update({ email_verified: true })
@@ -26,7 +25,6 @@ export default function ConfirmEmail() {
 
         if (error) throw error;
 
-        // Redirect to login after successful verification
         router.push("/login");
       } catch (err) {
         console.error("Error verifying email:", err);

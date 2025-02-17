@@ -17,7 +17,6 @@ export async function updateProfile({
       return { error: "Not authenticated" };
     }
 
-    // Check if email is already taken (if it's different from current email)
     if (email !== user.email) {
       const { data: existingUser, error: searchError } = await supabase
         .from("users")
@@ -31,7 +30,6 @@ export async function updateProfile({
       }
     }
 
-    // Update user profile
     const { error: updateError } = await supabase
       .from("users")
       .update({
@@ -63,16 +61,13 @@ export async function changePassword({
       return { error: "Not authenticated" };
     }
 
-    // Verify current password
     const validPassword = await bcrypt.compare(currentPassword, user.password);
     if (!validPassword) {
       return { error: "Current password is incorrect" };
     }
 
-    // Hash new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Update password
     const { error: updateError } = await supabase
       .from("users")
       .update({
@@ -97,7 +92,6 @@ export async function deleteAccount() {
       return { error: "Not authenticated" };
     }
 
-    // Delete user
     const { error: deleteError } = await supabase
       .from("users")
       .delete()

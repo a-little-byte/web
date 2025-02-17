@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
@@ -9,21 +9,18 @@ export async function POST(request: Request) {
   try {
     const { token, password } = await request.json();
 
-    // Verify token
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
-
-    // Hash new password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Update password
-    await db
-      .updateTable("users")
-      .set({
+    const { data, error } = await supabase
+      .from("users")
+      .update({
         password: hashedPassword,
-        updated_at: new Date(),
+        updated_at: new Date().toISOString(),
       })
-      .where("id", "=", decoded.userId)
-      .execute();
+      .eq("id", decoded.userId);
+
+    if (error) throw error;
 
     return NextResponse.json({ success: true });
   } catch (error) {

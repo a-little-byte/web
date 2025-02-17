@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "../auth/actions";
 
 export async function addToCart(serviceId: string, quantity: number = 1) {
@@ -10,34 +10,31 @@ export async function addToCart(serviceId: string, quantity: number = 1) {
       return { error: "Not authenticated" };
     }
 
-    // Check if item already exists in cart
-    const existingItem = await db
-      .selectFrom("cart_items")
-      .where("user_id", "=", user.id)
-      .where("service_id", "=", serviceId)
-      .selectAll()
-      .executeTakeFirst();
+    const { data: existingItem } = await supabase
+      .from("cart_items")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("service_id", serviceId)
+      .single();
 
     if (existingItem) {
-      // Update quantity
-      await db
-        .updateTable("cart_items")
-        .set({
+      const { error } = await supabase
+        .from("cart_items")
+        .update({
           quantity: existingItem.quantity + quantity,
-          updated_at: new Date(),
+          updated_at: new Date().toISOString(),
         })
-        .where("id", "=", existingItem.id)
-        .execute();
+        .eq("id", existingItem.id);
+
+      if (error) throw error;
     } else {
-      // Add new item
-      await db
-        .insertInto("cart_items")
-        .values({
-          user_id: user.id,
-          service_id: serviceId,
-          quantity,
-        })
-        .execute();
+      const { error } = await supabase.from("cart_items").insert({
+        user_id: user.id,
+        service_id: serviceId,
+        quantity,
+      });
+
+      if (error) throw error;
     }
 
     return { success: true };
@@ -54,16 +51,16 @@ export async function updateCartItem(itemId: string, quantity: number) {
       return { error: "Not authenticated" };
     }
 
-    await db
-      .updateTable("cart_items")
-      .set({
+    const { error } = await supabase
+      .from("cart_items")
+      .update({
         quantity,
-        updated_at: new Date(),
+        updated_at: new Date().toISOString(),
       })
-      .where("id", "=", itemId)
-      .where("user_id", "=", user.id)
-      .execute();
+      .eq("id", itemId)
+      .eq("user_id", user.id);
 
+    if (error) throw error;
     return { success: true };
   } catch (error) {
     console.error("Error updating cart item:", error);
@@ -78,12 +75,13 @@ export async function removeFromCart(itemId: string) {
       return { error: "Not authenticated" };
     }
 
-    await db
-      .deleteFrom("cart_items")
-      .where("id", "=", itemId)
-      .where("user_id", "=", user.id)
-      .execute();
+    const { error } = await supabase
+      .from("cart_items")
+      .delete()
+      .eq("id", itemId)
+      .eq("user_id", user.id);
 
+    if (error) throw error;
     return { success: true };
   } catch (error) {
     console.error("Error removing from cart:", error);
@@ -98,19 +96,22 @@ export async function getCartItems() {
       return { error: "Not authenticated" };
     }
 
-    const items = await db
-      .selectFrom("cart_items")
-      .innerJoin("services", "services.id", "cart_items.service_id")
-      .where("cart_items.user_id", "=", user.id)
-      .select([
-        "cart_items.id",
-        "cart_items.quantity",
-        "services.name",
-        "services.price",
-        "services.period",
-      ])
-      .execute();
+    const { data: items, error } = await supabase
+      .from("cart_items")
+      .select(
+        `
+        id,
+        quantity,
+        services (
+          name,
+          price,
+          period
+        )
+      `
+      )
+      .eq("user_id", user.id);
 
+    if (error) throw error;
     return { items };
   } catch (error) {
     console.error("Error fetching cart items:", error);

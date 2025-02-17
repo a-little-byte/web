@@ -36,7 +36,6 @@ export default function Login() {
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
 
-      // // First, check if TOTP is enabled for this user
       // const { data: userData } = await supabase
       //   .from("users")
       //   .select("id")
@@ -58,7 +57,6 @@ export default function Login() {
       //   }
       // }
 
-      // If TOTP is not enabled, proceed with normal login
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,

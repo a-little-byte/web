@@ -26,7 +26,6 @@ export async function login(email: string, password: string) {
   //   const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
   //     expiresIn: "7d",
   //   });
-  //   // Set HTTP-only cookie
   //   cookies().set("auth-token", token, {
   //     httpOnly: true,
   //     secure: process.env.NODE_ENV === "production",
@@ -63,12 +62,9 @@ export async function register(
   //     })
   //     .returningAll()
   //     .executeTakeFirstOrThrow();
-  //   // Generate verification token
   //   const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
   //     expiresIn: "1d",
   //   });
-  //   // Here you would typically send an email with the verification token
-  //   // For now, we'll just return success
   //   return { success: true, verificationToken };
   // } catch (error) {
   //   console.error("Registration error:", error);

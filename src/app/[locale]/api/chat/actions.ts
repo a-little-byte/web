@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import OpenAI from "openai";
 import { getCurrentUser } from "../auth/actions";
 
@@ -24,15 +24,16 @@ export async function createConversation() {
       return { error: "Not authenticated" };
     }
 
-    const conversation = await db
-      .insertInto("chat_conversations")
-      .values({
+    const { data: conversation, error } = await supabase
+      .from("chat_conversations")
+      .insert({
         user_id: user.id,
         title: "New Conversation",
       })
-      .returningAll()
-      .executeTakeFirstOrThrow();
+      .select()
+      .single();
 
+    if (error) throw error;
     return { conversation };
   } catch (error) {
     console.error("Error creating conversation:", error);
@@ -47,25 +48,22 @@ export async function sendMessage(conversationId: string, message: string) {
       return { error: "Not authenticated" };
     }
 
-    // Save user message
-    await db
-      .insertInto("chat_messages")
-      .values({
-        conversation_id: conversationId,
-        role: "user",
-        content: message,
-      })
-      .execute();
+    const { error: insertError } = await supabase.from("chat_messages").insert({
+      conversation_id: conversationId,
+      role: "user",
+      content: message,
+    });
 
-    // Get conversation history
-    const history = await db
-      .selectFrom("chat_messages")
-      .where("conversation_id", "=", conversationId)
-      .orderBy("created_at", "asc")
-      .selectAll()
-      .execute();
+    if (insertError) throw insertError;
 
-    // Prepare messages for OpenAI
+    const { data: history, error: historyError } = await supabase
+      .from("chat_messages")
+      .select("*")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: true });
+
+    if (historyError) throw historyError;
+
     const messages = [
       { role: "system", content: SYSTEM_PROMPT },
       ...history.map((msg) => ({
@@ -74,7 +72,6 @@ export async function sendMessage(conversationId: string, message: string) {
       })),
     ];
 
-    // Get AI response
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages,
@@ -84,15 +81,15 @@ export async function sendMessage(conversationId: string, message: string) {
 
     const aiResponse = completion.choices[0].message.content;
 
-    // Save AI response
-    await db
-      .insertInto("chat_messages")
-      .values({
+    const { error: aiResponseError } = await supabase
+      .from("chat_messages")
+      .insert({
         conversation_id: conversationId,
         role: "assistant",
         content: aiResponse,
-      })
-      .execute();
+      });
+
+    if (aiResponseError) throw aiResponseError;
 
     return {
       message: aiResponse,
@@ -101,7 +98,7 @@ export async function sendMessage(conversationId: string, message: string) {
         {
           role: "assistant",
           content: aiResponse,
-          created_at: new Date(),
+          created_at: new Date().toISOString(),
         },
       ],
     };
@@ -118,13 +115,13 @@ export async function getConversationHistory(conversationId: string) {
       return { error: "Not authenticated" };
     }
 
-    const messages = await db
-      .selectFrom("chat_messages")
-      .where("conversation_id", "=", conversationId)
-      .orderBy("created_at", "asc")
-      .selectAll()
-      .execute();
+    const { data: messages, error } = await supabase
+      .from("chat_messages")
+      .select("*")
+      .eq("conversation_id", conversationId)
+      .order("created_at", { ascending: true });
 
+    if (error) throw error;
     return { messages };
   } catch (error) {
     console.error("Error fetching conversation history:", error);

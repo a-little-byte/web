@@ -13,7 +13,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    // Get temporary secret
     const { data: tempData } = await supabase
       .from("totp_temp")
       .select("secret")
@@ -24,7 +23,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "TOTP not set up" }, { status: 400 });
     }
 
-    // Verify token
     const isValid = authenticator.verify({
       token,
       secret: tempData.secret,
@@ -34,14 +32,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid token" }, { status: 400 });
     }
 
-    // Move secret from temporary to permanent storage
     await supabase.from("totp_secrets").upsert({
       user_id: session.user.id,
       secret: tempData.secret,
       enabled: true,
     });
 
-    // Delete temporary secret
     await supabase.from("totp_temp").delete().eq("user_id", session.user.id);
 
     return NextResponse.json({ success: true });

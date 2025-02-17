@@ -1,4 +1,4 @@
-import { db } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -10,24 +10,20 @@ export async function POST(request: Request) {
   try {
     const { email } = await request.json();
 
-    // Check if user exists
-    const user = await db
-      .selectFrom("users")
-      .where("email", "=", email)
-      .selectAll()
-      .executeTakeFirst();
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
 
-    if (!user) {
-      // Don't reveal if user exists or not
+    if (error || !user) {
       return NextResponse.json({ success: true });
     }
 
-    // Generate reset token
     const resetToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
       expiresIn: "1h",
     });
 
-    // Send reset email
     await resend.emails.send({
       from: "Cyna <onboarding@resend.dev>",
       to: [email],

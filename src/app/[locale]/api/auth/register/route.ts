@@ -17,14 +17,12 @@ export async function POST(request: Request) {
       email_verified: false,
     });
 
-    // Generate verification token
     const verificationToken = jwt.sign(
       { userId: user.id },
       process.env.JWT_SECRET || "your-secret-key",
       { expiresIn: "1d" }
     );
 
-    // Send verification email
     await resend.emails.send({
       from: "Cyna <onboarding@resend.dev>",
       to: [email],

@@ -14,7 +14,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
     }
 
-    // Get cart items
     const { data: cartItems, error: cartError } = await supabase
       .from("cart_items")
       .select(
@@ -35,7 +34,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
     }
 
-    // Create line items for Stripe
     const lineItems = cartItems.map((item) => {
       const service = item.services;
       let finalPrice = service.price;
@@ -61,7 +59,7 @@ export async function POST(request: Request) {
               discount > 0 ? ` (${discount * 100}% discount applied)` : ""
             }`,
           },
-          unit_amount: Math.round(finalPrice * 100), // Convert to cents
+          unit_amount: Math.round(finalPrice * 100),
           recurring: {
             interval: "month",
             interval_count: item.duration,
@@ -71,7 +69,6 @@ export async function POST(request: Request) {
       };
     });
 
-    // Create Stripe checkout session
     const session = await stripe.checkout.sessions.create({
       customer_email: user.email,
       mode: "subscription",

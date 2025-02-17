@@ -66,8 +66,8 @@ const solutions = [
 
 const durationOptions = [
   { value: "1", label: "1 Month", multiplier: 1, discount: 0 },
-  { value: "3", label: "3 Months", multiplier: 3, discount: 0.1 }, // 10% discount
-  { value: "12", label: "1 Year", multiplier: 12, discount: 0.2 }, // 20% discount
+  { value: "3", label: "3 Months", multiplier: 3, discount: 0.1 },
+  { value: "12", label: "1 Year", multiplier: 12, discount: 0.2 },
 ];
 
 export default function Solutions() {
@@ -116,7 +116,6 @@ export default function Solutions() {
         throw new Error("Service not found");
       }
 
-      // Check if item already exists in cart
       const { data: existingItems } = await supabase
         .from("cart_items")
         .select("*")
@@ -125,7 +124,6 @@ export default function Solutions() {
         .single();
 
       if (existingItems) {
-        // Update existing cart item
         const { error } = await supabase
           .from("cart_items")
           .update({
@@ -137,7 +135,6 @@ export default function Solutions() {
 
         if (error) throw error;
       } else {
-        // Add new cart item
         const { error } = await supabase.from("cart_items").insert([
           {
             user_id: session.user.id,

@@ -32,7 +32,6 @@ import {
   YAxis,
 } from "recharts";
 
-// Colors from the brand book
 const COLORS = ["#302082", "#FF6B00", "#F2F2F2"];
 
 interface SalesData {
@@ -82,7 +81,6 @@ export default function Dashboard() {
 
       if (error) throw error;
 
-      // Process data for charts
       const dailyData: { [key: string]: SalesData } = {};
       const categoryTotals: { [key: string]: number } = {
         SOC: 0,
@@ -95,7 +93,6 @@ export default function Dashboard() {
         const serviceName = payment.subscriptions?.services?.name || "Unknown";
         const amount = payment.amount;
 
-        // Initialize daily data if not exists
         if (!dailyData[date]) {
           dailyData[date] = {
             date,
@@ -106,7 +103,6 @@ export default function Dashboard() {
           };
         }
 
-        // Update daily totals
         dailyData[date].total += amount;
         if (serviceName.includes("SOC")) {
           dailyData[date].SOC += amount;
@@ -120,7 +116,6 @@ export default function Dashboard() {
         }
       });
 
-      // Convert to arrays for charts
       const salesDataArray = Object.values(dailyData).map((data) => ({
         ...data,
         date: format(new Date(data.date), "dd MMM", { locale: fr }),
@@ -159,7 +154,6 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">
-        {/* Daily Sales Chart */}
         <Card>
           <CardHeader>
             <CardTitle>Ventes quotidiennes</CardTitle>
@@ -180,7 +174,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        {/* Category Sales Chart */}
         <Card>
           <CardHeader>
             <CardTitle>Ventes par catégorie</CardTitle>

@@ -99,7 +99,6 @@ export default function Settings() {
       description: "Password changed successfully",
     });
 
-    // Reset form
     e.currentTarget.reset();
   };
 

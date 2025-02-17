@@ -135,7 +135,6 @@ export function ShoppingCart() {
       } = await supabase.auth.getSession();
 
       if (!session) {
-        // Redirect to login with returnTo parameter
         const returnTo = "/checkout";
         router.push(`/login?returnTo=${encodeURIComponent(returnTo)}`);
         return;

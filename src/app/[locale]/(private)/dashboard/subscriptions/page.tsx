@@ -124,7 +124,7 @@ export default function Subscriptions() {
         amount: order.amount,
         status: order.status,
         created_at: order.created_at,
-        subscription_period: "monthly", // You might want to get this from the subscription
+        subscription_period: "monthly",  You might want to get this from the subscription
         payment_method: order.payment_methods,
         billing_address: order.billing_addresses,
         invoice: order.invoices?.[0],

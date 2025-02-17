@@ -6,7 +6,6 @@ export async function POST(request: Request) {
   try {
     const { email, token } = await request.json();
 
-    // Get user's TOTP secret
     const { data: userData } = await supabase
       .from("users")
       .select("id")
@@ -27,7 +26,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "TOTP not enabled" }, { status: 400 });
     }
 
-    // Verify token
     const isValid = authenticator.verify({
       token,
       secret: totpData.secret,

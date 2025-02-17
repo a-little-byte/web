@@ -34,7 +34,6 @@ export default function Register() {
       const password = formData.get("password") as string;
       const fullName = formData.get("fullName") as string;
 
-      // Sign up the user with Supabase
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
