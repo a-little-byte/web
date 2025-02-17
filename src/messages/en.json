@@ -220,5 +220,35 @@
         "description": "Please try again later."
       }
     }
+  },
+  "about": {
+    "title": "About Cyna",
+    "introduction": "Cyna is a leading provider of enterprise-grade cybersecurity solutions. Our mission is to protect businesses from evolving cyber threats through innovative technology and expert services.",
+    "mission": {
+      "title": "Our Mission",
+      "description": "We believe that every organization deserves access to enterprise-grade security. Our solutions combine cutting-edge technology with expert human intelligence to provide comprehensive protection against modern cyber threats."
+    },
+    "whyChoose": {
+      "title": "Why Choose Cyna?",
+      "features": {
+        "expertTeam": {
+          "title": "Expert Team",
+          "description": "Our security experts have decades of combined experience in cybersecurity, threat intelligence, and incident response."
+        },
+        "advancedTechnology": {
+          "title": "Advanced Technology",
+          "description": "We leverage the latest AI and machine learning technologies to provide real-time threat detection and response."
+        },
+        "support": {
+          "title": "24/7 Support",
+          "description": "Our security operations center provides round-the-clock monitoring and support to protect your business."
+        },
+        "globalCoverage": {
+          "title": "Global Coverage",
+          "description": "With a global network of security operations centers, we provide protection for businesses worldwide."
+        }
+      }
+    },
+    "cta": "Get in Touch"
   }
 }
