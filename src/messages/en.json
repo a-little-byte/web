@@ -39,6 +39,28 @@
       "button": "Start Free Trial"
     }
   },
+  "forgotPassword": {
+    "title": "Forgot password",
+    "description": "Enter your email address and we'll send you a link to reset your password",
+    "send": "Send reset link",
+    "signInLink": "Sign in",
+    "rememberPassword": "Remember your password?",
+    "emailSent": {
+      "title": "Check your email",
+      "description": "We've sent you a password reset link. Please check your email.",
+      "returnToLogin": "Return to login"
+    },
+    "toasts": {
+      "valid": {
+        "title": "Email sent",
+        "description": "Check your email for password reset instructions."
+      },
+      "error": {
+        "title": "Error",
+        "description": "Failed to send reset email. Please try again."
+      }
+    }
+  },
   "solutions": {
     "title": "Security Solutions",
     "description": "Choose the security solution that best fits your organization's needs. All our products come with enterprise-grade support and SLA guarantees.",

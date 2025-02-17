@@ -181,7 +181,7 @@ export default function Solutions() {
             const duration = selectedDurations[solution.priceId] || "1";
             const price = calculatePrice(solution.basePrice, duration);
             const option = durationOptions.find(
-              (opt) => opt.value === duration,
+              (opt) => opt.value === duration
             );
 
             return (
@@ -238,13 +238,13 @@ export default function Solutions() {
                       for {option?.label}
                     </span>
                   </p>
-                  {option?.discount > 0 && (
+                  {option?.discount! > 0 && (
                     <p className="mt-2 text-sm text-muted-foreground">
                       Save $
                       {(
                         solution.basePrice *
-                        option.multiplier *
-                        option.discount
+                        option?.multiplier! *
+                        option?.discount!
                       ).toLocaleString()}
                     </p>
                   )}

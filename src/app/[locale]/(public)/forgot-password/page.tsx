@@ -12,24 +12,33 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { z } from "zod";
 
+const forgotPasswordSchema = z.object({
+  email: z.string().email(),
+});
 export default function ForgotPassword() {
+  const t = useTranslations("forgotPassword");
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
+  const form = useForm<
+    z.input<typeof forgotPasswordSchema>,
+    unknown,
+    z.output<typeof forgotPasswordSchema>
+  >({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const onSubmit = async ({ email }: z.output<typeof forgotPasswordSchema>) => {
     setIsLoading(true);
 
     try {
-      const formData = new FormData(event.currentTarget);
-      const email = formData.get("email") as string;
-
       const response = await fetch("/api/auth/forgot-password", {
         method: "POST",
         headers: {
@@ -46,34 +55,32 @@ export default function ForgotPassword() {
 
       setEmailSent(true);
       toast({
-        title: "Email sent",
-        description: "Check your email for password reset instructions.",
+        title: t("toasts.valid.title"),
+        description: t("toasts.valid.description"),
       });
     } catch (error) {
       console.error("Error:", error);
       toast({
-        title: "Error",
-        description: "Failed to send reset email. Please try again.",
+        title: t("toasts.error.title"),
+        description: t("toasts.error.description"),
         variant: "destructive",
       });
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   if (emailSent) {
     return (
       <div className="container flex h-screen w-screen flex-col items-center justify-center">
         <Card className="w-full max-w-lg">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Check your email</CardTitle>
-            <CardDescription>
-              We've sent you a password reset link. Please check your email.
-            </CardDescription>
+            <CardTitle className="text-2xl">{t("emailSent.title")}</CardTitle>
+            <CardDescription>{t("emailSent.description")}</CardDescription>
           </CardHeader>
           <CardFooter>
             <Button className="w-full" asChild>
-              <Link href="/login">Return to login</Link>
+              <Link href="/login">{t("emailSent.returnToLogin")}</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -85,43 +92,42 @@ export default function ForgotPassword() {
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <Card className="w-full max-w-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Forgot password</CardTitle>
-          <CardDescription>
-            Enter your email address and we'll send you a link to reset your
-            password
-          </CardDescription>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
-        <form onSubmit={onSubmit}>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="name@example.com"
-                disabled={isLoading}
-                required
-              />
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              Send reset link
-            </Button>
-            <p className="text-center text-sm text-muted-foreground">
-              Remember your password?{" "}
-              <Link
-                href="/login"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Sign in
-              </Link>
-            </p>
-          </CardFooter>
-        </form>
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="grid gap-4">
+              <div className="grid gap-2">
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  disabled={isLoading}
+                  required
+                />
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col space-y-4">
+              <Button className="w-full" type="submit" disabled={isLoading}>
+                {isLoading && (
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                )}
+                {t("send")}
+              </Button>
+              <p className="text-center text-sm text-muted-foreground">
+                {t("rememberPassword")}{" "}
+                <Link
+                  href="/login"
+                  className="underline underline-offset-4 hover:text-primary"
+                >
+                  {t("signInLink")}
+                </Link>
+              </p>
+            </CardFooter>
+          </form>
+        </FormProvider>
       </Card>
     </div>
   );

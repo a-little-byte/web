@@ -64,7 +64,6 @@ export default function Pricing() {
         },
         body: JSON.stringify({ priceId }),
       });
-
       const data = await response.json();
 
       if (data.url) {
