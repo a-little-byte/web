@@ -10,14 +10,14 @@ export async function POST(request: Request) {
     if (!user) {
       return NextResponse.json(
         { error: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     if (!user.email_verified) {
       return NextResponse.json(
         { error: "Email not verified" },
-        { status: 403 }
+        { status: 403 },
       );
     }
 

@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "your-secret-key"
+      process.env.JWT_SECRET || "your-secret-key",
     ) as { userId: number };
     await verifyEmail(decoded.userId);
 

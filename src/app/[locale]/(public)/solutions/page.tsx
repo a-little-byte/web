@@ -181,7 +181,7 @@ export default function Solutions() {
             const duration = selectedDurations[solution.priceId] || "1";
             const price = calculatePrice(solution.basePrice, duration);
             const option = durationOptions.find(
-              (opt) => opt.value === duration
+              (opt) => opt.value === duration,
             );
 
             return (

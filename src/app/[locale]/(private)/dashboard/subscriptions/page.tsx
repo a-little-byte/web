@@ -112,7 +112,7 @@ export default function Subscriptions() {
             number,
             file_url
           )
-        `
+        `,
         )
         .order("created_at", { ascending: false });
 
@@ -124,7 +124,7 @@ export default function Subscriptions() {
         amount: order.amount,
         status: order.status,
         created_at: order.created_at,
-        subscription_period: "monthly",  You might want to get this from the subscription
+        subscription_period: "monthly",
         payment_method: order.payment_methods,
         billing_address: order.billing_addresses,
         invoice: order.invoices?.[0],
@@ -156,7 +156,9 @@ export default function Subscriptions() {
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) => new Date(order.created_at).getFullYear().toString())
+      orders.map((order) =>
+        new Date(order.created_at).getFullYear().toString(),
+      ),
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -280,15 +282,15 @@ export default function Subscriptions() {
                             order.status === "active"
                               ? "default"
                               : order.status === "cancelled"
-                              ? "destructive"
-                              : "secondary"
+                                ? "destructive"
+                                : "secondary"
                           }
                         >
                           {order.status === "active"
                             ? "Active"
                             : order.status === "cancelled"
-                            ? "Résiliée"
-                            : "Expirée"}
+                              ? "Résiliée"
+                              : "Expirée"}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -336,7 +338,7 @@ export default function Subscriptions() {
                                           {format(
                                             new Date(order.created_at),
                                             "PPP",
-                                            { locale: fr }
+                                            { locale: fr },
                                           )}
                                         </dd>
                                       </div>

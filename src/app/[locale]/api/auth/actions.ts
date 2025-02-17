@@ -48,7 +48,7 @@ export async function login(email: string, password: string) {
 export async function register(
   email: string,
   password: string,
-  fullName: string
+  fullName: string,
 ) {
   // try {
   //   const hashedPassword = await bcrypt.hash(password, 10);

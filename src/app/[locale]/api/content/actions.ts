@@ -29,7 +29,7 @@ export async function updatePageContent(section: string, content: any) {
         oc.column("section").doUpdateSet({
           content,
           updated_at: new Date(),
-        })
+        }),
       )
       .returningAll()
       .executeTakeFirstOrThrow();

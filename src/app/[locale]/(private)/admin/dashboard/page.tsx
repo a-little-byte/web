@@ -73,7 +73,7 @@ export default function Dashboard() {
               name
             )
           )
-        `
+        `,
         )
         .gte("created_at", startDate.toISOString())
         .lte("created_at", endDate.toISOString())
@@ -125,7 +125,7 @@ export default function Dashboard() {
         ([name, value]) => ({
           name,
           value,
-        })
+        }),
       );
 
       setSalesData(salesDataArray);

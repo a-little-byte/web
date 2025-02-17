@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const [subscriptions, setSubscriptions] = useState<Tables<"subscriptions">[]>(
-    []
+    [],
   );
   const [totalSpent, setTotalSpent] = useState(0);
   const { toast } = useToast();
@@ -17,7 +17,7 @@ export default function Dashboard() {
     const fetchSubscriptions = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
+        "$1",
       );
       const decoded = JSON.parse(atob(token.split(".")[1]));
 
@@ -34,7 +34,7 @@ export default function Dashboard() {
       price,
       period
     )
-  `
+  `,
         )
         .eq("user_id", decoded.userId)
         .eq("status", "active");
@@ -47,7 +47,7 @@ export default function Dashboard() {
     subscriptions!inner (
       id
     )
-  `
+  `,
         )
         .eq("subscriptions.user_id", decoded.userId);
 
@@ -57,7 +57,7 @@ export default function Dashboard() {
       }
 
       setTotalSpent(
-        payments.reduce((sum, payment) => sum + Number(payment.amount), 0)
+        payments.reduce((sum, payment) => sum + Number(payment.amount), 0),
       );
       setSubscriptions(subs as any);
     };

@@ -25,7 +25,7 @@ export async function POST(request: Request) {
           price,
           period
         )
-      `
+      `,
       )
       .eq("user_id", user.id);
 
@@ -86,7 +86,7 @@ export async function POST(request: Request) {
     console.error("Error creating checkout session:", error);
     return NextResponse.json(
       { error: "Error creating checkout session" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

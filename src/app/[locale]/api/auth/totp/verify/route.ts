@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     console.error("TOTP verification error:", error);
     return NextResponse.json(
       { error: "Failed to verify TOTP" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

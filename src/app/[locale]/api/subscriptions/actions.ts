@@ -44,7 +44,7 @@ export async function getUserPayments() {
       .innerJoin(
         "subscriptions",
         "subscriptions.id",
-        "payments.subscription_id"
+        "payments.subscription_id",
       )
       .innerJoin("services", "services.id", "subscriptions.service_id")
       .where("subscriptions.user_id", "=", user.id)

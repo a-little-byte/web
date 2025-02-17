@@ -50,7 +50,7 @@ export default function Success() {
                 period
               )
             )
-          `
+          `,
           )
           .eq("stripe_session_id", sessionId)
           .single();

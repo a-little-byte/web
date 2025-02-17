@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const otpauth = authenticator.keyuri(
       session.user.email!,
       "Cyna Security",
-      secret
+      secret,
     );
     const qrCode = await QRCode.toDataURL(otpauth);
 
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     console.error("TOTP setup error:", error);
     return NextResponse.json(
       { error: "Failed to setup TOTP" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

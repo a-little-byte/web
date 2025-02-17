@@ -66,7 +66,7 @@ export function ShoppingCart() {
             price,
             period
           )
-        `
+        `,
         )
         .eq("user_id", session.user.id);
 

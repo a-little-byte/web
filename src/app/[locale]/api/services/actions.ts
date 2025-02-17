@@ -19,7 +19,7 @@ export async function getServices() {
 }
 
 export async function createService(
-  data: Omit<Service, "id" | "created_at" | "updated_at">
+  data: Omit<Service, "id" | "created_at" | "updated_at">,
 ) {
   try {
     const service = await db

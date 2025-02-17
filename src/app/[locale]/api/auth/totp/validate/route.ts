@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     console.error("TOTP validation error:", error);
     return NextResponse.json(
       { error: "Failed to validate TOTP" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

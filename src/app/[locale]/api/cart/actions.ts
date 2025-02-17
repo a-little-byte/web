@@ -107,7 +107,7 @@ export async function getCartItems() {
           price,
           period
         )
-      `
+      `,
       )
       .eq("user_id", user.id);
 

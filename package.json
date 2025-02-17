@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "format": "prettier -c ./src",
+    "format:fix": "prettier -w ./src"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -79,6 +82,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
-    "@types/qrcode": "^1.5.5"
+    "@types/qrcode": "^1.5.5",
+    "prettier": "^3.5.1"
   }
 }

@@ -1,30 +1,30 @@
-import Link from 'next/link'
-import { ShieldCheck } from 'lucide-react'
+import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
 
 const navigation = {
   solutions: [
-    { name: 'SOC', href: '#' },
-    { name: 'EDR', href: '#' },
-    { name: 'XDR', href: '#' },
-    { name: 'Threat Intelligence', href: '#' },
+    { name: "SOC", href: "#" },
+    { name: "EDR", href: "#" },
+    { name: "XDR", href: "#" },
+    { name: "Threat Intelligence", href: "#" },
   ],
   support: [
-    { name: 'Documentation', href: '#' },
-    { name: 'Guides', href: '#' },
-    { name: 'API Status', href: '#' },
+    { name: "Documentation", href: "#" },
+    { name: "Guides", href: "#" },
+    { name: "API Status", href: "#" },
   ],
   company: [
-    { name: 'About', href: '#' },
-    { name: 'Blog', href: '#' },
-    { name: 'Partners', href: '#' },
-    { name: 'Careers', href: '#' },
+    { name: "About", href: "#" },
+    { name: "Blog", href: "#" },
+    { name: "Partners", href: "#" },
+    { name: "Careers", href: "#" },
   ],
   legal: [
-    { name: 'Terms', href: '/terms' },
-    { name: 'Privacy', href: '#' },
-    { name: 'Legal Notices', href: '/legal' },
+    { name: "Terms", href: "/terms" },
+    { name: "Privacy", href: "#" },
+    { name: "Legal Notices", href: "/legal" },
   ],
-}
+};
 
 export default function Footer() {
   return (
@@ -40,7 +40,8 @@ export default function Footer() {
               <span className="font-bold text-xl">Cyna</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Enterprise-grade cybersecurity solutions for your business. Protect your digital assets with industry-leading technology.
+              Enterprise-grade cybersecurity solutions for your business.
+              Protect your digital assets with industry-leading technology.
             </p>
           </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
@@ -50,7 +51,10 @@ export default function Footer() {
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                      <Link
+                        href={item.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
                         {item.name}
                       </Link>
                     </li>
@@ -62,7 +66,10 @@ export default function Footer() {
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                      <Link
+                        href={item.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
                         {item.name}
                       </Link>
                     </li>
@@ -76,7 +83,10 @@ export default function Footer() {
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                      <Link
+                        href={item.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
                         {item.name}
                       </Link>
                     </li>
@@ -88,7 +98,10 @@ export default function Footer() {
                 <ul role="list" className="mt-4 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <Link href={item.href} className="text-sm text-muted-foreground hover:text-foreground">
+                      <Link
+                        href={item.href}
+                        className="text-sm text-muted-foreground hover:text-foreground"
+                      >
                         {item.name}
                       </Link>
                     </li>
@@ -105,5 +118,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
