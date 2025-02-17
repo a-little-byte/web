@@ -12,24 +12,38 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const contactFormSchema = z.object({
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  company: z.string(),
+  interest: z.string(),
+  message: z.string(),
+});
 
 export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const t = useTranslations("contact");
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm<
+    z.input<typeof contactFormSchema>,
+    unknown,
+    z.output<typeof contactFormSchema>
+  >({
+    resolver: zodResolver(contactFormSchema),
+  });
 
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const message = formData.get("message");
-    const firstName = formData.get("firstName");
-    const lastName = formData.get("lastName");
-    const company = formData.get("company");
-    const interest = formData.get("interest");
-
+  const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
       const response = await fetch("/api/send", {
         method: "POST",
@@ -37,34 +51,32 @@ export default function Contact() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email,
-          subject: `New Contact Form Submission from ${firstName} ${lastName}`,
+          email: data.email,
+          subject: `New Contact Form Submission from ${data.firstName} ${data.lastName}`,
           message: `
-            Name: ${firstName} ${lastName}
-            Company: ${company}
-            Interest: ${interest}
-            Message: ${message}
+            Name: ${data.firstName} ${data.lastName}
+            Company: ${data.company}
+            Interest: ${data.interest}
+            Message: ${data.message}
           `,
         }),
       });
 
       if (response.ok) {
         toast({
-          title: "Message sent successfully",
-          description: "We'll get back to you as soon as possible.",
+          title: t("toast.success.title"),
+          description: t("toast.success.description"),
         });
-        e.currentTarget.reset();
+        reset();
       } else {
         throw new Error("Failed to send message");
       }
     } catch (error) {
       toast({
-        title: "Error sending message",
-        description: "Please try again later.",
+        title: t("toast.error.title"),
+        description: t("toast.error.description"),
         variant: "destructive",
       });
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -73,63 +85,61 @@ export default function Contact() {
       <div className="container">
         <div className="mx-auto max-w-2xl">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-center">
-            Contact Us
+            {t("title")}
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground text-center">
-            Get in touch with our security experts. We'll help you find the
-            right solution for your business.
+            {t("subtitle")}
           </p>
 
-          <form onSubmit={handleSubmit} className="mt-16 space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-16 space-y-8">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First name</Label>
-                <Input id="firstName" name="firstName" required />
+                <Label htmlFor="firstName">{t("form.firstName")}</Label>
+                <Input {...register("firstName", { required: true })} />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last name</Label>
-                <Input id="lastName" name="lastName" required />
+                <Label htmlFor="lastName">{t("form.lastName")}</Label>
+                <Input {...register("lastName", { required: true })} />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" required />
+              <Label htmlFor="email">{t("form.email")}</Label>
+              <Input {...register("email", { required: true })} type="email" />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="company">Company</Label>
-              <Input id="company" name="company" required />
+              <Label htmlFor="company">{t("form.company")}</Label>
+              <Input {...register("company", { required: true })} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="interest">I'm interested in</Label>
-              <Select name="interest">
+              <Label htmlFor="interest">{t("form.interest.label")}</Label>
+              <Select {...register("interest")}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select a service" />
+                  <SelectValue placeholder={t("form.interest.placeholder")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="soc">SOC as a Service</SelectItem>
-                  <SelectItem value="edr">EDR Protection</SelectItem>
-                  <SelectItem value="xdr">XDR Platform</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  {["soc", "edr", "xdr", "other"].map((key) => (
+                    <SelectItem value={key}>
+                      {t(`form.interest.options.${key}`)}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="message">Message</Label>
+              <Label htmlFor="message">{t("form.message.label")}</Label>
               <Textarea
-                id="message"
-                name="message"
-                placeholder="Tell us about your security needs"
+                {...register("message", { required: true })}
+                placeholder={t("form.message.placeholder")}
                 className="min-h-[150px]"
-                required
               />
             </div>
 
             <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : "Send Message"}
+              {t(`form.submit.${isSubmitting ? "sending" : "default"}`)}
             </Button>
           </form>
         </div>

@@ -182,5 +182,43 @@
     "processing": "Processing...",
     "accepted": "Terms Accepted",
     "acceptedMessage": "Thank you for accepting our terms and conditions."
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our security experts. We'll help you find the right solution for your business.",
+    "form": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "company": "Company",
+      "interest": {
+        "label": "I'm interested in",
+        "placeholder": "Select a service",
+        "options": {
+          "soc": "SOC as a Service",
+          "edr": "EDR Protection",
+          "xdr": "XDR Platform",
+          "other": "Other"
+        }
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Tell us about your security needs"
+      },
+      "submit": {
+        "sending": "Sending...",
+        "default": "Send Message"
+      }
+    },
+    "toast": {
+      "success": {
+        "title": "Message sent successfully",
+        "description": "We'll get back to you as soon as possible."
+      },
+      "error": {
+        "title": "Error sending message",
+        "description": "Please try again later."
+      }
+    }
   }
 }

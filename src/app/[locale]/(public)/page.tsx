@@ -22,7 +22,7 @@ const features = [
     name: "global",
     icon: Globe,
   },
-];
+] as const;
 
 export default function Home() {
   const t = useTranslations("home");
