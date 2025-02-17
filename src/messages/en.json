@@ -250,5 +250,76 @@
       }
     },
     "cta": "Get in Touch"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "description": "Enter your email and password to access your account",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@company.com",
+      "passwordLabel": "Password",
+      "forgotPassword": "Forgot password?",
+      "signInButton": "Sign in",
+      "noAccount": "Don't have an account?",
+      "signUpLink": "Sign up",
+      "toasts": {
+        "emailNotVerified": {
+          "title": "Email not verified",
+          "description": "Please check your email to verify your account."
+        },
+        "loginSuccess": {
+          "title": "Login successful",
+          "description": "Welcome back!"
+        },
+        "loginError": {
+          "title": "Error",
+          "description": "Invalid email or password."
+        }
+      }
+    },
+    "totp": {
+      "title": "Enter Authentication Code",
+      "description": "Please enter the code from your authenticator app",
+      "codeLabel": "Authentication Code",
+      "codePlaceholder": "000000",
+      "verifyButton": "Verify",
+      "backButton": "Back to Login"
+    },
+    "register": {
+      "title": "Create an account",
+      "description": "Enter your details below to create your account",
+      "fullName": {
+        "label": "Full Name",
+        "placeholder": "John Doe"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "name@company.com"
+      },
+      "password": {
+        "label": "Password"
+      },
+      "confirmPassword": {
+        "label": "Confirm Password"
+      },
+      "submit": "Create account",
+      "loginLink": "Already have an account?",
+      "loginText": "Sign in"
+    },
+    "emailSent": {
+      "title": "Check your email",
+      "description": "We've sent you an email with a verification link. Please check your inbox and click the link to verify your account.",
+      "returnToLogin": "Return to login"
+    },
+    "toast": {
+      "success": {
+        "title": "Registration successful",
+        "description": "Please check your email to verify your account."
+      },
+      "error": {
+        "title": "Error",
+        "description": "Something went wrong. Please try again."
+      }
+    }
   }
 }

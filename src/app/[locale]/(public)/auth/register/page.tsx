@@ -14,32 +14,51 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+
+const formSchema = z
+  .object({
+    fullName: z.string().min(1, "Full name is required"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });
+
+type FormData = z.infer<typeof formSchema>;
 
 export default function Register() {
-  const [isLoading, setIsLoading] = useState(false);
+  const t = useTranslations("auth.register");
+  const tToast = useTranslations("auth.toast");
+  const tEmailSent = useTranslations("auth.emailSent");
+
   const [emailSent, setEmailSent] = useState(false);
-  const router = useRouter();
   const { toast } = useToast();
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setIsLoading(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+  });
 
+  const onSubmit = async (data: FormData) => {
     try {
-      const formData = new FormData(event.currentTarget);
-      const email = formData.get("email") as string;
-      const password = formData.get("password") as string;
-      const fullName = formData.get("fullName") as string;
-
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
+      const { data: authData, error } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
         options: {
           data: {
-            full_name: fullName,
+            full_name: data.fullName,
           },
           emailRedirectTo: `${window.location.origin}/auth/callback`,
         },
@@ -47,39 +66,34 @@ export default function Register() {
 
       if (error) throw error;
 
-      if (data.user) {
+      if (authData.user) {
         setEmailSent(true);
         toast({
-          title: "Registration successful",
-          description: "Please check your email to verify your account.",
+          title: tToast("success.title"),
+          description: tToast("success.description"),
         });
       }
     } catch (error) {
       console.error("Error:", error);
       toast({
-        title: "Error",
-        description: "Something went wrong. Please try again.",
+        title: tToast("error.title"),
+        description: tToast("error.description"),
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
-  }
+  };
 
   if (emailSent) {
     return (
       <div className="container flex h-screen w-screen flex-col items-center justify-center">
         <Card className="w-full max-w-lg">
           <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl">Check your email</CardTitle>
-            <CardDescription>
-              We've sent you an email with a verification link. Please check
-              your inbox and click the link to verify your account.
-            </CardDescription>
+            <CardTitle className="text-2xl">{tEmailSent("title")}</CardTitle>
+            <CardDescription>{tEmailSent("description")}</CardDescription>
           </CardHeader>
           <CardFooter>
             <Button className="w-full" asChild>
-              <Link href="/login">Return to login</Link>
+              <Link href="/login">{tEmailSent("returnToLogin")}</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -91,69 +105,83 @@ export default function Register() {
     <div className="container flex h-screen w-screen flex-col items-center justify-center">
       <Card className="w-full max-w-lg">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">Create an account</CardTitle>
-          <CardDescription>
-            Enter your details below to create your account
-          </CardDescription>
+          <CardTitle className="text-2xl">{t("title")}</CardTitle>
+          <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="fullName">{t("fullName.label")}</Label>
               <Input
                 id="fullName"
-                name="fullName"
-                placeholder="John Doe"
-                disabled={isLoading}
-                required
+                placeholder={t("fullName.placeholder")}
+                disabled={isSubmitting}
+                {...register("fullName")}
               />
+              {errors.fullName && (
+                <p className="text-sm text-red-500">
+                  {errors.fullName.message}
+                </p>
+              )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("email.label")}</Label>
               <Input
                 id="email"
-                name="email"
                 type="email"
-                placeholder="name@company.com"
-                disabled={isLoading}
-                required
+                placeholder={t("email.placeholder")}
+                disabled={isSubmitting}
+                {...register("email")}
               />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">{t("password.label")}</Label>
               <Input
                 id="password"
-                name="password"
                 type="password"
-                disabled={isLoading}
-                required
+                disabled={isSubmitting}
+                {...register("password")}
               />
+              {errors.password && (
+                <p className="text-sm text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
+              <Label htmlFor="confirmPassword">
+                {t("confirmPassword.label")}
+              </Label>
               <Input
                 id="confirmPassword"
-                name="confirmPassword"
                 type="password"
-                disabled={isLoading}
-                required
+                disabled={isSubmitting}
+                {...register("confirmPassword")}
               />
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             </div>
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading && (
+            <Button className="w-full" type="submit" disabled={isSubmitting}>
+              {isSubmitting && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Create account
+              {t("submit")}
             </Button>
             <p className="text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              {t("loginLink")}{" "}
               <Link
                 href="/login"
                 className="underline underline-offset-4 hover:text-primary"
               >
-                Sign in
+                {t("loginText")}
               </Link>
             </p>
           </CardFooter>
