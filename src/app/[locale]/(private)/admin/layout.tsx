@@ -1,8 +1,8 @@
 "use client";
 
+import { useRouter } from "@/i18n/routing";
 import { isAdmin } from "@/lib/auth";
 import jwt from "jsonwebtoken";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function AdminLayout({
@@ -16,7 +16,7 @@ export default function AdminLayout({
     const checkAdmin = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
+        "$1"
       );
 
       if (!token) {
@@ -27,7 +27,7 @@ export default function AdminLayout({
       try {
         const decoded = jwt.verify(
           token,
-          process.env.JWT_SECRET || "your-secret-key",
+          process.env.JWT_SECRET || "your-secret-key"
         ) as { userId: string };
         const adminStatus = await isAdmin(decoded.userId);
 

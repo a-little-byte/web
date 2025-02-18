@@ -2,9 +2,10 @@
 
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
 import { useTranslations } from "next-intl";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ConfirmEmail() {

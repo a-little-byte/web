@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
 import {
   ShoppingCart as CartIcon,
@@ -18,7 +19,6 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface CartItem {
@@ -66,7 +66,7 @@ export function ShoppingCart() {
             price,
             period
           )
-        `,
+        `
         )
         .eq("user_id", session.user.id);
 
