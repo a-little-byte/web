@@ -1,10 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Link } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface CarouselItem {
@@ -66,7 +66,7 @@ export function HeroCarousel() {
           key={item.id}
           className={cn(
             "absolute inset-0 transition-transform duration-500 ease-in-out",
-            index === currentIndex ? "translate-x-0" : "translate-x-full",
+            index === currentIndex ? "translate-x-0" : "translate-x-full"
           )}
           style={{
             transform: `translateX(${100 * (index - currentIndex)}%)`,
@@ -121,7 +121,7 @@ export function HeroCarousel() {
                 key={index}
                 className={cn(
                   "w-2 h-2 rounded-full transition-colors",
-                  index === currentIndex ? "bg-white" : "bg-white/50",
+                  index === currentIndex ? "bg-white" : "bg-white/50"
                 )}
                 onClick={() => goToSlide(index)}
               />

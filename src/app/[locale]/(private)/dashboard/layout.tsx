@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link, useRouter } from "@/i18n/routing";
 import { CreditCard, Home, Settings } from "lucide-react";
+import { useEffect } from "react";
 
 export default function DashboardLayout({
   children,
@@ -15,7 +14,7 @@ export default function DashboardLayout({
   useEffect(() => {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
+      "$1"
     );
 
     if (!token) {

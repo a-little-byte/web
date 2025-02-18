@@ -2,9 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
 import { ArrowRight, CheckCircle } from "lucide-react";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -50,7 +50,7 @@ export default function Success() {
                 period
               )
             )
-          `,
+          `
           )
           .eq("stripe_session_id", sessionId)
           .single();
