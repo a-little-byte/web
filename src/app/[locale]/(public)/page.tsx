@@ -24,7 +24,7 @@ const features = [
   },
 ] as const;
 
-export default function Home() {
+const Home = () => {
   const t = useTranslations("home");
 
   return (
@@ -88,4 +88,6 @@ export default function Home() {
       </section>
     </div>
   );
-}
+};
+
+export default Home;

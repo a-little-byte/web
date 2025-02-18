@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,15 +12,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
 import { Link } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const formSchema = z
@@ -35,7 +34,7 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function Register() {
+const Register = () => {
   const t = useTranslations("auth.register");
   const tToast = useTranslations("auth.toast");
   const tEmailSent = useTranslations("auth.emailSent");
@@ -43,13 +42,7 @@ export default function Register() {
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-  });
+  const form = useForm(formSchema);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -74,7 +67,6 @@ export default function Register() {
         });
       }
     } catch (error) {
-      console.error("Error:", error);
       toast({
         title: tToast("error.title"),
         description: tToast("error.description"),
@@ -108,69 +100,40 @@ export default function Register() {
           <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form form={form} onSubmit={onSubmit}>
           <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="fullName">{t("fullName.label")}</Label>
-              <Input
-                id="fullName"
-                placeholder={t("fullName.placeholder")}
-                disabled={isSubmitting}
-                {...register("fullName")}
-              />
-              {errors.fullName && (
-                <p className="text-sm text-red-500">
-                  {errors.fullName.message}
-                </p>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">{t("email.label")}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder={t("email.placeholder")}
-                disabled={isSubmitting}
-                {...register("email")}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">{t("password.label")}</Label>
-              <Input
-                id="password"
-                type="password"
-                disabled={isSubmitting}
-                {...register("password")}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="confirmPassword">
-                {t("confirmPassword.label")}
-              </Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                disabled={isSubmitting}
-                {...register("confirmPassword")}
-              />
-              {errors.confirmPassword && (
-                <p className="text-sm text-red-500">
-                  {errors.confirmPassword.message}
-                </p>
-              )}
-            </div>
+            <InputField
+              control={form.control}
+              name="fullName"
+              label={t("fullName.label")}
+              placeholder={t("fullName.placeholder")}
+            />
+            <InputField
+              control={form.control}
+              name="email"
+              label={t("email.label")}
+              placeholder={t("email.placeholder")}
+            />
+            <InputField
+              control={form.control}
+              name="password"
+              label={t("password.label")}
+              placeholder={t("password.placeholder")}
+            />
+            <InputField
+              control={form.control}
+              name="confirmPassword"
+              label={t("confirmPassword.label")}
+              placeholder={t("confirmPassword.placeholder")}
+            />
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
-              {isSubmitting && (
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               {t("submit")}
@@ -185,8 +148,10 @@ export default function Register() {
               </Link>
             </p>
           </CardFooter>
-        </form>
+        </Form>
       </Card>
     </div>
   );
-}
+};
+
+export default Register;

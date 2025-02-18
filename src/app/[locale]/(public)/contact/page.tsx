@@ -26,7 +26,7 @@ const contactFormSchema = z.object({
   message: z.string(),
 });
 
-export default function Contact() {
+const Contact = () => {
   const t = useTranslations("contact");
   const { toast } = useToast();
 
@@ -146,4 +146,6 @@ export default function Contact() {
       </div>
     </div>
   );
-}
+};
+
+export default Contact;

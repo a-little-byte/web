@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,13 +12,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
 import { Link } from "@/i18n/routing";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 
 const forgotPasswordSchema = z.object({
@@ -27,13 +27,7 @@ export default function ForgotPassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
-  const form = useForm<
-    z.input<typeof forgotPasswordSchema>,
-    unknown,
-    z.output<typeof forgotPasswordSchema>
-  >({
-    resolver: zodResolver(forgotPasswordSchema),
-  });
+  const form = useForm(forgotPasswordSchema);
 
   const onSubmit = async ({ email }: z.output<typeof forgotPasswordSchema>) => {
     setIsLoading(true);
@@ -95,39 +89,34 @@ export default function ForgotPassword() {
           <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="grid gap-4">
-              <div className="grid gap-2">
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="name@example.com"
-                  disabled={isLoading}
-                  required
-                />
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button className="w-full" type="submit" disabled={isLoading}>
-                {isLoading && (
-                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                {t("send")}
-              </Button>
-              <p className="text-center text-sm text-muted-foreground">
-                {t("rememberPassword")}{" "}
-                <Link
-                  href="/login"
-                  className="underline underline-offset-4 hover:text-primary"
-                >
-                  {t("signInLink")}
-                </Link>
-              </p>
-            </CardFooter>
-          </form>
-        </FormProvider>
+        <Form form={form} onSubmit={onSubmit}>
+          <CardContent className="grid gap-4">
+            <InputField
+              control={form.control}
+              name="email"
+              label={t("email.label")}
+              placeholder={t("email.placeholder")}
+              disabled={isLoading}
+            />
+          </CardContent>
+          <CardFooter className="flex flex-col space-y-4">
+            <Button className="w-full" type="submit" disabled={isLoading}>
+              {isLoading && (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              {t("send")}
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              {t("rememberPassword")}{" "}
+              <Link
+                href="/login"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                {t("signInLink")}
+              </Link>
+            </p>
+          </CardFooter>
+        </Form>
       </Card>
     </div>
   );

@@ -50,7 +50,7 @@ const durationOptions = [
   { value: "12", multiplier: 12, discount: 0.2 },
 ];
 
-export default function Solutions() {
+const Solutions = () => {
   const t = useTranslations("solutions");
   const { toast } = useToast();
 
@@ -202,4 +202,6 @@ export default function Solutions() {
       </div>
     </div>
   );
-}
+};
+
+export default Solutions;

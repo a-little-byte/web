@@ -1,6 +1,6 @@
-import Footer from "@/components/footer";
-import Header from "@/components/header";
-import { ThemeProvider } from "@/components/theme-provider";
+import Footer from "@/components/layout/footer";
+import Header from "@/components/layout/header";
+import { ThemeProvider } from "@/components/layout/theme-provider";
 import { routing } from "@/i18n/routing";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";

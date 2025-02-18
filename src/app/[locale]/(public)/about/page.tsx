@@ -21,7 +21,7 @@ const features = [
   },
 ] as const;
 
-export default function About() {
+const About = () => {
   const t = useTranslations("about");
 
   return (
@@ -74,4 +74,6 @@ export default function About() {
       </div>
     </div>
   );
-}
+};
+
+export default About;

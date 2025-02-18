@@ -2,7 +2,7 @@
 
 import { useTranslations } from "next-intl";
 
-export default function Legal() {
+const Legal = () => {
   const t = useTranslations("legal");
 
   return (
@@ -88,4 +88,6 @@ export default function Legal() {
       </div>
     </div>
   );
-}
+};
+
+export default Legal;

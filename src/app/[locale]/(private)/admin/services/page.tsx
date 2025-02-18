@@ -1,5 +1,7 @@
 "use client";
 
+import { InputField } from "@/components/base/InputField";
+import { TextareaField } from "@/components/base/TextareaField";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 import {
   Table,
   TableBody,
@@ -17,19 +19,33 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
 import { supabase, type Tables } from "@/lib/supabase";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-
-export default function ServicesManagement() {
+import { z } from "zod";
+const serviceSchema = z.object({
+  name: z.string().min(1),
+  description: z.string().min(1),
+  price: z.number().min(0),
+  period: z.string().min(1),
+});
+const ServicesManagement = () => {
   const t = useTranslations("admin.services");
   const [services, setServices] = useState<Tables<"services">[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentService, setCurrentService] =
     useState<Tables<"services"> | null>(null);
   const { toast } = useToast();
+  const form = useForm(serviceSchema, {
+    defaultValues: currentService || {
+      name: "",
+      description: "",
+      price: 0,
+      period: "",
+    },
+  });
 
   useEffect(() => {
     fetchServices();
@@ -45,8 +61,6 @@ export default function ServicesManagement() {
       if (error) throw error;
 
       setServices(data);
-
-      setServices(services);
     } catch (error) {
       toast({
         title: t("toasts.fetchError.title"),
@@ -56,24 +70,15 @@ export default function ServicesManagement() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const serviceData = {
-      name: formData.get("name") as string,
-      description: formData.get("description") as string,
-      price: Number(formData.get("price")),
-      period: formData.get("period") as string,
-    };
-
+  const handleSubmit = async (values: z.infer<typeof serviceSchema>) => {
     try {
       if (currentService) {
         await supabase
           .from("services")
-          .update(serviceData)
+          .update(values)
           .eq("id", currentService.id);
       } else {
-        await supabase.from("services").insert(serviceData).select();
+        await supabase.from("services").insert(values).select();
       }
 
       toast({
@@ -95,12 +100,12 @@ export default function ServicesManagement() {
     }
   };
 
-  const handleEdit = (service: Tables<"services">) => {
+  const handleEdit = (service: Tables<"services">) => () => {
     setCurrentService(service);
     setIsOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => async () => {
     try {
       await supabase.from("services").delete().eq("id", id);
 
@@ -135,70 +140,33 @@ export default function ServicesManagement() {
                 {currentService ? t("editService") : t("addService")}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium mb-1"
-                >
-                  {t("form.name.label")}
-                </label>
-                <Input
-                  id="name"
-                  name="name"
-                  defaultValue={currentService?.name}
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="description"
-                  className="block text-sm font-medium mb-1"
-                >
-                  {t("form.description.label")}
-                </label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  defaultValue={currentService?.description}
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="price"
-                  className="block text-sm font-medium mb-1"
-                >
-                  {t("form.price.label")}
-                </label>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  defaultValue={currentService?.price}
-                  required
-                />
-              </div>
-              <div>
-                <label
-                  htmlFor="period"
-                  className="block text-sm font-medium mb-1"
-                >
-                  {t("form.period.label")}
-                </label>
-                <Input
-                  id="period"
-                  name="period"
-                  defaultValue={currentService?.period}
-                  required
-                />
-              </div>
-              <Button type="submit" className="w-full">
+            <Form form={form} onSubmit={handleSubmit}>
+              <InputField
+                control={form.control}
+                name="name"
+                label={t("form.name.label")}
+              />
+              <TextareaField
+                control={form.control}
+                name="description"
+                label={t("form.description.label")}
+              />
+              <InputField
+                control={form.control}
+                name="price"
+                label={t("form.price.label")}
+              />
+              <InputField
+                control={form.control}
+                name="period"
+                label={t("form.period.label")}
+              />
+              <Button type="submit">
                 {currentService
                   ? t("form.submit.update")
                   : t("form.submit.create")}
               </Button>
-            </form>
+            </Form>
           </DialogContent>
         </Dialog>
       </div>
@@ -206,11 +174,11 @@ export default function ServicesManagement() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("table.name")}</TableHead>
-            <TableHead>{t("table.description")}</TableHead>
-            <TableHead>{t("table.price")}</TableHead>
-            <TableHead>{t("table.period")}</TableHead>
-            <TableHead>{t("table.actions")}</TableHead>
+            {["name", "description", "price", "period", "actions"].map(
+              (column) => (
+                <TableHead key={column}>{t(`table.${column}`)}</TableHead>
+              )
+            )}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -225,14 +193,14 @@ export default function ServicesManagement() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleEdit(service)}
+                    onClick={handleEdit(service)}
                   >
                     {t("actions.edit")}
                   </Button>
                   <Button
                     variant="destructive"
                     size="sm"
-                    onClick={() => handleDelete(service.id)}
+                    onClick={handleDelete(service.id)}
                   >
                     {t("actions.delete")}
                   </Button>
@@ -244,4 +212,6 @@ export default function ServicesManagement() {
       </Table>
     </div>
   );
-}
+};
+
+export default ServicesManagement;

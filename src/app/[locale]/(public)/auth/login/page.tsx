@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,16 +12,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
 import { Link, useRouter } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const loginSchema = z.object({
@@ -31,10 +30,7 @@ const totpSchema = z.object({
   code: z.string().length(6),
 });
 
-type LoginFormData = z.infer<typeof loginSchema>;
-type TOTPFormData = z.infer<typeof totpSchema>;
-
-export default function Login() {
+const Login = () => {
   const t = useTranslations("auth.login");
   const tTotp = useTranslations("auth.totp");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,15 +40,11 @@ export default function Login() {
   const returnTo = searchParams.get("returnTo") || "/dashboard";
   const { toast } = useToast();
 
-  const loginForm = useForm<LoginFormData>({
-    resolver: zodResolver(loginSchema),
-  });
+  const loginForm = useForm(loginSchema);
 
-  const totpForm = useForm<TOTPFormData>({
-    resolver: zodResolver(totpSchema),
-  });
+  const totpForm = useForm(totpSchema);
 
-  async function onLoginSubmit(data: LoginFormData) {
+  async function onLoginSubmit(data: z.infer<typeof loginSchema>) {
     setIsLoading(true);
 
     try {
@@ -101,18 +93,15 @@ export default function Login() {
             <CardTitle className="text-2xl">{tTotp("title")}</CardTitle>
             <CardDescription>{tTotp("description")}</CardDescription>
           </CardHeader>
-          <form onSubmit={totpForm.handleSubmit((data) => console.log(data))}>
+          <Form form={totpForm} onSubmit={(data) => console.log(data)}>
             <CardContent className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="code">{tTotp("codeLabel")}</Label>
-                <Input
-                  {...totpForm.register("code")}
-                  id="code"
-                  placeholder={tTotp("codePlaceholder")}
-                  maxLength={6}
-                  disabled={isLoading}
-                />
-              </div>
+              <InputField
+                control={totpForm.control}
+                name="code"
+                label={tTotp("codeLabel")}
+                placeholder={tTotp("codePlaceholder")}
+                disabled={isLoading}
+              />
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
               <Button className="w-full" type="submit" disabled={isLoading}>
@@ -130,7 +119,7 @@ export default function Login() {
                 {tTotp("backButton")}
               </Button>
             </CardFooter>
-          </form>
+          </Form>
         </Card>
       </div>
     );
@@ -143,27 +132,22 @@ export default function Login() {
           <CardTitle className="text-2xl">{t("title")}</CardTitle>
           <CardDescription>{t("description")}</CardDescription>
         </CardHeader>
-        <form onSubmit={loginForm.handleSubmit(onLoginSubmit)}>
+        <Form form={loginForm} onSubmit={onLoginSubmit}>
           <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">{t("emailLabel")}</Label>
-              <Input
-                {...loginForm.register("email")}
-                id="email"
-                type="email"
-                placeholder={t("emailPlaceholder")}
-                disabled={isLoading}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">{t("passwordLabel")}</Label>
-              <Input
-                {...loginForm.register("password")}
-                id="password"
-                type="password"
-                disabled={isLoading}
-              />
-            </div>
+            <InputField
+              control={loginForm.control}
+              name="email"
+              label={t("emailLabel")}
+              placeholder={t("emailPlaceholder")}
+              disabled={isLoading}
+            />
+            <InputField
+              control={loginForm.control}
+              name="password"
+              label={t("passwordLabel")}
+              placeholder={t("passwordPlaceholder")}
+              disabled={isLoading}
+            />
             <div className="flex items-center justify-between">
               <Link
                 href="/forgot-password"
@@ -190,8 +174,10 @@ export default function Login() {
               </Link>
             </p>
           </CardFooter>
-        </form>
+        </Form>
       </Card>
     </div>
   );
-}
+};
+
+export default Login;

@@ -1,0 +1,9 @@
+---
+description: Form
+globs: 
+---
+
+# Form
+
+- For the form use the hook useForm from this file [useForm.ts](mdc:src/hooks/useForm.ts) and pass the validator at the top of the file
+- When a form is created use this file [Form.tsx](mdc:src/components/base/Form.tsx)

@@ -21,7 +21,7 @@ interface OrderDetails {
   }>;
 }
 
-export default function Success() {
+const Success = () => {
   const t = useTranslations("success");
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -162,8 +162,11 @@ export default function Success() {
           </div>
 
           <div className="text-center space-y-2">
-            <p className="text-muted-foreground">{t("confirmation.email")}</p>
-            <p className="text-muted-foreground">{t("confirmation.manage")}</p>
+            {["email", "manage"].map((key) => (
+              <p className="text-muted-foreground">
+                {t(`confirmation.${key}`)}
+              </p>
+            ))}
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
@@ -183,4 +186,6 @@ export default function Success() {
       </Card>
     </div>
   );
-}
+};
+
+export default Success;

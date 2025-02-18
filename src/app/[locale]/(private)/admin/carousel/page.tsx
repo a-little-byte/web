@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -8,8 +10,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import {
   Table,
@@ -19,14 +19,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
 import { supabase } from "@/lib/supabase";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 interface CarouselItem {
@@ -50,7 +48,7 @@ const carouselSchemaForm = z.object({
 
 type FormData = z.infer<typeof carouselSchemaForm>;
 
-export default function CarouselManagement() {
+const CarouselManagement = () => {
   const [items, setItems] = useState<CarouselItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<CarouselItem | null>(null);
@@ -58,13 +56,7 @@ export default function CarouselManagement() {
   const { toast } = useToast();
   const t = useTranslations("admin.carousel");
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<FormData>({
-    resolver: zodResolver(carouselSchemaForm),
+  const form = useForm(carouselSchemaForm, {
     defaultValues: currentItem || {
       title: "",
       description: "",
@@ -80,9 +72,9 @@ export default function CarouselManagement() {
 
   useEffect(() => {
     if (currentItem) {
-      reset(currentItem);
+      form.reset(currentItem);
     } else {
-      reset({
+      form.reset({
         title: "",
         description: "",
         image_url: "",
@@ -90,7 +82,7 @@ export default function CarouselManagement() {
         button_link: "",
       });
     }
-  }, [currentItem, reset]);
+  }, [currentItem]);
 
   const fetchItems = async () => {
     try {
@@ -237,59 +229,28 @@ export default function CarouselManagement() {
                 {currentItem ? t("editSlide") : t("addSlide")}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="title">{t("form.title.label")}</Label>
-                <Input
-                  id="title"
-                  placeholder={t("form.title.placeholder")}
-                  {...register("title")}
+            <Form form={form} onSubmit={onSubmit}>
+              {(
+                [
+                  "title",
+                  "description",
+                  "image_url",
+                  "button_text",
+                  "button_link",
+                ] as const
+              ).map((field) => (
+                <InputField
+                  key={field}
+                  control={form.control}
+                  name={field}
+                  label={t(`form.${field}.label`)}
+                  placeholder={t(`form.${field}.placeholder`)}
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="description">
-                  {t("form.description.label")}
-                </Label>
-                <Textarea
-                  id="description"
-                  placeholder={t("form.description.placeholder")}
-                  {...register("description")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="image_url">{t("form.imageUrl.label")}</Label>
-                <Input
-                  id="image_url"
-                  placeholder={t("form.imageUrl.placeholder")}
-                  {...register("image_url")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="button_text">
-                  {t("form.buttonText.label")}
-                </Label>
-                <Input
-                  id="button_text"
-                  placeholder={t("form.buttonText.placeholder")}
-                  {...register("button_text")}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="button_link">
-                  {t("form.buttonLink.label")}
-                </Label>
-                <Input
-                  id="button_link"
-                  placeholder={t("form.buttonLink.placeholder")}
-                  {...register("button_link")}
-                />
-              </div>
+              ))}
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {currentItem
-                  ? t("form.submit.update")
-                  : t("form.submit.create")}
+                {t("form.submit.update")}
               </Button>
-            </form>
+            </Form>
           </DialogContent>
         </Dialog>
       </div>
@@ -297,11 +258,9 @@ export default function CarouselManagement() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("table.order")}</TableHead>
-            <TableHead>{t("table.title")}</TableHead>
-            <TableHead>{t("table.image")}</TableHead>
-            <TableHead>{t("table.active")}</TableHead>
-            <TableHead>{t("table.actions")}</TableHead>
+            {["order", "title", "image", "active", "actions"].map((header) => (
+              <TableHead key={header}>{t(`table.${header}`)}</TableHead>
+            ))}
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -344,6 +303,7 @@ export default function CarouselManagement() {
                   </Button>
                   <Button
                     variant="outline"
+                    size="icon"
                     onClick={() => {
                       setCurrentItem(item);
                       setIsOpen(true);
@@ -366,4 +326,6 @@ export default function CarouselManagement() {
       </Table>
     </div>
   );
-}
+};
+
+export default CarouselManagement;

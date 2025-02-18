@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,45 +12,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
 import { Link, useRouter } from "@/i18n/routing";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-type ResetPasswordFormData = {
-  password: string;
-  confirmPassword: string;
-};
 
 const resetPasswordFormSchema = z.object({
   password: z.string().min(4),
   confirmPassword: z.string().min(4),
 });
 
-export default function ResetPassword() {
+const ResetPassword = () => {
   const t = useTranslations("auth.resetPassword");
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { toast } = useToast();
+  const form = useForm(resetPasswordFormSchema);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<
-    z.input<typeof resetPasswordFormSchema>,
-    unknown,
-    z.output<typeof resetPasswordFormSchema>
-  >({
-    resolver: zodResolver(resetPasswordFormSchema),
-  });
-
-  const onSubmit = async (data: ResetPasswordFormData) => {
+  const onSubmit = async (data: z.infer<typeof resetPasswordFormSchema>) => {
     try {
       if (data.password !== data.confirmPassword) {
         throw new Error(t("errors.passwordsMismatch"));
@@ -110,39 +94,39 @@ export default function ResetPassword() {
           <CardTitle className="text-2xl">{t("form.title")}</CardTitle>
           <CardDescription>{t("form.description")}</CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <Form form={form} onSubmit={onSubmit}>
           <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Input
-                {...register("password", {
-                  required: t("validation.passwordRequired"),
-                })}
-                type="password"
-                placeholder={t("form.passwordPlaceholder")}
-                disabled={isSubmitting}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Input
-                {...register("confirmPassword", {
-                  required: t("validation.confirmPasswordRequired"),
-                })}
-                type="password"
-                placeholder={t("form.confirmPasswordPlaceholder")}
-                disabled={isSubmitting}
-              />
-            </div>
+            <InputField
+              control={form.control}
+              name="password"
+              label={t("form.passwordLabel")}
+              placeholder={t("form.passwordPlaceholder")}
+              disabled={form.formState.isSubmitting}
+            />
+            <InputField
+              control={form.control}
+              name="confirmPassword"
+              label={t("form.confirmPasswordLabel")}
+              placeholder={t("form.confirmPasswordPlaceholder")}
+              disabled={form.formState.isSubmitting}
+            />
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
-              {isSubmitting && (
+            <Button
+              className="w-full"
+              type="submit"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
               {t("form.submitButton")}
             </Button>
           </CardFooter>
-        </form>
+        </Form>
       </Card>
     </div>
   );
-}
+};
+
+export default ResetPassword;

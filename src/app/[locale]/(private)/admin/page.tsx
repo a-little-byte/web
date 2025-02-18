@@ -69,7 +69,6 @@ export default function Dashboard() {
         .select(
           `
           amount,
-          
           created_at,
           subscriptions (
             services (

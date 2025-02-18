@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
-export default function Terms() {
+const Terms = () => {
   const [accepted, setAccepted] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("terms");
@@ -48,7 +48,7 @@ export default function Terms() {
                   {t("service.items", { count: 4 }).map(
                     (item: string, index: number) => (
                       <li key={index}>{item}</li>
-                    ),
+                    )
                   )}
                 </ul>
               </section>
@@ -86,7 +86,7 @@ export default function Terms() {
                   {t("data.measures", { count: 4 }).map(
                     (measure: string, index: number) => (
                       <li key={index}>{measure}</li>
-                    ),
+                    )
                   )}
                 </ul>
               </section>
@@ -140,4 +140,6 @@ export default function Terms() {
       </div>
     </div>
   );
-}
+};
+
+export default Terms;

@@ -1,31 +1,33 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@/hooks/useForm";
 import { Check } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+const tierIdValidator = z.enum(["essential", "professional", "enterprise"]);
+
 const subscriptionFormSchema = z.object({
-  tierId: z.enum(["essential", "professional", "enterprise"]),
+  tierId: tierIdValidator,
 });
 
-export default function Pricing() {
+const Pricing = () => {
   const t = useTranslations("pricing");
   const [loading, setLoading] = useState<string | null>(null);
   const { toast } = useToast();
-  const { handleSubmit } = useForm<
-    z.input<typeof subscriptionFormSchema>,
-    unknown,
-    z.output<typeof subscriptionFormSchema>
-  >({
-    resolver: zodResolver(subscriptionFormSchema),
-  });
+  const form = useForm(subscriptionFormSchema);
 
-  const tiers = [
+  const tiers: {
+    name: string;
+    id: z.infer<typeof tierIdValidator>;
+    price: string;
+    description: string;
+    features: string[];
+  }[] = [
     {
       name: t("tiers.essential.name"),
       id: "essential",
@@ -129,7 +131,7 @@ export default function Pricing() {
                   ))}
                 </ul>
               </div>
-              <form onSubmit={handleSubmit(() => onSubmit(tier.id))}>
+              <Form form={form} onSubmit={() => onSubmit(tier.id)}>
                 <Button
                   className="mt-8 w-full"
                   type="submit"
@@ -139,11 +141,13 @@ export default function Pricing() {
                     ? t("buttons.processing")
                     : t("buttons.subscribe")}
                 </Button>
-              </form>
+              </Form>
             </div>
           ))}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Pricing;

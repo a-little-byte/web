@@ -17,7 +17,7 @@ interface CarouselItem {
   active: boolean;
 }
 
-export function HeroCarousel() {
+export const HeroCarousel = () => {
   const [items, setItems] = useState<CarouselItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -131,4 +131,4 @@ export function HeroCarousel() {
       )}
     </div>
   );
-}
+};

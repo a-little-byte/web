@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export default function ConfirmEmail() {
+const ConfirmEmail = () => {
   const t = useTranslations("auth.confirmEmail");
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -60,4 +60,6 @@ export default function ConfirmEmail() {
   }
 
   return null;
-}
+};
+
+export default ConfirmEmail;

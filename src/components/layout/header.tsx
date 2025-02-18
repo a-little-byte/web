@@ -20,8 +20,8 @@ import { Link, useRouter } from "@/i18n/routing";
 import { Menu, Search, ShieldCheck } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { ShoppingCart } from "../shopping-cart";
 import LanguageSwitcher from "./language-switcher";
-import { ShoppingCart } from "./shopping-cart";
 
 const navigation = [
   { name: "solutions", href: "/solutions" },

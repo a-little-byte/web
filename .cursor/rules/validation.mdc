@@ -1,5 +1,5 @@
 ---
-description: Zod
+description: Use Zod for the validation
 globs: *.tsx, *.ts
 ---
 
