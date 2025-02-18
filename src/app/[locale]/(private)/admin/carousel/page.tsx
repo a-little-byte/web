@@ -22,8 +22,12 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 interface CarouselItem {
   id: string;
@@ -36,16 +40,57 @@ interface CarouselItem {
   active: boolean;
 }
 
+const carouselSchemaForm = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+  image_url: z.string().min(1),
+  button_text: z.string().min(1),
+  button_link: z.string().min(1),
+});
+
+type FormData = z.infer<typeof carouselSchemaForm>;
+
 export default function CarouselManagement() {
   const [items, setItems] = useState<CarouselItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<CarouselItem | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const t = useTranslations("admin.carousel");
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(carouselSchemaForm),
+    defaultValues: currentItem || {
+      title: "",
+      description: "",
+      image_url: "",
+      button_text: "",
+      button_link: "",
+    },
+  });
 
   useEffect(() => {
     fetchItems();
   }, []);
+
+  useEffect(() => {
+    if (currentItem) {
+      reset(currentItem);
+    } else {
+      reset({
+        title: "",
+        description: "",
+        image_url: "",
+        button_text: "",
+        button_link: "",
+      });
+    }
+  }, [currentItem, reset]);
 
   const fetchItems = async () => {
     try {
@@ -58,49 +103,35 @@ export default function CarouselManagement() {
       setItems(data || []);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to fetch carousel items",
+        title: t("toasts.fetchError.title"),
+        description: t("toasts.fetchError.description"),
         variant: "destructive",
       });
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSubmit = async (data: FormData) => {
     setIsLoading(true);
-
-    const formData = new FormData(e.currentTarget);
-    const itemData = {
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      image_url: formData.get("image_url") as string,
-      button_text: formData.get("button_text") as string,
-      button_link: formData.get("button_link") as string,
-      order: currentItem ? currentItem.order : items.length,
-      active: true,
-    };
 
     try {
       if (currentItem) {
         const { error } = await supabase
           .from("hero_carousel")
-          .update(itemData)
+          .update(data)
           .eq("id", currentItem.id);
 
         if (error) throw error;
       } else {
-        const { error } = await supabase
-          .from("hero_carousel")
-          .insert([itemData]);
+        const { error } = await supabase.from("hero_carousel").insert([data]);
 
         if (error) throw error;
       }
 
       toast({
-        title: "Success",
-        description: `Carousel item ${
-          currentItem ? "updated" : "created"
-        } successfully`,
+        title: t("toasts.saveSuccess.title"),
+        description: t("toasts.saveSuccess.description", {
+          action: currentItem ? "updated" : "created",
+        }),
       });
 
       setIsOpen(false);
@@ -108,8 +139,8 @@ export default function CarouselManagement() {
       fetchItems();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to save carousel item",
+        title: t("toasts.saveError.title"),
+        description: t("toasts.saveError.description"),
         variant: "destructive",
       });
     } finally {
@@ -193,63 +224,70 @@ export default function CarouselManagement() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Hero Carousel Management</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => setCurrentItem(null)}>Add Slide</Button>
+            <Button onClick={() => setCurrentItem(null)}>
+              {t("addSlide")}
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {currentItem ? "Edit Slide" : "Add New Slide"}
+                {currentItem ? t("editSlide") : t("addSlide")}
               </DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
+                <Label htmlFor="title">{t("form.title.label")}</Label>
                 <Input
                   id="title"
-                  name="title"
-                  defaultValue={currentItem?.title}
-                  required
+                  placeholder={t("form.title.placeholder")}
+                  {...register("title")}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">
+                  {t("form.description.label")}
+                </Label>
                 <Textarea
                   id="description"
-                  name="description"
-                  defaultValue={currentItem?.description}
-                  required
+                  placeholder={t("form.description.placeholder")}
+                  {...register("description")}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="image_url">Image URL</Label>
+                <Label htmlFor="image_url">{t("form.imageUrl.label")}</Label>
                 <Input
                   id="image_url"
-                  name="image_url"
-                  defaultValue={currentItem?.image_url}
-                  required
+                  placeholder={t("form.imageUrl.placeholder")}
+                  {...register("image_url")}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="button_text">Button Text</Label>
+                <Label htmlFor="button_text">
+                  {t("form.buttonText.label")}
+                </Label>
                 <Input
                   id="button_text"
-                  name="button_text"
-                  defaultValue={currentItem?.button_text}
+                  placeholder={t("form.buttonText.placeholder")}
+                  {...register("button_text")}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="button_link">Button Link</Label>
+                <Label htmlFor="button_link">
+                  {t("form.buttonLink.label")}
+                </Label>
                 <Input
                   id="button_link"
-                  name="button_link"
-                  defaultValue={currentItem?.button_link}
+                  placeholder={t("form.buttonLink.placeholder")}
+                  {...register("button_link")}
                 />
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {currentItem ? "Update" : "Create"} Slide
+                {currentItem
+                  ? t("form.submit.update")
+                  : t("form.submit.create")}
               </Button>
             </form>
           </DialogContent>
@@ -259,11 +297,11 @@ export default function CarouselManagement() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Order</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Image</TableHead>
-            <TableHead>Active</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("table.order")}</TableHead>
+            <TableHead>{t("table.title")}</TableHead>
+            <TableHead>{t("table.image")}</TableHead>
+            <TableHead>{t("table.active")}</TableHead>
+            <TableHead>{t("table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

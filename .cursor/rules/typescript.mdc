@@ -1,0 +1,10 @@
+---
+description: Typescript rules
+globs: *.tsx, *.ts
+---
+
+# Typescript 
+
+- Instead of using function keyword use arrow function.
+- Every time there is a constant and it doesn't return a function put at the end the "as const" keyword.
+- if the import is a type add the type keyword close to the import.

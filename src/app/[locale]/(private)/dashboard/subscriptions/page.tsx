@@ -36,6 +36,7 @@ import { supabase } from "@/lib/supabase";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ChevronDown, Download, Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface OrderDetails {
@@ -63,6 +64,7 @@ interface OrderDetails {
 }
 
 export default function Subscriptions() {
+  const t = useTranslations("dashboard.subscriptions");
   const [orders, setOrders] = useState<OrderDetails[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
@@ -112,7 +114,7 @@ export default function Subscriptions() {
             number,
             file_url
           )
-        `,
+        `
         )
         .order("created_at", { ascending: false });
 
@@ -156,9 +158,7 @@ export default function Subscriptions() {
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) =>
-        new Date(order.created_at).getFullYear().toString(),
-      ),
+      orders.map((order) => new Date(order.created_at).getFullYear().toString())
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -199,12 +199,12 @@ export default function Subscriptions() {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Historique des commandes</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
         <div className="flex gap-2">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Rechercher une commande..."
+              placeholder={t("search.placeholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9 w-[300px]"
@@ -212,10 +212,10 @@ export default function Subscriptions() {
           </div>
           <Select value={selectedYear} onValueChange={setSelectedYear}>
             <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Année" />
+              <SelectValue placeholder={t("filters.year.label")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Toutes les années</SelectItem>
+              <SelectItem value="all">{t("filters.year.all")}</SelectItem>
               {getYears().map((year) => (
                 <SelectItem key={year} value={year}>
                   {year}
@@ -225,21 +225,22 @@ export default function Subscriptions() {
           </Select>
           <Select value={selectedStatus} onValueChange={setSelectedStatus}>
             <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Statut" />
+              <SelectValue placeholder={t("filters.status.label")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les statuts</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="cancelled">Résiliée</SelectItem>
-              <SelectItem value="expired">Expirée</SelectItem>
+              {["all", "active", "cancelled", "expired"].map((status) => (
+                <SelectItem key={status} value={status}>
+                  {t(`filters.status.${status}`)}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
           <Select value={selectedService} onValueChange={setSelectedService}>
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Service" />
+              <SelectValue placeholder={t("filters.service.label")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tous les services</SelectItem>
+              <SelectItem value="all">{t("filters.service.all")}</SelectItem>
               {getServices().map((service) => (
                 <SelectItem key={service} value={service}>
                   {service}
@@ -259,11 +260,13 @@ export default function Subscriptions() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Service</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Montant</TableHead>
-                    <TableHead>Statut</TableHead>
-                    <TableHead>Actions</TableHead>
+                    {["service", "date", "amount", "status", "actions"].map(
+                      (header) => (
+                        <TableHead key={header}>
+                          {t(`table.headers.${header}`)}
+                        </TableHead>
+                      )
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -287,37 +290,37 @@ export default function Subscriptions() {
                           }
                         >
                           {order.status === "active"
-                            ? "Active"
+                            ? t("table.headers.status.active")
                             : order.status === "cancelled"
-                              ? "Résiliée"
-                              : "Expirée"}
+                              ? t("table.headers.status.cancelled")
+                              : t("table.headers.status.expired")}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         <Dialog>
                           <DialogTrigger asChild>
                             <Button variant="outline" size="sm">
-                              Détails
+                              {t("table.actions.details")}
                               <ChevronDown className="ml-2 h-4 w-4" />
                             </Button>
                           </DialogTrigger>
                           <DialogContent className="max-w-2xl">
                             <DialogHeader>
-                              <DialogTitle>Détails de la commande</DialogTitle>
+                              <DialogTitle>{t("details.title")}</DialogTitle>
                             </DialogHeader>
                             <div className="grid gap-6">
                               <div className="grid grid-cols-2 gap-4">
                                 <Card>
                                   <CardHeader>
                                     <CardTitle>
-                                      Informations de paiement
+                                      {t("details.payment.title")}
                                     </CardTitle>
                                   </CardHeader>
                                   <CardContent>
                                     <dl className="space-y-2">
                                       <div>
                                         <dt className="text-sm text-muted-foreground">
-                                          Méthode de paiement
+                                          {t("details.payment.method")}
                                         </dt>
                                         <dd>
                                           {order.payment_method?.type} ••••{" "}
@@ -326,19 +329,19 @@ export default function Subscriptions() {
                                       </div>
                                       <div>
                                         <dt className="text-sm text-muted-foreground">
-                                          Montant
+                                          {t("details.payment.amount")}
                                         </dt>
                                         <dd>${order.amount}</dd>
                                       </div>
                                       <div>
                                         <dt className="text-sm text-muted-foreground">
-                                          Date
+                                          {t("details.payment.date")}
                                         </dt>
                                         <dd>
                                           {format(
                                             new Date(order.created_at),
                                             "PPP",
-                                            { locale: fr },
+                                            { locale: fr }
                                           )}
                                         </dd>
                                       </div>
@@ -348,7 +351,7 @@ export default function Subscriptions() {
                                 <Card>
                                   <CardHeader>
                                     <CardTitle>
-                                      Adresse de facturation
+                                      {t("details.billing.title")}
                                     </CardTitle>
                                   </CardHeader>
                                   <CardContent>
@@ -370,9 +373,13 @@ export default function Subscriptions() {
                               {order.invoice && (
                                 <Card>
                                   <CardHeader>
-                                    <CardTitle>Facture</CardTitle>
+                                    <CardTitle>
+                                      {t("details.invoice.title")}
+                                    </CardTitle>
                                     <CardDescription>
-                                      Numéro de facture: {order.invoice.number}
+                                      {t("details.invoice.number", {
+                                        number: order.invoice.number,
+                                      })}
                                     </CardDescription>
                                   </CardHeader>
                                   <CardContent>
@@ -383,7 +390,7 @@ export default function Subscriptions() {
                                       }
                                     >
                                       <Download className="mr-2 h-4 w-4" />
-                                      Télécharger la facture
+                                      {t("details.invoice.download")}
                                     </Button>
                                   </CardContent>
                                 </Card>
@@ -402,7 +409,7 @@ export default function Subscriptions() {
 
       {filteredOrders.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-muted-foreground">Aucune commande trouvée</p>
+          <p className="text-muted-foreground">{t("noOrders")}</p>
         </div>
       )}
     </div>

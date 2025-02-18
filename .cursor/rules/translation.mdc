@@ -1,0 +1,15 @@
+---
+description: Translation
+globs: *.tsx, *.ts
+---
+
+# Translation
+
+## Files
+
+- English: [en.json](mdc:src/messages/en.json)
+- French: [fr.json](mdc:src/messages/fr.json)
+
+## Library
+
+Use next-intl for the translation

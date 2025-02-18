@@ -4,11 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { supabase, Tables } from "@/lib/supabase";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+  const t = useTranslations("dashboard");
   const [subscriptions, setSubscriptions] = useState<Tables<"subscriptions">[]>(
-    [],
+    []
   );
   const [totalSpent, setTotalSpent] = useState(0);
   const { toast } = useToast();
@@ -17,7 +19,7 @@ export default function Dashboard() {
     const fetchSubscriptions = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
+        "$1"
       );
       const decoded = JSON.parse(atob(token.split(".")[1]));
 
@@ -34,7 +36,7 @@ export default function Dashboard() {
       price,
       period
     )
-  `,
+  `
         )
         .eq("user_id", decoded.userId)
         .eq("status", "active");
@@ -47,7 +49,7 @@ export default function Dashboard() {
     subscriptions!inner (
       id
     )
-  `,
+  `
         )
         .eq("subscriptions.user_id", decoded.userId);
 
@@ -57,7 +59,7 @@ export default function Dashboard() {
       }
 
       setTotalSpent(
-        payments.reduce((sum, payment) => sum + Number(payment.amount), 0),
+        payments.reduce((sum, payment) => sum + Number(payment.amount), 0)
       );
       setSubscriptions(subs as any);
     };
@@ -67,12 +69,12 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Active Subscriptions</CardTitle>
+            <CardTitle>{t("cards.activeSubscriptions.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{subscriptions.length}</p>
@@ -81,7 +83,7 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Total Spent</CardTitle>
+            <CardTitle>{t("cards.totalSpent.title")}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">${totalSpent.toFixed(2)}</p>
@@ -89,7 +91,9 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <h2 className="text-2xl font-bold mt-12 mb-4">Active Subscriptions</h2>
+      <h2 className="text-2xl font-bold mt-12 mb-4">
+        {t("subscriptionsList.title")}
+      </h2>
       <div className="grid gap-4 md:grid-cols-2">
         {subscriptions.map((sub) => (
           <Card key={sub.id}>
@@ -97,15 +101,21 @@ export default function Dashboard() {
             <CardContent>
               <div className="space-y-2">
                 <p>
-                  <span className="font-medium">Status:</span>{" "}
+                  <span className="font-medium">
+                    {t("subscriptionsList.details.status")}:
+                  </span>{" "}
                   <span className="capitalize">{sub.status}</span>
                 </p>
                 <p>
-                  <span className="font-medium">Price:</span> $
-                  {/* {sub.}/{sub.service_period} */}
+                  <span className="font-medium">
+                    {t("subscriptionsList.details.price")}:
+                  </span>{" "}
+                  ${/* {sub.}/{sub.service_period} */}
                 </p>
                 <p>
-                  <span className="font-medium">Current Period:</span>{" "}
+                  <span className="font-medium">
+                    {t("subscriptionsList.details.currentPeriod")}:
+                  </span>{" "}
                   {format(new Date(sub.current_period_start), "PP")} -{" "}
                   {format(new Date(sub.current_period_end), "PP")}
                 </p>

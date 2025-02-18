@@ -160,5 +160,78 @@
     "processing": "En cours de traitement...",
     "accepted": "Conditions Acceptées",
     "acceptedMessage": "Merci d'avoir accepté nos conditions générales."
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Tableau de bord des ventes",
+      "timeframeSelect": "Sélectionner la période",
+      "lastWeek": "7 derniers jours",
+      "lastMonth": "5 dernières semaines",
+      "dailySales": {
+        "title": "Ventes quotidiennes",
+        "description": "Total des ventes par jour"
+      },
+      "categorySales": {
+        "title": "Ventes par catégorie",
+        "description": "Répartition des ventes par service"
+      },
+      "averageBasket": {
+        "title": "Paniers moyens par catégorie",
+        "description": "Comparaison des ventes par service"
+      },
+      "subscriptions": {
+        "title": "Historique des commandes",
+        "search": {
+          "placeholder": "Rechercher une commande..."
+        },
+        "filters": {
+          "year": {
+            "label": "Année",
+            "all": "Toutes les années"
+          },
+          "status": {
+            "label": "Statut",
+            "all": "Tous les statuts",
+            "active": "Active",
+            "cancelled": "Résiliée",
+            "expired": "Expirée"
+          },
+          "service": {
+            "label": "Service",
+            "all": "Tous les services"
+          }
+        },
+        "table": {
+          "headers": {
+            "service": "Service",
+            "date": "Date",
+            "amount": "Montant",
+            "status": "Statut",
+            "actions": "Actions"
+          },
+          "actions": {
+            "details": "Détails"
+          }
+        },
+        "details": {
+          "title": "Détails de la commande",
+          "payment": {
+            "title": "Informations de paiement",
+            "method": "Méthode de paiement",
+            "amount": "Montant",
+            "date": "Date"
+          },
+          "billing": {
+            "title": "Adresse de facturation"
+          },
+          "invoice": {
+            "title": "Facture",
+            "number": "Numéro de facture: {number}",
+            "download": "Télécharger la facture"
+          }
+        },
+        "noOrders": "Aucune commande trouvée"
+      }
+    }
   }
 }

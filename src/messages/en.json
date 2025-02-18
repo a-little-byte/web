@@ -479,5 +479,374 @@
         }
       }
     }
+  },
+  "admin": {
+    "carousel": {
+      "title": "Hero Carousel Management",
+      "addSlide": "Add Slide",
+      "editSlide": "Edit Slide",
+      "form": {
+        "title": {
+          "label": "Title",
+          "placeholder": "Enter slide title"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter slide description"
+        },
+        "imageUrl": {
+          "label": "Image URL",
+          "placeholder": "Enter image URL"
+        },
+        "buttonText": {
+          "label": "Button Text",
+          "placeholder": "Enter button text"
+        },
+        "buttonLink": {
+          "label": "Button Link",
+          "placeholder": "Enter button link"
+        },
+        "submit": {
+          "create": "Create Slide",
+          "update": "Update Slide"
+        }
+      },
+      "table": {
+        "order": "Order",
+        "title": "Title",
+        "image": "Image",
+        "active": "Active",
+        "actions": "Actions"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Error",
+          "description": "Failed to fetch carousel items"
+        },
+        "saveSuccess": {
+          "title": "Success",
+          "description": "Carousel item {action} successfully"
+        },
+        "saveError": {
+          "title": "Error",
+          "description": "Failed to save carousel item"
+        },
+        "reorderError": {
+          "title": "Error",
+          "description": "Failed to reorder items"
+        },
+        "deleteSuccess": {
+          "title": "Success",
+          "description": "Carousel item deleted successfully"
+        },
+        "deleteError": {
+          "title": "Error",
+          "description": "Failed to delete carousel item"
+        }
+      }
+    },
+    "content": {
+      "title": "Content Management",
+      "sections": {
+        "hero": {
+          "title": "Hero Section",
+          "form": {
+            "title": "Title",
+            "description": "Description",
+            "buttonText": "Button Text",
+            "buttonLink": "Button Link"
+          }
+        },
+        "features": {
+          "title": "Features Section",
+          "form": {
+            "title": "Title",
+            "description": "Description"
+          }
+        },
+        "cta": {
+          "title": "CTA Section",
+          "form": {
+            "title": "Title",
+            "description": "Description"
+          }
+        }
+      },
+      "buttons": {
+        "save": "Save Changes"
+      },
+      "toasts": {
+        "success": {
+          "title": "Success",
+          "description": "Content updated successfully"
+        },
+        "error": {
+          "title": "Error",
+          "fetchError": "Failed to fetch content",
+          "saveError": "Failed to save content"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "Sales Dashboard",
+      "timeframeSelect": "Select timeframe",
+      "lastWeek": "Last 7 days",
+      "lastMonth": "Last 5 weeks",
+      "dailySales": {
+        "title": "Daily Sales",
+        "description": "Total sales per day"
+      },
+      "categorySales": {
+        "title": "Sales by Category",
+        "description": "Sales distribution by service"
+      },
+      "averageBasket": {
+        "title": "Average Basket by Category",
+        "description": "Sales comparison by service"
+      }
+    },
+    "services": {
+      "title": "Services Management",
+      "addService": "Add Service",
+      "editService": "Edit Service",
+      "form": {
+        "name": {
+          "label": "Name"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "price": {
+          "label": "Price"
+        },
+        "period": {
+          "label": "Period"
+        },
+        "submit": {
+          "create": "Create Service",
+          "update": "Update Service"
+        }
+      },
+      "table": {
+        "name": "Name",
+        "description": "Description",
+        "price": "Price",
+        "period": "Period",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Error",
+          "description": "Failed to fetch services"
+        },
+        "saveSuccess": {
+          "title": "Success",
+          "description": "Service {action} successfully"
+        },
+        "saveError": {
+          "title": "Error",
+          "description": "Failed to save service"
+        },
+        "deleteSuccess": {
+          "title": "Success",
+          "description": "Service deleted successfully"
+        },
+        "deleteError": {
+          "title": "Error",
+          "description": "Failed to delete service"
+        }
+      }
+    }
+  },
+  "dashboard": {
+    "cards": {
+      "activeSubscriptions": {
+        "title": "Active Subscriptions"
+      },
+      "totalSpent": {
+        "title": "Total Spent"
+      }
+    },
+    "subscriptionsList": {
+      "title": "Active Subscriptions",
+      "details": {
+        "status": "Status",
+        "price": "Price",
+        "currentPeriod": "Current Period"
+      }
+    },
+    "errors": {
+      "fetchError": {
+        "title": "Error",
+        "description": "Failed to fetch subscription data"
+      }
+    },
+    "subscriptions": {
+      "title": "Order History",
+      "search": {
+        "placeholder": "Search for an order..."
+      },
+      "filters": {
+        "year": {
+          "label": "Year",
+          "all": "All years"
+        },
+        "status": {
+          "label": "Status",
+          "all": "All statuses",
+          "active": "Active",
+          "cancelled": "Cancelled",
+          "expired": "Expired"
+        },
+        "service": {
+          "label": "Service",
+          "all": "All services"
+        }
+      },
+      "table": {
+        "headers": {
+          "service": "Service",
+          "date": "Date",
+          "amount": "Amount",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "actions": {
+          "details": "Details"
+        }
+      },
+      "details": {
+        "title": "Order Details",
+        "payment": {
+          "title": "Payment Information",
+          "method": "Payment Method",
+          "amount": "Amount",
+          "date": "Date"
+        },
+        "billing": {
+          "title": "Billing Address"
+        },
+        "invoice": {
+          "title": "Invoice",
+          "number": "Invoice number: {number}",
+          "download": "Download Invoice"
+        }
+      },
+      "noOrders": "No orders found"
+    },
+    "settings": {
+      "title": "Account Settings",
+      "description": "Manage your account settings and preferences",
+      "tabs": {
+        "profile": "Profile",
+        "password": "Password",
+        "danger": "Danger Zone"
+      },
+      "profile": {
+        "title": "Profile",
+        "description": "Update your personal information",
+        "form": {
+          "fullName": {
+            "label": "Full Name",
+            "placeholder": "John Doe"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "john@example.com"
+          },
+          "submit": "Update Profile"
+        },
+        "toasts": {
+          "success": {
+            "title": "Success",
+            "description": "Profile updated successfully"
+          },
+          "error": {
+            "title": "Error"
+          }
+        }
+      },
+      "password": {
+        "title": "Change Password",
+        "description": "Update your password to keep your account secure",
+        "form": {
+          "currentPassword": {
+            "label": "Current Password"
+          },
+          "newPassword": {
+            "label": "New Password"
+          },
+          "confirmPassword": {
+            "label": "Confirm New Password"
+          },
+          "submit": "Change Password"
+        },
+        "toasts": {
+          "success": {
+            "title": "Success",
+            "description": "Password changed successfully"
+          },
+          "error": {
+            "title": "Error"
+          }
+        }
+      },
+      "danger": {
+        "title": "Danger Zone",
+        "description": "Irreversible and destructive actions",
+        "deleteAccount": {
+          "button": "Delete Account",
+          "dialog": {
+            "title": "Are you absolutely sure?",
+            "description": "This action cannot be undone. This will permanently delete your account and remove all your data from our servers.",
+            "cancel": "Cancel",
+            "confirm": "Delete Account"
+          }
+        },
+        "toasts": {
+          "success": {
+            "title": "Account Deleted",
+            "description": "Your account has been successfully deleted"
+          },
+          "error": {
+            "title": "Error"
+          }
+        }
+      }
+    },
+    "success": {
+      "title": "Payment Successful!",
+      "loading": {
+        "text": "Loading order details..."
+      },
+      "notFound": {
+        "title": "Order Not Found",
+        "description": "We couldn't find the order details. Please contact support if you believe this is an error.",
+        "action": "Go to Dashboard"
+      },
+      "order": {
+        "id": "Order ID",
+        "summary": {
+          "title": "Order Summary",
+          "service": {
+            "price": "${price}/{period}",
+            "quantity": "x{quantity}"
+          },
+          "total": "Total Amount"
+        }
+      },
+      "confirmation": {
+        "email": "A confirmation email has been sent to your registered email address.",
+        "manage": "You can manage your subscriptions from your dashboard."
+      },
+      "actions": {
+        "dashboard": "Go to Dashboard",
+        "subscriptions": "View Subscriptions"
+      }
+    }
   }
 }

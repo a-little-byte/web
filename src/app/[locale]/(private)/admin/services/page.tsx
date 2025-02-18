@@ -18,15 +18,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { Service } from "@/db/schema";
 import { useToast } from "@/hooks/use-toast";
-import { db } from "@/src/lib/db";
+import { supabase, type Tables } from "@/lib/supabase";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function ServicesManagement() {
-  const [services, setServices] = useState<Service[]>([]);
+  const t = useTranslations("admin.services");
+  const [services, setServices] = useState<Tables<"services">[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [currentService, setCurrentService] = useState<Service | null>(null);
+  const [currentService, setCurrentService] =
+    useState<Tables<"services"> | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -35,17 +37,20 @@ export default function ServicesManagement() {
 
   const fetchServices = async () => {
     try {
-      const services = await db
-        .selectFrom("services")
-        .selectAll()
-        .orderBy("created_at")
-        .execute();
+      const { data, error } = await supabase
+        .from("services")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      setServices(data);
 
       setServices(services);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to fetch services",
+        title: t("toasts.fetchError.title"),
+        description: t("toasts.fetchError.description"),
         variant: "destructive",
       });
     }
@@ -63,20 +68,19 @@ export default function ServicesManagement() {
 
     try {
       if (currentService) {
-        await db
-          .updateTable("services")
-          .set(serviceData)
-          .where("id", "=", currentService.id)
-          .execute();
+        await supabase
+          .from("services")
+          .update(serviceData)
+          .eq("id", currentService.id);
       } else {
-        await db.insertInto("services").values(serviceData).execute();
+        await supabase.from("services").insert(serviceData).select();
       }
 
       toast({
-        title: "Success",
-        description: `Service ${
-          currentService ? "updated" : "created"
-        } successfully`,
+        title: t("toasts.saveSuccess.title"),
+        description: t("toasts.saveSuccess.description", {
+          action: currentService ? "updated" : "created",
+        }),
       });
 
       setIsOpen(false);
@@ -84,32 +88,32 @@ export default function ServicesManagement() {
       fetchServices();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to save service",
+        title: t("toasts.saveError.title"),
+        description: t("toasts.saveError.description"),
         variant: "destructive",
       });
     }
   };
 
-  const handleEdit = (service: Service) => {
+  const handleEdit = (service: Tables<"services">) => {
     setCurrentService(service);
     setIsOpen(true);
   };
 
   const handleDelete = async (id: string) => {
     try {
-      await db.deleteFrom("services").where("id", "=", id).execute();
+      await supabase.from("services").delete().eq("id", id);
 
       toast({
-        title: "Success",
-        description: "Service deleted successfully",
+        title: t("toasts.deleteSuccess.title"),
+        description: t("toasts.deleteSuccess.description"),
       });
 
       fetchServices();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to delete service",
+        title: t("toasts.deleteError.title"),
+        description: t("toasts.deleteError.description"),
         variant: "destructive",
       });
     }
@@ -118,15 +122,17 @@ export default function ServicesManagement() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Services Management</h1>
+        <h1 className="text-3xl font-bold">{t("title")}</h1>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => setCurrentService(null)}>Add Service</Button>
+            <Button onClick={() => setCurrentService(null)}>
+              {t("addService")}
+            </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {currentService ? "Edit Service" : "Add New Service"}
+                {currentService ? t("editService") : t("addService")}
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -135,7 +141,7 @@ export default function ServicesManagement() {
                   htmlFor="name"
                   className="block text-sm font-medium mb-1"
                 >
-                  Name
+                  {t("form.name.label")}
                 </label>
                 <Input
                   id="name"
@@ -149,7 +155,7 @@ export default function ServicesManagement() {
                   htmlFor="description"
                   className="block text-sm font-medium mb-1"
                 >
-                  Description
+                  {t("form.description.label")}
                 </label>
                 <Textarea
                   id="description"
@@ -163,7 +169,7 @@ export default function ServicesManagement() {
                   htmlFor="price"
                   className="block text-sm font-medium mb-1"
                 >
-                  Price
+                  {t("form.price.label")}
                 </label>
                 <Input
                   id="price"
@@ -178,7 +184,7 @@ export default function ServicesManagement() {
                   htmlFor="period"
                   className="block text-sm font-medium mb-1"
                 >
-                  Period
+                  {t("form.period.label")}
                 </label>
                 <Input
                   id="period"
@@ -188,7 +194,9 @@ export default function ServicesManagement() {
                 />
               </div>
               <Button type="submit" className="w-full">
-                {currentService ? "Update" : "Create"} Service
+                {currentService
+                  ? t("form.submit.update")
+                  : t("form.submit.create")}
               </Button>
             </form>
           </DialogContent>
@@ -198,11 +206,11 @@ export default function ServicesManagement() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Price</TableHead>
-            <TableHead>Period</TableHead>
-            <TableHead>Actions</TableHead>
+            <TableHead>{t("table.name")}</TableHead>
+            <TableHead>{t("table.description")}</TableHead>
+            <TableHead>{t("table.price")}</TableHead>
+            <TableHead>{t("table.period")}</TableHead>
+            <TableHead>{t("table.actions")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -219,14 +227,14 @@ export default function ServicesManagement() {
                     size="sm"
                     onClick={() => handleEdit(service)}
                   >
-                    Edit
+                    {t("actions.edit")}
                   </Button>
                   <Button
                     variant="destructive"
                     size="sm"
                     onClick={() => handleDelete(service.id)}
                   >
-                    Delete
+                    {t("actions.delete")}
                   </Button>
                 </div>
               </TableCell>

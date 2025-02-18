@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "@/i18n/routing";
 import { supabase } from "@/lib/supabase";
 import { ArrowRight, CheckCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -21,6 +22,7 @@ interface OrderDetails {
 }
 
 export default function Success() {
+  const t = useTranslations("success");
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
@@ -62,7 +64,12 @@ export default function Success() {
             id: orderData.id,
             amount: orderData.amount,
             status: orderData.status,
-            services: orderData.subscriptions.services,
+            services: orderData.subscriptions.map((subscription) => ({
+              name: subscription.services[0].name,
+              quantity: 1,
+              price: subscription.services[0].price,
+              period: subscription.services[0].period,
+            })),
           });
         }
       } catch (error) {
@@ -81,7 +88,7 @@ export default function Success() {
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
           <p className="mt-4 text-lg text-muted-foreground">
-            Loading order details...
+            {t("loading.text")}
           </p>
         </div>
       </div>
@@ -94,17 +101,16 @@ export default function Success() {
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-2xl font-bold">
-              Order Not Found
+              {t("notFound.title")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <p className="text-center text-muted-foreground">
-              We couldn't find the order details. Please contact support if you
-              believe this is an error.
+              {t("notFound.description")}
             </p>
             <div className="flex justify-center">
               <Button asChild>
-                <Link href="/dashboard">Go to Dashboard</Link>
+                <Link href="/dashboard">{t("notFound.action")}</Link>
               </Button>
             </div>
           </CardContent>
@@ -118,57 +124,59 @@ export default function Success() {
       <Card>
         <CardHeader className="text-center">
           <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
-          <CardTitle className="text-2xl font-bold">
-            Payment Successful!
-          </CardTitle>
+          <CardTitle className="text-2xl font-bold">{t("title")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="rounded-lg bg-muted p-6">
             <div className="space-y-2">
-              <p className="text-sm text-muted-foreground">Order ID</p>
+              <p className="text-sm text-muted-foreground">{t("order.id")}</p>
               <p className="font-medium">{order.id}</p>
             </div>
             <div className="mt-4 space-y-4">
-              <h3 className="font-semibold">Order Summary</h3>
+              <h3 className="font-semibold">{t("order.summary.title")}</h3>
               <div className="divide-y">
                 {order.services.map((service, index) => (
                   <div key={index} className="py-3 flex justify-between">
                     <div>
                       <p className="font-medium">{service.name}</p>
                       <p className="text-sm text-muted-foreground">
-                        ${service.price}/{service.period}
+                        {t("order.summary.service.price", {
+                          price: service.price,
+                          period: service.period,
+                        })}
                       </p>
                     </div>
-                    <p className="font-medium">x{service.quantity}</p>
+                    <p className="font-medium">
+                      {t("order.summary.service.quantity", {
+                        quantity: service.quantity,
+                      })}
+                    </p>
                   </div>
                 ))}
               </div>
               <div className="pt-4 flex justify-between">
-                <p className="font-semibold">Total Amount</p>
+                <p className="font-semibold">{t("order.summary.total")}</p>
                 <p className="font-semibold">${order.amount.toFixed(2)}</p>
               </div>
             </div>
           </div>
 
           <div className="text-center space-y-2">
-            <p className="text-muted-foreground">
-              A confirmation email has been sent to your registered email
-              address.
-            </p>
-            <p className="text-muted-foreground">
-              You can manage your subscriptions from your dashboard.
-            </p>
+            <p className="text-muted-foreground">{t("confirmation.email")}</p>
+            <p className="text-muted-foreground">{t("confirmation.manage")}</p>
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-center">
             <Button asChild>
               <Link href="/dashboard">
-                Go to Dashboard
+                {t("actions.dashboard")}
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
             <Button variant="outline" asChild>
-              <Link href="/dashboard/subscriptions">View Subscriptions</Link>
+              <Link href="/dashboard/subscriptions">
+                {t("actions.subscriptions")}
+              </Link>
             </Button>
           </div>
         </CardContent>

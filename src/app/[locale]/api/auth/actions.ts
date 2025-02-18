@@ -1,93 +1,110 @@
 "use server";
 
 import { supabase } from "@/lib/supabase";
+import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-export async function login(email: string, password: string) {
-  // try {
-  //   const user = await db
-  //     .selectFrom("users")
-  //     .where("email", "=", email)
-  //     .selectAll()
-  //     .executeTakeFirst();
-  //   if (!user) {
-  //     return { error: "Invalid credentials" };
-  //   }
-  //   const validPassword = await bcrypt.compare(password, user.password);
-  //   if (!validPassword) {
-  //     return { error: "Invalid credentials" };
-  //   }
-  //   if (!user.email_verified) {
-  //     return { error: "Email not verified" };
-  //   }
-  //   const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
-  //     expiresIn: "7d",
-  //   });
-  //   cookies().set("auth-token", token, {
-  //     httpOnly: true,
-  //     secure: process.env.NODE_ENV === "production",
-  //     sameSite: "lax",
-  //     maxAge: 7 * 24 * 60 * 60, // 7 days
-  //   });
-  //   return {
-  //     user: {
-  //       id: user.id,
-  //       email: user.email,
-  //       fullName: user.full_name,
-  //     },
-  //   };
-  // } catch (error) {
-  //   console.error("Login error:", error);
-  //   return { error: "Login failed" };
-  // }
-}
+export const login = async (email: string, password: string) => {
+  try {
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
 
-export async function register(
+    if (error || !user) {
+      return { error: "Invalid credentials" };
+    }
+
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return { error: "Invalid credentials" };
+    }
+
+    if (!user.email_verified) {
+      return { error: "Email not verified" };
+    }
+
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
+    cookies().set("auth-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60, // 7 days
+    });
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.full_name,
+      },
+    };
+  } catch (error) {
+    console.error("Login error:", error);
+    return { error: "Login failed" };
+  }
+};
+
+export const register = async (
   email: string,
   password: string,
-  fullName: string,
-) {
-  // try {
-  //   const hashedPassword = await bcrypt.hash(password, 10);
-  //   const user = await db
-  //     .insertInto("users")
-  //     .values({
-  //       email,
-  //       password: hashedPassword,
-  //       full_name: fullName,
-  //       email_verified: false,
-  //     })
-  //     .returningAll()
-  //     .executeTakeFirstOrThrow();
-  //   const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
-  //     expiresIn: "1d",
-  //   });
-  //   return { success: true, verificationToken };
-  // } catch (error) {
-  //   console.error("Registration error:", error);
-  //   return { error: "Registration failed" };
-  // }
-}
+  fullName: string
+) => {
+  try {
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-export async function verifyEmail(token: string) {
-  // try {
-  //   const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
-  //   await db
-  //     .updateTable("users")
-  //     .set({ email_verified: true })
-  //     .where("id", "=", decoded.userId)
-  //     .execute();
-  //   return { success: true };
-  // } catch (error) {
-  //   console.error("Verification error:", error);
-  //   return { error: "Verification failed" };
-  // }
-}
+    const { data: user, error } = await supabase
+      .from("users")
+      .insert([
+        {
+          email,
+          password: hashedPassword,
+          full_name: fullName,
+          email_verified: false,
+        },
+      ])
+      .select()
+      .single();
 
-export async function getCurrentUser() {
+    if (error) throw error;
+
+    const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    return { success: true, verificationToken };
+  } catch (error) {
+    console.error("Registration error:", error);
+    return { error: "Registration failed" };
+  }
+};
+
+export const verifyEmail = async (token: string) => {
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+
+    const { error } = await supabase
+      .from("users")
+      .update({ email_verified: true })
+      .eq("id", decoded.userId);
+
+    if (error) throw error;
+
+    return { success: true };
+  } catch (error) {
+    console.error("Verification error:", error);
+    return { error: "Verification failed" };
+  }
+};
+
+export const getCurrentUser = async () => {
   const token = cookies().get("auth-token")?.value;
   if (!token) {
     return null;
@@ -104,9 +121,9 @@ export async function getCurrentUser() {
   } catch (error) {
     return null;
   }
-}
+};
 
-export async function logout() {
+export const logout = async () => {
   cookies().delete("auth-token");
   return { success: true };
-}
+};

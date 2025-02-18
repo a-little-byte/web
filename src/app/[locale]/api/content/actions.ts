@@ -1,14 +1,16 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 
 export async function getPageContent(section: string) {
   try {
-    const content = await db
-      .selectFrom("page_content")
-      .where("section", "=", section)
-      .selectAll()
-      .executeTakeFirst();
+    const { data: content, error } = await supabase
+      .from("page_content")
+      .select("*")
+      .eq("section", section)
+      .single();
+
+    if (error) throw error;
 
     return { content };
   } catch (error) {
@@ -19,22 +21,25 @@ export async function getPageContent(section: string) {
 
 export async function updatePageContent(section: string, content: any) {
   try {
-    const result = await db
-      .insertInto("page_content")
-      .values({
-        section,
-        content,
-      })
-      .onConflict((oc) =>
-        oc.column("section").doUpdateSet({
+    const { data, error } = await supabase
+      .from("page_content")
+      .upsert(
+        {
+          section,
           content,
-          updated_at: new Date(),
-        }),
+          updated_at: new Date().toISOString(),
+        },
+        {
+          onConflict: "section",
+          ignoreDuplicates: false,
+        }
       )
-      .returningAll()
-      .executeTakeFirstOrThrow();
+      .select()
+      .single();
 
-    return { content: result };
+    if (error) throw error;
+
+    return data;
   } catch (error) {
     console.error("Error updating page content:", error);
     return { error: "Failed to update page content" };

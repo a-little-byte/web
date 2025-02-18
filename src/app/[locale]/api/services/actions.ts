@@ -1,15 +1,15 @@
 "use server";
 
-import { Service } from "@/db/schema";
-import { db } from "@/lib/db";
+import { supabase, Tables } from "@/lib/supabase";
 
 export async function getServices() {
   try {
-    const services = await db
-      .selectFrom("services")
-      .selectAll()
-      .orderBy("created_at")
-      .execute();
+    const { data: services, error } = await supabase
+      .from("services")
+      .select("*")
+      .order("created_at");
+
+    if (error) throw error;
 
     return { services };
   } catch (error) {
@@ -19,14 +19,14 @@ export async function getServices() {
 }
 
 export async function createService(
-  data: Omit<Service, "id" | "created_at" | "updated_at">,
+  data: Omit<Tables<"services">, "id" | "created_at" | "updated_at">
 ) {
   try {
-    const service = await db
-      .insertInto("services")
-      .values(data)
-      .returningAll()
-      .executeTakeFirstOrThrow();
+    const { data: service, error } = await supabase
+      .from("services")
+      .insert(data)
+      .select()
+      .single();
 
     return { service };
   } catch (error) {
@@ -35,14 +35,19 @@ export async function createService(
   }
 }
 
-export async function updateService(id: string, data: Partial<Service>) {
+export async function updateService(
+  id: string,
+  data: Partial<Tables<"services">>
+) {
   try {
-    const service = await db
-      .updateTable("services")
-      .set(data)
-      .where("id", "=", id)
-      .returningAll()
-      .executeTakeFirstOrThrow();
+    const { data: service, error } = await supabase
+      .from("services")
+      .update(data)
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
 
     return { service };
   } catch (error) {
@@ -53,7 +58,9 @@ export async function updateService(id: string, data: Partial<Service>) {
 
 export async function deleteService(id: string) {
   try {
-    await db.deleteFrom("services").where("id", "=", id).execute();
+    const { error } = await supabase.from("services").delete().eq("id", id);
+
+    if (error) throw error;
 
     return { success: true };
   } catch (error) {

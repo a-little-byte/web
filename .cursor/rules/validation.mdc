@@ -1,0 +1,8 @@
+---
+description: Zod
+globs: *.tsx, *.ts
+---
+
+# Validation 
+
+- Use zod for validation

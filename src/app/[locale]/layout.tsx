@@ -7,23 +7,26 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
+import type { ReactNode } from "react";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
+
+type SupportedLocale = (typeof routing.locales)[number];
 
 export const metadata: Metadata = {
   title: "Cyna - Cybersecurity Solutions",
   description: "Enterprise-grade cybersecurity solutions for your business",
 };
 
-export default async function RootLayout({
+const RootLayout = async ({
   children,
   params: { locale },
 }: {
-  children: React.ReactNode;
-  params: { locale: string };
-}) {
-  if (!routing.locales.includes(locale as any)) {
+  children: ReactNode;
+  params: { locale: SupportedLocale };
+}) => {
+  if (!routing.locales.includes(locale)) {
     notFound();
   }
 
@@ -51,4 +54,6 @@ export default async function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

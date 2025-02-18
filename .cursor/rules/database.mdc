@@ -1,0 +1,10 @@
+---
+description: Database use of supabase
+globs: *.tsx, *.ts
+---
+
+# Database
+
+- Use supabase as a query builder / orm
+- If it's a kysely query, or whatever other query builder or orm convert it into supabase query 
+- If you need to get the type of a table use the Tables type inside [supabase.ts](mdc:src/types/supabase.ts) 

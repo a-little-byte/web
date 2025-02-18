@@ -1,6 +1,6 @@
 "use server";
 
-import { db } from "@/lib/db";
+import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "../auth/actions";
 
 export async function getUserSubscriptions() {
@@ -10,21 +10,25 @@ export async function getUserSubscriptions() {
       return { error: "Not authenticated" };
     }
 
-    const subscriptions = await db
-      .selectFrom("subscriptions")
-      .innerJoin("services", "services.id", "subscriptions.service_id")
-      .where("subscriptions.user_id", "=", user.id)
-      .select([
-        "subscriptions.id",
-        "subscriptions.status",
-        "subscriptions.current_period_start",
-        "subscriptions.current_period_end",
-        "services.name as service_name",
-        "services.price as service_price",
-        "services.period as service_period",
-      ])
-      .execute();
+    const { data: subscriptions, error } = await supabase
+      .from("subscriptions")
+      .select(
+        `
+        id,
+        status,
+        current_period_start,
+        current_period_end,
+        services (
+          name,
+          price,
+          period
+        )
+      `
+      )
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
+    if (error) throw error;
     return { subscriptions };
   } catch (error) {
     console.error("Error fetching subscriptions:", error);
@@ -39,26 +43,26 @@ export async function getUserPayments() {
       return { error: "Not authenticated" };
     }
 
-    const payments = await db
-      .selectFrom("payments")
-      .innerJoin(
-        "subscriptions",
-        "subscriptions.id",
-        "payments.subscription_id",
+    const { data: payments, error } = await supabase
+      .from("payments")
+      .select(
+        `
+        id,
+        amount,
+        status,
+        payment_method,
+        created_at,
+        subscriptions!inner (
+          services (
+            name
+          )
+        )
+      `
       )
-      .innerJoin("services", "services.id", "subscriptions.service_id")
-      .where("subscriptions.user_id", "=", user.id)
-      .select([
-        "payments.id",
-        "payments.amount",
-        "payments.status",
-        "payments.payment_method",
-        "payments.created_at",
-        "services.name as service_name",
-      ])
-      .orderBy("payments.created_at", "desc")
-      .execute();
+      .eq("subscriptions.user_id", user.id)
+      .order("created_at", { ascending: false });
 
+    if (error) throw error;
     return { payments };
   } catch (error) {
     console.error("Error fetching payments:", error);

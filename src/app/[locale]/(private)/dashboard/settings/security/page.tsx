@@ -12,9 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 export default function SecuritySettings() {
+  const t = useTranslations("dashboard.settings.security");
   const [isLoading, setIsLoading] = useState(false);
   const [totpEnabled, setTotpEnabled] = useState(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
@@ -58,8 +60,8 @@ export default function SecuritySettings() {
     } catch (error) {
       console.error("Error setting up TOTP:", error);
       toast({
-        title: "Error",
-        description: "Failed to set up two-factor authentication",
+        title: t("toasts.setupError.title"),
+        description: t("toasts.setupError.description"),
         variant: "destructive",
       });
     } finally {
@@ -88,14 +90,14 @@ export default function SecuritySettings() {
       setVerificationCode("");
 
       toast({
-        title: "Success",
-        description: "Two-factor authentication has been enabled",
+        title: t("toasts.verifySuccess.title"),
+        description: t("toasts.verifySuccess.description"),
       });
     } catch (error) {
       console.error("Error verifying TOTP:", error);
       toast({
-        title: "Error",
-        description: "Invalid verification code",
+        title: t("toasts.verifyError.title"),
+        description: t("toasts.verifyError.description"),
         variant: "destructive",
       });
     } finally {
@@ -107,16 +109,14 @@ export default function SecuritySettings() {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Two-Factor Authentication</CardTitle>
-          <CardDescription>
-            Add an extra layer of security to your account
-          </CardDescription>
+          <CardTitle>{t("twoFactor.title")}</CardTitle>
+          <CardDescription>{t("twoFactor.description")}</CardDescription>
         </CardHeader>
         <CardContent>
           {totpEnabled ? (
             <div>
               <p className="text-sm text-muted-foreground mb-4">
-                Two-factor authentication is enabled for your account.
+                {t("twoFactor.enabled")}
               </p>
             </div>
           ) : qrCode ? (
@@ -125,14 +125,14 @@ export default function SecuritySettings() {
                 <img src={qrCode} alt="QR Code" className="w-48 h-48" />
               </div>
               <p className="text-sm text-muted-foreground text-center">
-                Scan this QR code with your authenticator app
+                {t("twoFactor.scanQR")}
               </p>
               <form onSubmit={verifyTOTP} className="space-y-4">
                 <div>
                   <Input
                     value={verificationCode}
                     onChange={(e) => setVerificationCode(e.target.value)}
-                    placeholder="Enter verification code"
+                    placeholder={t("twoFactor.verificationCode.placeholder")}
                     maxLength={6}
                     className="text-center"
                   />
@@ -141,7 +141,7 @@ export default function SecuritySettings() {
                   {isLoading && (
                     <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   )}
-                  Verify
+                  {t("twoFactor.buttons.verify")}
                 </Button>
               </form>
             </div>
@@ -150,7 +150,7 @@ export default function SecuritySettings() {
               {isLoading && (
                 <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
               )}
-              Enable Two-Factor Authentication
+              {t("twoFactor.buttons.enable")}
             </Button>
           )}
         </CardContent>
