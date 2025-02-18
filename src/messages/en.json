@@ -6,7 +6,12 @@
     "contact": "Contact",
     "signIn": "Sign in",
     "signUp": "Sign up",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "menu": "Menu",
+    "toggleMenu": "Toggle menu",
+    "searchPlaceholder": "Type a command or search...",
+    "searchEmpty": "No results found."
   },
   "home": {
     "hero": {
@@ -846,6 +851,33 @@
       "actions": {
         "dashboard": "Go to Dashboard",
         "subscriptions": "View Subscriptions"
+      }
+    }
+  },
+  "shoppingCart": {
+    "title": "Shopping Cart",
+    "empty": "Your cart is empty.",
+    "total": "Total",
+    "checkout": "Checkout",
+    "item": {
+      "pricePerPeriod": "Price per {period}: {price}"
+    },
+    "errors": {
+      "fetchItems": {
+        "title": "Error",
+        "description": "Failed to fetch cart items"
+      },
+      "updateQuantity": {
+        "title": "Error",
+        "description": "Failed to update quantity"
+      },
+      "removeItem": {
+        "title": "Error",
+        "description": "Failed to remove item"
+      },
+      "checkout": {
+        "title": "Error",
+        "description": "Failed to checkout"
       }
     }
   }

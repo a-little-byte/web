@@ -1,7 +1,7 @@
-import Footer from "@/components/layout/footer";
-import Header from "@/components/layout/header";
-import { ThemeProvider } from "@/components/layout/theme-provider";
-import { routing } from "@/i18n/routing";
+import { Footer } from "@/components/layout/Footer";
+import { Header } from "@/components/layout/Header";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { routing, SupportedLocale } from "@/i18n/routing";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -11,8 +11,6 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
-
-type SupportedLocale = (typeof routing.locales)[number];
 
 export const metadata: Metadata = {
   title: "Cyna - Cybersecurity Solutions",

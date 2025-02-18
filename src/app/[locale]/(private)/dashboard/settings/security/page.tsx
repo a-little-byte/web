@@ -15,7 +15,7 @@ import { supabase } from "@/lib/supabase";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-export default function SecuritySettings() {
+const SecuritySettings = () => {
   const t = useTranslations("dashboard.settings.security");
   const [isLoading, setIsLoading] = useState(false);
   const [totpEnabled, setTotpEnabled] = useState(false);
@@ -42,7 +42,11 @@ export default function SecuritySettings() {
 
       setTotpEnabled(!!data?.enabled);
     } catch (error) {
-      console.error("Error checking TOTP status:", error);
+      toast({
+        title: t("toasts.error.title"),
+        description: t("toasts.error.description"),
+        variant: "destructive",
+      });
     }
   }
 
@@ -58,7 +62,6 @@ export default function SecuritySettings() {
 
       setQrCode(data.qrCode);
     } catch (error) {
-      console.error("Error setting up TOTP:", error);
       toast({
         title: t("toasts.setupError.title"),
         description: t("toasts.setupError.description"),
@@ -94,7 +97,6 @@ export default function SecuritySettings() {
         description: t("toasts.verifySuccess.description"),
       });
     } catch (error) {
-      console.error("Error verifying TOTP:", error);
       toast({
         title: t("toasts.verifyError.title"),
         description: t("toasts.verifyError.description"),
@@ -157,4 +159,6 @@ export default function SecuritySettings() {
       </Card>
     </div>
   );
-}
+};
+
+export default SecuritySettings;

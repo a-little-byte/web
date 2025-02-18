@@ -18,7 +18,7 @@ export default function DashboardLayout({
     );
 
     if (!token) {
-      router.push("/login");
+      router.push("/auth/login");
     }
   }, [router]);
 

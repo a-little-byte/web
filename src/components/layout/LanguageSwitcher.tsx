@@ -10,7 +10,7 @@ import {
 import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 
-export default function LanguageSwitcher() {
+export const LanguageSwitcher = () => {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
@@ -30,4 +30,4 @@ export default function LanguageSwitcher() {
       </SelectContent>
     </Select>
   );
-}
+};

@@ -1,7 +1,9 @@
+import { NavigationItem } from "@/components/layout/Header";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Link } from "@/i18n/routing";
 import { ShieldCheck } from "lucide-react";
 
-const navigation = {
+const navigation: Record<string, NavigationItem[]> = {
   solutions: [
     { name: "SOC", href: "#" },
     { name: "EDR", href: "#" },
@@ -24,9 +26,9 @@ const navigation = {
     { name: "Privacy", href: "#" },
     { name: "Legal Notices", href: "/legal" },
   ],
-};
+} as const;
 
-export default function Footer() {
+export const Footer = () => {
   return (
     <footer className="bg-background" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
@@ -111,12 +113,13 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-12 border-t pt-8">
+        <div className="mt-12 border-t pt-8 flex justify-between items-center">
           <p className="text-sm text-muted-foreground">
             &copy; {new Date().getFullYear()} Cyna. All rights reserved.
           </p>
+          <LanguageSwitcher />
         </div>
       </div>
     </footer>
   );
-}
+};

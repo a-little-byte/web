@@ -19,6 +19,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface CartItem {
@@ -30,15 +31,16 @@ interface CartItem {
     description: string;
     price: number;
     period: string;
-  };
+  }[];
 }
 
-export function ShoppingCart() {
+export const ShoppingCart = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const t = useTranslations("shoppingCart");
 
   useEffect(() => {
     if (isOpen) {
@@ -71,18 +73,19 @@ export function ShoppingCart() {
         .eq("user_id", session.user.id);
 
       if (error) throw error;
+
       setCartItems(data || []);
     } catch (error) {
       console.error("Error fetching cart items:", error);
       toast({
-        title: "Error",
-        description: "Failed to fetch cart items",
+        title: t("errors.fetchItems.title"),
+        description: t("errors.fetchItems.description"),
         variant: "destructive",
       });
     }
   };
 
-  const updateQuantity = async (itemId: string, quantity: number) => {
+  const updateQuantity = (itemId: string, quantity: number) => async () => {
     if (quantity < 1) return;
 
     setIsLoading(true);
@@ -97,8 +100,8 @@ export function ShoppingCart() {
     } catch (error) {
       console.error("Error updating quantity:", error);
       toast({
-        title: "Error",
-        description: "Failed to update quantity",
+        title: t("errors.updateQuantity.title"),
+        description: t("errors.updateQuantity.description"),
         variant: "destructive",
       });
     } finally {
@@ -106,7 +109,7 @@ export function ShoppingCart() {
     }
   };
 
-  const removeItem = async (itemId: string) => {
+  const removeItem = (itemId: string) => async () => {
     setIsLoading(true);
     try {
       const { error } = await supabase
@@ -119,8 +122,8 @@ export function ShoppingCart() {
     } catch (error) {
       console.error("Error removing item:", error);
       toast({
-        title: "Error",
-        description: "Failed to remove item",
+        title: t("errors.removeItem.title"),
+        description: t("errors.removeItem.description"),
         variant: "destructive",
       });
     } finally {
@@ -157,15 +160,19 @@ export function ShoppingCart() {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to initiate checkout",
+        title: t("errors.checkout.title"),
+        description: t("errors.checkout.description"),
         variant: "destructive",
       });
     }
   };
 
   const total = cartItems.reduce((sum, item) => {
-    return sum + item.services.price * item.quantity;
+    return (
+      sum +
+      item.services.reduce((sum, service) => sum + service.price, 0) *
+        item.quantity
+    );
   }, 0);
 
   return (
@@ -178,12 +185,12 @@ export function ShoppingCart() {
               {cartItems.length}
             </span>
           )}
-          <span className="sr-only">Shopping cart</span>
+          <span className="sr-only">{t("title")}</span>
         </Button>
       </SheetTrigger>
       <SheetContent className="flex flex-col">
         <SheetHeader>
-          <SheetTitle>Shopping Cart</SheetTitle>
+          <SheetTitle>{t("title")}</SheetTitle>
         </SheetHeader>
         {isLoading ? (
           <div className="flex-1 flex items-center justify-center">
@@ -191,7 +198,7 @@ export function ShoppingCart() {
           </div>
         ) : cartItems.length === 0 ? (
           <div className="flex-1 flex items-center justify-center text-muted-foreground">
-            Your cart is empty
+            {t("empty")}
           </div>
         ) : (
           <>
@@ -203,9 +210,19 @@ export function ShoppingCart() {
                     className="flex items-center justify-between space-x-4 border-b pb-4"
                   >
                     <div className="space-y-1">
-                      <h4 className="font-medium">{item.services.name}</h4>
+                      <h4 className="font-medium">
+                        {item.services
+                          .map((service) => service.name)
+                          .join(", ")}
+                      </h4>
                       <p className="text-sm text-muted-foreground">
-                        ${item.services.price}/{item.services.period}
+                        {t("item.pricePerPeriod", {
+                          price: item.services.reduce(
+                            (sum, service) => sum + service.price,
+                            0
+                          ),
+                          period: `${item.services[0].period} - ${item.services.at(-1)?.period}`,
+                        })}
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -214,9 +231,7 @@ export function ShoppingCart() {
                           variant="outline"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
-                          }
+                          onClick={updateQuantity(item.id, item.quantity - 1)}
                           disabled={isLoading || item.quantity <= 1}
                         >
                           <Minus className="h-4 w-4" />
@@ -226,9 +241,7 @@ export function ShoppingCart() {
                           variant="outline"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
-                          }
+                          onClick={updateQuantity(item.id, item.quantity + 1)}
                           disabled={isLoading}
                         >
                           <Plus className="h-4 w-4" />
@@ -238,7 +251,7 @@ export function ShoppingCart() {
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8"
-                        onClick={() => removeItem(item.id)}
+                        onClick={removeItem(item.id)}
                         disabled={isLoading}
                       >
                         <X className="h-4 w-4" />
@@ -250,7 +263,7 @@ export function ShoppingCart() {
             </ScrollArea>
             <div className="border-t pt-4 space-y-4">
               <div className="flex items-center justify-between text-lg font-medium">
-                <span>Total</span>
+                <span>{t("total")}</span>
                 <span>${total.toFixed(2)}</span>
               </div>
               <Button
@@ -259,7 +272,7 @@ export function ShoppingCart() {
                 onClick={handleCheckout}
                 disabled={isLoading}
               >
-                Checkout
+                {t("checkout")}
               </Button>
             </div>
           </>
@@ -267,4 +280,4 @@ export function ShoppingCart() {
       </SheetContent>
     </Sheet>
   );
-}
+};

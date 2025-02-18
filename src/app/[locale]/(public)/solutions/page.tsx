@@ -96,8 +96,6 @@ const Solutions = () => {
 
       if (!service) throw new Error("Service not found");
 
-      // ... rest of the cart logic ...
-
       toast({
         title: t("cart.success.title"),
         description: t("cart.success.description", {
@@ -149,19 +147,22 @@ const Solutions = () => {
                     {t(`products.${solution.id}.description`)}
                   </p>
                   <ul role="list" className="mt-8 space-y-3 text-sm leading-6">
-                    {t(`products.${solution.id}.features`).map(
-                      (feature: string) => (
+                    {t
+                      .raw(`products.${solution.id}.features`)
+                      .map((feature: string) => (
                         <li key={feature} className="flex gap-x-3">
                           <span className="text-primary">•</span>
                           {feature}
                         </li>
-                      )
-                    )}
+                      ))}
                   </ul>
                 </div>
 
-                {/* Pricing and controls */}
-                <div className="mt-8">
+                <div className="mt-4 text-2xl font-bold">
+                  ${price.toFixed(2)}
+                </div>
+
+                <div className="mt-4">
                   <Controller
                     name={`durations.${solution.priceId}`}
                     control={control}

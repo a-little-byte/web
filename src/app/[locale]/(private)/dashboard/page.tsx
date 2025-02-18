@@ -7,7 +7,7 @@ import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-export default function Dashboard() {
+const Dashboard = () => {
   const t = useTranslations("dashboard");
   const [subscriptions, setSubscriptions] = useState<Tables<"subscriptions">[]>(
     []
@@ -110,7 +110,7 @@ export default function Dashboard() {
                   <span className="font-medium">
                     {t("subscriptionsList.details.price")}:
                   </span>{" "}
-                  ${/* {sub.}/{sub.service_period} */}
+                  {/* ${sub.services.price}/{sub.services.period} */}
                 </p>
                 <p>
                   <span className="font-medium">
@@ -126,4 +126,6 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;
