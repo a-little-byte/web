@@ -61,12 +61,6 @@
       }
     }
   },
-  "solutions": {
-    "title": "Security Solutions",
-    "description": "Choose the security solution that best fits your organization's needs. All our products come with enterprise-grade support and SLA guarantees.",
-    "subscribeNow": "Subscribe Now",
-    "processing": "Processing..."
-  },
   "legal": {
     "title": "Legal Notices",
     "copyright": {
@@ -411,6 +405,78 @@
       "checkoutFailed": {
         "title": "Error",
         "description": "Failed to initiate checkout. Please try again."
+      }
+    }
+  },
+  "solutions": {
+    "header": {
+      "title": "Security Solutions",
+      "description": "Choose the security solution that best fits your organization's needs. All our products come with enterprise-grade support and SLA guarantees."
+    },
+    "products": {
+      "soc": {
+        "name": "SOC as a Service",
+        "description": "Our Security Operations Center (SOC) provides 24/7 monitoring, threat detection, and incident response for your organization.",
+        "features": [
+          "24/7 Security Monitoring",
+          "Real-time Threat Detection",
+          "Incident Response",
+          "Compliance Reporting",
+          "Security Analytics"
+        ]
+      },
+      "edr": {
+        "name": "EDR Protection",
+        "description": "Advanced Endpoint Detection and Response solution that protects your devices from sophisticated cyber threats.",
+        "features": [
+          "Real-time Protection",
+          "Behavioral Analysis",
+          "Automated Response",
+          "Device Control",
+          "Threat Hunting"
+        ]
+      },
+      "xdr": {
+        "name": "XDR Platform",
+        "description": "Extended Detection and Response platform that unifies security data across your entire technology stack.",
+        "features": [
+          "Cross-platform Protection",
+          "Advanced Analytics",
+          "Automated Workflows",
+          "Threat Intelligence",
+          "Custom Reporting"
+        ]
+      }
+    },
+    "duration": {
+      "select": "Select duration",
+      "options": {
+        "1": "1 Month",
+        "3": "3 Months",
+        "12": "1 Year"
+      },
+      "discount": "{discount}% off"
+    },
+    "pricing": {
+      "for": "for {duration}",
+      "savings": "Save ${amount}"
+    },
+    "cart": {
+      "addToCart": "Add to Cart",
+      "adding": "Adding to Cart...",
+      "success": {
+        "title": "Added to cart",
+        "description": "{product} has been added to your cart"
+      },
+      "error": {
+        "notLoggedIn": {
+          "title": "Not logged in",
+          "description": "Please sign in to add items to your cart"
+        },
+        "addFailed": {
+          "title": "Error",
+          "description": "Failed to add item to cart. Please try again."
+        }
       }
     }
   }

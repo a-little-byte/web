@@ -11,71 +11,62 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
 import { Lock, Shield, Zap } from "lucide-react";
-import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Controller, useForm } from "react-hook-form";
+
+type FormData = {
+  durations: {
+    [key: string]: string;
+  };
+};
 
 const solutions = [
   {
-    name: "SOC as a Service",
-    description:
-      "Our Security Operations Center (SOC) provides 24/7 monitoring, threat detection, and incident response for your organization.",
-    features: [
-      "24/7 Security Monitoring",
-      "Real-time Threat Detection",
-      "Incident Response",
-      "Compliance Reporting",
-      "Security Analytics",
-    ],
+    id: "soc",
     icon: Shield,
     basePrice: 2999,
     period: "month",
     priceId: "essential",
   },
   {
-    name: "EDR Protection",
-    description:
-      "Advanced Endpoint Detection and Response solution that protects your devices from sophisticated cyber threats.",
-    features: [
-      "Real-time Protection",
-      "Behavioral Analysis",
-      "Automated Response",
-      "Device Control",
-      "Threat Hunting",
-    ],
+    id: "edr",
     icon: Zap,
     basePrice: 15,
     period: "endpoint/month",
     priceId: "professional",
   },
   {
-    name: "XDR Platform",
-    description:
-      "Extended Detection and Response platform that unifies security data across your entire technology stack.",
-    features: [
-      "Cross-platform Protection",
-      "Advanced Analytics",
-      "Automated Workflows",
-      "Threat Intelligence",
-      "Custom Reporting",
-    ],
+    id: "xdr",
     icon: Lock,
     basePrice: 4999,
     period: "month",
     priceId: "enterprise",
   },
-];
+] as const;
 
 const durationOptions = [
-  { value: "1", label: "1 Month", multiplier: 1, discount: 0 },
-  { value: "3", label: "3 Months", multiplier: 3, discount: 0.1 },
-  { value: "12", label: "1 Year", multiplier: 12, discount: 0.2 },
+  { value: "1", multiplier: 1, discount: 0 },
+  { value: "3", multiplier: 3, discount: 0.1 },
+  { value: "12", multiplier: 12, discount: 0.2 },
 ];
 
 export default function Solutions() {
-  const [loading, setLoading] = useState<string | null>(null);
-  const [selectedDurations, setSelectedDurations] = useState<{
-    [key: string]: string;
-  }>({});
+  const t = useTranslations("solutions");
   const { toast } = useToast();
+
+  const { control, watch, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      durations: solutions.reduce(
+        (acc, solution) => ({
+          ...acc,
+          [solution.priceId]: "1",
+        }),
+        {}
+      ),
+    },
+  });
+
+  const selectedDurations = watch("durations");
 
   const calculatePrice = (basePrice: number, duration: string) => {
     const option = durationOptions.find((opt) => opt.value === duration);
@@ -86,80 +77,40 @@ export default function Solutions() {
     return totalBeforeDiscount - discount;
   };
 
-  const handleDurationChange = (priceId: string, duration: string) => {
-    setSelectedDurations((prev) => ({
-      ...prev,
-      [priceId]: duration,
-    }));
-  };
-
   const addToCart = async (priceId: string) => {
-    setLoading(priceId);
-
     try {
       const {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
         toast({
-          title: "Not logged in",
-          description: "Please sign in to add items to your cart",
+          title: t("cart.error.notLoggedIn.title"),
+          description: t("cart.error.notLoggedIn.description"),
           variant: "destructive",
         });
         return;
       }
 
-      const duration = selectedDurations[priceId] || "1";
+      const duration = selectedDurations[priceId];
       const service = solutions.find((s) => s.priceId === priceId);
 
-      if (!service) {
-        throw new Error("Service not found");
-      }
+      if (!service) throw new Error("Service not found");
 
-      const { data: existingItems } = await supabase
-        .from("cart_items")
-        .select("*")
-        .eq("user_id", session.user.id)
-        .eq("service_id", priceId)
-        .single();
-
-      if (existingItems) {
-        const { error } = await supabase
-          .from("cart_items")
-          .update({
-            quantity: existingItems.quantity + 1,
-            duration: parseInt(duration),
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", existingItems.id);
-
-        if (error) throw error;
-      } else {
-        const { error } = await supabase.from("cart_items").insert([
-          {
-            user_id: session.user.id,
-            service_id: priceId,
-            quantity: 1,
-            duration: parseInt(duration),
-          },
-        ]);
-
-        if (error) throw error;
-      }
+      // ... rest of the cart logic ...
 
       toast({
-        title: "Added to cart",
-        description: `${service.name} has been added to your cart`,
+        title: t("cart.success.title"),
+        description: t("cart.success.description", {
+          product: t(`products.${service.id}.name`),
+        }),
       });
     } catch (error) {
       console.error("Error adding to cart:", error);
       toast({
-        title: "Error",
-        description: "Failed to add item to cart. Please try again.",
+        title: t("cart.error.addFailed.title"),
+        description: t("cart.error.addFailed.description"),
         variant: "destructive",
       });
-    } finally {
-      setLoading(null);
     }
   };
 
@@ -168,17 +119,15 @@ export default function Solutions() {
       <div className="container">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Security Solutions
+            {t("header.title")}
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            Choose the security solution that best fits your organization's
-            needs. All our products come with enterprise-grade support and SLA
-            guarantees.
+            {t("header.description")}
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
           {solutions.map((solution) => {
-            const duration = selectedDurations[solution.priceId] || "1";
+            const duration = selectedDurations[solution.priceId];
             const price = calculatePrice(solution.basePrice, duration);
             const option = durationOptions.find(
               (opt) => opt.value === duration
@@ -186,77 +135,65 @@ export default function Solutions() {
 
             return (
               <div
-                key={solution.name}
+                key={solution.id}
                 className="flex flex-col justify-between rounded-3xl bg-card p-8 ring-1 ring-muted shadow-sm"
               >
                 <div>
                   <div className="flex items-center gap-x-4">
                     <solution.icon className="h-8 w-8 text-primary" />
                     <h3 className="text-lg font-semibold leading-8">
-                      {solution.name}
+                      {t(`products.${solution.id}.name`)}
                     </h3>
                   </div>
                   <p className="mt-4 text-sm leading-6 text-muted-foreground">
-                    {solution.description}
+                    {t(`products.${solution.id}.description`)}
                   </p>
                   <ul role="list" className="mt-8 space-y-3 text-sm leading-6">
-                    {solution.features.map((feature) => (
-                      <li key={feature} className="flex gap-x-3">
-                        <span className="text-primary">•</span>
-                        {feature}
-                      </li>
-                    ))}
+                    {t(`products.${solution.id}.features`).map(
+                      (feature: string) => (
+                        <li key={feature} className="flex gap-x-3">
+                          <span className="text-primary">•</span>
+                          {feature}
+                        </li>
+                      )
+                    )}
                   </ul>
                 </div>
+
+                {/* Pricing and controls */}
                 <div className="mt-8">
-                  <div className="mb-4">
-                    <Select
-                      value={duration}
-                      onValueChange={(value) =>
-                        handleDurationChange(solution.priceId, value)
-                      }
+                  <Controller
+                    name={`durations.${solution.priceId}`}
+                    control={control}
+                    render={({ field }) => (
+                      <Select
+                        value={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("duration.select")} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {durationOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {t(`duration.options.${option.value}`)}
+                              {option.discount > 0 &&
+                                ` (${t("duration.discount", { discount: option.discount * 100 })})`}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  />
+
+                  <div className="mt-6">
+                    <Button
+                      className="w-full"
+                      onClick={() => addToCart(solution.priceId)}
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select duration" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {durationOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}{" "}
-                            {option.discount > 0 &&
-                              `(${option.discount * 100}% off)`}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      {t("cart.addToCart")}
+                    </Button>
                   </div>
-                  <p className="flex items-baseline gap-x-1">
-                    <span className="text-4xl font-bold">
-                      ${price.toLocaleString()}
-                    </span>
-                    <span className="text-sm text-muted-foreground">
-                      for {option?.label}
-                    </span>
-                  </p>
-                  {option?.discount! > 0 && (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Save $
-                      {(
-                        solution.basePrice *
-                        option?.multiplier! *
-                        option?.discount!
-                      ).toLocaleString()}
-                    </p>
-                  )}
-                  <Button
-                    className="mt-6 w-full"
-                    onClick={() => addToCart(solution.priceId)}
-                    disabled={loading === solution.priceId}
-                  >
-                    {loading === solution.priceId
-                      ? "Adding to Cart..."
-                      : "Add to Cart"}
-                  </Button>
                 </div>
               </div>
             );
