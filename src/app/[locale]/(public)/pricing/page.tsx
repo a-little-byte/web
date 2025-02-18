@@ -2,58 +2,66 @@
 
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-const tiers = [
-  {
-    name: "Essential",
-    id: "essential",
-    price: "$2,999",
-    description: "Essential security coverage for small to medium businesses.",
-    features: [
-      "SOC monitoring (business hours)",
-      "Basic EDR protection",
-      "Email security",
-      "Vulnerability scanning",
-      "8x5 support",
-    ],
-  },
-  {
-    name: "Professional",
-    id: "professional",
-    price: "$4,999",
-    description: "Advanced security for growing organizations.",
-    features: [
-      "24/7 SOC monitoring",
-      "Advanced EDR/XDR",
-      "SIEM integration",
-      "Threat hunting",
-      "Incident response",
-      "24/7 support",
-    ],
-  },
-  {
-    name: "Enterprise",
-    id: "enterprise",
-    price: "Custom",
-    description: "Comprehensive security for large enterprises.",
-    features: [
-      "Custom SOC solutions",
-      "Advanced XDR platform",
-      "Custom integrations",
-      "Dedicated security team",
-      "Custom SLAs",
-      "Priority 24/7 support",
-    ],
-  },
-];
+const subscriptionFormSchema = z.object({
+  tierId: z.enum(["essential", "professional", "enterprise"]),
+});
 
 export default function Pricing() {
+  const t = useTranslations("pricing");
   const [loading, setLoading] = useState<string | null>(null);
   const { toast } = useToast();
+  const { handleSubmit } = useForm<
+    z.input<typeof subscriptionFormSchema>,
+    unknown,
+    z.output<typeof subscriptionFormSchema>
+  >({
+    resolver: zodResolver(subscriptionFormSchema),
+  });
 
-  const handleCheckout = async (priceId: string) => {
+  const tiers = [
+    {
+      name: t("tiers.essential.name"),
+      id: "essential",
+      price: t("tiers.essential.price"),
+      description: t("tiers.essential.description"),
+      features: t(
+        "tiers.essential.features",
+        {},
+        { returnObjects: true }
+      ) as string[],
+    },
+    {
+      name: t("tiers.professional.name"),
+      id: "professional",
+      price: t("tiers.professional.price"),
+      description: t("tiers.professional.description"),
+      features: t(
+        "tiers.professional.features",
+        {},
+        { returnObjects: true }
+      ) as string[],
+    },
+    {
+      name: t("tiers.enterprise.name"),
+      id: "enterprise",
+      price: t("tiers.enterprise.price"),
+      description: t("tiers.enterprise.description"),
+      features: t(
+        "tiers.enterprise.features",
+        {},
+        { returnObjects: true }
+      ) as string[],
+    },
+  ];
+
+  const onSubmit = async (priceId: string) => {
     setLoading(priceId);
 
     try {
@@ -73,8 +81,8 @@ export default function Pricing() {
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to initiate checkout. Please try again.",
+        title: t("errors.checkoutFailed.title"),
+        description: t("errors.checkoutFailed.description"),
         variant: "destructive",
       });
     } finally {
@@ -87,11 +95,10 @@ export default function Pricing() {
       <div className="container">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            Pricing Plans
+            {t("header.title")}
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground">
-            Choose the right security package for your business. All plans
-            include our core security features and expert support.
+            {t("header.description")}
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
@@ -107,7 +114,7 @@ export default function Pricing() {
                 </p>
                 <p className="mt-6 flex items-baseline gap-x-1">
                   <span className="text-4xl font-bold">{tier.price}</span>
-                  {tier.price !== "Custom" && (
+                  {tier.price !== t("tiers.enterprise.price") && (
                     <span className="text-sm text-muted-foreground">
                       /month
                     </span>
@@ -122,13 +129,17 @@ export default function Pricing() {
                   ))}
                 </ul>
               </div>
-              <Button
-                className="mt-8 w-full"
-                onClick={() => handleCheckout(tier.id)}
-                disabled={loading === tier.id}
-              >
-                {loading === tier.id ? "Processing..." : "Subscribe Now"}
-              </Button>
+              <form onSubmit={handleSubmit(() => onSubmit(tier.id))}>
+                <Button
+                  className="mt-8 w-full"
+                  type="submit"
+                  disabled={loading === tier.id}
+                >
+                  {loading === tier.id
+                    ? t("buttons.processing")
+                    : t("buttons.subscribe")}
+                </Button>
+              </form>
             </div>
           ))}
         </div>

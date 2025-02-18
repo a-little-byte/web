@@ -357,5 +357,61 @@
         "returnToLogin": "Return to Login"
       }
     }
+  },
+  "pricing": {
+    "header": {
+      "title": "Pricing Plans",
+      "description": "Choose the right security package for your business. All plans include our core security features and expert support."
+    },
+    "tiers": {
+      "essential": {
+        "name": "Essential",
+        "price": "$2,999",
+        "description": "Essential security coverage for small to medium businesses.",
+        "features": [
+          "SOC monitoring (business hours)",
+          "Basic EDR protection",
+          "Email security",
+          "Vulnerability scanning",
+          "8x5 support"
+        ]
+      },
+      "professional": {
+        "name": "Professional",
+        "price": "$4,999",
+        "description": "Advanced security for growing organizations.",
+        "features": [
+          "24/7 SOC monitoring",
+          "Advanced EDR/XDR",
+          "SIEM integration",
+          "Threat hunting",
+          "Incident response",
+          "24/7 support"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Custom",
+        "description": "Comprehensive security for large enterprises.",
+        "features": [
+          "Custom SOC solutions",
+          "Advanced XDR platform",
+          "Custom integrations",
+          "Dedicated security team",
+          "Custom SLAs",
+          "Priority 24/7 support"
+        ]
+      }
+    },
+    "buttons": {
+      "subscribe": "Subscribe Now",
+      "processing": "Processing..."
+    },
+    "errors": {
+      "checkoutFailed": {
+        "title": "Error",
+        "description": "Failed to initiate checkout. Please try again."
+      }
+    }
   }
 }
