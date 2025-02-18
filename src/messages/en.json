@@ -347,6 +347,15 @@
         "description": "This password reset link is invalid or has expired.",
         "requestNew": "Request new reset link"
       }
+    },
+    "confirmEmail": {
+      "error": {
+        "noToken": "No verification token found",
+        "verificationFailed": "Failed to verify email. Please try again."
+      },
+      "buttons": {
+        "returnToLogin": "Return to Login"
+      }
     }
   }
 }

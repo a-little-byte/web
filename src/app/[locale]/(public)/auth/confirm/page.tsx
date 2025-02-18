@@ -3,10 +3,12 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/lib/supabase";
+import { useTranslations } from "next-intl";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ConfirmEmail() {
+  const t = useTranslations("auth.confirmEmail");
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -16,7 +18,7 @@ export default function ConfirmEmail() {
   useEffect(() => {
     async function verifyEmail() {
       try {
-        if (!token) throw new Error("No verification token found");
+        if (!token) throw new Error(t("error.noToken"));
 
         const { error } = await supabase
           .from("auth.users")
@@ -28,14 +30,14 @@ export default function ConfirmEmail() {
         router.push("/login");
       } catch (err) {
         console.error("Error verifying email:", err);
-        setError("Failed to verify email. Please try again.");
+        setError(t("error.verificationFailed"));
       } finally {
         setIsVerifying(false);
       }
     }
 
     verifyEmail();
-  }, [token, router]);
+  }, [token, router, t]);
 
   if (isVerifying) {
     return (
@@ -49,7 +51,9 @@ export default function ConfirmEmail() {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
         <p className="text-destructive">{error}</p>
-        <Button onClick={() => router.push("/login")}>Return to Login</Button>
+        <Button onClick={() => router.push("/login")}>
+          {t("buttons.returnToLogin")}
+        </Button>
       </div>
     );
   }
