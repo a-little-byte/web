@@ -320,6 +320,33 @@
         "title": "Error",
         "description": "Something went wrong. Please try again."
       }
+    },
+    "resetPassword": {
+      "form": {
+        "title": "Reset password",
+        "description": "Enter your new password below",
+        "passwordPlaceholder": "New password",
+        "confirmPasswordPlaceholder": "Confirm new password",
+        "submitButton": "Reset password"
+      },
+      "validation": {
+        "passwordRequired": "Password is required",
+        "confirmPasswordRequired": "Please confirm your password"
+      },
+      "errors": {
+        "title": "Error",
+        "default": "Failed to reset password",
+        "passwordsMismatch": "Passwords do not match"
+      },
+      "success": {
+        "title": "Password reset successful",
+        "description": "You can now log in with your new password."
+      },
+      "invalidLink": {
+        "title": "Invalid reset link",
+        "description": "This password reset link is invalid or has expired.",
+        "requestNew": "Request new reset link"
+      }
     }
   }
 }
