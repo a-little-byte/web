@@ -1,15 +1,12 @@
 "use client";
 
+import ScrambleHover from "@/components/ui/scramble";
 import { useRouter } from "@/i18n/routing";
 import { isAdmin } from "@/lib/auth";
 import jwt from "jsonwebtoken";
 import { useEffect } from "react";
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
@@ -20,7 +17,7 @@ export default function AdminLayout({
       );
 
       if (!token) {
-        router.push("/login");
+        router.push("/auth/login");
         return;
       }
 
@@ -35,7 +32,7 @@ export default function AdminLayout({
           router.push("/");
         }
       } catch (error) {
-        router.push("/login");
+        // router.push("/auth/login");
       }
     };
 
@@ -46,7 +43,15 @@ export default function AdminLayout({
     <div className="flex min-h-screen">
       <aside className="w-64 bg-card border-r">
         <nav className="p-4 space-y-2">
-          <h2 className="text-lg font-semibold mb-4">Admin Dashboard</h2>
+          <h2 className="text-lg font-semibold mb-4">
+            <ScrambleHover
+              text="Admin Dashboard"
+              sequential={true}
+              revealDirection="start"
+              useOriginalCharsOnly={false}
+              className="font-azeretMono"
+            />
+          </h2>
           <a href="/admin" className="block p-2 hover:bg-accent rounded-md">
             Dashboard
           </a>
@@ -67,4 +72,6 @@ export default function AdminLayout({
       <main className="flex-1 p-8">{children}</main>
     </div>
   );
-}
+};
+
+export default AdminLayout;

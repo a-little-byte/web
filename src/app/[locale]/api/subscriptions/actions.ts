@@ -1,10 +1,11 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "../auth/actions";
 
 export async function getUserSubscriptions() {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };
@@ -38,6 +39,7 @@ export async function getUserSubscriptions() {
 
 export async function getUserPayments() {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };

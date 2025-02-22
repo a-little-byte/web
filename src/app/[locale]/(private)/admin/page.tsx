@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { format, subDays, subWeeks } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslations } from "next-intl";
@@ -48,7 +48,8 @@ interface CategoryData {
   value: number;
 }
 
-export default function Dashboard() {
+const Dashboard = () => {
+  const supabase = createClient();
   const t = useTranslations("admin.dashboard");
   const [timeframe, setTimeframe] = useState<"week" | "month">("week");
   const [salesData, setSalesData] = useState<SalesData[]>([]);
@@ -59,15 +60,14 @@ export default function Dashboard() {
   }, [timeframe]);
 
   const fetchSalesData = async () => {
-    try {
-      const endDate = new Date();
-      const startDate =
-        timeframe === "week" ? subDays(endDate, 7) : subWeeks(endDate, 5);
+    const endDate = new Date();
+    const startDate =
+      timeframe === "week" ? subDays(endDate, 7) : subWeeks(endDate, 5);
 
-      const { data: payments, error } = await supabase
-        .from("payments")
-        .select(
-          `
+    const { data: payments, error } = await supabase
+      .from("payments")
+      .select(
+        `
           amount,
           created_at,
           subscriptions (
@@ -76,65 +76,62 @@ export default function Dashboard() {
             )
           )
         `
-        )
-        .gte("created_at", startDate.toISOString())
-        .lte("created_at", endDate.toISOString())
-        .order("created_at", { ascending: true });
+      )
+      .gte("created_at", startDate.toISOString())
+      .lte("created_at", endDate.toISOString())
+      .order("created_at", { ascending: true });
 
-      if (error) throw error;
+    if (error) throw error;
 
-      const dailyData: { [key: string]: SalesData } = {};
-      const categoryTotals: { [key: string]: number } = {
-        SOC: 0,
-        EDR: 0,
-        XDR: 0,
-      };
+    const dailyData: { [key: string]: SalesData } = {};
+    const categoryTotals: { [key: string]: number } = {
+      SOC: 0,
+      EDR: 0,
+      XDR: 0,
+    };
 
-      payments?.forEach((payment) => {
-        const date = format(new Date(payment.created_at), "yyyy-MM-dd");
-        const serviceName = payment.subscriptions?.services?.name || "Unknown";
-        const amount = payment.amount;
+    payments?.forEach((payment) => {
+      const date = format(new Date(payment.created_at), "yyyy-MM-dd");
+      const serviceName = payment.subscriptions?.services?.name || "Unknown";
+      const amount = payment.amount;
 
-        if (!dailyData[date]) {
-          dailyData[date] = {
-            date,
-            total: 0,
-            SOC: 0,
-            EDR: 0,
-            XDR: 0,
-          };
-        }
+      if (!dailyData[date]) {
+        dailyData[date] = {
+          date,
+          total: 0,
+          SOC: 0,
+          EDR: 0,
+          XDR: 0,
+        };
+      }
 
-        dailyData[date].total += amount;
-        if (serviceName.includes("SOC")) {
-          dailyData[date].SOC += amount;
-          categoryTotals.SOC += amount;
-        } else if (serviceName.includes("EDR")) {
-          dailyData[date].EDR += amount;
-          categoryTotals.EDR += amount;
-        } else if (serviceName.includes("XDR")) {
-          dailyData[date].XDR += amount;
-          categoryTotals.XDR += amount;
-        }
-      });
+      dailyData[date].total += amount;
+      if (serviceName.includes("SOC")) {
+        dailyData[date].SOC += amount;
+        categoryTotals.SOC += amount;
+      } else if (serviceName.includes("EDR")) {
+        dailyData[date].EDR += amount;
+        categoryTotals.EDR += amount;
+      } else if (serviceName.includes("XDR")) {
+        dailyData[date].XDR += amount;
+        categoryTotals.XDR += amount;
+      }
+    });
 
-      const salesDataArray = Object.values(dailyData).map((data) => ({
-        ...data,
-        date: format(new Date(data.date), "dd MMM", { locale: fr }),
-      }));
+    const salesDataArray = Object.values(dailyData).map((data) => ({
+      ...data,
+      date: format(new Date(data.date), "dd MMM", { locale: fr }),
+    }));
 
-      const categoryDataArray = Object.entries(categoryTotals).map(
-        ([name, value]) => ({
-          name,
-          value,
-        })
-      );
+    const categoryDataArray = Object.entries(categoryTotals).map(
+      ([name, value]) => ({
+        name,
+        value,
+      })
+    );
 
-      setSalesData(salesDataArray);
-      setCategoryData(categoryDataArray);
-    } catch (error) {
-      console.error("Error fetching sales data:", error);
-    }
+    setSalesData(salesDataArray);
+    setCategoryData(categoryDataArray);
   };
 
   return (
@@ -146,7 +143,7 @@ export default function Dashboard() {
           onValueChange={(value: "week" | "month") => setTimeframe(value)}
         >
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder={t("admin.dashboard.timeframeSelect")} />
+            <SelectValue placeholder={t("timeframeSelect")} />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="week">{t("lastWeek")}</SelectItem>
@@ -214,7 +211,7 @@ export default function Dashboard() {
 
         <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle>{t("admin.dashboard.averageBasket.title")}</CardTitle>
+            <CardTitle>{t("averageBasket.title")}</CardTitle>
             <CardDescription>{t("averageBasket.description")}</CardDescription>
           </CardHeader>
           <CardContent>
@@ -237,4 +234,6 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default Dashboard;

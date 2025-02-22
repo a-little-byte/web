@@ -1,9 +1,10 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 
 export async function getPageContent(section: string) {
   try {
+    const supabase = createServerClient();
     const { data: content, error } = await supabase
       .from("page_content")
       .select("*")
@@ -21,6 +22,7 @@ export async function getPageContent(section: string) {
 
 export async function updatePageContent(section: string, content: any) {
   try {
+    const supabase = createServerClient();
     const { data, error } = await supabase
       .from("page_content")
       .upsert(

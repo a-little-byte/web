@@ -1,11 +1,11 @@
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { authenticator } from "otplib";
 
 export async function POST(request: Request) {
   try {
     const { email, token } = await request.json();
-
+    const supabase = createServerClient();
     const { data: userData } = await supabase
       .from("users")
       .select("id")
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     console.error("TOTP validation error:", error);
     return NextResponse.json(
       { error: "Failed to validate TOTP" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

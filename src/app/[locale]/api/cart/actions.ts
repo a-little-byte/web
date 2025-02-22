@@ -1,10 +1,11 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import { getCurrentUser } from "../auth/actions";
 
 export async function addToCart(serviceId: string, quantity: number = 1) {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };
@@ -107,7 +108,7 @@ export async function getCartItems() {
           price,
           period
         )
-      `,
+      `
       )
       .eq("user_id", user.id);
 

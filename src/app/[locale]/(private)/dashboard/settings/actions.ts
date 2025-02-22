@@ -1,17 +1,18 @@
 "use server";
 
 import { getCurrentUser } from "@/app/[locale]/api/auth/actions";
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import bcrypt from "bcryptjs";
 
-export async function updateProfile({
+export const updateProfile = async ({
   fullName,
   email,
 }: {
   fullName: string;
   email: string;
-}) {
+}) => {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };
@@ -46,16 +47,17 @@ export async function updateProfile({
     console.error("Error updating profile:", error);
     return { error: "Failed to update profile" };
   }
-}
+};
 
-export async function changePassword({
+export const changePassword = async ({
   currentPassword,
   newPassword,
 }: {
   currentPassword: string;
   newPassword: string;
-}) {
+}) => {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };
@@ -83,10 +85,11 @@ export async function changePassword({
     console.error("Error changing password:", error);
     return { error: "Failed to change password" };
   }
-}
+};
 
-export async function deleteAccount() {
+export const deleteAccount = async () => {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };
@@ -104,4 +107,4 @@ export async function deleteAccount() {
     console.error("Error deleting account:", error);
     return { error: "Failed to delete account" };
   }
-}
+};

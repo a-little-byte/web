@@ -3,7 +3,7 @@
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ const ConfirmEmail = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-
+  const supabase = createClient();
   useEffect(() => {
     async function verifyEmail() {
       try {
@@ -28,7 +28,7 @@ const ConfirmEmail = () => {
 
         if (error) throw error;
 
-        router.push("/login");
+        router.push("/auth/login");
       } catch (err) {
         console.error("Error verifying email:", err);
         setError(t("error.verificationFailed"));
@@ -52,7 +52,7 @@ const ConfirmEmail = () => {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
         <p className="text-destructive">{error}</p>
-        <Button onClick={() => router.push("/login")}>
+        <Button onClick={() => router.push("/auth/login")}>
           {t("buttons.returnToLogin")}
         </Button>
       </div>

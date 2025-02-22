@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,25 +11,33 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/lib/supabase";
+import { useForm } from "@/hooks/useForm";
+import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
+import { z } from "zod";
+
+const formSchema = z.object({
+  verificationCode: z.string().min(6, {
+    message: "Verification code must be 6 digits",
+  }),
+});
 
 const SecuritySettings = () => {
+  const supabase = createClient();
   const t = useTranslations("dashboard.settings.security");
   const [isLoading, setIsLoading] = useState(false);
   const [totpEnabled, setTotpEnabled] = useState(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
-  const [verificationCode, setVerificationCode] = useState("");
   const { toast } = useToast();
+  const form = useForm(formSchema);
 
   useEffect(() => {
     checkTOTPStatus();
   }, []);
 
-  async function checkTOTPStatus() {
+  const checkTOTPStatus = async () => {
     try {
       const {
         data: { session },
@@ -48,9 +58,9 @@ const SecuritySettings = () => {
         variant: "destructive",
       });
     }
-  }
+  };
 
-  async function setupTOTP() {
+  const setupTOTP = async () => {
     setIsLoading(true);
     try {
       const response = await fetch("/api/auth/totp/setup", {
@@ -70,10 +80,9 @@ const SecuritySettings = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
-  async function verifyTOTP(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  const verifyTOTP = async (values: z.infer<typeof formSchema>) => {
     setIsLoading(true);
 
     try {
@@ -82,7 +91,7 @@ const SecuritySettings = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: verificationCode }),
+        body: JSON.stringify({ token: values.verificationCode }),
       });
 
       const data = await response.json();
@@ -90,7 +99,7 @@ const SecuritySettings = () => {
 
       setTotpEnabled(true);
       setQrCode(null);
-      setVerificationCode("");
+      form.reset();
 
       toast({
         title: t("toasts.verifySuccess.title"),
@@ -105,7 +114,7 @@ const SecuritySettings = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
@@ -129,11 +138,12 @@ const SecuritySettings = () => {
               <p className="text-sm text-muted-foreground text-center">
                 {t("twoFactor.scanQR")}
               </p>
-              <form onSubmit={verifyTOTP} className="space-y-4">
+              <Form form={form} onSubmit={verifyTOTP}>
                 <div>
-                  <Input
-                    value={verificationCode}
-                    onChange={(e) => setVerificationCode(e.target.value)}
+                  <InputField
+                    control={form.control}
+                    name="verificationCode"
+                    label={t("twoFactor.verificationCode.label")}
                     placeholder={t("twoFactor.verificationCode.placeholder")}
                     maxLength={6}
                     className="text-center"
@@ -145,7 +155,7 @@ const SecuritySettings = () => {
                   )}
                   {t("twoFactor.buttons.verify")}
                 </Button>
-              </form>
+              </Form>
             </div>
           ) : (
             <Button onClick={setupTOTP} disabled={isLoading}>

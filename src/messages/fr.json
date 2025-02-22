@@ -1,18 +1,27 @@
 {
   "navigation": {
-    "solutions": "Solutions",
+    "services": "Services",
     "pricing": "Tarifs",
     "about": "À propos",
     "contact": "Contact",
     "signIn": "Se connecter",
     "signUp": "S'inscrire",
-    "dashboard": "Tableau de bord"
+    "dashboard": "Tableau de bord",
+    "search": "Rechercher",
+    "menu": "Menu",
+    "toggleMenu": "Basculer le menu",
+    "searchPlaceholder": "Tapez une commande ou recherchez...",
+    "searchEmpty": "Aucun résultat trouvé.",
+    "overview": "Vue d'ensemble",
+    "subscriptions": "Abonnements",
+    "settings": "Paramètres"
   },
   "home": {
     "hero": {
-      "title": "Sécurité d'Entreprise Simplifiée",
+      "title": "Sécurité d'Entreprise",
+      "typings": ["Simplifiée", "Plus Rapide"],
       "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
-      "exploreSolutions": "Explorer les Solutions",
+      "exploreServices": "Explorer les Services",
       "contactSales": "Contacter les Ventes"
     },
     "features": {
@@ -39,11 +48,81 @@
       "button": "Commencer l'Essai Gratuit"
     }
   },
-  "solutions": {
-    "title": "Solutions de Sécurité",
-    "description": "Choisissez la solution de sécurité qui correspond le mieux aux besoins de votre organisation. Tous nos produits sont accompagnés d'un support professionnel et de garanties SLA.",
-    "subscribeNow": "S'abonner Maintenant",
-    "processing": "En cours de traitement..."
+  "services": {
+    "header": {
+      "title": "Solutions de Sécurité",
+      "description": "Choisissez le forfait de sécurité adapté à votre entreprise. Tous les forfaits incluent nos fonctionnalités de sécurité de base et un support expert."
+    },
+    "tiers": {
+      "essential": {
+        "name": "Essentiel",
+        "price": "2 999 $",
+        "description": "Couverture de sécurité essentielle pour les petites et moyennes entreprises.",
+        "features": [
+          "Surveillance SOC (heures ouvrables)",
+          "Protection EDR de base",
+          "Sécurité des e-mails",
+          "Analyse des vulnérabilités",
+          "Support 8x5"
+        ]
+      },
+      "professional": {
+        "name": "Professionnel",
+        "price": "4 999 $",
+        "description": "Sécurité avancée pour les organisations en croissance.",
+        "features": [
+          "Surveillance SOC 24/7",
+          "EDR/XDR avancé",
+          "Intégration SIEM",
+          "Threat hunting",
+          "Réponse aux incidents",
+          "Support 24/7"
+        ]
+      },
+      "enterprise": {
+        "name": "Entreprise",
+        "price": "Sur devis",
+        "description": "Solutions de sécurité sur mesure pour les grandes entreprises.",
+        "features": [
+          "Équipe de sécurité dédiée",
+          "Intégrations personnalisées",
+          "Exercices de simulation d'attaque",
+          "Évaluations de sécurité",
+          "Rapports personnalisés"
+        ]
+      }
+    },
+    "duration": {
+      "select": "Sélectionnez la durée",
+      "options": {
+        "1": "1 Mois",
+        "3": "3 Mois",
+        "12": "1 An"
+      },
+      "discount": "{discount}% de réduction"
+    },
+    "pricing": {
+      "for": "pour {duration}",
+      "savings": "Économisez {amount} $"
+    },
+    "cart": {
+      "addToCart": "Ajouter au panier",
+      "adding": "Ajout au panier...",
+      "success": {
+        "title": "Ajouté au panier",
+        "description": "{product} a été ajouté à votre panier"
+      },
+      "error": {
+        "notLoggedIn": {
+          "title": "Non connecté",
+          "description": "Veuillez vous connecter pour ajouter des articles à votre panier"
+        },
+        "addFailed": {
+          "title": "Erreur",
+          "description": "Échec de l'ajout de l'article au panier. Veuillez réessayer."
+        }
+      }
+    }
   },
   "legal": {
     "title": "Mentions Légales",
@@ -231,6 +310,146 @@
           }
         },
         "noOrders": "Aucune commande trouvée"
+      }
+    },
+    "services": {
+      "title": "Gestion des Services",
+      "addService": "Ajouter un Service",
+      "editService": "Modifier le Service",
+      "form": {
+        "name": {
+          "label": "Nom"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "price": {
+          "label": "Prix"
+        },
+        "period": {
+          "label": "Période"
+        },
+        "submit": {
+          "create": "Créer le Service",
+          "update": "Mettre à jour le Service"
+        }
+      },
+      "table": {
+        "name": "Nom",
+        "description": "Description",
+        "price": "Prix",
+        "period": "Période",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de la récupération des services"
+        },
+        "saveSuccess": {
+          "title": "Succès",
+          "description": "Service {action} avec succès"
+        },
+        "saveError": {
+          "title": "Erreur",
+          "description": "Échec de l'enregistrement du service"
+        },
+        "deleteSuccess": {
+          "title": "Succès",
+          "description": "Service supprimé avec succès"
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression du service"
+        }
+      }
+    }
+  },
+  "dashboard": {
+    "password": {
+      "submit": "Changer le mot de passe"
+    },
+    "danger": {
+      "title": "Zone de Danger",
+      "description": "Actions irréversibles et destructrices",
+      "deleteAccount": {
+        "button": "Supprimer le Compte",
+        "dialog": {
+          "title": "Êtes-vous absolument sûr ?",
+          "description": "Cette action ne peut pas être annulée. Cela supprimera définitivement votre compte et supprimera toutes vos données de nos serveurs.",
+          "cancel": "Annuler",
+          "confirm": "Supprimer le Compte"
+        }
+      },
+      "toasts": {
+        "success": {
+          "title": "Compte Supprimé",
+          "description": "Votre compte a été supprimé avec succès"
+        },
+        "error": {
+          "title": "Erreur"
+        }
+      }
+    },
+    "checkout": {
+      "title": "Paiement",
+      "description": "Vérifiez vos informations et complétez votre achat",
+      "form": {
+        "name": "Nom complet",
+        "email": "Adresse e-mail",
+        "address": "Adresse de facturation",
+        "city": "Ville",
+        "state": "État / Province",
+        "zip": "Code postal",
+        "country": "Pays",
+        "pay": "Payer maintenant"
+      },
+      "summary": {
+        "title": "Résumé de la commande",
+        "description": "Vérifiez les détails de votre commande ci-dessous",
+        "items": {
+          "quantity": "x{quantity}"
+        },
+        "total": "Montant Total"
+      }
+    },
+    "confirmation": {
+      "email": "Un e-mail de confirmation a été envoyé à votre adresse e-mail enregistrée.",
+      "manage": "Vous pouvez gérer vos abonnements depuis votre tableau de bord."
+    },
+    "actions": {
+      "dashboard": "Aller au Tableau de Bord",
+      "subscriptions": "Voir les Abonnements"
+    }
+  },
+  "shoppingCart": {
+    "title": "Panier",
+    "empty": "Votre panier est vide.",
+    "total": "Total",
+    "checkout": "Paiement",
+    "item": {
+      "pricePerPeriod": "Prix par {period} : {price}"
+    },
+    "errors": {
+      "fetchItems": {
+        "title": "Erreur",
+        "description": "Échec de la récupération des articles du panier"
+      },
+      "updateQuantity": {
+        "title": "Erreur",
+        "description": "Échec de la mise à jour de la quantité"
+      },
+      "removeItem": {
+        "title": "Erreur",
+        "description": "Échec de la suppression de l'article"
+      },
+      "checkout": {
+        "title": "Erreur",
+        "description": "Échec du paiement"
       }
     }
   }

@@ -6,6 +6,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { InputHTMLAttributes } from "react";
 import { Control, FieldValues, Path, useFormContext } from "react-hook-form";
 
@@ -41,7 +42,7 @@ export const InputField = <T extends FieldValues>({
               {...field}
               type={type}
               placeholder={placeholder}
-              className={className}
+              className={cn(className, "placeholder:text-muted-foreground")}
               disabled={isSubmitting || disabled}
               {...props}
             />

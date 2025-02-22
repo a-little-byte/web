@@ -1,5 +1,6 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
 import { TextareaField } from "@/components/base/TextareaField";
 import { Button } from "@/components/ui/button";
@@ -10,7 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Form } from "@/components/ui/form";
 import {
   Table,
   TableBody,
@@ -21,17 +21,21 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { supabase, type Tables } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+import { Tables } from "@/types/supabase";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";
+
 const serviceSchema = z.object({
   name: z.string().min(1),
   description: z.string().min(1),
-  price: z.number().min(0),
+  price: z.coerce.number().min(0),
   period: z.string().min(1),
 });
+
 const ServicesManagement = () => {
+  const supabase = createClient();
   const t = useTranslations("admin.services");
   const [services, setServices] = useState<Tables<"services">[]>([]);
   const [isOpen, setIsOpen] = useState(false);

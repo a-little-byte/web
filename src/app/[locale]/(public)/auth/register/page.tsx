@@ -15,7 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { Link } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import * as z from "zod";
@@ -35,6 +35,7 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 const Register = () => {
+  const supabase = createClient();
   const t = useTranslations("auth.register");
   const tToast = useTranslations("auth.toast");
   const tEmailSent = useTranslations("auth.emailSent");
@@ -117,12 +118,14 @@ const Register = () => {
             <InputField
               control={form.control}
               name="password"
+              type="password"
               label={t("password.label")}
               placeholder={t("password.placeholder")}
             />
             <InputField
               control={form.control}
               name="confirmPassword"
+              type="password"
               label={t("confirmPassword.label")}
               placeholder={t("confirmPassword.placeholder")}
             />

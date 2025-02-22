@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -49,6 +49,7 @@ const carouselSchemaForm = z.object({
 type FormData = z.infer<typeof carouselSchemaForm>;
 
 const CarouselManagement = () => {
+  const supabase = createClient();
   const [items, setItems] = useState<CarouselItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<CarouselItem | null>(null);

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -36,6 +36,7 @@ export const HeroCarousel = () => {
   }, [items.length]);
 
   const fetchItems = async () => {
+    const supabase = createClient();
     const { data } = await supabase
       .from("hero_carousel")
       .select("*")

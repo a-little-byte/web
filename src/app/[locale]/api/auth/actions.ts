@@ -1,55 +1,28 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-export const login = async (email: string, password: string) => {
-  try {
-    const { data: user, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("email", email)
-      .single();
+export const signInAction = async (formData: FormData) => {
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const supabase = createServerClient();
 
-    if (error || !user) {
-      return { error: "Invalid credentials" };
-    }
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
 
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return { error: "Invalid credentials" };
-    }
-
-    if (!user.email_verified) {
-      return { error: "Email not verified" };
-    }
-
-    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    cookies().set("auth-token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-    });
-
-    return {
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.full_name,
-      },
-    };
-  } catch (error) {
-    console.error("Login error:", error);
-    return { error: "Login failed" };
+  if (error) {
+    return { error: error.message };
   }
+
+  return redirect("/dashboard");
 };
 
 export const register = async (
@@ -59,6 +32,7 @@ export const register = async (
 ) => {
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    const supabase = createServerClient();
 
     const { data: user, error } = await supabase
       .from("users")
@@ -89,6 +63,7 @@ export const register = async (
 export const verifyEmail = async (token: string) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const supabase = createServerClient();
 
     const { error } = await supabase
       .from("users")
@@ -111,6 +86,8 @@ export const getCurrentUser = async () => {
   }
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+    const supabase = createServerClient();
+
     const { data: user } = await supabase
       .from("users")
       .select("*")

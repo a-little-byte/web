@@ -1,10 +1,11 @@
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { authenticator } from "otplib";
 import QRCode from "qrcode";
 
 export async function POST(request: Request) {
   try {
+    const supabase = createServerClient();
     const {
       data: { session },
     } = await supabase.auth.getSession();
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
     const otpauth = authenticator.keyuri(
       session.user.email!,
       "Cyna Security",
-      secret,
+      secret
     );
     const qrCode = await QRCode.toDataURL(otpauth);
 
@@ -31,7 +32,7 @@ export async function POST(request: Request) {
     console.error("TOTP setup error:", error);
     return NextResponse.json(
       { error: "Failed to setup TOTP" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

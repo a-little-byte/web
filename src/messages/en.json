@@ -1,6 +1,6 @@
 {
   "navigation": {
-    "solutions": "Solutions",
+    "services": "Services",
     "pricing": "Pricing",
     "about": "About",
     "contact": "Contact",
@@ -11,13 +11,17 @@
     "menu": "Menu",
     "toggleMenu": "Toggle menu",
     "searchPlaceholder": "Type a command or search...",
-    "searchEmpty": "No results found."
+    "searchEmpty": "No results found.",
+    "overview": "Overview",
+    "subscriptions": "Subscriptions",
+    "settings": "Settings"
   },
   "home": {
     "hero": {
-      "title": "Enterprise Security Made Simple",
+      "title": "Enterprise Security Made",
+      "typings": ["Simple", "Faster"],
       "description": "Protect your business with enterprise-grade cybersecurity solutions. Our comprehensive suite of tools keeps your data safe and your business secure.",
-      "exploreSolutions": "Explore Solutions",
+      "exploreServices": "Explore Services",
       "contactSales": "Contact Sales"
     },
     "features": {
@@ -257,6 +261,7 @@
       "emailLabel": "Email",
       "emailPlaceholder": "name@company.com",
       "passwordLabel": "Password",
+      "passwordPlaceholder": "********",
       "forgotPassword": "Forgot password?",
       "signInButton": "Sign in",
       "noAccount": "Don't have an account?",
@@ -413,7 +418,7 @@
       }
     }
   },
-  "solutions": {
+  "services": {
     "header": {
       "title": "Security Solutions",
       "description": "Choose the security solution that best fits your organization's needs. All our products come with enterprise-grade support and SLA guarantees."
@@ -668,6 +673,7 @@
     }
   },
   "dashboard": {
+    "title": "Dashboard",
     "cards": {
       "activeSubscriptions": {
         "title": "Active Subscriptions"
@@ -820,6 +826,43 @@
           "error": {
             "title": "Error"
           }
+        }
+      },
+      "security": {
+        "title": "Security",
+        "description": "Manage your security settings",
+        "form": {
+          "verificationCode": {
+            "label": "Verification Code",
+            "placeholder": "Enter your verification code"
+          },
+          "submit": "Verify"
+        },
+        "toasts": {
+          "success": {
+            "title": "Success",
+            "description": "Two-factor authentication enabled successfully"
+          },
+          "error": {
+            "title": "Error",
+            "description": "Failed to verify code"
+          },
+          "setupError": {
+            "title": "Error",
+            "description": "Failed to setup two-factor authentication"
+          },
+          "verifySuccess": {
+            "title": "Success",
+            "description": "Two-factor authentication enabled successfully"
+          },
+          "verifyError": {
+            "title": "Error",
+            "description": "Failed to verify code"
+          }
+        },
+        "buttons": {
+          "enable": "Enable Two-Factor Authentication",
+          "verify": "Verify Code"
         }
       }
     },

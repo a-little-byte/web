@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect } from "react";
-
 import { NavigationItem } from "@/components/layout/Header";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +13,7 @@ import {
 import { Link } from "@/i18n/routing";
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SearchBarProps {
   navigation: NavigationItem[];
@@ -58,7 +56,13 @@ export const SearchBar = ({ navigation }: SearchBarProps) => {
           <CommandGroup>
             {navigation.map((item) => (
               <CommandItem key={item.name}>
-                <Link href={item.href}>{t(item.name)}</Link>
+                <Link
+                  onClick={() => setOpen(false)}
+                  className="w-full"
+                  href={item.href}
+                >
+                  {t(item.name)}
+                </Link>
               </CommandItem>
             ))}
           </CommandGroup>

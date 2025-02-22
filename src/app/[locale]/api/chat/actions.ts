@@ -1,6 +1,6 @@
 "use server";
 
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
 import { getCurrentUser } from "../auth/actions";
 
@@ -19,6 +19,7 @@ For technical questions, provide accurate but easy-to-understand explanations.`;
 
 export async function createConversation() {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return { error: "Not authenticated" };

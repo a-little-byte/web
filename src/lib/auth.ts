@@ -1,7 +1,9 @@
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { supabase } from "./supabase";
+"use server";
 
+import bcrypt from "bcryptjs";
+import { createServerClient } from "./supabase/server";
+
+const supabase = createServerClient();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 export async function createUser(userData: {
@@ -42,12 +44,6 @@ export async function verifyUser(email: string, password: string) {
   return user;
 }
 
-export function generateToken(user: any): string {
-  return jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
-    expiresIn: "7d",
-  });
-}
-
 export async function verifyEmail(userId: string): Promise<void> {
   const { error } = await supabase
     .from("auth.users")
@@ -70,9 +66,9 @@ export async function getUserById(id: string) {
 
 export async function isAdmin(userId: string): Promise<boolean> {
   const { data: user, error } = await supabase
-    .from("auth.users")
+    .from("public.user_roles")
     .select("role")
-    .eq("id", userId)
+    .eq("user_id", userId)
     .single();
 
   if (error || !user) return false;

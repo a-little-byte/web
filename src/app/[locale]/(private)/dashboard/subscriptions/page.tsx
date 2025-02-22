@@ -32,7 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ChevronDown, Download, Search } from "lucide-react";
@@ -64,13 +64,13 @@ interface OrderDetails {
 }
 
 export default function Subscriptions() {
+  const supabase = createClient();
   const t = useTranslations("dashboard.subscriptions");
   const [orders, setOrders] = useState<OrderDetails[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedService, setSelectedService] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchOrders();
@@ -135,8 +135,6 @@ export default function Subscriptions() {
       setOrders(formattedOrders);
     } catch (error) {
       console.error("Error fetching orders:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -184,14 +182,6 @@ export default function Subscriptions() {
   const downloadInvoice = async (fileUrl: string) => {
     window.open(fileUrl, "_blank");
   };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
 
   const filteredOrders = filterOrders();
   const groupedOrders = groupOrdersByYear(filteredOrders);

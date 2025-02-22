@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
@@ -9,6 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 export async function POST(request: Request) {
   try {
     const { email } = await request.json();
+    const supabase = createServerClient();
 
     const { data: user, error } = await supabase
       .from("users")
@@ -45,7 +46,7 @@ export async function POST(request: Request) {
     console.error("Password reset error:", error);
     return NextResponse.json(
       { error: "Failed to process password reset" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

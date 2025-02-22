@@ -12,9 +12,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "@/hooks/useForm";
 import { useTranslations } from "next-intl";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const contactFormSchema = z.object({
@@ -35,13 +34,7 @@ const Contact = () => {
     handleSubmit,
     reset,
     formState: { isSubmitting },
-  } = useForm<
-    z.input<typeof contactFormSchema>,
-    unknown,
-    z.output<typeof contactFormSchema>
-  >({
-    resolver: zodResolver(contactFormSchema),
-  });
+  } = useForm(contactFormSchema);
 
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {

@@ -15,7 +15,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { Link, useRouter } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -31,6 +31,7 @@ const totpSchema = z.object({
 });
 
 const Login = () => {
+  const supabase = createClient();
   const t = useTranslations("auth.login");
   const tTotp = useTranslations("auth.totp");
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +71,7 @@ const Login = () => {
           description: t("toasts.loginSuccess.description"),
         });
 
-        document.cookie = `auth-token=${authData.session.access_token}`;
+        document.cookie = `auth-token=${authData.session.access_token}; refresh-token=${authData.session.refresh_token}`;
         router.push(returnTo);
       }
     } catch (error) {
@@ -144,6 +145,7 @@ const Login = () => {
             <InputField
               control={loginForm.control}
               name="password"
+              type="password"
               label={t("passwordLabel")}
               placeholder={t("passwordPlaceholder")}
               disabled={isLoading}

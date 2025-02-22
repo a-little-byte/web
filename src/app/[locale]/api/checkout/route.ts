@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getCurrentUser } from "../auth/actions";
@@ -9,6 +9,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function POST(request: Request) {
   try {
+    const supabase = createServerClient();
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
@@ -25,7 +26,7 @@ export async function POST(request: Request) {
           price,
           period
         )
-      `,
+      `
       )
       .eq("user_id", user.id);
 
@@ -86,7 +87,7 @@ export async function POST(request: Request) {
     console.error("Error creating checkout session:", error);
     return NextResponse.json(
       { error: "Error creating checkout session" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

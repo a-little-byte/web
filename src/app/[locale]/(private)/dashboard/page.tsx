@@ -2,12 +2,14 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { supabase, Tables } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+import { Tables } from "@/types/supabase";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 const Dashboard = () => {
+  const supabase = createClient();
   const t = useTranslations("dashboard");
   const [subscriptions, setSubscriptions] = useState<Tables<"subscriptions">[]>(
     []
@@ -69,7 +71,9 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
+      <h1 className="text-3xl font-bold mb-8 lowercase first-letter:uppercase">
+        {t("title")}
+      </h1>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>

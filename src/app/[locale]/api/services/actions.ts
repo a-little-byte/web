@@ -1,9 +1,11 @@
 "use server";
 
-import { supabase, Tables } from "@/lib/supabase";
+import { createServerClient } from "@/lib/supabase/server";
+import { Tables } from "@/types/supabase";
 
 export async function getServices() {
   try {
+    const supabase = createServerClient();
     const { data: services, error } = await supabase
       .from("services")
       .select("*")
@@ -22,6 +24,7 @@ export async function createService(
   data: Omit<Tables<"services">, "id" | "created_at" | "updated_at">
 ) {
   try {
+    const supabase = createServerClient();
     const { data: service, error } = await supabase
       .from("services")
       .insert(data)
@@ -40,6 +43,7 @@ export async function updateService(
   data: Partial<Tables<"services">>
 ) {
   try {
+    const supabase = createServerClient();
     const { data: service, error } = await supabase
       .from("services")
       .update(data)
@@ -58,6 +62,7 @@ export async function updateService(
 
 export async function deleteService(id: string) {
   try {
+    const supabase = createServerClient();
     const { error } = await supabase.from("services").delete().eq("id", id);
 
     if (error) throw error;

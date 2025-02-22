@@ -1,6 +1,5 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
+import Typewriter from "@/components/ui/typewriter";
 import { Link } from "@/i18n/routing";
 import { Globe, Lock, Shield, Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -32,14 +31,22 @@ const Home = () => {
       <section className="relative">
         <div className="container flex flex-col items-center py-20 text-center lg:py-32">
           <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            {t("hero.title")}
+            {t("hero.title")}{" "}
+            <Typewriter
+              text={t.raw("hero.typings")}
+              speed={70}
+              className="text-background"
+              waitTime={1500}
+              deleteSpeed={40}
+              cursorChar={"_"}
+            />
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-prose">
             {t("hero.description")}
           </p>
           <div className="mt-10 flex gap-4">
             <Button size="lg" asChild>
-              <Link href="/solutions">{t("hero.exploreSolutions")}</Link>
+              <Link href="/services">{t("hero.exploreServices")}</Link>
             </Button>
             <Button size="lg" variant="outline" asChild>
               <Link href="/contact">{t("hero.contactSales")}</Link>

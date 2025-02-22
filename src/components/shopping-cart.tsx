@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "@/i18n/routing";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
 import {
   ShoppingCart as CartIcon,
   Loader2,
@@ -35,6 +35,7 @@ interface CartItem {
 }
 
 export const ShoppingCart = () => {
+  const supabase = createClient();
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,9 +44,7 @@ export const ShoppingCart = () => {
   const t = useTranslations("shoppingCart");
 
   useEffect(() => {
-    if (isOpen) {
-      fetchCartItems();
-    }
+    fetchCartItems();
   }, [isOpen]);
 
   const fetchCartItems = async () => {
@@ -148,7 +147,6 @@ export const ShoppingCart = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ items: cartItems }),
       });
 
       const data = await response.json();
@@ -168,11 +166,7 @@ export const ShoppingCart = () => {
   };
 
   const total = cartItems.reduce((sum, item) => {
-    return (
-      sum +
-      item.services.reduce((sum, service) => sum + service.price, 0) *
-        item.quantity
-    );
+    return sum + item.services.price * item.quantity;
   }, 0);
 
   return (
@@ -210,18 +204,11 @@ export const ShoppingCart = () => {
                     className="flex items-center justify-between space-x-4 border-b pb-4"
                   >
                     <div className="space-y-1">
-                      <h4 className="font-medium">
-                        {item.services
-                          .map((service) => service.name)
-                          .join(", ")}
-                      </h4>
+                      <h4 className="font-medium">{item.services.name}</h4>
                       <p className="text-sm text-muted-foreground">
                         {t("item.pricePerPeriod", {
-                          price: item.services.reduce(
-                            (sum, service) => sum + service.price,
-                            0
-                          ),
-                          period: `${item.services[0].period} - ${item.services.at(-1)?.period}`,
+                          price: item.services.price,
+                          period: item.services.period,
                         })}
                       </p>
                     </div>

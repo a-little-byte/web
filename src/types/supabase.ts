@@ -1,3 +1,5 @@
+import { UUID } from "crypto";
+
 export type Json =
   | string
   | number
@@ -11,7 +13,7 @@ export interface Database {
     Tables: {
       users: {
         Row: {
-          id: string;
+          id: UUID;
           email: string;
           password: string;
           full_name: string | null;
@@ -21,7 +23,7 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id?: UUID;
           email: string;
           password: string;
           full_name?: string | null;
@@ -31,7 +33,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: {
-          id?: string;
+          id?: UUID;
           email?: string;
           password?: string;
           full_name?: string | null;
@@ -43,7 +45,7 @@ export interface Database {
       };
       services: {
         Row: {
-          id: string;
+          id: UUID;
           name: string;
           description: string;
           price: number;
@@ -52,7 +54,7 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id?: UUID;
           name: string;
           description: string;
           price: number;
@@ -61,7 +63,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: {
-          id?: string;
+          id?: UUID;
           name?: string;
           description?: string;
           price?: number;
@@ -72,9 +74,9 @@ export interface Database {
       };
       subscriptions: {
         Row: {
-          id: string;
-          user_id: string;
-          service_id: string;
+          id: UUID;
+          user_id: UUID;
+          service_id: UUID;
           status: string;
           current_period_start: string;
           current_period_end: string;
@@ -82,9 +84,9 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          user_id: string;
-          service_id: string;
+          id?: UUID;
+          user_id: UUID;
+          service_id: UUID;
           status?: string;
           current_period_start?: string;
           current_period_end: string;
@@ -92,9 +94,9 @@ export interface Database {
           updated_at?: string;
         };
         Update: {
-          id?: string;
-          user_id?: string;
-          service_id?: string;
+          id?: UUID;
+          user_id?: UUID;
+          service_id?: UUID;
           status?: string;
           current_period_start?: string;
           current_period_end?: string;
@@ -104,51 +106,51 @@ export interface Database {
       };
       payments: {
         Row: {
-          id: string;
-          subscription_id: string;
+          id: UUID;
+          subscription_id: UUID;
           amount: number;
           status: string;
           payment_method: string;
           created_at: string;
-          billing_address_id: string | null;
-          payment_method_id: string | null;
+          billing_address_id: UUID | null;
+          payment_method_id: UUID | null;
         };
         Insert: {
-          id?: string;
-          subscription_id: string;
+          id?: UUID;
+          subscription_id: UUID;
           amount: number;
           status: string;
           payment_method: string;
           created_at?: string;
-          billing_address_id?: string | null;
-          payment_method_id?: string | null;
+          billing_address_id?: UUID | null;
+          payment_method_id?: UUID | null;
         };
         Update: {
-          id?: string;
-          subscription_id?: string;
+          id?: UUID;
+          subscription_id?: UUID;
           amount?: number;
           status?: string;
           payment_method?: string;
           created_at?: string;
-          billing_address_id?: string | null;
-          payment_method_id?: string | null;
+          billing_address_id?: UUID | null;
+          payment_method_id?: UUID | null;
         };
       };
       page_content: {
         Row: {
-          id: string;
+          id: UUID;
           section: string;
           content: Json;
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id?: UUID;
           section: string;
           content: Json;
           updated_at?: string;
         };
         Update: {
-          id?: string;
+          id?: UUID;
           section?: string;
           content?: Json;
           updated_at?: string;
@@ -156,22 +158,22 @@ export interface Database {
       };
       chat_conversations: {
         Row: {
-          id: string;
-          user_id: string;
+          id: UUID;
+          user_id: UUID;
           title: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          user_id: string;
+          id?: UUID;
+          user_id: UUID;
           title?: string | null;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
-          id?: string;
-          user_id?: string;
+          id?: UUID;
+          user_id?: UUID;
           title?: string | null;
           created_at?: string;
           updated_at?: string;
@@ -179,22 +181,22 @@ export interface Database {
       };
       chat_messages: {
         Row: {
-          id: string;
-          conversation_id: string;
+          id: UUID;
+          conversation_id: UUID;
           role: string;
           content: string;
           created_at: string;
         };
         Insert: {
-          id?: string;
-          conversation_id: string;
+          id?: UUID;
+          conversation_id: UUID;
           role: string;
           content: string;
           created_at?: string;
         };
         Update: {
-          id?: string;
-          conversation_id?: string;
+          id?: UUID;
+          conversation_id?: UUID;
           role?: string;
           content?: string;
           created_at?: string;
@@ -202,25 +204,25 @@ export interface Database {
       };
       cart_items: {
         Row: {
-          id: string;
-          user_id: string;
-          service_id: string;
+          id: UUID;
+          user_id: UUID;
+          service_id: UUID;
           quantity: number;
           created_at: string;
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          user_id: string;
-          service_id: string;
+          id?: UUID;
+          user_id: UUID;
+          service_id: UUID;
           quantity?: number;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
-          id?: string;
-          user_id?: string;
-          service_id?: string;
+          id?: UUID;
+          user_id?: UUID;
+          service_id?: UUID;
           quantity?: number;
           created_at?: string;
           updated_at?: string;
@@ -228,7 +230,7 @@ export interface Database {
       };
       hero_carousel: {
         Row: {
-          id: string;
+          id: UUID;
           title: string;
           description: string;
           image_url: string;
@@ -240,7 +242,7 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
+          id?: UUID;
           title: string;
           description: string;
           image_url: string;
@@ -252,7 +254,7 @@ export interface Database {
           updated_at?: string;
         };
         Update: {
-          id?: string;
+          id?: UUID;
           title?: string;
           description?: string;
           image_url?: string;
@@ -266,8 +268,8 @@ export interface Database {
       };
       billing_addresses: {
         Row: {
-          id: string;
-          user_id: string;
+          id: UUID;
+          user_id: UUID;
           street: string;
           city: string;
           state: string;
@@ -278,8 +280,8 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          user_id: string;
+          id?: UUID;
+          user_id: UUID;
           street: string;
           city: string;
           state: string;
@@ -290,8 +292,8 @@ export interface Database {
           updated_at?: string;
         };
         Update: {
-          id?: string;
-          user_id?: string;
+          id?: UUID;
+          user_id?: UUID;
           street?: string;
           city?: string;
           state?: string;
@@ -304,8 +306,8 @@ export interface Database {
       };
       payment_methods: {
         Row: {
-          id: string;
-          user_id: string;
+          id: UUID;
+          user_id: UUID;
           type: string;
           last_four: string;
           expiry_month: number;
@@ -315,8 +317,8 @@ export interface Database {
           updated_at: string;
         };
         Insert: {
-          id?: string;
-          user_id: string;
+          id?: UUID;
+          user_id: UUID;
           type: string;
           last_four: string;
           expiry_month: number;
@@ -326,8 +328,8 @@ export interface Database {
           updated_at?: string;
         };
         Update: {
-          id?: string;
-          user_id?: string;
+          id?: UUID;
+          user_id?: UUID;
           type?: string;
           last_four?: string;
           expiry_month?: number;
@@ -339,22 +341,22 @@ export interface Database {
       };
       invoices: {
         Row: {
-          id: string;
-          payment_id: string;
+          id: UUID;
+          payment_id: UUID;
           number: string;
           file_url: string;
           created_at: string;
         };
         Insert: {
-          id?: string;
-          payment_id: string;
+          id?: UUID;
+          payment_id: UUID;
           number: string;
           file_url: string;
           created_at?: string;
         };
         Update: {
-          id?: string;
-          payment_id?: string;
+          id?: UUID;
+          payment_id?: UUID;
           number?: string;
           file_url?: string;
           created_at?: string;
@@ -372,3 +374,6 @@ export interface Database {
     };
   };
 }
+
+export type Tables<T extends keyof Database["public"]["Tables"]> =
+  Database["public"]["Tables"][T]["Row"];
