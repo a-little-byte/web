@@ -23,6 +23,17 @@ const features = [
   },
 ] as const;
 
+const companies = [
+  "Google",
+  "Microsoft",
+  "Amazon",
+  "Netflix",
+  "YouTube",
+  "Instagram",
+  "Uber",
+  "Spotify",
+] as const;
+
 const Home = () => {
   const t = useTranslations("home");
 
@@ -34,10 +45,8 @@ const Home = () => {
             {t("hero.title")}{" "}
             <Typewriter
               text={t.raw("hero.typings")}
-              speed={70}
-              className="text-background"
+              className="text-background dark:text-white"
               waitTime={1500}
-              deleteSpeed={40}
               cursorChar={"_"}
             />
           </h1>
@@ -51,6 +60,30 @@ const Home = () => {
             <Button size="lg" variant="outline" asChild>
               <Link href="/contact">{t("hero.contactSales")}</Link>
             </Button>
+          </div>
+        </div>
+      </section>
+
+      <section id="companies">
+        <div className="py-14">
+          <div className="container mx-auto px-4 md:px-8">
+            <h3 className="text-center text-sm font-semibold text-gray-500 dark:text-white">
+              {t("companies.title")}
+            </h3>
+            <div className="relative mt-6">
+              <div className="grid grid-cols-2 place-items-center gap-2 md:grid-cols-4 xl:grid-cols-8 xl:gap-4">
+                {companies.map((logo, idx) => (
+                  <img
+                    key={idx}
+                    src={`https://cdn.magicui.design/companies/${logo}.svg`}
+                    className="h-10 w-40 px-2 dark:brightness-0 dark:invert"
+                    alt={logo}
+                  />
+                ))}
+              </div>
+              <div className="pointer-events-none absolute inset-y-0 left-0 h-full w-1/3 bg-gradient-to-r from-white dark:from-black"></div>
+              <div className="pointer-events-none absolute inset-y-0 right-0 h-full w-1/3 bg-gradient-to-l from-white dark:from-black"></div>
+            </div>
           </div>
         </div>
       </section>

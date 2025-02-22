@@ -24,6 +24,9 @@
       "exploreServices": "Explore Services",
       "contactSales": "Contact Sales"
     },
+    "companies": {
+      "title": "TRUSTED BY LEADING TEAMS"
+    },
     "features": {
       "soc": {
         "title": "SOC as a Service",

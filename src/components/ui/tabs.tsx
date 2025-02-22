@@ -1,11 +1,31 @@
 "use client";
 
 import * as TabsPrimitive from "@radix-ui/react-tabs";
+import { motion } from "motion/react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
 
-const Tabs = TabsPrimitive.Root;
+const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+>(({ className, children, ...props }, ref) => {
+  const [tab, setTab] = React.useState<string>(props.defaultValue as string);
+
+  return (
+    <TabsPrimitive.Root
+      ref={ref}
+      asChild
+      value={tab}
+      onValueChange={setTab}
+      className={cn(className)}
+      {...props}
+    >
+      <motion.div layout>{children}</motion.div>
+    </TabsPrimitive.Root>
+  );
+});
+Tabs.displayName = TabsPrimitive.Root.displayName;
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
@@ -40,15 +60,25 @@ TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <TabsPrimitive.Content
     ref={ref}
     className={cn(
       "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
       className
     )}
+    asChild
     {...props}
-  />
+  >
+    <motion.div
+      exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+      transition={{ duration: 0.5 }}
+    >
+      {children}
+    </motion.div>
+  </TabsPrimitive.Content>
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 

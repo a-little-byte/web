@@ -2,6 +2,7 @@ import { SearchBar } from "@/components/layout/SearchBar";
 import { SheetNavigation } from "@/components/layout/SheetNavigation";
 import { ShoppingCart } from "@/components/shopping-cart";
 import { Button } from "@/components/ui/button";
+import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import ScrambleHover from "@/components/ui/scramble";
 import { Link } from "@/i18n/routing";
 import { createServerClient } from "@/lib/supabase/server";
@@ -30,10 +31,10 @@ export const Header = () => {
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
             <ShieldCheck className="h-8 w-8 text-foreground" />
-            <span className="font-black text-xl uppercase tracking-wide">
+            <span className="font-black text-2xl uppercase tracking-wide">
               <ScrambleHover
                 text="Cyna"
-                scrambleSpeed={150}
+                scrambleSpeed={90}
                 sequential={true}
                 revealDirection="start"
                 useOriginalCharsOnly={false}
@@ -47,7 +48,7 @@ export const Header = () => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium tracking-wide transition-colors hover:text-primary"
+                className="font-medium tracking-wide transition-colors hover:text-primary"
               >
                 {t(item.name)}
               </Link>
@@ -78,9 +79,9 @@ const SignOrDashboard = async () => {
 
   if (cookie.get("auth-token") && data?.session?.user) {
     return (
-      <Button variant="ghost" asChild className="font-bold">
+      <InteractiveHoverButton className="font-bold">
         <Link href="/dashboard">{t("dashboard")}</Link>
-      </Button>
+      </InteractiveHoverButton>
     );
   }
 

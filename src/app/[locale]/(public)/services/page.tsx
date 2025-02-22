@@ -12,6 +12,8 @@ import { useParams } from "next/navigation";
 import { useMemo } from "react";
 import { z } from "zod";
 
+//cuicui.day/marketing-ui/pricing-tables
+
 const durationOptions = [
   { value: "1", multiplier: 1, discount: 0 },
   { value: "3", multiplier: 3, discount: 0.1 },
