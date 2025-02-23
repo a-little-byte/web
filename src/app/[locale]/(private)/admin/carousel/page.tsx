@@ -58,7 +58,7 @@ const CarouselManagement = () => {
   const t = useTranslations("admin.carousel");
 
   const form = useForm(carouselSchemaForm, {
-    defaultValues: currentItem || {
+    defaultValues: {
       title: "",
       description: "",
       image_url: "",
@@ -83,7 +83,7 @@ const CarouselManagement = () => {
         button_link: "",
       });
     }
-  }, [currentItem]);
+  }, [JSON.stringify(currentItem)]);
 
   const fetchItems = async () => {
     try {
@@ -141,7 +141,7 @@ const CarouselManagement = () => {
     }
   };
 
-  const handleMove = async (id: string, direction: "up" | "down") => {
+  const handleMove = (id: string, direction: "up" | "down") => async () => {
     const currentIndex = items.findIndex((item) => item.id === id);
     const newIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
 
@@ -171,7 +171,7 @@ const CarouselManagement = () => {
     }
   };
 
-  const handleToggleActive = async (id: string, active: boolean) => {
+  const handleToggleActive = (id: string) => async (active: boolean) => {
     try {
       const { error } = await supabase
         .from("hero_carousel")
@@ -190,7 +190,7 @@ const CarouselManagement = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = (id: string) => async () => {
     try {
       const { error } = await supabase
         .from("hero_carousel")
@@ -259,7 +259,7 @@ const CarouselManagement = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            {["order", "title", "image", "active", "actions"].map((header) => (
+            {["title", "image", "active", "actions"].map((header) => (
               <TableHead key={header}>{t(`table.${header}`)}</TableHead>
             ))}
           </TableRow>
@@ -267,7 +267,6 @@ const CarouselManagement = () => {
         <TableBody>
           {items.map((item, index) => (
             <TableRow key={item.id}>
-              <TableCell>{index + 1}</TableCell>
               <TableCell>{item.title}</TableCell>
               <TableCell>
                 <img
@@ -279,9 +278,7 @@ const CarouselManagement = () => {
               <TableCell>
                 <Switch
                   checked={item.active}
-                  onCheckedChange={(checked) =>
-                    handleToggleActive(item.id, checked)
-                  }
+                  onCheckedChange={handleToggleActive(item.id)}
                 />
               </TableCell>
               <TableCell>
@@ -289,7 +286,7 @@ const CarouselManagement = () => {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => handleMove(item.id, "up")}
+                    onClick={handleMove(item.id, "up")}
                     disabled={index === 0}
                   >
                     <ArrowUp className="h-4 w-4" />
@@ -297,7 +294,7 @@ const CarouselManagement = () => {
                   <Button
                     variant="outline"
                     size="icon"
-                    onClick={() => handleMove(item.id, "down")}
+                    onClick={handleMove(item.id, "down")}
                     disabled={index === items.length - 1}
                   >
                     <ArrowDown className="h-4 w-4" />
@@ -315,7 +312,7 @@ const CarouselManagement = () => {
                   <Button
                     variant="destructive"
                     size="icon"
-                    onClick={() => handleDelete(item.id)}
+                    onClick={handleDelete(item.id)}
                   >
                     <Trash className="h-4 w-4" />
                   </Button>

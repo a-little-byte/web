@@ -1,9 +1,7 @@
-"use client";
+import { getTranslations } from "next-intl/server";
 
-import { useTranslations } from "next-intl";
-
-const Legal = () => {
-  const t = useTranslations("legal");
+const Legal = async () => {
+  const t = await getTranslations("legal");
 
   return (
     <div className="container py-12">

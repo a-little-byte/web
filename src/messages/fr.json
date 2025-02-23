@@ -42,6 +42,9 @@
         "description": "Renseignement sur les menaces et protection mondiale pour votre entreprise."
       }
     },
+    "companies": {
+      "title": "CES ENTREPRISES NOUS FONT CONFIANCE"
+    },
     "cta": {
       "title": "Prêt à sécuriser votre entreprise ?",
       "description": "Commencez dès aujourd'hui avec nos solutions de sécurité professionnelles. Notre équipe d'experts est prête à protéger votre entreprise.",

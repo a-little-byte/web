@@ -7,7 +7,6 @@ import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
-import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

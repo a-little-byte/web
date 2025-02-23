@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/routing";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const features = [
   {
@@ -21,8 +21,8 @@ const features = [
   },
 ] as const;
 
-const About = () => {
-  const t = useTranslations("about");
+const About = async () => {
+  const t = await getTranslations("about");
 
   return (
     <div className="py-24 sm:py-32">

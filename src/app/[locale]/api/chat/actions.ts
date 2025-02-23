@@ -2,7 +2,6 @@
 
 import { createServerClient } from "@/lib/supabase/server";
 import OpenAI from "openai";
-import { getCurrentUser } from "../auth/actions";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -20,21 +19,21 @@ For technical questions, provide accurate but easy-to-understand explanations.`;
 export async function createConversation() {
   try {
     const supabase = createServerClient();
-    const user = await getCurrentUser();
-    if (!user) {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
       return { error: "Not authenticated" };
     }
 
-    const { data: conversation, error } = await supabase
+    const { data: conversation } = await supabase
       .from("chat_conversations")
       .insert({
-        user_id: user.id,
+        user_id: data.user.id,
         title: "New Conversation",
       })
       .select()
-      .single();
+      .single()
+      .throwOnError();
 
-    if (error) throw error;
     return { conversation };
   } catch (error) {
     console.error("Error creating conversation:", error);
@@ -44,26 +43,27 @@ export async function createConversation() {
 
 export async function sendMessage(conversationId: string, message: string) {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
+    const supabase = createServerClient();
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
       return { error: "Not authenticated" };
     }
 
-    const { error: insertError } = await supabase.from("chat_messages").insert({
-      conversation_id: conversationId,
-      role: "user",
-      content: message,
-    });
+    await supabase
+      .from("chat_messages")
+      .insert({
+        conversation_id: conversationId,
+        role: "user",
+        content: message,
+      })
+      .throwOnError();
 
-    if (insertError) throw insertError;
-
-    const { data: history, error: historyError } = await supabase
+    const { data: history } = await supabase
       .from("chat_messages")
       .select("*")
       .eq("conversation_id", conversationId)
-      .order("created_at", { ascending: true });
-
-    if (historyError) throw historyError;
+      .order("created_at", { ascending: true })
+      .throwOnError();
 
     const messages = [
       { role: "system", content: SYSTEM_PROMPT },
@@ -111,18 +111,19 @@ export async function sendMessage(conversationId: string, message: string) {
 
 export async function getConversationHistory(conversationId: string) {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
+    const supabase = createServerClient();
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) {
       return { error: "Not authenticated" };
     }
 
-    const { data: messages, error } = await supabase
+    const { data: messages } = await supabase
       .from("chat_messages")
       .select("*")
       .eq("conversation_id", conversationId)
-      .order("created_at", { ascending: true });
+      .order("created_at", { ascending: true })
+      .throwOnError();
 
-    if (error) throw error;
     return { messages };
   } catch (error) {
     console.error("Error fetching conversation history:", error);

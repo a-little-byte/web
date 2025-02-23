@@ -16,6 +16,7 @@ const ConfirmEmail = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const supabase = createClient();
+
   useEffect(() => {
     async function verifyEmail() {
       try {

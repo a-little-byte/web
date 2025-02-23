@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Link } from "@/i18n/routing";
+import { Link, useRouter } from "@/i18n/routing";
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -22,6 +22,7 @@ interface SearchBarProps {
 export const SearchBar = ({ navigation }: SearchBarProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations("navigation");
+  const router = useRouter();
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -53,14 +54,16 @@ export const SearchBar = ({ navigation }: SearchBarProps) => {
         <CommandInput placeholder={t("searchPlaceholder")} />
         <CommandList>
           <CommandEmpty>{t("searchEmpty")}</CommandEmpty>
-          <CommandGroup>
+          <CommandGroup heading="Navigation">
             {navigation.map((item) => (
-              <CommandItem key={item.name}>
-                <Link
-                  onClick={() => setOpen(false)}
-                  className="w-full"
-                  href={item.href}
-                >
+              <CommandItem
+                onSelect={() => {
+                  setOpen(false);
+                  router.push(item.href);
+                }}
+                key={item.name}
+              >
+                <Link className="w-full" href={item.href}>
                   {t(item.name)}
                 </Link>
               </CommandItem>

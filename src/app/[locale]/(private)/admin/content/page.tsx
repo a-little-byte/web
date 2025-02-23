@@ -13,7 +13,6 @@ import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
-// Define schemas for each section
 const heroSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
@@ -95,6 +94,7 @@ const tabs: Tab[] = [
 ];
 
 const ContentManagement = () => {
+  const supabase = createClient();
   const [content, setContent] = useState<any[]>([]);
   const { toast } = useToast();
   const t = useTranslations("admin.content");

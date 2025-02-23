@@ -8,8 +8,8 @@ export async function POST(request: Request) {
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "your-secret-key",
-    ) as { userId: number };
+      process.env.JWT_SECRET || "your-secret-key"
+    ) as { userId: string };
     await verifyEmail(decoded.userId);
 
     return NextResponse.json({ success: true });
