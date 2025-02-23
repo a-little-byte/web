@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { usePathname, useRouter } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/lib/i18n/routing";
 import { useLocale } from "next-intl";
 
 export const LanguageSwitcher = () => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Link } from "@/i18n/routing";
+import { Link } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";

@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { routing, SupportedLocale } from "@/i18n/routing";
+import { routing, SupportedLocale } from "@/lib/i18n/routing";
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";

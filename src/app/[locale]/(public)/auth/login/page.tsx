@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { Link, useRouter } from "@/i18n/routing";
+import { Link, useRouter } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";

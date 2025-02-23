@@ -1,6 +1,6 @@
 import { NavigationItem } from "@/components/layout/Header";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
-import { Link } from "@/i18n/routing";
+import { Link } from "@/lib/i18n/routing";
 import { ShieldCheck } from "lucide-react";
 
 const navigation: Record<string, NavigationItem[]> = {

@@ -1,0 +1,8 @@
+---
+description: API, actions, etc.
+globs: *.ts
+---
+
+# API
+
+- Use of the Hono library inside the `src/api` folder.

@@ -1,0 +1,30 @@
+---
+description: Frontend nextjs rules
+globs: *.tsx
+---
+# Pages
+
+Inside the `src/app` folder every `page.tsx` needs to be have this format of code if there is hooks, functions, etc.
+```tsx
+const PageName = () => {
+  // React code
+}
+
+export default PageName;
+```
+or if there is only JSX template do like this:
+```tsx
+const PageName = () => (
+  // JSX
+)
+
+export default PageName;
+```
+
+# Hooks
+
+- The global hooks are put inside the folder `src/hooks`
+
+# Comoponents
+
+- The global components are put inside the folder `src/components`

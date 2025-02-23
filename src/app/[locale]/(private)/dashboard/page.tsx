@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/lib/supabase/client";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";

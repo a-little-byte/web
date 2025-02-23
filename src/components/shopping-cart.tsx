@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "@/i18n/routing";
+import { useRouter } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import {
   ShoppingCart as CartIcon,

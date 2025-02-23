@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "@/i18n/routing";
+import { Link } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { useTranslations } from "next-intl";

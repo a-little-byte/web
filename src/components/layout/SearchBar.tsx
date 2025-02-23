@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Link, useRouter } from "@/i18n/routing";
+import { Link, useRouter } from "@/lib/i18n/routing";
 import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";

@@ -4,7 +4,7 @@ import { ShoppingCart } from "@/components/shopping-cart";
 import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import ScrambleHover from "@/components/ui/scramble";
-import { Link } from "@/i18n/routing";
+import { Link } from "@/lib/i18n/routing";
 import { createServerClient } from "@/lib/supabase/server";
 import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";

@@ -1,7 +1,7 @@
 "use client";
 
 import ScrambleHover from "@/components/ui/scramble";
-import { Link, useRouter } from "@/i18n/routing";
+import { Link, useRouter } from "@/lib/i18n/routing";
 import { CreditCard, Home, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useEffect, useMemo } from "react";

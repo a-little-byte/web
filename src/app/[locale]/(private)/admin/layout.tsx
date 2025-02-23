@@ -1,8 +1,8 @@
 "use client";
 
 import ScrambleHover from "@/components/ui/scramble";
-import { useRouter } from "@/i18n/routing";
 import { isAdmin } from "@/lib/auth";
+import { useRouter } from "@/lib/i18n/routing";
 import jwt from "jsonwebtoken";
 import { useEffect } from "react";
 

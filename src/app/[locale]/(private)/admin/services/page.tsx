@@ -22,7 +22,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { createClient } from "@/lib/supabase/client";
-import { Tables } from "@/types/supabase";
+import { Tables } from "@/supabase/types";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";
