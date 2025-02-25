@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -63,12 +64,12 @@ const SecuritySettings = () => {
   const setupTOTP = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch("/api/auth/totp/setup", {
+      const response = await apiClient.api.auth.totp.setup.$post({
         method: "POST",
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if ("error" in data) throw new Error(data.error);
 
       setQrCode(data.qrCode);
     } catch (error) {
@@ -86,7 +87,7 @@ const SecuritySettings = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/totp/verify", {
+      const response = await apiClient.api.auth.totp.verify.$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -95,7 +96,7 @@ const SecuritySettings = () => {
       });
 
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
+      if ("error" in data) throw new Error(data.error);
 
       setTotpEnabled(true);
       setQrCode(null);

@@ -13,6 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
 
@@ -38,7 +39,7 @@ const Contact = () => {
 
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
-      const response = await fetch("/api/send", {
+      const response = await apiClient.api.send.$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",

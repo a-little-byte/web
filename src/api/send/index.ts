@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { Hono } from "hono";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function POST(request: Request) {
+export const send = new Hono().post("/", async (c) => {
   try {
-    const { email, subject, message } = await request.json();
+    const { email, subject, message } = await c.req.json();
 
     const data = await resend.emails.send({
       from: "Cyna <onboarding@resend.dev>",
@@ -17,8 +17,8 @@ export async function POST(request: Request) {
       </div>`,
     });
 
-    return NextResponse.json(data);
+    return c.json(data);
   } catch (error) {
-    return NextResponse.json({ error });
+    return c.json({ error: "Failed to send email" }, 500);
   }
-}
+});

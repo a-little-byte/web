@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
+import { apiClient } from "@/lib/api";
 import { useRouter } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
 import {
@@ -142,7 +143,7 @@ export const ShoppingCart = () => {
         return;
       }
 
-      const response = await fetch("/api/checkout", {
+      const response = await apiClient.api.checkout.$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -151,7 +152,7 @@ export const ShoppingCart = () => {
 
       const data = await response.json();
 
-      if (data.url) {
+      if ("url" in data && data.url !== null) {
         window.location.href = data.url;
       } else {
         throw new Error("No checkout URL received");

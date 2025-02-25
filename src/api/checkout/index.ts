@@ -1,17 +1,17 @@
 import { createServerClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
+import { Hono } from "hono";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2023-10-16",
 });
 
-export async function POST(request: Request) {
+export const checkout = new Hono().post("/", async (c) => {
   try {
     const supabase = createServerClient();
     const { data } = await supabase.auth.getUser();
     if (!data.user) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return c.json({ error: "Not authenticated" }, 401);
     }
 
     const { data: cartItems } = await supabase
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       .throwOnError();
 
     if (!cartItems?.length) {
-      return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
+      return c.json({ error: "Cart is empty" }, 400);
     }
 
     const lineItems =
@@ -82,12 +82,9 @@ export async function POST(request: Request) {
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/cart`,
     });
 
-    return NextResponse.json({ url: session.url });
+    return c.json({ url: session.url });
   } catch (error) {
     console.error("Error creating checkout session:", error);
-    return NextResponse.json(
-      { error: "Error creating checkout session" },
-      { status: 500 }
-    );
+    return c.json({ error: "Error creating checkout session" }, 500);
   }
-}
+});

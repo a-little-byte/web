@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { Link, useRouter } from "@/lib/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -38,7 +39,7 @@ const ResetPassword = () => {
         throw new Error(t("errors.passwordsMismatch"));
       }
 
-      const response = await fetch("/api/auth/reset-password", {
+      const response = await apiClient.api.auth["reset-password"].$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,7 +49,7 @@ const ResetPassword = () => {
 
       const responseData = await response.json();
 
-      if (responseData.error) {
+      if ("error" in responseData) {
         throw new Error(responseData.error);
       }
 

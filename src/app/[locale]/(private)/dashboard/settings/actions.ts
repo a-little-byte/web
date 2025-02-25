@@ -1,8 +1,6 @@
 "use server";
 
-import { getCurrentUser } from "@/app/[locale]/api/auth/actions";
 import { createServerClient } from "@/lib/supabase/server";
-import bcrypt from "bcryptjs";
 
 export const updateProfile = async ({
   fullName,
@@ -13,7 +11,9 @@ export const updateProfile = async ({
 }) => {
   try {
     const supabase = createServerClient();
-    const user = await getCurrentUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     if (!user) {
       return { error: "Not authenticated" };
     }
@@ -58,27 +58,23 @@ export const changePassword = async ({
 }) => {
   try {
     const supabase = createServerClient();
-    const user = await getCurrentUser();
-    if (!user) {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
       return { error: "Not authenticated" };
     }
 
-    const validPassword = await bcrypt.compare(currentPassword, user.password);
-    if (!validPassword) {
-      return { error: "Current password is incorrect" };
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
+
+    if (error) {
+      if (error.message.includes("password")) {
+        return { error: "Current password is incorrect" };
+      }
+      throw error;
     }
-
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    const { error: updateError } = await supabase
-      .from("users")
-      .update({
-        password: hashedPassword,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", user.id);
-
-    if (updateError) throw updateError;
 
     return { success: true };
   } catch (error) {
@@ -90,17 +86,16 @@ export const changePassword = async ({
 export const deleteAccount = async () => {
   try {
     const supabase = createServerClient();
-    const user = await getCurrentUser();
-    if (!user) {
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+    if (!session) {
       return { error: "Not authenticated" };
     }
 
-    const { error: deleteError } = await supabase
-      .from("users")
-      .delete()
-      .eq("id", user.id);
+    const { error } = await supabase.auth.admin.deleteUser(session.user.id);
 
-    if (deleteError) throw deleteError;
+    if (error) throw error;
 
     return { success: true };
   } catch (error) {

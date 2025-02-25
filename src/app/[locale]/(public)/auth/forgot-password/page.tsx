@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { Link } from "@/lib/i18n/routing";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -33,7 +34,7 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/auth/forgot-password", {
+      const response = await apiClient.api.auth["forgot-password"].$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,7 +44,7 @@ export default function ForgotPassword() {
 
       const data = await response.json();
 
-      if (data.error) {
+      if ("error" in data) {
         throw new Error(data.error);
       }
 
