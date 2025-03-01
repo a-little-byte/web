@@ -1,10 +1,9 @@
-import { createServerClient } from "@/lib/supabase/server";
+import { db } from "@/db";
 import { Hono } from "hono";
-import OpenAI from "openai";
+import { Ollama } from "ollama";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const OLLAMA_HOST = process.env.OLLAMA_HOST || "http://localhost:11434";
+const ollama = new Ollama({ host: OLLAMA_HOST });
 
 const SYSTEM_PROMPT = `You are a helpful cybersecurity assistant for Cyna, a company that provides enterprise security solutions. 
 Your main services are:
@@ -15,12 +14,29 @@ Your main services are:
 Be friendly and professional. Keep responses concise but informative. If asked about pricing or services, provide accurate information from the list above.
 For technical questions, provide accurate but easy-to-understand explanations.`;
 
+const generateOllamaResponse = async (
+  messages: Array<{ role: string; content: string }>
+) => {
+  try {
+    const response = await ollama.chat({
+      model: "mistral",
+      messages,
+    });
+    return response.message.content;
+  } catch (error) {
+    console.error("Error calling Ollama:", error);
+    throw new Error("Failed to get response from Ollama");
+  }
+};
+
 export const chat = new Hono()
   .post("/create-conversation", async (c) => {
     try {
-      const supabase = createServerClient();
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
+      const { data } = await db
+        .selectFrom("users")
+        .selectAll()
+        .executeTakeFirst();
+      if (!data) {
         return c.json({ error: "Not authenticated" }, 401);
       }
 
@@ -73,14 +89,7 @@ export const chat = new Hono()
         })),
       ];
 
-      const completion = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages,
-        temperature: 0.7,
-        max_tokens: 500,
-      });
-
-      const aiResponse = completion.choices[0].message.content;
+      const aiResponse = await generateOllamaResponse(messages);
 
       const { error: aiResponseError } = await supabase
         .from("chat_messages")
