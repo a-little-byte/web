@@ -180,7 +180,7 @@ const ServicesManagement = () => {
             {["name", "description", "price", "period", "actions"].map(
               (column) => (
                 <TableHead key={column}>{t(`table.${column}`)}</TableHead>
-              )
+              ),
             )}
           </TableRow>
         </TableHeader>

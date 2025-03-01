@@ -89,7 +89,7 @@ const Services = () => {
           priceId: "enterprise",
         },
       ] as const,
-    [locale]
+    [locale],
   );
   const form = useForm(formSchema, {
     defaultValues: {
@@ -98,7 +98,7 @@ const Services = () => {
           ...acc,
           [solution.priceId]: "1",
         }),
-        {}
+        {},
       ),
     },
   });
@@ -106,7 +106,7 @@ const Services = () => {
 
   const addToCart = async (
     values: z.infer<typeof formSchema>,
-    priceId: PriceIds
+    priceId: PriceIds,
   ) => {
     try {
       const {

@@ -25,7 +25,7 @@ export const checkout = new Hono().post("/", async (c) => {
           price,
           period
         )
-      `
+      `,
       )
       .eq("user_id", data.user.id)
       .throwOnError();

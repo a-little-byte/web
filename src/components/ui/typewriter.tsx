@@ -61,7 +61,7 @@ const Typewriter = ({
         setCurrentIndex((prev) => prev + 1);
       }, speed);
     },
-    [speed, currentIndex]
+    [speed, currentIndex],
   );
 
   const handleDeleting = useCallback(() => {
@@ -134,7 +134,7 @@ const Typewriter = ({
             hideCursorOnType &&
               (currentIndex < texts[currentTextIndex].length || isDeleting)
               ? "hidden"
-              : ""
+              : "",
           )}
           initial="initial"
           animate="animate"

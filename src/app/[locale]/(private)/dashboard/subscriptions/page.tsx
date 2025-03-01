@@ -114,7 +114,7 @@ export default function Subscriptions() {
             number,
             file_url
           )
-        `
+        `,
         )
         .order("created_at", { ascending: false });
 
@@ -156,7 +156,9 @@ export default function Subscriptions() {
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) => new Date(order.created_at).getFullYear().toString())
+      orders.map((order) =>
+        new Date(order.created_at).getFullYear().toString(),
+      ),
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -255,7 +257,7 @@ export default function Subscriptions() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      )
+                      ),
                     )}
                   </TableRow>
                 </TableHeader>
@@ -331,7 +333,7 @@ export default function Subscriptions() {
                                           {format(
                                             new Date(order.created_at),
                                             "PPP",
-                                            { locale: fr }
+                                            { locale: fr },
                                           )}
                                         </dd>
                                       </div>

@@ -11,7 +11,7 @@ export const useForm = <T extends FieldValues, TContext extends unknown>(
   options?: Exclude<
     UseFormProps<z.input<typeof validator>, TContext>,
     "resolver"
-  >
+  >,
 ) =>
   useFormHook<z.input<typeof validator>, TContext, z.output<typeof validator>>({
     resolver: zodResolver(validator),

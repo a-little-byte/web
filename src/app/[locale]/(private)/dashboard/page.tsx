@@ -12,7 +12,7 @@ const Dashboard = () => {
   const supabase = createClient();
   const t = useTranslations("dashboard");
   const [subscriptions, setSubscriptions] = useState<Tables<"subscriptions">[]>(
-    []
+    [],
   );
   const [totalSpent, setTotalSpent] = useState(0);
   const { toast } = useToast();
@@ -21,7 +21,7 @@ const Dashboard = () => {
     const fetchSubscriptions = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
+        "$1",
       );
       const decoded = JSON.parse(atob(token.split(".")[1]));
 
@@ -38,7 +38,7 @@ const Dashboard = () => {
       price,
       period
     )
-  `
+  `,
         )
         .eq("user_id", decoded.userId)
         .eq("status", "active")
@@ -52,7 +52,7 @@ const Dashboard = () => {
     subscriptions!inner (
       id
     )
-  `
+  `,
         )
         .eq("subscriptions.user_id", decoded.userId)
         .throwOnError();
@@ -63,7 +63,7 @@ const Dashboard = () => {
       }
 
       setTotalSpent(
-        payments.reduce((sum, payment) => sum + Number(payment.amount), 0)
+        payments.reduce((sum, payment) => sum + Number(payment.amount), 0),
       );
       setSubscriptions(subs as any);
     };

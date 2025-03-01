@@ -75,7 +75,7 @@ const Dashboard = () => {
               name
             )
           )
-        `
+        `,
       )
       .gte("created_at", startDate.toISOString())
       .lte("created_at", endDate.toISOString())
@@ -127,7 +127,7 @@ const Dashboard = () => {
       ([name, value]) => ({
         name,
         value,
-      })
+      }),
     );
 
     setSalesData(salesDataArray);

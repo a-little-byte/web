@@ -18,7 +18,7 @@ export const totp = new Hono()
       const otpauth = authenticator.keyuri(
         session.user.email!,
         "Cyna Security",
-        secret
+        secret,
       );
       const qrCode = await QRCode.toDataURL(otpauth);
 
