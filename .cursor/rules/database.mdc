@@ -1,10 +1,11 @@
 ---
 description: Database use of supabase
 globs: *.tsx, *.ts
+alwaysApply: false
 ---
 
 # Database
 
-- Use supabase as a query builder / orm
-- If it's a kysely query, or whatever other query builder or orm convert it into supabase query 
-- If you need to get the type of a table use the Tables type inside [supabase.ts](mdc:src/types/supabase.ts) 
+- Use kysely as a query builder / orm
+- Every type of models are inside [models.ts](mdc:src/db/models.ts)
+- To query the database use [index.ts](mdc:src/db/index.ts)

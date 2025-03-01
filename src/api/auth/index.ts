@@ -1,6 +1,7 @@
+import { db } from "@/db";
 import { verifyEmail } from "@/lib/auth";
-import { createServerClient } from "@/lib/supabase/server";
 import bcrypt from "bcryptjs";
+import { UUID } from "crypto";
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
@@ -12,14 +13,8 @@ const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 export const auth = new Hono()
   .get("/callback", async (c) => {
     const url = new URL(c.req.url);
-    const code = url.searchParams.get("code");
     const origin = url.origin;
     const redirectTo = url.searchParams.get("redirect_to")?.toString();
-
-    if (code) {
-      const supabase = createServerClient();
-      await supabase.auth.exchangeCodeForSession(code);
-    }
 
     if (redirectTo) {
       return c.redirect(`${origin}${redirectTo}`);
@@ -30,15 +25,14 @@ export const auth = new Hono()
   .post("/forgot-password", async (c) => {
     try {
       const { email } = await c.req.json();
-      const supabase = createServerClient();
 
-      const { data: user, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("email", email)
-        .single();
+      const user = await db
+        .selectFrom("users")
+        .where("email", "=", email)
+        .selectAll()
+        .executeTakeFirst();
 
-      if (error || !user) {
+      if (!user) {
         return c.json({ success: true });
       }
 
@@ -71,19 +65,17 @@ export const auth = new Hono()
   .post("/reset-password", async (c) => {
     try {
       const { token, password } = await c.req.json();
-      const supabase = createServerClient();
-      const decoded = jwt.verify(token, JWT_SECRET) as { userId: string };
+      const decoded = jwt.verify(token, JWT_SECRET) as { userId: UUID };
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const { data, error } = await supabase
-        .from("users")
-        .update({
+      await db
+        .updateTable("users")
+        .set({
           password: hashedPassword,
-          updated_at: new Date().toISOString(),
+          updated_at: new Date(),
         })
-        .eq("id", decoded.userId);
-
-      if (error) throw error;
+        .where("id", "=", decoded.userId)
+        .execute();
 
       return c.json({ success: true });
     } catch (error) {
@@ -98,7 +90,7 @@ export const auth = new Hono()
 
       const decoded = jwt.verify(
         token,
-        process.env.JWT_SECRET || "your-secret-key",
+        process.env.JWT_SECRET || "your-secret-key"
       ) as { userId: string };
       await verifyEmail(decoded.userId);
 

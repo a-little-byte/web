@@ -1,25 +1,21 @@
 "use server";
 
-import { createServerClient } from "./supabase/server";
-
-const supabase = createServerClient();
+import { db } from "@/db";
 
 export async function verifyEmail(userId: string): Promise<void> {
-  const { error } = await supabase
-    .from("auth.users")
-    .update({ email_verified: true })
-    .eq("id", userId);
-
-  if (error) throw error;
+  await db
+    .updateTable("users")
+    .set({ email_verified: true })
+    .where("id", "=", userId)
+    .executeTakeFirstOrThrow();
 }
 
 export async function isAdmin(userId: string): Promise<boolean> {
-  const { data: user, error } = await supabase
-    .from("public.user_roles")
+  const user = await db
+    .selectFrom("users")
     .select("role")
-    .eq("user_id", userId)
-    .single();
+    .where("id", "=", userId)
+    .executeTakeFirstOrThrow();
 
-  if (error || !user) return false;
   return user.role === "admin";
 }

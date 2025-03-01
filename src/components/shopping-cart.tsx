@@ -25,14 +25,13 @@ import { useEffect, useState } from "react";
 
 interface CartItem {
   id: string;
-  service_id: string;
   quantity: number;
   services: {
     name: string;
     description: string;
     price: number;
     period: string;
-  }[];
+  };
 }
 
 export const ShoppingCart = () => {
@@ -46,7 +45,7 @@ export const ShoppingCart = () => {
 
   useEffect(() => {
     fetchCartItems();
-  }, [isOpen]);
+  }, []);
 
   const fetchCartItems = async () => {
     try {
@@ -55,24 +54,17 @@ export const ShoppingCart = () => {
       } = await supabase.auth.getSession();
       if (!session) return;
 
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("cart_items")
         .select(
           `
           id,
-          service_id,
           quantity,
-          services (
-            name,
-            description,
-            price,
-            period
-          )
-        `,
+          service_id,
+        `
         )
-        .eq("user_id", session.user.id);
-
-      if (error) throw error;
+        .eq("user_id", session.user.id)
+        .throwOnError();
 
       setCartItems(data || []);
     } catch (error) {
@@ -90,12 +82,12 @@ export const ShoppingCart = () => {
 
     setIsLoading(true);
     try {
-      const { error } = await supabase
+      await supabase
         .from("cart_items")
         .update({ quantity })
-        .eq("id", itemId);
+        .eq("id", itemId)
+        .throwOnError();
 
-      if (error) throw error;
       await fetchCartItems();
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -112,12 +104,12 @@ export const ShoppingCart = () => {
   const removeItem = (itemId: string) => async () => {
     setIsLoading(true);
     try {
-      const { error } = await supabase
+      await supabase
         .from("cart_items")
         .delete()
-        .eq("id", itemId);
+        .eq("id", itemId)
+        .throwOnError();
 
-      if (error) throw error;
       await fetchCartItems();
     } catch (error) {
       console.error("Error removing item:", error);
@@ -167,7 +159,7 @@ export const ShoppingCart = () => {
   };
 
   const total = cartItems.reduce((sum, item) => {
-    return sum + item.services.price * item.quantity;
+    return sum + item.services?.price * item.quantity;
   }, 0);
 
   return (
