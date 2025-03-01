@@ -2,7 +2,6 @@
 
 import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/api";
 import { Link } from "@/lib/i18n/routing";
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { z } from "zod";
@@ -102,9 +102,7 @@ export default function ForgotPassword() {
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
             <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("send")}
             </Button>
             <p className="text-center text-sm text-muted-foreground">

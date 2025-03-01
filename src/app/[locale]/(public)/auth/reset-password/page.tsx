@@ -2,7 +2,6 @@
 
 import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -119,7 +118,7 @@ const ResetPassword = () => {
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
               {t("form.submitButton")}
             </Button>

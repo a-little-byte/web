@@ -157,9 +157,7 @@ const CarouselManagement = () => {
         order: index,
       }));
 
-      const { error } = await supabase.from("hero_carousel").upsert(updates);
-
-      if (error) throw error;
+      await supabase.from("hero_carousel").upsert(updates).throwOnError();
 
       fetchItems();
     } catch (error) {

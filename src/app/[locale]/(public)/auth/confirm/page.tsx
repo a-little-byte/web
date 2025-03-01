@@ -1,6 +1,5 @@
 "use client";
 
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
@@ -44,7 +43,7 @@ const ConfirmEmail = () => {
   if (isVerifying) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <Icons.spinner className="h-8 w-8 animate-spin" />
+        <Loader2 className="h-8 w-8 animate-spin" />
       </div>
     );
   }

@@ -8,7 +8,11 @@ import {
 
 type FormProps<T extends FieldValues> = {
   form: UseFormReturn<T, unknown, T>;
-  onSubmit: SubmitHandler<T>;
+  onSubmit: T extends undefined
+    ? SubmitHandler<T>
+    : T extends FieldValues
+      ? SubmitHandler<T>
+      : never;
   children: ReactNode;
 } & Omit<ComponentProps<"form">, "onSubmit">;
 

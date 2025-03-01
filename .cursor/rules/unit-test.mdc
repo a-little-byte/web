@@ -1,0 +1,19 @@
+---
+description: Unit test with vitest
+globs: *.test.ts, *.test.tsx
+---
+# TypeScript
+
+The instructions below is only for the file which has a format of "*.test.ts"
+
+- Use the vitest library to make unit test.
+- Use the vitest library to mock function.
+
+# TypeScript React
+
+The instructions below is only for the file which has a format of "*.test.tsx"
+
+- Use the vitest library to make unit test.
+- Use the vitest library to mock function.
+- Use the @testing-library/react to test react component rendering and interaction to a component.
+- Use the @testing-library/user-event to simulate browser interactions.

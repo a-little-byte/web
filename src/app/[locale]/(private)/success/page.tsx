@@ -38,7 +38,7 @@ const Success = () => {
         } = await supabase.auth.getSession();
         if (!session) return;
 
-        const { data: orderData, error } = await supabase
+        const { data: orderData } = await supabase
           .from("payments")
           .select(
             `
@@ -55,9 +55,8 @@ const Success = () => {
           `
           )
           .eq("stripe_session_id", sessionId)
-          .single();
-
-        if (error) throw error;
+          .single()
+          .throwOnError();
 
         if (orderData) {
           setOrder({

@@ -2,7 +2,6 @@
 
 import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -16,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { Link } from "@/lib/i18n/routing";
 import { createClient } from "@/lib/supabase/client";
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import * as z from "zod";
@@ -137,7 +137,7 @@ const Register = () => {
               disabled={form.formState.isSubmitting}
             >
               {form.formState.isSubmitting && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
               {t("submit")}
             </Button>

@@ -57,12 +57,11 @@ const ServicesManagement = () => {
 
   const fetchServices = async () => {
     try {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from("services")
         .select("*")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
+        .order("created_at", { ascending: false })
+        .throwOnError();
 
       setServices(data);
     } catch (error) {

@@ -42,7 +42,6 @@ const ContentSection = ({
   handleSubmit,
   validator,
 }: ContentSectionProps) => {
-  const supabase = createClient();
   const t = useTranslations("admin.content");
   const form = useForm(validator);
 
@@ -156,10 +155,6 @@ const ContentManagement = () => {
         });
       }
     };
-
-  const getContentBySection = (section: string) => {
-    return (content.find((c) => c.section === section)?.content as any) || {};
-  };
 
   return (
     <>

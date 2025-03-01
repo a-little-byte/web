@@ -25,7 +25,7 @@ const Dashboard = () => {
       );
       const decoded = JSON.parse(atob(token.split(".")[1]));
 
-      const { data: subs, error: subsError } = await supabase
+      const { data: subs } = await supabase
         .from("subscriptions")
         .select(
           `
@@ -41,9 +41,10 @@ const Dashboard = () => {
   `
         )
         .eq("user_id", decoded.userId)
-        .eq("status", "active");
+        .eq("status", "active")
+        .throwOnError();
 
-      const { data: payments, error: paymentsError } = await supabase
+      const { data: payments } = await supabase
         .from("payments")
         .select(
           `
@@ -53,7 +54,8 @@ const Dashboard = () => {
     )
   `
         )
-        .eq("subscriptions.user_id", decoded.userId);
+        .eq("subscriptions.user_id", decoded.userId)
+        .throwOnError();
 
       if (!payments || !subs) {
         toast({});

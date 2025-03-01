@@ -2,7 +2,6 @@
 
 import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -15,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -152,7 +152,7 @@ const SecuritySettings = () => {
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading && (
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   )}
                   {t("twoFactor.buttons.verify")}
                 </Button>
@@ -160,9 +160,7 @@ const SecuritySettings = () => {
             </div>
           ) : (
             <Button onClick={setupTOTP} disabled={isLoading}>
-              {isLoading && (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              )}
+              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {t("twoFactor.buttons.enable")}
             </Button>
           )}

@@ -1,9 +1,5 @@
 "use client";
 
-import {
-  createConversation,
-  sendMessage,
-} from "@/app/[locale]/api/chat/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -34,16 +30,16 @@ export function ChatBot() {
 
   const initializeChat = async () => {
     if (!conversationId) {
-      const result = await createConversation();
-      if (result.error) {
-        toast({
-          title: "Error",
-          description: result.error,
-          variant: "destructive",
-        });
-        return false;
-      }
-      setConversationId(result.conversation.id);
+      // const result = await createConversation();
+      // if (result.error) {
+      //   toast({
+      //     title: "Error",
+      //   description: result.error,
+      //   variant: "destructive",
+      // });
+      //   return false;
+      // }
+      // setConversationId(result.conversation.id);
     }
     return true;
   };
@@ -64,21 +60,21 @@ export function ChatBot() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    const result = await sendMessage(conversationId, input);
+    // const result = await sendMessage(conversationId, input);
     setIsLoading(false);
 
-    if (result.error) {
-      toast({
-        title: "Error",
-        description: result.error,
-        variant: "destructive",
-      });
-      return;
-    }
+    // if (result.error) {
+    //   toast({
+    //     title: "Error",
+    //     description: result.error,
+    //     variant: "destructive",
+    //   });
+    //   return;
+    // }
 
-    if (result.history) {
-      setMessages(result.history);
-    }
+    // if (result.history) {
+    //   setMessages(result.history);
+    // }
   };
 
   if (!isOpen) {
