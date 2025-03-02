@@ -5,12 +5,12 @@ import { UUID } from "crypto";
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 import { Resend } from "resend";
-import { totp } from "./totp";
+import { authTotpRouter } from "./totp";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-export const auth = new Hono()
+export const authRouter = new Hono()
   .get("/callback", async (c) => {
     const url = new URL(c.req.url);
     const origin = url.origin;
@@ -83,7 +83,7 @@ export const auth = new Hono()
       return c.json({ error: "Failed to reset password" }, 500);
     }
   })
-  .route("/totp", totp)
+  .route("/totp", authTotpRouter)
   .post("/verify", async (c) => {
     try {
       const { token } = await c.req.json();

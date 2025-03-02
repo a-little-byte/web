@@ -1,4 +1,4 @@
-import { db } from "@/db";
+import { ContextVariables } from "@/api/types";
 import { Hono } from "hono";
 import { Ollama } from "ollama";
 
@@ -29,57 +29,58 @@ const generateOllamaResponse = async (
   }
 };
 
-export const chat = new Hono()
-  .post("/create-conversation", async (c) => {
+export const chatRouter = new Hono<{ Variables: ContextVariables }>()
+  .post("/create-conversation", async ({ var: { db }, json }) => {
     try {
       const { data } = await db
         .selectFrom("users")
         .selectAll()
         .executeTakeFirst();
       if (!data) {
-        return c.json({ error: "Not authenticated" }, 401);
+        return json({ error: "Not authenticated" }, 401);
       }
 
-      const { data: conversation } = await supabase
-        .from("chat_conversations")
-        .insert({
+      const conversation = await db
+        .insertInto("chat_conversations")
+        .values({
           user_id: data.user.id,
           title: "New Conversation",
         })
-        .select()
-        .single()
-        .throwOnError();
+        .returningAll()
+        .executeTakeFirstOrThrow();
 
-      return c.json({ conversation });
+      return json({ conversation });
     } catch (error) {
       console.error("Error creating conversation:", error);
-      return c.json({ error: "Failed to create conversation" }, 500);
+      return json({ error: "Failed to create conversation" }, 500);
     }
   })
-  .post("/send-message", async (c) => {
+  .post("/send-message", async ({ var: { db }, json, req }) => {
     try {
-      const { conversationId, message } = await c.req.json();
-      const supabase = createServerClient();
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
-        return c.json({ error: "Not authenticated" }, 401);
+      const { conversationId, message } = await req.json();
+      const { data } = await db
+        .selectFrom("users")
+        .selectAll()
+        .executeTakeFirstOrThrow();
+      if (!data) {
+        return json({ error: "Not authenticated" }, 401);
       }
 
-      await supabase
-        .from("chat_messages")
-        .insert({
+      await db
+        .insertInto("chat_messages")
+        .values({
           conversation_id: conversationId,
           role: "user",
           content: message,
         })
-        .throwOnError();
+        .execute();
 
-      const { data: history } = await supabase
-        .from("chat_messages")
-        .select("*")
-        .eq("conversation_id", conversationId)
-        .order("created_at", { ascending: true })
-        .throwOnError();
+      const history = await db
+        .selectFrom("chat_messages")
+        .selectAll()
+        .where("conversation_id", "=", conversationId)
+        .orderBy("created_at", "asc")
+        .execute();
 
       const messages = [
         { role: "system", content: SYSTEM_PROMPT },
@@ -91,17 +92,16 @@ export const chat = new Hono()
 
       const aiResponse = await generateOllamaResponse(messages);
 
-      const { error: aiResponseError } = await supabase
-        .from("chat_messages")
-        .insert({
+      await db
+        .insertInto("chat_messages")
+        .values({
           conversation_id: conversationId,
           role: "assistant",
           content: aiResponse,
-        });
+        })
+        .execute();
 
-      if (aiResponseError) throw aiResponseError;
-
-      return c.json({
+      return json({
         message: aiResponse,
         history: [
           ...history,
@@ -114,28 +114,30 @@ export const chat = new Hono()
       });
     } catch (error) {
       console.error("Error sending message:", error);
-      return c.json({ error: "Failed to send message" }, 500);
+      return json({ error: "Failed to send message" }, 500);
     }
   })
-  .get("/conversation/:id", async (c) => {
+  .get("/conversation/:id", async ({ var: { db }, json, req }) => {
     try {
-      const conversationId = c.req.param("id");
-      const supabase = createServerClient();
-      const { data } = await supabase.auth.getUser();
-      if (!data.user) {
-        return c.json({ error: "Not authenticated" }, 401);
+      const conversationId = req.param("id");
+      const { data } = await db
+        .selectFrom("users")
+        .selectAll()
+        .executeTakeFirstOrThrow();
+      if (!data) {
+        return json({ error: "Not authenticated" }, 401);
       }
 
-      const { data: messages } = await supabase
-        .from("chat_messages")
-        .select("*")
-        .eq("conversation_id", conversationId)
-        .order("created_at", { ascending: true })
-        .throwOnError();
+      const messages = await db
+        .selectFrom("chat_messages")
+        .where("conversation_id", "=", conversationId)
+        .orderBy("created_at", "asc")
+        .selectAll()
+        .execute();
 
-      return c.json({ messages });
+      return json({ messages });
     } catch (error) {
       console.error("Error fetching conversation history:", error);
-      return c.json({ error: "Failed to fetch conversation history" }, 500);
+      return json({ error: "Failed to fetch conversation history" }, 500);
     }
   });

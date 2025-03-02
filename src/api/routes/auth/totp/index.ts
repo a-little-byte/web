@@ -3,7 +3,7 @@ import { Hono } from "hono";
 import { authenticator } from "otplib";
 import QRCode from "qrcode";
 
-export const totp = new Hono()
+export const authTotpRouter = new Hono()
   .post("/setup", async (c) => {
     try {
       const supabase = createServerClient();
@@ -18,7 +18,7 @@ export const totp = new Hono()
       const otpauth = authenticator.keyuri(
         session.user.email!,
         "Cyna Security",
-        secret,
+        secret
       );
       const qrCode = await QRCode.toDataURL(otpauth);
 
