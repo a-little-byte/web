@@ -1,6 +1,7 @@
 ---
 description: Frontend nextjs rules
 globs: *.tsx
+alwaysApply: false
 ---
 # Pages
 
@@ -25,6 +26,17 @@ export default PageName;
 
 - The global hooks are put inside the folder `src/hooks`
 
+## Form
+
+- For the form use the hook useForm from this file [useForm.ts](mdc:src/hooks/useForm.ts) and pass a zod validator the closest one of the component or the one at the top of the page
+
 # Comoponents
 
 - The global components are put inside the folder `src/components`
+
+## Form
+
+- When a form is created use this file [Form.tsx](mdc:src/components/base/Form.tsx)
+- To use a select component on a [Form.tsx](mdc:src/components/base/Form.tsx) component use the [SelectField.tsx](mdc:src/components/base/SelectField.tsx)
+- To use a input component on a [Form.tsx](mdc:src/components/base/Form.tsx) component use the [InputField.tsx](mdc:src/components/base/InputField.tsx)
+- To use a textarea component on a [Form.tsx](mdc:src/components/base/Form.tsx) component use the [TextareaField.tsx](mdc:src/components/base/TextareaField.tsx)
