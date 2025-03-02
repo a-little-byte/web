@@ -4,7 +4,7 @@ export async function up(db: Kysely<any>) {
   await db.schema
     .createTable("services")
     .addColumn("id", "uuid", (col) =>
-      col.primaryKey().defaultTo(sql`uuid_generate_v4()`)
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("name", "text", (col) => col.notNull())
     .addColumn("description", "text", (col) => col.notNull())
@@ -17,7 +17,7 @@ export async function up(db: Kysely<any>) {
   await db.schema
     .createTable("users")
     .addColumn("id", "uuid", (col) =>
-      col.primaryKey().defaultTo(sql`uuid_generate_v4()`)
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("email", "text", (col) => col.notNull())
     .addColumn("password", "text", (col) => col.notNull())
@@ -32,7 +32,7 @@ export async function up(db: Kysely<any>) {
   await db.schema
     .createTable("subscriptions")
     .addColumn("id", "uuid", (col) =>
-      col.primaryKey().defaultTo(sql`uuid_generate_v4()`)
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("user_id", "uuid", (col) => col.notNull())
     .addColumn("service_id", "uuid", (col) => col.notNull())

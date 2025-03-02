@@ -15,12 +15,9 @@ export async function up(db: Kysely<any>) {
 
   await db.schema
     .alterTable("cart_items")
-    .addForeignKeyConstraint(
-      "cart_items_user_id_fkey",
-      ["user_id"],
-      "profiles",
-      ["id"]
-    )
+    .addForeignKeyConstraint("cart_items_user_id_fkey", ["user_id"], "users", [
+      "id",
+    ])
     .onDelete("cascade")
     .execute();
 

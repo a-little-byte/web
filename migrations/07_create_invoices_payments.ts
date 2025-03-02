@@ -30,7 +30,7 @@ export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
     .createTable("payments")
     .addColumn("id", "uuid", (col) =>
-      col.primaryKey().defaultTo(sql`uuid_generate_v4()`)
+      col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("subscription_id", "uuid", (col) => col.notNull())
     .addColumn("amount", "numeric", (col) => col.notNull())
