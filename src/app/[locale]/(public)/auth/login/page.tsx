@@ -14,7 +14,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { Link, useRouter } from "@/lib/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -31,7 +30,6 @@ const totpSchema = z.object({
 });
 
 const Login = () => {
-  const supabase = createClient();
   const t = useTranslations("auth.login");
   const tTotp = useTranslations("auth.totp");
   const [isLoading, setIsLoading] = useState(false);

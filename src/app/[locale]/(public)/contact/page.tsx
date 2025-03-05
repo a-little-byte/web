@@ -1,16 +1,10 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
+import { SelectField } from "@/components/base/SelectField";
+import { TextareaField } from "@/components/base/TextareaField";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/api";
@@ -30,12 +24,7 @@ const Contact = () => {
   const t = useTranslations("contact");
   const { toast } = useToast();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting },
-  } = useForm(contactFormSchema);
+  const form = useForm(contactFormSchema);
 
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
@@ -61,7 +50,7 @@ const Contact = () => {
           title: t("toast.success.title"),
           description: t("toast.success.description"),
         });
-        reset();
+        form.reset();
       } else {
         throw new Error("Failed to send message");
       }
@@ -85,57 +74,64 @@ const Contact = () => {
             {t("subtitle")}
           </p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-16 space-y-8">
+          <Form form={form} onSubmit={onSubmit} className="mt-16 space-y-8">
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="firstName">{t("form.firstName")}</Label>
-                <Input {...register("firstName", { required: true })} />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="lastName">{t("form.lastName")}</Label>
-                <Input {...register("lastName", { required: true })} />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="email">{t("form.email")}</Label>
-              <Input {...register("email", { required: true })} type="email" />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="company">{t("form.company")}</Label>
-              <Input {...register("company", { required: true })} />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="interest">{t("form.interest.label")}</Label>
-              <Select {...register("interest")}>
-                <SelectTrigger>
-                  <SelectValue placeholder={t("form.interest.placeholder")} />
-                </SelectTrigger>
-                <SelectContent>
-                  {["soc", "edr", "xdr", "other"].map((key) => (
-                    <SelectItem value={key}>
-                      {t(`form.interest.options.${key}`)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="message">{t("form.message.label")}</Label>
-              <Textarea
-                {...register("message", { required: true })}
-                placeholder={t("form.message.placeholder")}
-                className="min-h-[150px]"
+              <InputField
+                label={t("form.firstName")}
+                control={form.control}
+                name="firstName"
+                placeholder={t("form.firstName")}
+              />
+              <InputField
+                label={t("form.lastName")}
+                control={form.control}
+                name="lastName"
+                placeholder={t("form.lastName")}
               />
             </div>
 
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {t(`form.submit.${isSubmitting ? "sending" : "default"}`)}
+            <InputField
+              label={t("form.email")}
+              control={form.control}
+              name="email"
+              placeholder={t("form.email")}
+            />
+
+            <InputField
+              label={t("form.company")}
+              control={form.control}
+              name="company"
+              placeholder={t("form.company")}
+            />
+
+            <SelectField
+              label={t("form.interest.label")}
+              control={form.control}
+              name="interest"
+              placeholder={t("form.interest.placeholder")}
+              options={["soc", "edr", "xdr", "other"].map((key) => ({
+                label: t(`form.interest.options.${key}`),
+                value: key,
+              }))}
+            />
+
+            <TextareaField
+              label={t("form.message.label")}
+              control={form.control}
+              name="message"
+              placeholder={t("form.message.placeholder")}
+            />
+
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+            >
+              {t(
+                `form.submit.${form.formState.isSubmitting ? "sending" : "default"}`
+              )}
             </Button>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
