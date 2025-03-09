@@ -1,6 +1,7 @@
 ---
 description: Typescript rules
 globs: *.tsx, *.ts
+alwaysApply: false
 ---
 
 # Typescript 

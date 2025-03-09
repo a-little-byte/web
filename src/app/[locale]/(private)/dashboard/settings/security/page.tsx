@@ -64,7 +64,7 @@ const SecuritySettings = () => {
   const setupTOTP = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.api.auth.totp.setup.$post({
+      const response = await apiClient.auth.totp.setup.$post({
         method: "POST",
       });
 
@@ -87,7 +87,7 @@ const SecuritySettings = () => {
     setIsLoading(true);
 
     try {
-      const response = await apiClient.api.auth.totp.verify.$post({
+      const response = await apiClient.auth.totp.verify.$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",

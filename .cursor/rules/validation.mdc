@@ -1,8 +1,10 @@
 ---
 description: Use Zod for the validation
 globs: *.tsx, *.ts
+alwaysApply: false
 ---
 
 # Validation 
 
 - Use zod for validation
+- Check the [validators.ts](mdc:src/lib/validators.ts) if needed when there is global validators which you think that is useful.

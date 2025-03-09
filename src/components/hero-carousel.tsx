@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { apiClient } from "@/lib/api";
 import { Link } from "@/lib/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -36,14 +36,13 @@ export const HeroCarousel = () => {
   }, [items.length]);
 
   const fetchItems = async () => {
-    const supabase = createClient();
-    const { data } = await supabase
-      .from("hero_carousel")
-      .select("*")
-      .eq("active", true)
-      .order("order");
-
-    setItems(data || []);
+    try {
+      const data = await apiClient.hero.$get();
+      setItems(data || []);
+    } catch (error) {
+      console.error("Failed to fetch carousel items:", error);
+      setItems([]);
+    }
   };
 
   const goToSlide = (index: number) => {
@@ -67,7 +66,7 @@ export const HeroCarousel = () => {
           key={item.id}
           className={cn(
             "absolute inset-0 transition-transform duration-500 ease-in-out",
-            index === currentIndex ? "translate-x-0" : "translate-x-full",
+            index === currentIndex ? "translate-x-0" : "translate-x-full"
           )}
           style={{
             transform: `translateX(${100 * (index - currentIndex)}%)`,
@@ -122,7 +121,7 @@ export const HeroCarousel = () => {
                 key={index}
                 className={cn(
                   "w-2 h-2 rounded-full transition-colors",
-                  index === currentIndex ? "bg-white" : "bg-white/50",
+                  index === currentIndex ? "bg-white" : "bg-white/50"
                 )}
                 onClick={() => goToSlide(index)}
               />

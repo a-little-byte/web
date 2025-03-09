@@ -1,4 +1,4 @@
 import { ApiRouter } from "@/api";
 import { hc } from "hono/client";
 
-export const apiClient = hc<ApiRouter>("/api");
+export const apiClient = hc<ApiRouter>("/api").api;

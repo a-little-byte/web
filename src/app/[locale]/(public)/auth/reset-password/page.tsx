@@ -38,7 +38,7 @@ const ResetPassword = () => {
         throw new Error(t("errors.passwordsMismatch"));
       }
 
-      const response = await apiClient.api.auth["reset-password"].$post({
+      const response = await apiClient.auth["reset-password"].$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",

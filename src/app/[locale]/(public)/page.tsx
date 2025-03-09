@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Typewriter from "@/components/ui/typewriter";
 import { Link } from "@/lib/i18n/routing";
 import { Globe, Lock, Shield, Zap } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 const features = [
   {
@@ -34,8 +34,8 @@ const companies = [
   "Spotify",
 ] as const;
 
-const Home = () => {
-  const t = useTranslations("home");
+const Home = async () => {
+  const t = await getTranslations("home");
 
   return (
     <div className="flex flex-col">

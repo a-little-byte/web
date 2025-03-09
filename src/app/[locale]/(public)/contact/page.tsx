@@ -23,12 +23,10 @@ const contactFormSchema = z.object({
 const Contact = () => {
   const t = useTranslations("contact");
   const { toast } = useToast();
-
   const form = useForm(contactFormSchema);
-
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
-      const response = await apiClient.api.send.$post({
+      const response = await apiClient.send.$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",

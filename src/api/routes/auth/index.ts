@@ -1,11 +1,11 @@
+import { authTotpRouter } from "@/api/routes/auth/totp";
 import { db } from "@/db";
 import { verifyEmail } from "@/lib/auth";
 import bcrypt from "bcryptjs";
-import { UUID } from "crypto";
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
+import type { UUID } from "node:crypto";
 import { Resend } from "resend";
-import { authTotpRouter } from "./totp";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
@@ -83,7 +83,6 @@ export const authRouter = new Hono()
       return c.json({ error: "Failed to reset password" }, 500);
     }
   })
-  .route("/totp", authTotpRouter)
   .post("/verify", async (c) => {
     try {
       const { token } = await c.req.json();
@@ -91,7 +90,7 @@ export const authRouter = new Hono()
       const decoded = jwt.verify(
         token,
         process.env.JWT_SECRET || "your-secret-key"
-      ) as { userId: string };
+      ) as { userId: UUID };
       await verifyEmail(decoded.userId);
 
       return c.json({ success: true });
@@ -99,4 +98,5 @@ export const authRouter = new Hono()
       console.error("Verification error:", error);
       return c.json({ error: "Verification failed" }, 500);
     }
-  });
+  })
+  .route("/totp", authTotpRouter);

@@ -1,41 +1,6 @@
+import { Services } from "@/app/[locale]/(public)/services/_components/Services";
 import { db } from "@/db";
 import { getTranslations } from "next-intl/server";
-import { Services } from "./_components/Services";
-
-//cuicui.day/marketing-ui/pricing-tables
-
-// const services: Array<Service> = [
-//   {
-//     id: "soc",
-//     icon: Shield,
-//     name: t("products.soc.name"),
-//     description: t("products.soc.description"),
-//     features: t.raw("products.soc.features"),
-//     basePrice: 2999,
-//     period: "month",
-//     priceId: "essential",
-//   },
-//   {
-//     id: "edr",
-//     icon: Zap,
-//     name: t("products.edr.name"),
-//     description: t("products.edr.description"),
-//     features: t.raw("products.edr.features"),
-//     basePrice: 15,
-//     period: "endpoint/month",
-//     priceId: "professional",
-//   },
-//   {
-//     id: "xdr",
-//     icon: Lock,
-//     name: t("products.xdr.name"),
-//     description: t("products.xdr.description"),
-//     features: t.raw("products.xdr.features"),
-//     basePrice: 4999,
-//     period: "month",
-//     priceId: "enterprise",
-//   },
-// ] as const;
 
 const ServicesPage = async () => {
   const t = await getTranslations("services");

@@ -34,7 +34,7 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      const response = await apiClient.api.auth["forgot-password"].$post({
+      const response = await apiClient.auth["forgot-password"].$post({
         method: "POST",
         headers: {
           "Content-Type": "application/json",

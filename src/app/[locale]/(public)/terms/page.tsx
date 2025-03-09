@@ -48,7 +48,7 @@ const Terms = () => {
                   {t("service.items", { count: 4 }).map(
                     (item: string, index: number) => (
                       <li key={index}>{item}</li>
-                    ),
+                    )
                   )}
                 </ul>
               </section>
@@ -86,7 +86,7 @@ const Terms = () => {
                   {t("data.measures", { count: 4 }).map(
                     (measure: string, index: number) => (
                       <li key={index}>{measure}</li>
-                    ),
+                    )
                   )}
                 </ul>
               </section>

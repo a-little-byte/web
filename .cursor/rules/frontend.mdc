@@ -40,3 +40,9 @@ export default PageName;
 - To use a select component on a [Form.tsx](mdc:src/components/base/Form.tsx) component use the [SelectField.tsx](mdc:src/components/base/SelectField.tsx)
 - To use a input component on a [Form.tsx](mdc:src/components/base/Form.tsx) component use the [InputField.tsx](mdc:src/components/base/InputField.tsx)
 - To use a textarea component on a [Form.tsx](mdc:src/components/base/Form.tsx) component use the [TextareaField.tsx](mdc:src/components/base/TextareaField.tsx)
+
+# Interaction to the api
+
+## API client
+
+- Use the rpc of Hono which is in the [api.ts](mdc:src/lib/api.ts) file.

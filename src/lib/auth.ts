@@ -1,8 +1,9 @@
 "use server";
 
 import { db } from "@/db";
+import type { UUID } from "node:crypto";
 
-export async function verifyEmail(userId: string): Promise<void> {
+export async function verifyEmail(userId: UUID): Promise<void> {
   await db
     .updateTable("users")
     .set({ email_verified: true })
@@ -10,7 +11,7 @@ export async function verifyEmail(userId: string): Promise<void> {
     .executeTakeFirstOrThrow();
 }
 
-export async function isAdmin(userId: string): Promise<boolean> {
+export async function isAdmin(userId: UUID): Promise<boolean> {
   const user = await db
     .selectFrom("users")
     .select("role")

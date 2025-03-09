@@ -11,8 +11,6 @@ import {
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/api";
-import { useRouter } from "@/lib/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
 import {
   ShoppingCart as CartIcon,
   Loader2,
@@ -35,12 +33,10 @@ interface CartItem {
 }
 
 export const ShoppingCart = () => {
-  const supabase = createClient();
   const [isOpen, setIsOpen] = useState(false);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const router = useRouter();
   const t = useTranslations("shoppingCart");
 
   useEffect(() => {
@@ -48,24 +44,20 @@ export const ShoppingCart = () => {
   }, []);
 
   const fetchCartItems = async () => {
+    setIsLoading(true);
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) return;
-
-      const { data } = await supabase
-        .from("cart_items")
-        .select(
-          `
-          id,
-          quantity,
-          service_id,
-        `
-        )
-        .eq("user_id", session.user.id)
-        .throwOnError();
-
+      const response = await apiClient.cart.$get(
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${document.cookie.replace(
+              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+              "$1"
+            )}`,
+          },
+        }
+      );
+      const data = await response.json();
       setCartItems(data || []);
     } catch (error) {
       console.error("Error fetching cart items:", error);
@@ -74,6 +66,8 @@ export const ShoppingCart = () => {
         description: t("errors.fetchItems.description"),
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -82,12 +76,20 @@ export const ShoppingCart = () => {
 
     setIsLoading(true);
     try {
-      await supabase
-        .from("cart_items")
-        .update({ quantity })
-        .eq("id", itemId)
-        .throwOnError();
-
+      await apiClient.cart[":id"].$patch(
+        {
+          param: { id: itemId },
+          json: { quantity },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${document.cookie.replace(
+              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+              "$1"
+            )}`,
+          },
+        }
+      );
       await fetchCartItems();
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -104,12 +106,19 @@ export const ShoppingCart = () => {
   const removeItem = (itemId: string) => async () => {
     setIsLoading(true);
     try {
-      await supabase
-        .from("cart_items")
-        .delete()
-        .eq("id", itemId)
-        .throwOnError();
-
+      await apiClient.cart[":id"].$delete(
+        {
+          param: { id: itemId },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${document.cookie.replace(
+              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+              "$1"
+            )}`,
+          },
+        }
+      );
       await fetchCartItems();
     } catch (error) {
       console.error("Error removing item:", error);
@@ -125,23 +134,17 @@ export const ShoppingCart = () => {
 
   const handleCheckout = async () => {
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session) {
-        const returnTo = "/checkout";
-        router.push(`/login?returnTo=${encodeURIComponent(returnTo)}`);
-        return;
-      }
-
-      const response = await apiClient.api.checkout.$post({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
+      const response = await apiClient.checkout.$post(
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${document.cookie.replace(
+              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+              "$1"
+            )}`,
+          },
+        }
+      );
       const data = await response.json();
 
       if ("url" in data && data.url !== null) {
@@ -158,9 +161,10 @@ export const ShoppingCart = () => {
     }
   };
 
-  const total = cartItems.reduce((sum, item) => {
-    return sum + item.services?.price * item.quantity;
-  }, 0);
+  const total = cartItems.reduce(
+    (sum, item) => sum + item.services?.price * item.quantity,
+    0
+  );
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

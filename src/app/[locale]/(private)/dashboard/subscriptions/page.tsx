@@ -32,39 +32,20 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { createClient } from "@/lib/supabase/client";
+import { apiClient } from "@/lib/api";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+import { InferResponseType } from "hono";
 import { ChevronDown, Download, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-interface OrderDetails {
-  id: string;
-  service_name: string;
-  amount: number;
-  status: string;
-  created_at: string;
-  subscription_period: string;
-  payment_method?: {
-    type: string;
-    last_four: string;
-  };
-  billing_address?: {
-    street: string;
-    city: string;
-    state: string;
-    postal_code: string;
-    country: string;
-  };
-  invoice?: {
-    number: string;
-    file_url: string;
-  };
-}
+type OrderDetails = Exclude<
+  InferResponseType<typeof apiClient.orders.$get>,
+  { error: string }
+>[0];
 
 export default function Subscriptions() {
-  const supabase = createClient();
   const t = useTranslations("dashboard.subscriptions");
   const [orders, setOrders] = useState<OrderDetails[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("all");
@@ -78,61 +59,26 @@ export default function Subscriptions() {
 
   const fetchOrders = async () => {
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) return;
+      const token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+        "$1"
+      );
 
-      const { data, error } = await supabase
-        .from("payments")
-        .select(
-          `
-          id,
-          amount,
-          status,
-          created_at,
-          billing_address_id,
-          payment_method_id,
-          subscriptions (
-            service_id,
-            services (
-              name
-            )
-          ),
-          billing_addresses!billing_address_id (
-            street,
-            city,
-            state,
-            postal_code,
-            country
-          ),
-          payment_methods!payment_method_id (
-            type,
-            last_four
-          ),
-          invoices (
-            number,
-            file_url
-          )
-        `,
-        )
-        .order("created_at", { ascending: false });
+      const response = await apiClient.orders.$get(
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      if (error) throw error;
+      if (!response.ok) {
+        throw new Error("Failed to fetch subscription orders");
+      }
 
-      const formattedOrders = data.map((order) => ({
-        id: order.id,
-        service_name: order.subscriptions.services.name,
-        amount: order.amount,
-        status: order.status,
-        created_at: order.created_at,
-        subscription_period: "monthly",
-        payment_method: order.payment_methods,
-        billing_address: order.billing_addresses,
-        invoice: order.invoices?.[0],
-      }));
-
-      setOrders(formattedOrders);
+      const data = await response.json();
+      setOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
     }
@@ -156,9 +102,7 @@ export default function Subscriptions() {
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) =>
-        new Date(order.created_at).getFullYear().toString(),
-      ),
+      orders.map((order) => new Date(order.created_at).getFullYear().toString())
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -257,7 +201,7 @@ export default function Subscriptions() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      ),
+                      )
                     )}
                   </TableRow>
                 </TableHeader>
@@ -333,7 +277,7 @@ export default function Subscriptions() {
                                           {format(
                                             new Date(order.created_at),
                                             "PPP",
-                                            { locale: fr },
+                                            { locale: fr }
                                           )}
                                         </dd>
                                       </div>

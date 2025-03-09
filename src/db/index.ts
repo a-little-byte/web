@@ -9,6 +9,8 @@ import type {
   PaymentMethod,
   Service,
   Subscription,
+  TOTPSecret,
+  TOTPTemp,
   User,
 } from "@/db/models";
 import { Kysely, PostgresDialect } from "kysely";
@@ -39,4 +41,7 @@ export interface Database {
   payments: Payment;
   payment_methods: PaymentMethod;
   subscriptions: Subscription;
+  totp_secrets: TOTPSecret;
+  totp_temp: TOTPTemp;
+  hero_carousel: HeroCarousel;
 }

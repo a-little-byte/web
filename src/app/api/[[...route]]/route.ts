@@ -1,7 +1,7 @@
 import { api } from "@/api";
 import { handle } from "hono/vercel";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 export const GET = handle(api);
 export const POST = handle(api);

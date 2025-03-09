@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import ScrambleHover from "@/components/ui/scramble";
 import { Link } from "@/lib/i18n/routing";
-import { createServerClient } from "@/lib/supabase/server";
 import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
@@ -36,8 +35,6 @@ const authNavigation: NavigationItem[] = [
 export const Header = async () => {
   const t = await getTranslations("navigation");
   const cookie = cookies();
-  const supabase = createServerClient();
-  const { data } = await supabase.auth.getSession();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -77,7 +74,7 @@ export const Header = async () => {
         <div className="flex items-center ml-auto gap-4">
           <SearchBar
             navigation={
-              cookie.get("auth-token") && data?.session?.user
+              cookie.get("auth-token")
                 ? [...navigation, ...authNavigation]
                 : navigation
             }
@@ -97,10 +94,8 @@ export const Header = async () => {
 const SignOrDashboard = async () => {
   const t = await getTranslations("navigation");
   const cookie = cookies();
-  const supabase = createServerClient();
-  const { data } = await supabase.auth.getSession();
 
-  if (cookie.get("auth-token") && data?.session?.user) {
+  if (cookie.get("auth-token")) {
     return (
       <InteractiveHoverButton as={Link} href="/dashboard" className="font-bold">
         {t("dashboard")}

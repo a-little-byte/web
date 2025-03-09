@@ -2,74 +2,71 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { createClient } from "@/lib/supabase/client";
-import { Tables } from "@/supabase/types";
+import { apiClient } from "@/lib/api";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+interface Service {
+  name: string;
+  price: number;
+  period: string;
+}
+
+interface Subscription {
+  id: string;
+  status: string;
+  current_period_start: string;
+  current_period_end: string;
+  services: Service | null;
+}
+
+interface DashboardData {
+  subscriptions: Subscription[];
+  totalSpent: number;
+}
+
 const Dashboard = () => {
-  const supabase = createClient();
   const t = useTranslations("dashboard");
-  const [subscriptions, setSubscriptions] = useState<Tables<"subscriptions">[]>(
-    [],
-  );
+  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
   const [totalSpent, setTotalSpent] = useState(0);
   const { toast } = useToast();
 
   useEffect(() => {
-    const fetchSubscriptions = async () => {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
-      );
-      const decoded = JSON.parse(atob(token.split(".")[1]));
+    const fetchDashboardData = async () => {
+      try {
+        const response = await apiClient.subscriptions.$get(
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${document.cookie.replace(
+                /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+                "$1"
+              )}`,
+            },
+          }
+        );
 
-      const { data: subs } = await supabase
-        .from("subscriptions")
-        .select(
-          `
-    id,
-    status,
-    current_period_start,
-    current_period_end,
-    services (
-      name,
-      price,
-      period
-    )
-  `,
-        )
-        .eq("user_id", decoded.userId)
-        .eq("status", "active")
-        .throwOnError();
+        if (!response.ok) {
+          throw new Error("Failed to fetch dashboard data");
+        }
 
-      const { data: payments } = await supabase
-        .from("payments")
-        .select(
-          `
-    amount,
-    subscriptions!inner (
-      id
-    )
-  `,
-        )
-        .eq("subscriptions.user_id", decoded.userId)
-        .throwOnError();
+        const data: DashboardData = await response.json();
 
-      if (!payments || !subs) {
-        toast({});
-        return;
+        setSubscriptions(data.subscriptions);
+        setTotalSpent(data.totalSpent);
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load dashboard data",
+          variant: "destructive",
+        });
       }
-
-      setTotalSpent(
-        payments.reduce((sum, payment) => sum + Number(payment.amount), 0),
-      );
-      setSubscriptions(subs as any);
     };
 
-    fetchSubscriptions();
-  }, []);
+    fetchDashboardData();
+  }, [toast]);
 
   return (
     <div>
@@ -103,7 +100,9 @@ const Dashboard = () => {
       <div className="grid gap-4 md:grid-cols-2">
         {subscriptions.map((sub) => (
           <Card key={sub.id}>
-            <CardHeader>{/* <CardTitle>{sub.}</CardTitle> */}</CardHeader>
+            <CardHeader>
+              <CardTitle>{sub.services?.name || "Unknown Service"}</CardTitle>
+            </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <p>
@@ -112,12 +111,14 @@ const Dashboard = () => {
                   </span>{" "}
                   <span className="capitalize">{sub.status}</span>
                 </p>
-                <p>
-                  <span className="font-medium">
-                    {t("subscriptionsList.details.price")}:
-                  </span>{" "}
-                  {/* ${sub.services.price}/{sub.services.period} */}
-                </p>
+                {sub.services && (
+                  <p>
+                    <span className="font-medium">
+                      {t("subscriptionsList.details.price")}:
+                    </span>{" "}
+                    ${sub.services.price}/{sub.services.period}
+                  </p>
+                )}
                 <p>
                   <span className="font-medium">
                     {t("subscriptionsList.details.currentPeriod")}:

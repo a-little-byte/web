@@ -1,15 +1,19 @@
 import { apiConfig } from "@/api/config";
+import { authMiddleware } from "@/api/middlewares";
 import { db } from "@/db";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { Resend } from "resend";
 import Stripe from "stripe";
-import { authMiddleware } from "./middlewares";
 import {
   authRouter,
   cartRouter,
   chatRouter,
   checkoutRouter,
+  heroRouter,
+  ordersRouter,
   sendRouter,
+  subscriptionsRouter,
 } from "./routes";
 import type { ContextVariables } from "./types";
 
@@ -29,11 +33,25 @@ export const api = new Hono<{ Variables: ContextVariables }>()
     });
     return next();
   })
+  .use(
+    "/auth/*",
+    cors({
+      origin: "http://localhost:3001",
+      allowHeaders: ["Content-Type", "Authorization"],
+      allowMethods: ["POST", "GET", "OPTIONS"],
+      exposeHeaders: ["Content-Length"],
+      maxAge: 600,
+      credentials: true,
+    })
+  )
   .route("/auth", authRouter)
+  .route("/hero", heroRouter)
   .use(authMiddleware)
   .route("/chat", chatRouter)
   .route("/cart", cartRouter)
   .route("/checkout", checkoutRouter)
-  .route("/send", sendRouter);
+  .route("/send", sendRouter)
+  .route("/subscriptions", subscriptionsRouter)
+  .route("/orders", ordersRouter);
 
 export type ApiRouter = typeof api;
