@@ -1,6 +1,9 @@
 import { ContextVariables } from "@/api/types";
+import { idValidator } from "@/lib/validators";
+import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { Ollama } from "ollama";
+import { z } from "zod";
 
 const OLLAMA_HOST = process.env.OLLAMA_HOST || "http://localhost:11434";
 const ollama = new Ollama({ host: OLLAMA_HOST });
@@ -30,20 +33,17 @@ const generateOllamaResponse = async (
 };
 
 export const chatRouter = new Hono<{ Variables: ContextVariables }>()
-  .post("/create-conversation", async ({ var: { db }, json }) => {
+  .post("/", async ({ var: { db }, json }) => {
     try {
-      const { data } = await db
-        .selectFrom("users")
-        .selectAll()
-        .executeTakeFirst();
-      if (!data) {
+      const user = await db.selectFrom("users").selectAll().executeTakeFirst();
+      if (!user) {
         return json({ error: "Not authenticated" }, 401);
       }
 
       const conversation = await db
         .insertInto("chat_conversations")
         .values({
-          user_id: data.user.id,
+          user_id: user.id,
           title: "New Conversation",
         })
         .returningAll()
@@ -55,89 +55,99 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
       return json({ error: "Failed to create conversation" }, 500);
     }
   })
-  .post("/send-message", async ({ var: { db }, json, req }) => {
-    try {
-      const { conversationId, message } = await req.json();
-      const { data } = await db
-        .selectFrom("users")
-        .selectAll()
-        .executeTakeFirstOrThrow();
-      if (!data) {
-        return json({ error: "Not authenticated" }, 401);
-      }
+  .post(
+    "/:chatId",
+    zValidator("param", z.object({ chatId: idValidator })),
+    zValidator("json", z.object({ message: z.string() })),
+    async ({ var: { db }, json, req }) => {
+      try {
+        const { chatId } = req.valid("param");
+        const { message } = req.valid("json");
+        const user = await db
+          .selectFrom("users")
+          .selectAll()
+          .executeTakeFirst();
+        if (!user) {
+          return json({ error: "Not authenticated" }, 401);
+        }
 
-      await db
-        .insertInto("chat_messages")
-        .values({
-          conversation_id: conversationId,
-          role: "user",
-          content: message,
-        })
-        .execute();
+        await db
+          .insertInto("chat_messages")
+          .values({
+            conversation_id: chatId,
+            role: "user",
+            content: message,
+          })
+          .execute();
 
-      const history = await db
-        .selectFrom("chat_messages")
-        .selectAll()
-        .where("conversation_id", "=", conversationId)
-        .orderBy("created_at", "asc")
-        .execute();
+        const history = await db
+          .selectFrom("chat_messages")
+          .selectAll()
+          .where("conversation_id", "=", chatId)
+          .orderBy("created_at", "asc")
+          .execute();
 
-      const messages = [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...history.map((msg) => ({
-          role: msg.role as "user" | "assistant",
-          content: msg.content,
-        })),
-      ];
+        const messages = [
+          { role: "system", content: SYSTEM_PROMPT },
+          ...history.map((msg) => ({
+            role: msg.role as "user" | "assistant",
+            content: msg.content,
+          })),
+        ];
 
-      const aiResponse = await generateOllamaResponse(messages);
+        const aiResponse = await generateOllamaResponse(messages);
 
-      await db
-        .insertInto("chat_messages")
-        .values({
-          conversation_id: conversationId,
-          role: "assistant",
-          content: aiResponse,
-        })
-        .execute();
-
-      return json({
-        message: aiResponse,
-        history: [
-          ...history,
-          {
+        await db
+          .insertInto("chat_messages")
+          .values({
+            conversation_id: chatId,
             role: "assistant",
             content: aiResponse,
-            created_at: new Date().toISOString(),
-          },
-        ],
-      });
-    } catch (error) {
-      console.error("Error sending message:", error);
-      return json({ error: "Failed to send message" }, 500);
-    }
-  })
-  .get("/conversation/:id", async ({ var: { db }, json, req }) => {
-    try {
-      const conversationId = req.param("id");
-      const { data } = await db
-        .selectFrom("users")
-        .selectAll()
-        .executeTakeFirstOrThrow();
-      if (!data) {
-        return json({ error: "Not authenticated" }, 401);
+          })
+          .execute();
+
+        return json({
+          message: aiResponse,
+          history: [
+            ...history,
+            {
+              role: "assistant",
+              content: aiResponse,
+              created_at: new Date().toISOString(),
+            },
+          ],
+        });
+      } catch (error) {
+        console.error("Error sending message:", error);
+        return json({ error: "Failed to send message" }, 500);
       }
-
-      const messages = await db
-        .selectFrom("chat_messages")
-        .where("conversation_id", "=", conversationId)
-        .orderBy("created_at", "asc")
-        .selectAll()
-        .execute();
-
-      return json({ messages });
-    } catch (error) {
-      console.error("Error fetching conversation history:", error);
-      return json({ error: "Failed to fetch conversation history" }, 500);
     }
-  });
+  )
+  .get(
+    "/:chatId",
+    zValidator("param", z.object({ chatId: idValidator })),
+    async ({ var: { db }, json, req }) => {
+      try {
+        const { chatId } = req.valid("param");
+        const user = await db
+          .selectFrom("users")
+          .selectAll()
+          .executeTakeFirst();
+        if (!user) {
+          return json({ error: "Not authenticated" }, 401);
+        }
+
+        const messages = await db
+          .selectFrom("chat_messages")
+          .where("conversation_id", "=", chatId)
+          .orderBy("created_at", "asc")
+          .selectAll()
+          .execute();
+
+        return json({ messages });
+      } catch (error) {
+        console.error("Error fetching conversation history:", error);
+        return json({ error: "Failed to fetch conversation history" }, 500);
+      }
+    }
+  );

@@ -85,10 +85,7 @@ export const ordersRouter = new Hono<{ Variables: ContextVariables }>().get(
       return json(ordersWithDetails);
     } catch (error) {
       console.error("Error fetching subscription orders:", error);
-      return json(
-        { error: "Failed to fetch subscription orders" },
-        { status: 500 }
-      );
+      return json({ error: "Failed to fetch subscription orders" }, 500);
     }
   }
 );
