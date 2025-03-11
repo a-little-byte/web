@@ -15,6 +15,7 @@
     "kysely": "kysely"
   },
   "dependencies": {
+    "@hono/prometheus": "^1.0.1",
     "@hono/sentry": "^1.2.0",
     "@hono/zod-validator": "^0.4.3",
     "@hookform/resolvers": "^3.3.4",
@@ -73,6 +74,7 @@
     "pg": "^8.13.3",
     "postcss": "^8.4.35",
     "posthog-js": "^1.230.2",
+    "prom-client": "^15.1.3",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
     "react-day-picker": "^8.10.0",

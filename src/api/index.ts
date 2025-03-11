@@ -14,6 +14,7 @@ import type { ContextVariables } from "@/api/types";
 import { db } from "@/db";
 import { resend } from "@/services/resend";
 import { stripe } from "@/services/stripe";
+import { prometheus } from "@hono/prometheus";
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -24,6 +25,7 @@ const contextVariables: Omit<ContextVariables, "session"> = {
   resend,
   stripe,
 };
+const { printMetrics, registerMetrics } = prometheus();
 
 export const api = new Hono<{ Variables: ContextVariables }>()
   .basePath("/api")
@@ -42,6 +44,8 @@ export const api = new Hono<{ Variables: ContextVariables }>()
       tracesSampleRate: 1.0,
     })
   )
+  .use("*", registerMetrics)
+  .get("/metrics", printMetrics)
   .use(
     "/auth/*",
     cors({
