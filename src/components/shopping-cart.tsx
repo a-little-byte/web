@@ -34,7 +34,7 @@ interface CartItem {
 
 export const ShoppingCart = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("shoppingCart");
@@ -52,15 +52,16 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1"
+              "$1",
             )}`,
           },
-        }
+        },
       );
       const data = await response.json();
-      setCartItems(data || []);
+      if (data.length > 0) {
+        setCartItems(data);
+      }
     } catch (error) {
-      console.error("Error fetching cart items:", error);
       toast({
         title: t("errors.fetchItems.title"),
         description: t("errors.fetchItems.description"),
@@ -85,10 +86,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1"
+              "$1",
             )}`,
           },
-        }
+        },
       );
       await fetchCartItems();
     } catch (error) {
@@ -114,10 +115,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1"
+              "$1",
             )}`,
           },
-        }
+        },
       );
       await fetchCartItems();
     } catch (error) {
@@ -140,10 +141,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1"
+              "$1",
             )}`,
           },
-        }
+        },
       );
       const data = await response.json();
 
@@ -161,17 +162,18 @@ export const ShoppingCart = () => {
     }
   };
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.services?.price * item.quantity,
-    0
-  );
+  const total =
+    cartItems?.reduce(
+      (sum, item) => sum + item.services?.price * item.quantity,
+      0,
+    ) ?? 0;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="relative">
           <CartIcon className="h-5 w-5" />
-          {cartItems.length > 0 && (
+          {cartItems?.length && cartItems.length > 0 && (
             <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-xs text-primary-foreground flex items-center justify-center">
               {cartItems.length}
             </span>
@@ -187,7 +189,7 @@ export const ShoppingCart = () => {
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin" />
           </div>
-        ) : cartItems.length === 0 ? (
+        ) : cartItems?.length === 0 ? (
           <div className="flex-1 flex items-center justify-center text-muted-foreground">
             {t("empty")}
           </div>
@@ -195,7 +197,7 @@ export const ShoppingCart = () => {
           <>
             <ScrollArea className="flex-1 -mx-6 px-6">
               <div className="space-y-4">
-                {cartItems.map((item) => (
+                {cartItems?.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between space-x-4 border-b pb-4"
