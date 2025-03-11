@@ -32,38 +32,35 @@ Cyna is a modern, full-featured cybersecurity platform built to protect enterpri
 - **TypeScript** - Type-safe JavaScript
 - **Tailwind CSS** - Utility-first CSS framework
 - **shadcn/ui** - Reusable components built with Radix UI and Tailwind
+- **Sentry** - Error handling manager
+- **PostHog** - Analytics
+- **Zod** - TypeScript-first schema validation
 
 ### 🔧 Backend
 
 - **Next.js** - React framework with server components
 - **Hono** - Lightweight web framework
+- **Prometheus** - Metrics
+- **Sentry** - Error handling manager
+- **Zod** - TypeScript-first schema validation
+- **Stripe** - Payment processing
+- **Resend** - Email API
 
 ### 💾 Database
 
 - **PostgreSQL** - Relational database
-- **Supabase** - Backend as a service with PostgreSQL
+- **Kysely** - Query Builder
 
 ### 🌐 Internationalization
 
 - **next-i18next** - Internationalization framework
-
-### ✅ Validation
-
-- **Zod** - TypeScript-first schema validation
-
-### 💰 Payments
-
-- **Stripe** - Payment processing
-
-### 📧 Email
-
-- **Resend** - Email API
 
 ### 🧪 Testing
 
 - **React Testing Library** - Component testing
 - **Playwright** - End-to-end testing
 - **Vitest** - Unit testing
+- **Hono** - Testing lib inside the web framework
 
 ### 🔄 CI/CD
 
