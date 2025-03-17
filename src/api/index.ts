@@ -29,6 +29,10 @@ const { printMetrics, registerMetrics } = prometheus();
 
 export const api = new Hono<{ Variables: ContextVariables }>()
   .basePath("/api")
+  .onError((err, c) => {
+    console.error(err);
+    return c.json({ error: err.message }, 500);
+  })
   .use(async (ctx, next) => {
     Object.entries(contextVariables).forEach(([key, value]) => {
       ctx.set(key as keyof ContextVariables, value);

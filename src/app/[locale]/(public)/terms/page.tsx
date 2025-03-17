@@ -1,25 +1,8 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useToast } from "@/hooks/use-toast";
-import { useTranslations } from "next-intl";
-import { useState } from "react";
+import { getTranslations } from "next-intl/server";
 
-const Terms = () => {
-  const [accepted, setAccepted] = useState(false);
-  const { toast } = useToast();
-  const t = useTranslations("terms");
-
-  const handleAccept = () => {
-    setAccepted(true);
-    localStorage.setItem("terms-accepted", "true");
-    toast({
-      title: t("accepted"),
-      description: t("acceptedMessage"),
-    });
-  };
+const Terms = async () => {
+  const t = await getTranslations("terms");
 
   return (
     <div className="container py-12">
@@ -118,24 +101,6 @@ const Terms = () => {
               </section>
             </div>
           </ScrollArea>
-
-          <div className="flex items-center space-x-2 mb-6">
-            <Checkbox
-              id="terms"
-              checked={accepted}
-              onCheckedChange={() => setAccepted(!accepted)}
-            />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              {t("accept")}
-            </label>
-          </div>
-
-          <Button onClick={handleAccept} disabled={!accepted}>
-            {accepted ? t("accepted") : t("accept")}
-          </Button>
         </div>
       </div>
     </div>

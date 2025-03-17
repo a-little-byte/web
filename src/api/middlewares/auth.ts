@@ -26,5 +26,6 @@ export const authMiddleware: MiddlewareHandler<{
   if (!session) {
     return json({ error: "Unauthorized" }, 401);
   }
+
   return next();
 };

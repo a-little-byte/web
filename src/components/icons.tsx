@@ -8,11 +8,11 @@ import {
   CreditCard,
   File,
   FileText,
-  Github,
   HelpCircle,
   Image,
   Laptop,
   Loader2,
+  LucideIcon,
   LucideProps,
   Moon,
   MoreVertical,
@@ -21,10 +21,8 @@ import {
   Settings,
   SunMedium,
   Trash,
-  Twitter,
   User,
   X,
-  type Icon as LucideIcon,
 } from "lucide-react";
 
 export type Icon = LucideIcon;
@@ -61,8 +59,6 @@ export const Icons = {
       ></path>
     </svg>
   ),
-  github: Github,
-  twitter: Twitter,
   check: Check,
   warning: AlertTriangle,
   moreVertical: MoreVertical,

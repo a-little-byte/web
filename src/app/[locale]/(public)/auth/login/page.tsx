@@ -13,11 +13,13 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { Link, useRouter } from "@/lib/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 
 const loginSchema = z.object({
@@ -38,21 +40,24 @@ const Login = () => {
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo") || "/dashboard";
   const { toast } = useToast();
-
   const loginForm = useForm(loginSchema);
-
   const totpForm = useForm(totpSchema);
 
-  async function onLoginSubmit(data: z.infer<typeof loginSchema>) {
+  const onLoginSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
+    data
+  ) => {
     setIsLoading(true);
 
     try {
-      const { data: authData, error } = await supabase.auth.signInWithPassword({
-        email: data.email,
-        password: data.password,
+      const response = await apiClient.auth["sign-in"].$post({
+        json: data,
       });
 
-      if (error) throw error;
+      const authData = await response.json();
+
+      if ("error" in authData) {
+        throw new Error(authData.error);
+      }
 
       if (authData.user) {
         if (!authData.user.email_confirmed_at) {
@@ -82,7 +87,7 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   if (showTOTP) {
     return (

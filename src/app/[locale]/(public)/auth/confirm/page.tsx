@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { apiClient } from "@/lib/api";
 import { useRouter } from "@/lib/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -14,19 +15,17 @@ const ConfirmEmail = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const supabase = createClient();
 
   useEffect(() => {
     async function verifyEmail() {
       try {
         if (!token) throw new Error(t("error.noToken"));
 
-        const { error } = await supabase
-          .from("auth.users")
-          .update({ email_verified: true })
-          .eq("id", token);
+        const response = await apiClient.auth.verify.$post({
+          token,
+        });
 
-        if (error) throw error;
+        if (!response.ok) throw new Error();
 
         router.push("/auth/login");
       } catch (err) {

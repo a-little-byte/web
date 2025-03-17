@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { Link } from "@/lib/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -22,7 +22,8 @@ import * as z from "zod";
 
 const formSchema = z
   .object({
-    fullName: z.string().min(1, "Full name is required"),
+    first_name: z.string().min(1, "First name is required"),
+    last_name: z.string().min(1, "Last name is required"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
@@ -35,32 +36,27 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 const Register = () => {
-  const supabase = createClient();
   const t = useTranslations("auth.register");
   const tToast = useTranslations("auth.toast");
   const tEmailSent = useTranslations("auth.emailSent");
-
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
-
   const form = useForm(formSchema);
 
   const onSubmit = async (data: FormData) => {
     try {
-      const { data: authData, error } = await supabase.auth.signUp({
+      const response = await apiClient.auth["sign-up"].$post({
         email: data.email,
         password: data.password,
-        options: {
-          data: {
-            full_name: data.fullName,
-          },
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
+        first_name: data.first_name,
+        last_name: data.last_name,
       });
 
-      if (error) throw error;
+      if (response.error) {
+        throw new Error(response.error);
+      }
 
-      if (authData.user) {
+      if (response.success) {
         setEmailSent(true);
         toast({
           title: tToast("success.title"),

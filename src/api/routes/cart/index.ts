@@ -24,32 +24,25 @@ export const cartRouter = new Hono<{ Variables: ContextVariables }>()
     async ({ var: { db, session }, json, req }) => {
       const { serviceId, quantity } = req.valid("json");
 
-      try {
-        const service = await db
-          .selectFrom("services")
-          .where("id", "=", serviceId)
-          .selectAll()
-          .executeTakeFirstOrThrow();
+      const service = await db
+        .selectFrom("services")
+        .where("id", "=", serviceId)
+        .selectAll()
+        .executeTakeFirstOrThrow();
 
-        await db
-          .insertInto("cart_items")
-          .values({
-            user_id: session.user.id,
-            service_id: service.id,
-            quantity,
-          })
-          .execute();
+      await db
+        .insertInto("cart_items")
+        .values({
+          user_id: session.user.id,
+          service_id: service.id,
+          quantity,
+        })
+        .execute();
 
-        return json({
-          success: true,
-          message: "Item added to cart successfully",
-        });
-      } catch (error) {
-        return json({
-          success: false,
-          message: "Failed to add item to cart",
-        });
-      }
+      return json({
+        success: true,
+        message: "Item added to cart successfully",
+      });
     }
   )
   .patch(

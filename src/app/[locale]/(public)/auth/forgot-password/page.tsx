@@ -15,31 +15,31 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/api";
 import { Link } from "@/lib/i18n/routing";
+import { emailValidator } from "@/lib/validators";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 
 const forgotPasswordSchema = z.object({
-  email: z.string().email(),
+  email: emailValidator,
 });
-export default function ForgotPassword() {
+const ForgotPassword = () => {
   const t = useTranslations("forgotPassword");
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
   const form = useForm(forgotPasswordSchema);
 
-  const onSubmit = async ({ email }: z.output<typeof forgotPasswordSchema>) => {
+  const onSubmit: SubmitHandler<
+    z.output<typeof forgotPasswordSchema>
+  > = async ({ email }) => {
     setIsLoading(true);
 
     try {
       const response = await apiClient.auth["forgot-password"].$post({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
+        json: { email },
       });
 
       const data = await response.json();
@@ -54,7 +54,6 @@ export default function ForgotPassword() {
         description: t("toasts.valid.description"),
       });
     } catch (error) {
-      console.error("Error:", error);
       toast({
         title: t("toasts.error.title"),
         description: t("toasts.error.description"),
@@ -119,4 +118,6 @@ export default function ForgotPassword() {
       </Card>
     </div>
   );
-}
+};
+
+export default ForgotPassword;
