@@ -14,7 +14,7 @@ import type {
   TOTPSecret,
   TOTPTemp,
   User,
-} from "@/db/models";
+} from "@/db/utils";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 

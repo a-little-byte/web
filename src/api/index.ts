@@ -45,7 +45,7 @@ export const api = new Hono<{ Variables: ContextVariables }>()
   .use(
     "*",
     sentry({
-      enabled: process.env.NODE_ENV === "production",
+      enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
       dsn: apiConfig.sentryDsn,
       tracesSampleRate: 1.0,
     })

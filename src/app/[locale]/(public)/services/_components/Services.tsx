@@ -1,7 +1,7 @@
 "use client";
 
 import { AddToCartForm } from "@/app/[locale]/(public)/services/_components/AddToCartForm";
-import { ServiceSelect } from "@/db/models";
+import { ServiceSelect } from "@/db/utils";
 import { useForm } from "@/hooks/useForm";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
