@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { useRouter } from "@/lib/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";

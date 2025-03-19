@@ -7,10 +7,8 @@ import bcrypt from "bcryptjs";
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 import type { UUID } from "node:crypto";
-import { Resend } from "resend";
 import { z } from "zod";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
 export const authRouter = new Hono<{ Variables: ContextVariables }>()
@@ -28,7 +26,7 @@ export const authRouter = new Hono<{ Variables: ContextVariables }>()
   .post(
     "/forgot-password",
     zValidator("json", z.object({ email: emailValidator })),
-    async ({ var: { db }, req, json }) => {
+    async ({ var: { db, resend }, req, json }) => {
       try {
         const { email } = req.valid("json");
 
@@ -143,7 +141,7 @@ export const authRouter = new Hono<{ Variables: ContextVariables }>()
         last_name: z.string().min(1),
       })
     ),
-    async ({ var: { db }, req, json }) => {
+    async ({ var: { db, resend }, req, json }) => {
       try {
         const { email, password, first_name, last_name } = req.valid("json");
 

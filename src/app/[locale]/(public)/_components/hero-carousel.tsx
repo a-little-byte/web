@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";

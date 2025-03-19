@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";

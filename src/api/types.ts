@@ -1,5 +1,5 @@
 import type { Database } from "@/db";
-import { UserSelect } from "@/db/utils";
+import type { UserSelect } from "@/db/models/User";
 import type { Kysely } from "kysely";
 import type { Resend } from "resend";
 import type Stripe from "stripe";

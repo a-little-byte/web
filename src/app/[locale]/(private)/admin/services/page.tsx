@@ -22,7 +22,7 @@ import {
 import { ServiceSelect } from "@/db/utils";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";

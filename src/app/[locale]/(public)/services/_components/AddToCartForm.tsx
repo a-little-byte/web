@@ -7,9 +7,9 @@ import {
 import { Form } from "@/components/base/Form";
 import { SelectField } from "@/components/base/SelectField";
 import { Button } from "@/components/ui/button";
-import { ServiceSelect } from "@/db/utils";
+import type { ServiceSelect } from "@/db/models/Service";
 import { useToast } from "@/hooks/use-toast";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { useTranslations } from "next-intl";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -30,7 +30,7 @@ export const AddToCartForm = ({
 
   const addToCart = async (values: z.infer<typeof servicesFormSchema>) => {
     try {
-      const result = await apiClient.cart.$post({
+      await apiClient.account.cart.$post({
         json: {
           serviceId: service.id,
           quantity: 1,

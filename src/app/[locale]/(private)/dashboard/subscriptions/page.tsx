@@ -33,7 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { InferResponseType } from "hono";

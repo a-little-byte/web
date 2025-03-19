@@ -9,7 +9,7 @@ const addToCartSchema = z.object({
   quantity: z.number().int().positive().default(1),
 });
 
-export const cartRouter = new Hono<{ Variables: ContextVariables }>()
+export const accountCartRouter = new Hono<{ Variables: ContextVariables }>()
   .get("/", async ({ var: { db, session }, json }) => {
     const cart = await db
       .selectFrom("cart_items")

@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import { format, subDays, subWeeks } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslations } from "next-intl";

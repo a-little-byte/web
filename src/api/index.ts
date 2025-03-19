@@ -3,7 +3,6 @@ import { authMiddleware } from "@/api/middlewares";
 import {
   accountRoute,
   authRouter,
-  cartRouter,
   chatRouter,
   checkoutRouter,
   heroRouter,
@@ -12,10 +11,10 @@ import {
   servicesRouter,
   subscriptionsRouter,
 } from "@/api/routes";
+import { resend } from "@/api/services/resend";
+import { stripe } from "@/api/services/stripe";
 import type { ContextVariables } from "@/api/types";
 import { db } from "@/db";
-import { resend } from "@/services/resend";
-import { stripe } from "@/services/stripe";
 import { prometheus } from "@hono/prometheus";
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
@@ -68,7 +67,6 @@ export const api = new Hono<{ Variables: ContextVariables }>()
   .use(authMiddleware)
   .route("/account", accountRoute)
   .route("/chat", chatRouter)
-  .route("/cart", cartRouter)
   .route("/checkout", checkoutRouter)
   .route("/send", sendRouter)
   .route("/subscriptions", subscriptionsRouter)

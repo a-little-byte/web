@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useToast } from "@/hooks/use-toast";
-import { apiClient } from "@/lib/api";
+import { apiClient } from "@/lib/apiClient";
 import {
   ShoppingCart as CartIcon,
   Loader2,
@@ -52,10 +52,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       const data = await response.json();
       if (data.length > 0) {
@@ -86,10 +86,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       await fetchCartItems();
     } catch (error) {
@@ -115,10 +115,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       await fetchCartItems();
     } catch (error) {
@@ -141,10 +141,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       const data = await response.json();
 
@@ -165,7 +165,7 @@ export const ShoppingCart = () => {
   const total =
     cartItems?.reduce(
       (sum, item) => sum + item.services?.price * item.quantity,
-      0,
+      0
     ) ?? 0;
 
   return (

@@ -1,3 +1,4 @@
+import { accountCartRouter } from "@/api/routes/account/cart";
 import { ContextVariables } from "@/api/types";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
@@ -5,6 +6,7 @@ import { Hono } from "hono";
 import { z } from "zod";
 
 export const accountRoute = new Hono<{ Variables: ContextVariables }>()
+  .route("/cart", accountCartRouter)
   .get("/", async ({ var: { db, session }, json }) => {
     const user = await db
       .selectFrom("users")
