@@ -7,7 +7,7 @@ export type Invoice = {
   payment_id: string | null;
   number: string;
   file_url: string;
-  created_at: CreatedAt;
+  createdAt: CreatedAt;
 };
 
 export type InvoiceSelect = Selectable<Invoice>;

@@ -8,8 +8,8 @@ export type Service = {
   description: string;
   price: number;
   period: string;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type ServiceSelect = Selectable<Service>;

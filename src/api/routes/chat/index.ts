@@ -160,7 +160,7 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
         .selectFrom("chat_messages")
         .selectAll()
         .where("conversation_id", "=", chatId)
-        .orderBy("created_at", "asc")
+        .orderBy("createdAt", "asc")
         .execute();
 
       const messages = [
@@ -189,7 +189,7 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
           {
             role: "assistant",
             content: aiResponse,
-            created_at: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
           },
         ],
       });
@@ -208,7 +208,7 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
       const messages = await db
         .selectFrom("chat_messages")
         .where("conversation_id", "=", chatId)
-        .orderBy("created_at", "asc")
+        .orderBy("createdAt", "asc")
         .selectAll()
         .execute();
 

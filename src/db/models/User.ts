@@ -10,8 +10,8 @@ export type User = {
   last_name: string;
   role: string;
   email_verified: boolean;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type UserSelect = Selectable<User>;

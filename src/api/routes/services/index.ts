@@ -16,7 +16,7 @@ export const servicesRouter = new Hono<{ Variables: ContextVariables }>()
     const services = await db
       .selectFrom("services")
       .selectAll()
-      .orderBy("created_at", "desc")
+      .orderBy("createdAt", "desc")
       .execute();
 
     return json(services);

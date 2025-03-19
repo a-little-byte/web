@@ -10,8 +10,8 @@ export async function up(db: Kysely<any>) {
     .addColumn("description", "text", (col) => col.notNull())
     .addColumn("price", "numeric", (col) => col.notNull())
     .addColumn("period", "text", (col) => col.notNull())
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema
@@ -25,8 +25,8 @@ export async function up(db: Kysely<any>) {
     .addColumn("last_name", "text", (col) => col.notNull())
     .addColumn("role", "text", (col) => col.defaultTo("user"))
     .addColumn("email_verified", "boolean", (col) => col.defaultTo(false))
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema
@@ -43,8 +43,8 @@ export async function up(db: Kysely<any>) {
     .addColumn("current_period_end", "timestamptz", (col) =>
       col.notNull().defaultTo(sql`now()`)
     )
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   // Add foreign key constraints

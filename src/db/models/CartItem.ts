@@ -7,8 +7,8 @@ export type CartItem = {
   user_id: UUID;
   service_id: UUID;
   quantity: number;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type CartItemSelect = Selectable<CartItem>;

@@ -75,7 +75,7 @@ const Dashboard = () => {
       .select(
         `
           amount,
-          created_at,
+          createdAt,
           subscriptions (
             services (
               name
@@ -83,9 +83,9 @@ const Dashboard = () => {
           )
         `
       )
-      .gte("created_at", startDate.toISOString())
-      .lte("created_at", endDate.toISOString())
-      .order("created_at", { ascending: true });
+      .gte("createdAt", startDate.toISOString())
+      .lte("createdAt", endDate.toISOString())
+      .order("createdAt", { ascending: true });
 
     if (error) throw error;
 
@@ -97,7 +97,7 @@ const Dashboard = () => {
     };
 
     payments?.forEach((payment) => {
-      const date = format(new Date(payment.created_at), "yyyy-MM-dd");
+      const date = format(new Date(payment.createdAt), "yyyy-MM-dd");
       const serviceName = payment.subscriptions?.services?.name || "Unknown";
       const amount = payment.amount;
 

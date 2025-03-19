@@ -10,8 +10,8 @@ export type PaymentMethod = {
   expiry_month: number;
   expiry_year: number;
   is_default: boolean;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type PaymentMethodSelect = Selectable<PaymentMethod>;
@@ -24,7 +24,7 @@ export type Payment = {
   amount: number;
   status: string;
   payment_method: string;
-  created_at: CreatedAt;
+  createdAt: CreatedAt;
   billing_address_id: UUID | null;
   payment_method_id: UUID | null;
 };

@@ -11,8 +11,8 @@ export type BillingAddress = {
   postal_code: string;
   country: string;
   is_default: boolean;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type BillingAddressSelect = Selectable<BillingAddress>;

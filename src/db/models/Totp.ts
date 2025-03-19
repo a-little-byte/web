@@ -17,7 +17,7 @@ export type TOTPTemp = {
   id: Generated<UUID>;
   user_id: UUID;
   secret: string;
-  created_at: CreatedAt;
+  createdAt: CreatedAt;
 };
 
 export type TOTPTempSelect = Selectable<TOTPTemp>;

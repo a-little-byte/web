@@ -10,8 +10,8 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("description", "text", (col) => col.notNull())
     .addColumn("price", "numeric", (col) => col.notNull())
     .addColumn("period", "text", (col) => col.notNull())
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema
@@ -21,8 +21,8 @@ export async function up(db: Kysely<any>): Promise<void> {
     )
     .addColumn("section", "text", (col) => col.notNull())
     .addColumn("content", "jsonb", (col) => col.notNull())
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 }
 

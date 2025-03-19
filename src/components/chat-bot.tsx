@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
 interface Message {
   role: "user" | "assistant";
   content: string;
-  created_at: Date;
+  createdAt: Date;
 }
 
 export function ChatBot() {
@@ -55,7 +55,7 @@ export function ChatBot() {
     const userMessage = {
       role: "user" as const,
       content: input,
-      created_at: new Date(),
+      createdAt: new Date(),
     };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");

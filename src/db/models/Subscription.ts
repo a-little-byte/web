@@ -9,8 +9,8 @@ export type Subscription = {
   status: string;
   current_period_start: Date;
   current_period_end: Date;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type SubscriptionSelect = Selectable<Subscription>;

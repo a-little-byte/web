@@ -71,8 +71,8 @@ const CarouselManagement = () => {
       setItems(
         data.map((item) => ({
           ...item,
-          created_at: new Date(item.created_at),
-          updated_at: new Date(item.updated_at),
+          createdAt: new Date(item.createdAt),
+          updatedAt: new Date(item.updatedAt),
         }))
       );
     } catch (error) {

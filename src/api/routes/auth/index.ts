@@ -81,7 +81,7 @@ export const authRouter = new Hono<{ Variables: ContextVariables }>()
         .updateTable("users")
         .set({
           password: hashedPassword,
-          updated_at: new Date(),
+          updatedAt: new Date(),
         })
         .where("id", "=", decoded.userId)
         .execute();
@@ -168,7 +168,7 @@ export const authRouter = new Hono<{ Variables: ContextVariables }>()
             email_verified: false,
             role: "user",
           })
-          .returning(["id", "email", "first_name", "last_name", "created_at"])
+          .returning(["id", "email", "first_name", "last_name", "createdAt"])
           .executeTakeFirstOrThrow();
         const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
           expiresIn: "24h",
@@ -197,7 +197,7 @@ export const authRouter = new Hono<{ Variables: ContextVariables }>()
             email: user.email,
             first_name: user.first_name,
             last_name: user.last_name,
-            created_at: user.created_at,
+            createdAt: user.createdAt,
           },
         });
       } catch (error) {

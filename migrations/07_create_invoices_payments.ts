@@ -9,7 +9,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("payment_id", "uuid")
     .addColumn("number", "text", (col) => col.notNull())
     .addColumn("file_url", "text", (col) => col.notNull())
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema
@@ -23,8 +23,8 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("expiry_month", "integer", (col) => col.notNull())
     .addColumn("expiry_year", "integer", (col) => col.notNull())
     .addColumn("is_default", "boolean", (col) => col.defaultTo(false))
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema
@@ -36,7 +36,7 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("amount", "numeric", (col) => col.notNull())
     .addColumn("status", "text", (col) => col.notNull())
     .addColumn("payment_method", "text", (col) => col.notNull())
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .addColumn("billing_address_id", "uuid")
     .addColumn("payment_method_id", "uuid")
     .execute();

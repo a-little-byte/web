@@ -63,8 +63,8 @@ const ServicesManagement = () => {
       setServices(
         data.map((service) => ({
           ...service,
-          created_at: new Date(service.created_at),
-          updated_at: new Date(service.updated_at),
+          createdAt: new Date(service.createdAt),
+          updatedAt: new Date(service.updatedAt),
         }))
       );
     } catch (error) {

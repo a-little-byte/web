@@ -6,8 +6,8 @@ export type ChatConversation = {
   id: Generated<UUID>;
   user_id: UUID;
   title: string;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type ChatConversationSelect = Selectable<ChatConversation>;
@@ -19,7 +19,7 @@ export type ChatMessage = {
   conversation_id: UUID;
   role: string;
   content: string;
-  created_at: CreatedAt;
+  createdAt: CreatedAt;
 };
 
 export type ChatMessageSelect = Selectable<ChatMessage>;

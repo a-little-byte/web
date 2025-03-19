@@ -13,8 +13,8 @@ export async function up(db: Kysely<any>) {
     .addColumn("postal_code", "text", (col) => col.notNull())
     .addColumn("country", "text", (col) => col.notNull())
     .addColumn("is_default", "boolean", (col) => col.defaultTo(false))
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema

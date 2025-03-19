@@ -13,8 +13,8 @@ export async function up(db: Kysely<any>) {
     .addColumn("button_link", "text")
     .addColumn("order", "integer", (col) => col.notNull().defaultTo(0))
     .addColumn("active", "boolean", (col) => col.notNull().defaultTo(true))
-    .addColumn("created_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
-    .addColumn("updated_at", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
+    .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
 
   await db.schema

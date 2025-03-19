@@ -11,8 +11,8 @@ export type HeroCarousel = {
   button_link?: string;
   order: number;
   active: boolean;
-  created_at: CreatedAt;
-  updated_at: UpdatedAt;
+  createdAt: CreatedAt;
+  updatedAt: UpdatedAt;
 };
 
 export type HeroCarouselSelect = Selectable<HeroCarousel>;

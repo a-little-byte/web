@@ -16,7 +16,7 @@ export const ordersRouter = new Hono<{ Variables: ContextVariables }>().get(
         "payments.id",
         "payments.amount",
         "payments.status",
-        "payments.created_at",
+        "payments.createdAt",
         "payments.billing_address_id",
         "payments.payment_method_id",
       ])
@@ -26,7 +26,7 @@ export const ordersRouter = new Hono<{ Variables: ContextVariables }>().get(
         "payments.subscription_id"
       )
       .where("subscriptions.user_id", "=", user.id)
-      .orderBy("payments.created_at", "desc")
+      .orderBy("payments.createdAt", "desc")
       .execute();
 
     const ordersWithDetails = await Promise.all(
@@ -72,7 +72,7 @@ export const ordersRouter = new Hono<{ Variables: ContextVariables }>().get(
           service_name: service?.name || "Unknown Service",
           amount: payment.amount,
           status: payment.status,
-          created_at: payment.created_at,
+          createdAt: payment.createdAt,
           subscription_period: "monthly",
           payment_method: paymentMethod,
           billing_address: billingAddress,
