@@ -6,7 +6,7 @@ import { useRouter } from "@/lib/i18n/routing";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const ConfirmEmail = () => {
   const t = useTranslations("auth.confirmEmail");
@@ -17,27 +17,30 @@ const ConfirmEmail = () => {
   const token = searchParams.get("token");
 
   useEffect(() => {
-    async function verifyEmail() {
+    const verifyEmail = async () => {
+      setIsVerifying(true);
+
       try {
         if (!token) throw new Error(t("error.noToken"));
 
-        const response = await apiClient.auth.verify.$post({
+        await apiClient.auth.verify.$post({
           token,
         });
 
-        if (!response.ok) throw new Error();
-
         router.push("/auth/login");
       } catch (err) {
-        console.error("Error verifying email:", err);
         setError(t("error.verificationFailed"));
       } finally {
         setIsVerifying(false);
       }
-    }
+    };
 
     verifyEmail();
-  }, [token, router, t]);
+  }, [token]);
+
+  const handleReturnToLogin = useCallback(() => {
+    router.push("/auth/login");
+  }, []);
 
   if (isVerifying) {
     return (
@@ -51,7 +54,7 @@ const ConfirmEmail = () => {
     return (
       <div className="flex h-screen flex-col items-center justify-center gap-4">
         <p className="text-destructive">{error}</p>
-        <Button onClick={() => router.push("/auth/login")}>
+        <Button onClick={handleReturnToLogin}>
           {t("buttons.returnToLogin")}
         </Button>
       </div>

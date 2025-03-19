@@ -1,6 +1,7 @@
 import { apiConfig } from "@/api/config";
 import { authMiddleware } from "@/api/middlewares";
 import {
+  accountRoute,
   authRouter,
   cartRouter,
   chatRouter,
@@ -8,6 +9,7 @@ import {
   heroRouter,
   ordersRouter,
   sendRouter,
+  servicesRouter,
   subscriptionsRouter,
 } from "@/api/routes";
 import type { ContextVariables } from "@/api/types";
@@ -64,11 +66,13 @@ export const api = new Hono<{ Variables: ContextVariables }>()
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
   .use(authMiddleware)
+  .route("/account", accountRoute)
   .route("/chat", chatRouter)
   .route("/cart", cartRouter)
   .route("/checkout", checkoutRouter)
   .route("/send", sendRouter)
   .route("/subscriptions", subscriptionsRouter)
-  .route("/orders", ordersRouter);
+  .route("/orders", ordersRouter)
+  .route("/services", servicesRouter);
 
 export type ApiRouter = typeof api;

@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/api";
 import { Link, useRouter } from "@/lib/i18n/routing";
+import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { z } from "zod";
@@ -34,23 +35,17 @@ const ResetPassword = () => {
 
   const onSubmit = async (data: z.infer<typeof resetPasswordFormSchema>) => {
     try {
+      if (!token) {
+        throw new Error(t("errors.invalidLink"));
+      }
+
       if (data.password !== data.confirmPassword) {
         throw new Error(t("errors.passwordsMismatch"));
       }
 
-      const response = await apiClient.auth["reset-password"].$post({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token, password: data.password }),
+      await apiClient.auth["reset-password"].$post({
+        json: { token, password: data.password },
       });
-
-      const responseData = await response.json();
-
-      if ("error" in responseData) {
-        throw new Error(responseData.error);
-      }
 
       toast({
         title: t("success.title"),

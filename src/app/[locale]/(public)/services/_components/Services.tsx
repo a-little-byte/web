@@ -1,8 +1,7 @@
 "use client";
 
 import { AddToCartForm } from "@/app/[locale]/(public)/services/_components/AddToCartForm";
-
-import { Service as ServiceModel } from "@/db/models";
+import { ServiceSelect } from "@/db/models";
 import { useForm } from "@/hooks/useForm";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
@@ -11,7 +10,7 @@ export const servicesFormSchema = z.object({
   durations: z.record(z.string(), z.string()),
 });
 
-export const Services = ({ services }: { services: ServiceModel[] }) => {
+export const Services = ({ services }: { services: ServiceSelect[] }) => {
   const form = useForm(servicesFormSchema);
 
   return services.map((service) => (
@@ -38,7 +37,7 @@ export const Service = ({
   service,
   form,
 }: {
-  service: ServiceModel;
+  service: ServiceSelect;
   form: UseFormReturn<
     z.input<typeof servicesFormSchema>,
     unknown,

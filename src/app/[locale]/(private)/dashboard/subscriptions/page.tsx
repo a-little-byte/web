@@ -32,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/api";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -47,6 +48,7 @@ type OrderDetails = Exclude<
 
 export default function Subscriptions() {
   const t = useTranslations("dashboard.subscriptions");
+  const { toast } = useToast();
   const [orders, setOrders] = useState<OrderDetails[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
@@ -74,13 +76,17 @@ export default function Subscriptions() {
       );
 
       if (!response.ok) {
-        throw new Error("Failed to fetch subscription orders");
+        throw new Error();
       }
 
       const data = await response.json();
       setOrders(data);
     } catch (error) {
-      console.error("Error fetching orders:", error);
+      toast({
+        title: t("toasts.fetchError.title"),
+        description: t("toasts.fetchError.description"),
+        variant: "destructive",
+      });
     }
   };
 

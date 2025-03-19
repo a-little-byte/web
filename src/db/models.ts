@@ -1,5 +1,15 @@
-import type { Generated, Insertable, Selectable, Updateable } from "kysely";
+import type {
+  ColumnType,
+  Generated,
+  Insertable,
+  Selectable,
+  Updateable,
+} from "kysely";
 import { UUID } from "node:crypto";
+
+export type CreatedAt = ColumnType<Date, never, never>;
+
+export type UpdatedAt = ColumnType<Date, never, never>;
 
 export type Service = {
   id: Generated<UUID>;
@@ -7,8 +17,8 @@ export type Service = {
   description: string;
   price: number;
   period: string;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type ServiceSelect = Selectable<Service>;
@@ -23,8 +33,8 @@ export type User = {
   last_name: string;
   role: string;
   email_verified: boolean;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type UserSelect = Selectable<User>;
@@ -38,8 +48,8 @@ export type Subscription = {
   status: string;
   current_period_start: Date;
   current_period_end: Date;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type SubscriptionSelect = Selectable<Subscription>;
@@ -55,8 +65,8 @@ export type BillingAddress = {
   postal_code: string;
   country: string;
   is_default: boolean;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type BillingAddressSelect = Selectable<BillingAddress>;
@@ -67,8 +77,8 @@ export type ChatConversation = {
   id: Generated<UUID>;
   user_id: UUID;
   title: string;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type ChatConversationSelect = Selectable<ChatConversation>;
@@ -80,7 +90,7 @@ export type ChatMessage = {
   conversation_id: UUID;
   role: string;
   content: string;
-  created_at: Generated<Date>;
+  created_at: CreatedAt;
 };
 
 export type ChatMessageSelect = Selectable<ChatMessage>;
@@ -92,8 +102,8 @@ export type CartItem = {
   user_id: UUID;
   service_id: UUID;
   quantity: number;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type CartItemSelect = Selectable<CartItem>;
@@ -109,8 +119,8 @@ export type HeroCarousel = {
   button_link?: string;
   order: number;
   active: boolean;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type HeroCarouselSelect = Selectable<HeroCarousel>;
@@ -122,7 +132,7 @@ export type Invoice = {
   payment_id: string | null;
   number: string;
   file_url: string;
-  created_at: Generated<Date>;
+  created_at: CreatedAt;
 };
 
 export type InvoiceSelect = Selectable<Invoice>;
@@ -137,8 +147,8 @@ export type PaymentMethod = {
   expiry_month: number;
   expiry_year: number;
   is_default: boolean;
-  created_at: Generated<Date>;
-  updated_at: Generated<Date>;
+  created_at: CreatedAt;
+  updated_at: UpdatedAt;
 };
 
 export type PaymentMethodSelect = Selectable<PaymentMethod>;
@@ -151,7 +161,7 @@ export type Payment = {
   amount: number;
   status: string;
   payment_method: string;
-  created_at: Generated<Date>;
+  created_at: CreatedAt;
   billing_address_id: UUID | null;
   payment_method_id: UUID | null;
 };
@@ -175,8 +185,9 @@ export type TOTPTemp = {
   id: Generated<UUID>;
   user_id: UUID;
   secret: string;
-  created_at: Generated<Date>;
+  created_at: CreatedAt;
 };
 
 export type TOTPTempSelect = Selectable<TOTPTemp>;
 export type TOTPTempInsert = Insertable<TOTPTemp>;
+export type TOTPTempUpdate = Updateable<TOTPTemp>;

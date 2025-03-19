@@ -19,10 +19,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ServiceSelect } from "@/db/models";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { createClient } from "@/lib/supabase/client";
-import { Tables } from "@/supabase/types";
+import { apiClient } from "@/lib/api";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -35,12 +35,12 @@ const serviceSchema = z.object({
 });
 
 const ServicesManagement = () => {
-  const supabase = createClient();
   const t = useTranslations("admin.services");
-  const [services, setServices] = useState<Tables<"services">[]>([]);
+  const [services, setServices] = useState<ServiceSelect[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [currentService, setCurrentService] =
-    useState<Tables<"services"> | null>(null);
+  const [currentService, setCurrentService] = useState<ServiceSelect | null>(
+    null
+  );
   const { toast } = useToast();
   const form = useForm(serviceSchema, {
     defaultValues: currentService || {
@@ -57,13 +57,16 @@ const ServicesManagement = () => {
 
   const fetchServices = async () => {
     try {
-      const { data } = await supabase
-        .from("services")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .throwOnError();
+      const res = await apiClient.services.$get();
+      const data = await res.json();
 
-      setServices(data);
+      setServices(
+        data.map((service) => ({
+          ...service,
+          created_at: new Date(service.created_at),
+          updated_at: new Date(service.updated_at),
+        }))
+      );
     } catch (error) {
       toast({
         title: t("toasts.fetchError.title"),
@@ -76,12 +79,12 @@ const ServicesManagement = () => {
   const handleSubmit = async (values: z.infer<typeof serviceSchema>) => {
     try {
       if (currentService) {
-        await supabase
-          .from("services")
-          .update(values)
-          .eq("id", currentService.id);
+        await apiClient.services[":id"].$patch({
+          param: { id: currentService.id },
+          json: values,
+        });
       } else {
-        await supabase.from("services").insert(values).select();
+        await apiClient.services.$post({ json: values });
       }
 
       toast({
@@ -103,14 +106,16 @@ const ServicesManagement = () => {
     }
   };
 
-  const handleEdit = (service: Tables<"services">) => () => {
+  const handleEdit = (service: ServiceSelect) => () => {
     setCurrentService(service);
     setIsOpen(true);
   };
 
   const handleDelete = (id: string) => async () => {
     try {
-      await supabase.from("services").delete().eq("id", id);
+      await apiClient.services[":id"].$delete({
+        param: { id },
+      });
 
       toast({
         title: t("toasts.deleteSuccess.title"),
@@ -180,7 +185,7 @@ const ServicesManagement = () => {
             {["name", "description", "price", "period", "actions"].map(
               (column) => (
                 <TableHead key={column}>{t(`table.${column}`)}</TableHead>
-              ),
+              )
             )}
           </TableRow>
         </TableHeader>

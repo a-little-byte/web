@@ -19,24 +19,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { HeroCarouselSelect } from "@/db/models";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { createClient } from "@/lib/supabase/client";
+import { apiClient } from "@/lib/api";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
+import type { UUID } from "node:crypto";
 import { useEffect, useState } from "react";
 import { z } from "zod";
-
-interface CarouselItem {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  button_text: string;
-  button_link: string;
-  order: number;
-  active: boolean;
-}
 
 const carouselSchemaForm = z.object({
   title: z.string().min(1),
@@ -44,15 +35,18 @@ const carouselSchemaForm = z.object({
   image_url: z.string().min(1),
   button_text: z.string().min(1),
   button_link: z.string().min(1),
+  order: z.number().min(0),
+  active: z.boolean(),
 });
 
 type FormData = z.infer<typeof carouselSchemaForm>;
 
 const CarouselManagement = () => {
-  const supabase = createClient();
-  const [items, setItems] = useState<CarouselItem[]>([]);
+  const [items, setItems] = useState<HeroCarouselSelect[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [currentItem, setCurrentItem] = useState<CarouselItem | null>(null);
+  const [currentItem, setCurrentItem] = useState<HeroCarouselSelect | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("admin.carousel");
@@ -64,36 +58,23 @@ const CarouselManagement = () => {
       image_url: "",
       button_text: "",
       button_link: "",
+      order: 0,
+      active: false,
     },
   });
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
-  useEffect(() => {
-    if (currentItem) {
-      form.reset(currentItem);
-    } else {
-      form.reset({
-        title: "",
-        description: "",
-        image_url: "",
-        button_text: "",
-        button_link: "",
-      });
-    }
-  }, [JSON.stringify(currentItem)]);
-
   const fetchItems = async () => {
     try {
-      const { data, error } = await supabase
-        .from("hero_carousel")
-        .select("*")
-        .order("order");
+      const response = await apiClient.hero.$get();
+      const data = await response.json();
 
-      if (error) throw error;
-      setItems(data || []);
+      setItems(
+        data.map((item) => ({
+          ...item,
+          created_at: new Date(item.created_at),
+          updated_at: new Date(item.updated_at),
+        }))
+      );
     } catch (error) {
       toast({
         title: t("toasts.fetchError.title"),
@@ -103,21 +84,17 @@ const CarouselManagement = () => {
     }
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (json: FormData) => {
     setIsLoading(true);
 
     try {
       if (currentItem) {
-        const { error } = await supabase
-          .from("hero_carousel")
-          .update(data)
-          .eq("id", currentItem.id);
-
-        if (error) throw error;
+        await apiClient.hero[":id"].$patch({
+          json,
+          param: { id: currentItem.id },
+        });
       } else {
-        const { error } = await supabase.from("hero_carousel").insert([data]);
-
-        if (error) throw error;
+        await apiClient.hero.$post({ json });
       }
 
       toast({
@@ -152,18 +129,20 @@ const CarouselManagement = () => {
     updatedItems.splice(newIndex, 0, movedItem);
 
     try {
-      const updates = updatedItems.map((item, index) => ({
-        id: item.id,
-        order: index,
-      }));
-
-      await supabase.from("hero_carousel").upsert(updates).throwOnError();
+      await Promise.all(
+        updatedItems.map(async (item, index) => {
+          await apiClient.hero[":id"].$patch({
+            json: { order: index },
+            param: { id: item.id },
+          });
+        })
+      );
 
       fetchItems();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to reorder items",
+        title: t("toasts.reorderError.title"),
+        description: t("toasts.reorderError.description"),
         variant: "destructive",
       });
     }
@@ -171,46 +150,57 @@ const CarouselManagement = () => {
 
   const handleToggleActive = (id: string) => async (active: boolean) => {
     try {
-      const { error } = await supabase
-        .from("hero_carousel")
-        .update({ active })
-        .eq("id", id);
-
-      if (error) throw error;
+      await apiClient.hero[":id"].$patch({
+        json: { active },
+        param: { id },
+      });
 
       fetchItems();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to update item status",
+        title: t("toasts.updateError.title"),
+        description: t("toasts.updateError.description"),
         variant: "destructive",
       });
     }
   };
 
-  const handleDelete = (id: string) => async () => {
+  const handleDelete = (id: UUID) => async () => {
     try {
-      const { error } = await supabase
-        .from("hero_carousel")
-        .delete()
-        .eq("id", id);
-
-      if (error) throw error;
+      await apiClient.hero[":id"].$delete({ param: { id } });
 
       toast({
-        title: "Success",
-        description: "Carousel item deleted successfully",
+        title: t("toasts.deleteSuccess.title"),
+        description: t("toasts.deleteSuccess.description"),
       });
 
       fetchItems();
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to delete carousel item",
+        title: t("toasts.deleteError.title"),
+        description: t("toasts.deleteError.description"),
         variant: "destructive",
       });
     }
   };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  useEffect(() => {
+    if (currentItem) {
+      form.reset(currentItem);
+    } else {
+      form.reset({
+        title: "",
+        description: "",
+        image_url: "",
+        button_text: "",
+        button_link: "",
+      });
+    }
+  }, [JSON.stringify(currentItem)]);
 
   return (
     <div>

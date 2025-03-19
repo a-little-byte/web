@@ -47,26 +47,21 @@ const Dashboard = () => {
           }
         );
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch dashboard data");
-        }
-
-        const data: DashboardData = await response.json();
+        const data = await response.json();
 
         setSubscriptions(data.subscriptions);
         setTotalSpent(data.totalSpent);
       } catch (error) {
-        console.error("Error fetching dashboard data:", error);
         toast({
-          title: "Error",
-          description: "Failed to load dashboard data",
+          title: t("toasts.fetchError.title"),
+          description: t("toasts.fetchError.description"),
           variant: "destructive",
         });
       }
     };
 
     fetchDashboardData();
-  }, [toast]);
+  }, []);
 
   return (
     <div>
@@ -101,7 +96,9 @@ const Dashboard = () => {
         {subscriptions.map((sub) => (
           <Card key={sub.id}>
             <CardHeader>
-              <CardTitle>{sub.services?.name || "Unknown Service"}</CardTitle>
+              <CardTitle>
+                {sub.services?.name || t("subscriptionsList.unknownService")}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">

@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { createClient } from "@/lib/supabase/client";
+import { apiClient } from "@/lib/api";
 import { format, subDays, subWeeks } from "date-fns";
 import { fr } from "date-fns/locale";
 import { useTranslations } from "next-intl";
@@ -49,7 +49,6 @@ interface CategoryData {
 }
 
 const Dashboard = () => {
-  const supabase = createClient();
   const t = useTranslations("admin.dashboard");
   const [timeframe, setTimeframe] = useState<"week" | "month">("week");
   const [salesData, setSalesData] = useState<SalesData[]>([]);
@@ -64,6 +63,13 @@ const Dashboard = () => {
     const startDate =
       timeframe === "week" ? subDays(endDate, 7) : subWeeks(endDate, 5);
 
+    const { data: payments, error } = await apiClient.payments.$get({
+      query: {
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+      },
+    });
+
     const { data: payments, error } = await supabase
       .from("payments")
       .select(
@@ -75,7 +81,7 @@ const Dashboard = () => {
               name
             )
           )
-        `,
+        `
       )
       .gte("created_at", startDate.toISOString())
       .lte("created_at", endDate.toISOString())
@@ -127,7 +133,7 @@ const Dashboard = () => {
       ([name, value]) => ({
         name,
         value,
-      }),
+      })
     );
 
     setSalesData(salesDataArray);

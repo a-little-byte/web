@@ -368,65 +368,251 @@
         "deleteError": {
           "title": "Erreur",
           "description": "Échec de la suppression du service"
+        },
+        "reorderError": {
+          "title": "Erreur",
+          "description": "Échec de la réorganisation des services"
+        },
+        "updateError": {
+          "title": "Erreur",
+          "description": "Échec de la mise à jour du service"
         }
       }
     }
   },
   "dashboard": {
-    "password": {
-      "submit": "Changer le mot de passe"
+    "title": "Tableau de bord",
+    "cards": {
+      "activeSubscriptions": {
+        "title": "Abonnements actifs"
+      },
+      "totalSpent": {
+        "title": "Total dépensé"
+      }
     },
-    "danger": {
-      "title": "Zone de Danger",
-      "description": "Actions irréversibles et destructrices",
-      "deleteAccount": {
-        "button": "Supprimer le Compte",
-        "dialog": {
-          "title": "Êtes-vous absolument sûr ?",
-          "description": "Cette action ne peut pas être annulée. Cela supprimera définitivement votre compte et supprimera toutes vos données de nos serveurs.",
-          "cancel": "Annuler",
-          "confirm": "Supprimer le Compte"
+    "subscriptionsList": {
+      "title": "Abonnements actifs",
+      "details": {
+        "status": "Statut",
+        "price": "Prix",
+        "currentPeriod": "Période actuelle"
+      },
+      "unknownService": "Service inconnu"
+    },
+    "errors": {
+      "fetchError": {
+        "title": "Erreur",
+        "description": "Échec de la récupération des données d'abonnement"
+      }
+    },
+    "subscriptions": {
+      "title": "Historique des commandes",
+      "search": {
+        "placeholder": "Rechercher une commande..."
+      },
+      "filters": {
+        "year": {
+          "label": "Année",
+          "all": "Toutes les années"
+        },
+        "status": {
+          "label": "Statut",
+          "all": "Tous les statuts",
+          "active": "Actif",
+          "cancelled": "Annulé",
+          "expired": "Expiré"
+        },
+        "service": {
+          "label": "Service",
+          "all": "Tous les services"
         }
       },
-      "toasts": {
-        "success": {
-          "title": "Compte Supprimé",
-          "description": "Votre compte a été supprimé avec succès"
+      "table": {
+        "headers": {
+          "service": "Service",
+          "date": "Date",
+          "amount": "Montant",
+          "status": "Statut",
+          "actions": "Actions"
         },
-        "error": {
-          "title": "Erreur"
+        "actions": {
+          "details": "Détails"
+        }
+      },
+      "details": {
+        "title": "Détails de la commande",
+        "payment": {
+          "title": "Informations de paiement",
+          "method": "Méthode de paiement",
+          "amount": "Montant",
+          "date": "Date"
+        },
+        "billing": {
+          "title": "Adresse de facturation"
+        },
+        "invoice": {
+          "title": "Facture",
+          "number": "Numéro de facture: {number}",
+          "download": "Télécharger la facture"
+        }
+      },
+      "noOrders": "Aucune commande trouvée"
+    },
+    "settings": {
+      "title": "Paramètres du compte",
+      "description": "Gérer vos paramètres de compte et vos préférences",
+      "tabs": {
+        "profile": "Profil",
+        "password": "Mot de passe",
+        "danger": "Zone de danger"
+      },
+      "profile": {
+        "title": "Profil",
+        "description": "Mettre à jour vos informations personnelles",
+        "form": {
+          "fullName": {
+            "label": "Nom complet",
+            "placeholder": "John Doe"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "john@example.com"
+          },
+          "submit": "Mettre à jour le profil"
+        },
+        "toasts": {
+          "success": {
+            "title": "Succès",
+            "description": "Profil mis à jour avec succès"
+          },
+          "error": {
+            "title": "Erreur",
+            "description": "Échec de la mise à jour du profil"
+          }
+        }
+      },
+      "password": {
+        "title": "Change Password",
+        "description": "Update your password to keep your account secure",
+        "form": {
+          "oldPassword": {
+            "label": "Mot de passe actuel"
+          },
+          "newPassword": {
+            "label": "Nouveau mot de passe"
+          },
+          "confirmPassword": {
+            "label": "Confirmer le nouveau mot de passe"
+          },
+          "submit": "Changer le mot de passe"
+        },
+        "toasts": {
+          "success": {
+            "title": "Succès",
+            "description": "Mot de passe changé avec succès"
+          },
+          "error": {
+            "title": "Erreur",
+            "description": "Échec de la modification du mot de passe"
+          }
+        }
+      },
+      "danger": {
+        "title": "Zone de danger",
+        "description": "Actions irréversibles et destructives",
+        "deleteAccount": {
+          "button": "Supprimer le compte",
+          "dialog": {
+            "title": "Êtes-vous sûr de vouloir supprimer votre compte?",
+            "description": "Cette action est irréversible. Cela supprimera définitivement votre compte et supprimera tous vos données de nos serveurs.",
+            "cancel": "Annuler",
+            "confirm": "Supprimer le compte"
+          }
+        },
+        "toasts": {
+          "success": {
+            "title": "Compte supprimé",
+            "description": "Votre compte a été supprimé avec succès"
+          },
+          "error": {
+            "title": "Erreur",
+            "description": "Échec de la suppression du compte"
+          }
+        }
+      },
+      "security": {
+        "title": "Sécurité",
+        "description": "Gérer vos paramètres de sécurité",
+        "form": {
+          "verificationCode": {
+            "label": "Code de vérification",
+            "placeholder": "Entrez votre code de vérification"
+          },
+          "submit": "Vérifier"
+        },
+        "toasts": {
+          "success": {
+            "title": "Succès",
+            "description": "La vérification à deux facteurs a été activée avec succès"
+          },
+          "error": {
+            "title": "Erreur",
+            "description": "Échec de la vérification du code"
+          },
+          "setupError": {
+            "title": "Erreur",
+            "description": "Échec de la configuration de la vérification à deux facteurs"
+          },
+          "verifySuccess": {
+            "title": "Succès",
+            "description": "La vérification à deux facteurs a été activée avec succès"
+          },
+          "verifyError": {
+            "title": "Erreur",
+            "description": "Échec de la vérification du code"
+          }
+        },
+        "buttons": {
+          "enable": "Activer la vérification à deux facteurs",
+          "verify": "Vérifier le code"
         }
       }
     },
-    "checkout": {
-      "title": "Paiement",
-      "description": "Vérifiez vos informations et complétez votre achat",
-      "form": {
-        "name": "Nom complet",
-        "email": "Adresse e-mail",
-        "address": "Adresse de facturation",
-        "city": "Ville",
-        "state": "État / Province",
-        "zip": "Code postal",
-        "country": "Pays",
-        "pay": "Payer maintenant"
+    "success": {
+      "title": "Paiement réussi!",
+      "loading": {
+        "text": "Chargement des détails de la commande..."
       },
-      "summary": {
-        "title": "Résumé de la commande",
-        "description": "Vérifiez les détails de votre commande ci-dessous",
-        "items": {
-          "quantity": "x{quantity}"
-        },
-        "total": "Montant Total"
+      "notFound": {
+        "title": "Commande non trouvée",
+        "description": "Nous n'avons pas trouvé les détails de la commande. Veuillez contacter le support si vous croyez que c'est une erreur.",
+        "action": "Aller au tableau de bord"
+      },
+      "order": {
+        "id": "ID de la commande",
+        "summary": {
+          "title": "Résumé de la commande",
+          "service": {
+            "price": "${price}/{period}",
+            "quantity": "x{quantity}"
+          },
+          "total": "Montant total"
+        }
+      },
+      "confirmation": {
+        "email": "Un email de confirmation a été envoyé à votre adresse email enregistrée.",
+        "manage": "Vous pouvez gérer vos abonnements depuis votre tableau de bord."
+      },
+      "actions": {
+        "dashboard": "Aller au tableau de bord",
+        "subscriptions": "Voir les abonnements"
       }
     },
-    "confirmation": {
-      "email": "Un e-mail de confirmation a été envoyé à votre adresse e-mail enregistrée.",
-      "manage": "Vous pouvez gérer vos abonnements depuis votre tableau de bord."
-    },
-    "actions": {
-      "dashboard": "Aller au Tableau de Bord",
-      "subscriptions": "Voir les Abonnements"
+    "toasts": {
+      "fetchError": {
+        "title": "Erreur",
+        "description": "Échec de la récupération des données du tableau de bord"
+      }
     }
   },
   "shoppingCart": {
@@ -453,6 +639,115 @@
       "checkout": {
         "title": "Erreur",
         "description": "Échec du paiement"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connexion",
+      "description": "Entrez votre email et votre mot de passe pour accéder à votre compte",
+      "emailLabel": "Email",
+      "emailPlaceholder": "name@company.com",
+      "passwordLabel": "Mot de passe",
+      "passwordPlaceholder": "********",
+      "forgotPassword": "Mot de passe oublié?",
+      "signInButton": "Connexion",
+      "noAccount": "Pas de compte?",
+      "signUpLink": "Créer un compte",
+      "toasts": {
+        "emailNotVerified": {
+          "title": "Email non vérifié",
+          "description": "Veuillez vérifier votre email pour vérifier votre compte."
+        },
+        "loginSuccess": {
+          "title": "Connexion réussie",
+          "description": "Bienvenue de retour!"
+        },
+        "loginError": {
+          "title": "Erreur",
+          "description": "Email ou mot de passe invalide."
+        }
+      }
+    },
+    "totp": {
+      "title": "Entrez le code d'authentification",
+      "description": "Veuillez entrer le code de votre application authenticateur",
+      "codeLabel": "Code d'authentification",
+      "codePlaceholder": "000000",
+      "verifyButton": "Vérifier",
+      "backButton": "Retour à la connexion"
+    },
+    "register": {
+      "title": "Créer un compte",
+      "description": "Entrez vos informations ci-dessous pour créer votre compte",
+      "fullName": {
+        "label": "Nom complet",
+        "placeholder": "John Doe"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "name@company.com"
+      },
+      "password": {
+        "label": "Mot de passe"
+      },
+      "confirmPassword": {
+        "label": "Confirmer le mot de passe"
+      },
+      "submit": "Créer un compte",
+      "loginLink": "Déjà un compte?",
+      "loginText": "Connexion"
+    },
+    "emailSent": {
+      "title": "Vérifiez votre email",
+      "description": "Nous vous avons envoyé un email avec un lien de vérification. Veuillez vérifier votre boîte mail et cliquer sur le lien pour vérifier votre compte.",
+      "returnToLogin": "Retour à la connexion"
+    },
+    "toast": {
+      "success": {
+        "title": "Inscription réussie",
+        "description": "Veuillez vérifier votre email pour vérifier votre compte."
+      },
+      "error": {
+        "title": "Erreur",
+        "description": "Quelque chose s'est mal passé. Veuillez réessayer."
+      }
+    },
+    "resetPassword": {
+      "form": {
+        "title": "Réinitialiser le mot de passe",
+        "description": "Entrez votre nouveau mot de passe ci-dessous",
+        "passwordPlaceholder": "Nouveau mot de passe",
+        "confirmPasswordPlaceholder": "Confirmer le nouveau mot de passe",
+        "submitButton": "Réinitialiser le mot de passe"
+      },
+      "validation": {
+        "passwordRequired": "Mot de passe requis",
+        "confirmPasswordRequired": "Veuillez confirmer votre mot de passe"
+      },
+      "errors": {
+        "title": "Erreur",
+        "default": "Échec de la réinitialisation du mot de passe",
+        "passwordsMismatch": "Les mots de passe ne correspondent pas",
+        "invalidLink": "Lien de réinitialisation invalide"
+      },
+      "success": {
+        "title": "Réinitialisation du mot de passe réussie",
+        "description": "Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+      },
+      "invalidLink": {
+        "title": "Lien de réinitialisation invalide",
+        "description": "Ce lien de réinitialisation est invalide ou a expiré.",
+        "requestNew": "Demander un nouveau lien de réinitialisation"
+      }
+    },
+    "confirmEmail": {
+      "error": {
+        "noToken": "Aucun jeton de vérification trouvé",
+        "verificationFailed": "Échec de la vérification de l'email. Veuillez réessayer."
+      },
+      "buttons": {
+        "returnToLogin": "Retour à la connexion"
       }
     }
   }

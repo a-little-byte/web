@@ -29,13 +29,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useForm } from "@/hooks/useForm";
+import { apiClient } from "@/lib/api";
 import { useRouter } from "@/lib/i18n/routing";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { changePassword, deleteAccount, updateProfile } from "./actions";
 
 const profileSchema = z.object({
   fullName: z.string().min(1),
@@ -44,7 +43,7 @@ const profileSchema = z.object({
 
 const passwordSchema = z
   .object({
-    currentPassword: z.string().min(1),
+    oldPassword: z.string().min(8),
     newPassword: z.string().min(8),
     confirmPassword: z.string().min(8),
   })
@@ -60,28 +59,28 @@ export const ProfileTab = () => {
   const t = useTranslations("dashboard.settings.profile");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const profileForm = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileSchema),
-  });
+  const profileForm = useForm(profileSchema);
 
   const onProfileSubmit = async (data: ProfileFormValues) => {
     setIsLoading(true);
-    const result = await updateProfile(data);
-    setIsLoading(false);
+    try {
+      const result = await apiClient.account.$patch({
+        json: data,
+      });
 
-    if (result.error) {
+      toast({
+        title: t("toasts.success.title"),
+        description: t("toasts.success.description"),
+      });
+    } catch (error) {
       toast({
         title: t("toasts.error.title"),
-        description: result.error,
+        description: t("toasts.error.description"),
         variant: "destructive",
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    toast({
-      title: t("toasts.success.title"),
-      description: t("toasts.success.description"),
-    });
   };
 
   return (
@@ -145,33 +144,33 @@ export const PasswordTab = () => {
   const t = useTranslations("dashboard.settings.password");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const passwordForm = useForm<PasswordFormValues>({
-    resolver: zodResolver(passwordSchema),
-  });
+  const passwordForm = useForm(passwordSchema);
 
   const onPasswordSubmit = async (data: PasswordFormValues) => {
     setIsLoading(true);
-    const result = await changePassword({
-      currentPassword: data.currentPassword,
-      newPassword: data.newPassword,
-    });
-    setIsLoading(false);
+    try {
+      await apiClient.account.password.$patch({
+        json: {
+          oldPassword: data.oldPassword,
+          newPassword: data.newPassword,
+        },
+      });
 
-    if (result.error) {
+      passwordForm.reset();
+
+      toast({
+        title: t("toasts.success.title"),
+        description: t("toasts.success.description"),
+      });
+    } catch (error) {
       toast({
         title: t("toasts.error.title"),
-        description: result.error,
+        description: t("toasts.error.description"),
         variant: "destructive",
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    toast({
-      title: t("toasts.success.title"),
-      description: t("toasts.success.description"),
-    });
-
-    passwordForm.reset();
   };
 
   return (
@@ -188,10 +187,10 @@ export const PasswordTab = () => {
           >
             <FormField
               control={passwordForm.control}
-              name="currentPassword"
+              name="oldPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("form.currentPassword.label")}</FormLabel>
+                  <FormLabel>{t("form.oldPassword.label")}</FormLabel>
                   <FormControl>
                     <Input {...field} type="password" disabled={isLoading} />
                   </FormControl>
@@ -243,24 +242,24 @@ export const DangerTab = () => {
 
   const handleAccountDeletion = async () => {
     setIsLoading(true);
-    const result = await deleteAccount();
-    setIsLoading(false);
+    try {
+      await apiClient.account.$delete();
 
-    if (result.error) {
+      router.push("/");
+
+      toast({
+        title: t("toasts.success.title"),
+        description: t("toasts.success.description"),
+      });
+    } catch (error) {
       toast({
         title: t("toasts.error.title"),
-        description: result.error,
+        description: t("toasts.error.description"),
         variant: "destructive",
       });
-      return;
+    } finally {
+      setIsLoading(false);
     }
-
-    toast({
-      title: t("toasts.success.title"),
-      description: t("toasts.success.description"),
-    });
-
-    router.push("/");
   };
 
   return (

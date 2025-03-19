@@ -343,7 +343,8 @@
       "errors": {
         "title": "Error",
         "default": "Failed to reset password",
-        "passwordsMismatch": "Passwords do not match"
+        "passwordsMismatch": "Passwords do not match",
+        "invalidLink": "Invalid reset link"
       },
       "success": {
         "title": "Password reset successful",
@@ -547,6 +548,10 @@
           "title": "Error",
           "description": "Failed to reorder items"
         },
+        "updateError": {
+          "title": "Error",
+          "description": "Failed to update carousel item"
+        },
         "deleteSuccess": {
           "title": "Success",
           "description": "Carousel item deleted successfully"
@@ -615,6 +620,20 @@
       "averageBasket": {
         "title": "Average Basket by Category",
         "description": "Sales comparison by service"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Error",
+          "description": "Failed to fetch dashboard data"
+        }
+      },
+      "subscriptions": {
+        "toasts": {
+          "fetchError": {
+            "title": "Error",
+            "description": "Failed to fetch subscription data"
+          }
+        }
       }
     },
     "services": {
@@ -690,7 +709,8 @@
         "status": "Status",
         "price": "Price",
         "currentPeriod": "Current Period"
-      }
+      },
+      "unknownService": "Unknown service"
     },
     "errors": {
       "fetchError": {
@@ -779,7 +799,8 @@
             "description": "Profile updated successfully"
           },
           "error": {
-            "title": "Error"
+            "title": "Error",
+            "description": "Failed to update profile"
           }
         }
       },
@@ -787,7 +808,7 @@
         "title": "Change Password",
         "description": "Update your password to keep your account secure",
         "form": {
-          "currentPassword": {
+          "oldPassword": {
             "label": "Current Password"
           },
           "newPassword": {
@@ -804,7 +825,8 @@
             "description": "Password changed successfully"
           },
           "error": {
-            "title": "Error"
+            "title": "Error",
+            "description": "Failed to change password"
           }
         }
       },
@@ -826,7 +848,8 @@
             "description": "Your account has been successfully deleted"
           },
           "error": {
-            "title": "Error"
+            "title": "Error",
+            "description": "Failed to delete account"
           }
         }
       },
@@ -896,6 +919,12 @@
       "actions": {
         "dashboard": "Go to Dashboard",
         "subscriptions": "View Subscriptions"
+      }
+    },
+    "toasts": {
+      "fetchError": {
+        "title": "Error",
+        "description": "Failed to fetch dashboard data"
       }
     }
   },

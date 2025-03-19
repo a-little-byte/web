@@ -7,7 +7,7 @@ import {
 import { Form } from "@/components/base/Form";
 import { SelectField } from "@/components/base/SelectField";
 import { Button } from "@/components/ui/button";
-import { Service } from "@/db/models";
+import { ServiceSelect } from "@/db/models";
 import { useToast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/api";
 import { useTranslations } from "next-intl";
@@ -18,7 +18,7 @@ export const AddToCartForm = ({
   service,
   form,
 }: {
-  service: Service;
+  service: ServiceSelect;
   form: UseFormReturn<
     z.input<typeof servicesFormSchema>,
     unknown,
@@ -36,10 +36,6 @@ export const AddToCartForm = ({
           quantity: 1,
         },
       });
-
-      if (!result.success) {
-        throw new Error(result.message);
-      }
 
       toast({
         title: t("cart.success.title"),

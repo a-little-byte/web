@@ -13,7 +13,6 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/api";
-import { createClient } from "@/lib/supabase/client";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
@@ -26,7 +25,6 @@ const formSchema = z.object({
 });
 
 const SecuritySettings = () => {
-  const supabase = createClient();
   const t = useTranslations("dashboard.settings.security");
   const [isLoading, setIsLoading] = useState(false);
   const [totpEnabled, setTotpEnabled] = useState(false);
@@ -40,22 +38,14 @@ const SecuritySettings = () => {
 
   const checkTOTPStatus = async () => {
     try {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) return;
+      const response = await apiClient.auth.totp.status.$get();
+      const data = await response.json();
 
-      const { data } = await supabase
-        .from("totp_secrets")
-        .select("enabled")
-        .eq("user_id", session.user.id)
-        .single();
-
-      setTotpEnabled(!!data?.enabled);
+      setTotpEnabled(data.enabled);
     } catch (error) {
       toast({
-        title: t("toasts.error.title"),
-        description: t("toasts.error.description"),
+        title: t("toasts.fetchError.title"),
+        description: t("toasts.fetchError.description"),
         variant: "destructive",
       });
     }
@@ -64,12 +54,13 @@ const SecuritySettings = () => {
   const setupTOTP = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.auth.totp.setup.$post({
-        method: "POST",
-      });
+      const response = await apiClient.auth.totp.setup.$post();
+
+      if (!response.ok) {
+        throw new Error();
+      }
 
       const data = await response.json();
-      if ("error" in data) throw new Error(data.error);
 
       setQrCode(data.qrCode);
     } catch (error) {
@@ -88,15 +79,12 @@ const SecuritySettings = () => {
 
     try {
       const response = await apiClient.auth.totp.verify.$post({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ token: values.verificationCode }),
+        json: { token: values.verificationCode },
       });
 
-      const data = await response.json();
-      if ("error" in data) throw new Error(data.error);
+      if (!response.ok) {
+        throw new Error();
+      }
 
       setTotpEnabled(true);
       setQrCode(null);

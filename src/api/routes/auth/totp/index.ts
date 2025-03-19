@@ -7,6 +7,15 @@ import QRCode from "qrcode";
 import { z } from "zod";
 
 export const authTotpRouter = new Hono<{ Variables: ContextVariables }>()
+  .get("/status", async ({ var: { db, session }, json }) => {
+    const totpData = await db
+      .selectFrom("totp_secrets")
+      .select("enabled")
+      .where("user_id", "=", session.user.id)
+      .executeTakeFirst();
+
+    return json({ enabled: !!totpData?.enabled });
+  })
   .post("/setup", async ({ var: { db, session }, json }) => {
     const secret = authenticator.generateSecret();
     const otpauth = authenticator.keyuri(
@@ -21,7 +30,6 @@ export const authTotpRouter = new Hono<{ Variables: ContextVariables }>()
       .values({
         user_id: session.user.id,
         secret,
-        created_at: new Date(),
       })
       .execute();
 

@@ -8,7 +8,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
-import { createClient } from "@/lib/supabase/client";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -93,7 +92,6 @@ const tabs: Tab[] = [
 ];
 
 const ContentManagement = () => {
-  const supabase = createClient();
   const [content, setContent] = useState<any[]>([]);
   const { toast } = useToast();
   const t = useTranslations("admin.content");

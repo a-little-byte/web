@@ -26,12 +26,8 @@ const Contact = () => {
   const form = useForm(contactFormSchema);
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
-      const response = await apiClient.send.$post({
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
+      await apiClient.send.$post({
+        json: {
           email: data.email,
           subject: `New Contact Form Submission from ${data.firstName} ${data.lastName}`,
           message: `
@@ -40,18 +36,14 @@ const Contact = () => {
             Interest: ${data.interest}
             Message: ${data.message}
           `,
-        }),
+        },
       });
 
-      if (response.ok) {
-        toast({
-          title: t("toast.success.title"),
-          description: t("toast.success.description"),
-        });
-        form.reset();
-      } else {
-        throw new Error("Failed to send message");
-      }
+      toast({
+        title: t("toast.success.title"),
+        description: t("toast.success.description"),
+      });
+      form.reset();
     } catch (error) {
       toast({
         title: t("toast.error.title"),
