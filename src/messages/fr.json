@@ -54,7 +54,7 @@
   "services": {
     "header": {
       "title": "Solutions de Sécurité",
-      "description": "Choisissez le forfait de sécurité adapté à votre entreprise. Tous les forfaits incluent nos fonctionnalités de sécurité de base et un support expert."
+      "description": "Choisissez la solution de sécurité qui correspond le mieux aux besoins de votre organisation. Tous nos produits sont accompagnés d'un support de niveau entreprise et de garanties SLA."
     },
     "tiers": {
       "essential": {
@@ -124,6 +124,41 @@
           "title": "Erreur",
           "description": "Échec de l'ajout de l'article au panier. Veuillez réessayer."
         }
+      }
+    },
+    "products": {
+      "soc": {
+        "name": "SOC en tant que Service",
+        "description": "Notre Centre des Opérations de Sécurité (SOC) fournit une surveillance 24/7, une détection des menaces et une réponse aux incidents pour votre organisation.",
+        "features": [
+          "Surveillance de Sécurité 24/7",
+          "Détection des Menaces en Temps Réel",
+          "Réponse aux Incidents",
+          "Rapports de Conformité",
+          "Analyses de Sécurité"
+        ]
+      },
+      "edr": {
+        "name": "Protection EDR",
+        "description": "Solution avancée de Détection et Réponse sur les Terminaux qui protège vos appareils contre les cybermenaces sophistiquées.",
+        "features": [
+          "Protection en Temps Réel",
+          "Analyse Comportementale",
+          "Réponse Automatisée",
+          "Contrôle des Appareils",
+          "Threat Hunting"
+        ]
+      },
+      "xdr": {
+        "name": "Plateforme XDR",
+        "description": "Plateforme de Détection et Réponse Étendue qui unifie les données de sécurité à travers toute votre pile technologique.",
+        "features": [
+          "Protection Multi-plateforme",
+          "Analyses Avancées",
+          "Flux de Travail Automatisés",
+          "Renseignement sur les Menaces",
+          "Rapports Personnalisés"
+        ]
       }
     }
   },
@@ -748,6 +783,66 @@
       },
       "buttons": {
         "returnToLogin": "Retour à la connexion"
+      }
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "description": "Entrez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe",
+      "send": "Envoyer le lien de réinitialisation",
+      "signInLink": "Se connecter",
+      "rememberPassword": "Vous vous souvenez de votre mot de passe ?",
+      "emailSent": {
+        "title": "Vérifiez votre e-mail",
+        "description": "Nous vous avons envoyé un lien de réinitialisation du mot de passe. Veuillez vérifier votre e-mail.",
+        "returnToLogin": "Retour à la connexion"
+      },
+      "toasts": {
+        "valid": {
+          "title": "E-mail envoyé",
+          "description": "Consultez votre e-mail pour les instructions de réinitialisation du mot de passe."
+        },
+        "error": {
+          "title": "Erreur",
+          "description": "Échec de l'envoi de l'e-mail de réinitialisation. Veuillez réessayer."
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Prenez contact avec nos experts en sécurité. Nous vous aiderons à trouver la solution adaptée à votre entreprise.",
+    "form": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "email": "Email",
+      "company": "Entreprise",
+      "interest": {
+        "label": "Je suis intéressé par",
+        "placeholder": "Sélectionnez un service",
+        "options": {
+          "soc": "SOC en tant que Service",
+          "edr": "Protection EDR",
+          "xdr": "Plateforme XDR",
+          "other": "Autre"
+        }
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Parlez-nous de vos besoins en sécurité"
+      },
+      "submit": {
+        "sending": "Envoi en cours...",
+        "default": "Envoyer le Message"
+      }
+    },
+    "toast": {
+      "success": {
+        "title": "Message envoyé avec succès",
+        "description": "Nous vous répondrons dans les plus brefs délais."
+      },
+      "error": {
+        "title": "Erreur lors de l'envoi du message",
+        "description": "Veuillez réessayer plus tard."
       }
     }
   }
