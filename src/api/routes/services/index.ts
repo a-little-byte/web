@@ -1,3 +1,4 @@
+import { authMiddleware } from "@/api/middlewares";
 import { ContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
@@ -21,6 +22,7 @@ export const servicesRouter = new Hono<{ Variables: ContextVariables }>()
 
     return json(services);
   })
+  .use(authMiddleware)
   .post(
     "/",
     zValidator("json", serviceSchema),

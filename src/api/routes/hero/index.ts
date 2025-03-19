@@ -1,3 +1,4 @@
+import { authMiddleware } from "@/api/middlewares";
 import { ContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
@@ -15,6 +16,7 @@ export const heroRouter = new Hono<{ Variables: ContextVariables }>()
 
     return json(carouselItems);
   })
+  .use(authMiddleware)
   .post(
     "/",
     zValidator(

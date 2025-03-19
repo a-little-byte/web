@@ -26,7 +26,7 @@ const Contact = () => {
   const form = useForm(contactFormSchema);
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
-      await apiClient.send.$post({
+      await apiClient.contact.$post({
         json: {
           email: data.email,
           subject: `New Contact Form Submission from ${data.firstName} ${data.lastName}`,

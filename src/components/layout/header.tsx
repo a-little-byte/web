@@ -1,6 +1,6 @@
 import { SearchBar } from "@/components/layout/SearchBar";
 import { SheetNavigation } from "@/components/layout/SheetNavigation";
-import { ShoppingCart } from "@/components/shopping-cart";
+import { ShoppingCart } from "@/components/layout/shopping-cart";
 import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import ScrambleHover from "@/components/ui/scramble";

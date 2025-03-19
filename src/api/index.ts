@@ -64,13 +64,13 @@ export const api = new Hono<{ Variables: ContextVariables }>()
   )
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
+  .route("/services", servicesRouter)
   .use(authMiddleware)
   .route("/account", accountRoute)
   .route("/chat", chatRouter)
   .route("/checkout", checkoutRouter)
-  .route("/send", sendRouter)
+  .route("/contact", sendRouter)
   .route("/subscriptions", subscriptionsRouter)
-  .route("/orders", ordersRouter)
-  .route("/services", servicesRouter);
+  .route("/orders", ordersRouter);
 
 export type ApiRouter = typeof api;
