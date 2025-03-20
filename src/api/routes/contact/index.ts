@@ -8,22 +8,31 @@ export const sendRouter = new Hono<{ Variables: ContextVariables }>().post(
   zValidator(
     "json",
     z.object({
+      firstName: z.string(),
+      lastName: z.string(),
       email: z.string().email(),
-      subject: z.string(),
+      company: z.string(),
+      interest: z.string(),
       message: z.string(),
     })
   ),
   async ({ req, var: { resend }, json }) => {
-    const { email, subject, message } = req.valid("json");
+    const { firstName, lastName, email, company, interest, message } =
+      req.valid("json");
 
     const data = await resend.emails.send({
-      from: "Cyna <onboarding@resend.dev>",
+      from: "Cyna <onboarding@cyna.io>",
       to: [email],
-      subject,
+      subject: `New Contact Form Submission from ${firstName} ${lastName}`,
       html: `<div>
-        <h1>${subject}</h1>
-        <p>${message}</p>
-      </div>`,
+          <h1>New Contact Form Submission</h1>
+          <p>
+            Name: ${firstName} ${lastName}
+            Company: ${company}
+            Interest: ${interest}
+            Message: ${message}
+          </p>
+        </div>`,
     });
 
     return json(data);

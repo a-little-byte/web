@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { HeroCarouselSelect } from "@/db/utils";
+import { HeroCarouselSelect } from "@/db/models/HeroCarousel";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";

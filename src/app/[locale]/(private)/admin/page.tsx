@@ -63,31 +63,14 @@ const Dashboard = () => {
     const startDate =
       timeframe === "week" ? subDays(endDate, 7) : subWeeks(endDate, 5);
 
-    const { data: payments, error } = await apiClient.payments.$get({
+    const res = await apiClient.payments.$get({
       query: {
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
       },
     });
 
-    const { data: payments, error } = await supabase
-      .from("payments")
-      .select(
-        `
-          amount,
-          createdAt,
-          subscriptions (
-            services (
-              name
-            )
-          )
-        `
-      )
-      .gte("createdAt", startDate.toISOString())
-      .lte("createdAt", endDate.toISOString())
-      .order("createdAt", { ascending: true });
-
-    if (error) throw error;
+    const payments = await res.json();
 
     const dailyData: { [key: string]: SalesData } = {};
     const categoryTotals: { [key: string]: number } = {
@@ -98,7 +81,7 @@ const Dashboard = () => {
 
     payments?.forEach((payment) => {
       const date = format(new Date(payment.createdAt), "yyyy-MM-dd");
-      const serviceName = payment.subscriptions?.services?.name || "Unknown";
+      const serviceName = payment.subscription?.service?.name || "Unknown";
       const amount = payment.amount;
 
       if (!dailyData[date]) {

@@ -1,24 +1,15 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { HeroCarouselSelect } from "@/db/models/HeroCarousel";
 import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
-
-interface CarouselItem {
-  id: string;
-  title: string;
-  description: string;
-  image_url: string;
-  button_text: string;
-  button_link: string;
-  active: boolean;
-}
+import { useCallback, useEffect, useState } from "react";
 
 export const HeroCarousel = () => {
-  const [items, setItems] = useState<CarouselItem[]>([]);
+  const [items, setItems] = useState<HeroCarouselSelect[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -35,27 +26,29 @@ export const HeroCarousel = () => {
     return () => clearInterval(timer);
   }, [items.length]);
 
-  const fetchItems = async () => {
-    try {
-      const data = await apiClient.hero.$get();
-      setItems(data || []);
-    } catch (error) {
-      console.error("Failed to fetch carousel items:", error);
-      setItems([]);
-    }
-  };
+  const fetchItems = useCallback(async () => {
+    const res = await apiClient.hero.$get();
+    const data = await res.json();
+    setItems(
+      data.map((item) => ({
+        ...item,
+        createdAt: new Date(item.createdAt),
+        updatedAt: new Date(item.updatedAt),
+      }))
+    );
+  }, []);
 
-  const goToSlide = (index: number) => {
+  const goToSlide = useCallback((index: number) => {
     setCurrentIndex(index);
-  };
+  }, []);
 
-  const previousSlide = () => {
+  const previousSlide = useCallback(() => {
     setCurrentIndex((current) => (current - 1 + items.length) % items.length);
-  };
+  }, [items.length]);
 
-  const nextSlide = () => {
+  const nextSlide = useCallback(() => {
     setCurrentIndex((current) => (current + 1) % items.length);
-  };
+  }, [items.length]);
 
   if (items.length === 0) return null;
 

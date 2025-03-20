@@ -27,16 +27,7 @@ const Contact = () => {
   const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
     try {
       await apiClient.contact.$post({
-        json: {
-          email: data.email,
-          subject: `New Contact Form Submission from ${data.firstName} ${data.lastName}`,
-          message: `
-            Name: ${data.firstName} ${data.lastName}
-            Company: ${data.company}
-            Interest: ${data.interest}
-            Message: ${data.message}
-          `,
-        },
+        json: data,
       });
 
       toast({

@@ -9,6 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { CartItemSelect } from "@/db/models/CartItem";
 import { useToast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/apiClient";
 import {
@@ -21,20 +22,9 @@ import {
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
-interface CartItem {
-  id: string;
-  quantity: number;
-  services: {
-    name: string;
-    description: string;
-    price: number;
-    period: string;
-  };
-}
-
 export const ShoppingCart = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItem[] | null>(null);
+  const [cartItems, setCartItems] = useState<CartItemSelect[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("shoppingCart");
@@ -46,7 +36,7 @@ export const ShoppingCart = () => {
   const fetchCartItems = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.cart.$get(
+      const response = await apiClient.account.cart.$get(
         {},
         {
           headers: {
@@ -59,7 +49,13 @@ export const ShoppingCart = () => {
       );
       const data = await response.json();
       if (data.length > 0) {
-        setCartItems(data);
+        setCartItems(
+          data.map((item) => ({
+            ...item,
+            createdAt: new Date(item.createdAt),
+            updatedAt: new Date(item.updatedAt),
+          }))
+        );
       }
     } catch (error) {
       toast({
@@ -77,7 +73,7 @@ export const ShoppingCart = () => {
 
     setIsLoading(true);
     try {
-      await apiClient.cart[":id"].$patch(
+      await apiClient.account.cart[":id"].$patch(
         {
           param: { id: itemId },
           json: { quantity },
@@ -107,7 +103,7 @@ export const ShoppingCart = () => {
   const removeItem = (itemId: string) => async () => {
     setIsLoading(true);
     try {
-      await apiClient.cart[":id"].$delete(
+      await apiClient.account.cart[":id"].$delete(
         {
           param: { id: itemId },
         },
@@ -162,11 +158,11 @@ export const ShoppingCart = () => {
     }
   };
 
-  const total =
-    cartItems?.reduce(
-      (sum, item) => sum + item.services?.price * item.quantity,
-      0
-    ) ?? 0;
+  const total = 0;
+  // cartItems?.reduce(
+  //   (sum, item) => sum + item.services?.price * item.quantity,
+  //   0
+  // ) ?? 0;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -203,12 +199,12 @@ export const ShoppingCart = () => {
                     className="flex items-center justify-between space-x-4 border-b pb-4"
                   >
                     <div className="space-y-1">
-                      <h4 className="font-medium">{item.services.name}</h4>
+                      {/* <h4 className="font-medium">{item.services.name}</h4> */}
                       <p className="text-sm text-muted-foreground">
-                        {t("item.pricePerPeriod", {
+                        {/* {t("item.pricePerPeriod", {
                           price: item.services.price,
                           period: item.services.period,
-                        })}
+                        })} */}
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">

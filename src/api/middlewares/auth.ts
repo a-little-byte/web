@@ -5,7 +5,7 @@ import { UUID } from "node:crypto";
 
 export const authMiddleware: MiddlewareHandler<{
   Variables: ContextVariables;
-}> = async ({ json, var: { db }, req }, next) => {
+}> = async ({ set, json, var: { db }, req }, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
 
   if (!token) {
@@ -26,6 +26,8 @@ export const authMiddleware: MiddlewareHandler<{
   if (!session) {
     return json({ error: "Unauthorized" }, 401);
   }
+
+  set("session", { user: session });
 
   return next();
 };

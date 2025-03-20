@@ -45,24 +45,20 @@ const Register = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await apiClient.auth["sign-up"].$post({
-        email: data.email,
-        password: data.password,
-        first_name: data.first_name,
-        last_name: data.last_name,
+      await apiClient.auth["sign-up"].$post({
+        json: {
+          email: data.email,
+          password: data.password,
+          first_name: data.first_name,
+          last_name: data.last_name,
+        },
       });
 
-      if (response.error) {
-        throw new Error(response.error);
-      }
-
-      if (response.success) {
-        setEmailSent(true);
-        toast({
-          title: tToast("success.title"),
-          description: tToast("success.description"),
-        });
-      }
+      setEmailSent(true);
+      toast({
+        title: tToast("success.title"),
+        description: tToast("success.description"),
+      });
     } catch (error) {
       toast({
         title: tToast("error.title"),
@@ -101,9 +97,15 @@ const Register = () => {
           <CardContent className="grid gap-4">
             <InputField
               control={form.control}
-              name="fullName"
-              label={t("fullName.label")}
-              placeholder={t("fullName.placeholder")}
+              name="first_name"
+              label={t("first_name.label")}
+              placeholder={t("first_name.placeholder")}
+            />
+            <InputField
+              control={form.control}
+              name="last_name"
+              label={t("last_name.label")}
+              placeholder={t("last_name.placeholder")}
             />
             <InputField
               control={form.control}

@@ -7,6 +7,7 @@ import {
   checkoutRouter,
   heroRouter,
   ordersRouter,
+  paymentsRouter,
   sendRouter,
   servicesRouter,
   subscriptionsRouter,
@@ -71,6 +72,7 @@ export const api = new Hono<{ Variables: ContextVariables }>()
   .route("/checkout", checkoutRouter)
   .route("/contact", sendRouter)
   .route("/subscriptions", subscriptionsRouter)
-  .route("/orders", ordersRouter);
+  .route("/orders", ordersRouter)
+  .route("/payments", paymentsRouter);
 
 export type ApiRouter = typeof api;

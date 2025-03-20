@@ -5,5 +5,6 @@ export * from "./checkout";
 export * from "./contact";
 export * from "./hero";
 export * from "./orders";
+export * from "./payments";
 export * from "./services";
 export * from "./subscriptions";

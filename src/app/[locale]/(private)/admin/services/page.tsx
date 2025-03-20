@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ServiceSelect } from "@/db/utils";
+import { ServiceSelect } from "@/db/models/Service";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";

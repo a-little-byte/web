@@ -2,8 +2,8 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
-import { createClient } from "@/lib/supabase/client";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
@@ -27,36 +27,19 @@ const Success = () => {
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const sessionId = searchParams.get("session_id");
-  const supabase = createClient();
+
   useEffect(() => {
     async function fetchOrderDetails() {
       if (!sessionId) return;
 
       try {
-        const {
-          data: { session },
-        } = await supabase.auth.getSession();
-        if (!session) return;
+        const response = await apiClient.account.payments[":id"].$get({
+          params: {
+            session_id: sessionId,
+          },
+        });
 
-        const { data: orderData } = await supabase
-          .from("payments")
-          .select(
-            `
-            id,
-            amount,
-            status,
-            subscriptions (
-              services (
-                name,
-                price,
-                period
-              )
-            )
-          `,
-          )
-          .eq("stripe_session_id", sessionId)
-          .single()
-          .throwOnError();
+        const orderData = await response.json();
 
         if (orderData) {
           setOrder({

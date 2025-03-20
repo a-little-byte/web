@@ -1,20 +1,15 @@
 "use server";
 
-import type {
-  BillingAddress,
-  CartItem,
-  ChatConversation,
-  ChatMessage,
-  HeroCarousel,
-  Invoice,
-  Payment,
-  PaymentMethod,
-  Service,
-  Subscription,
-  TOTPSecret,
-  TOTPTemp,
-  User,
-} from "@/db/utils";
+import { BillingAddress } from "@/db/models/BillingAddress";
+import { CartItem } from "@/db/models/CartItem";
+import { ChatConversation, ChatMessage } from "@/db/models/Chat";
+import { HeroCarousel } from "@/db/models/HeroCarousel";
+import { Invoice } from "@/db/models/Invoice";
+import { Payment, PaymentMethod } from "@/db/models/Payment";
+import { Service } from "@/db/models/Service";
+import { Subscription } from "@/db/models/Subscription";
+import { TOTPSecret, TOTPTemp } from "@/db/models/Totp";
+import { User } from "@/db/models/User";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 
@@ -38,7 +33,6 @@ export interface Database {
   cart_items: CartItem;
   chat_conversations: ChatConversation;
   chat_messages: ChatMessage;
-  hero_carousels: HeroCarousel;
   invoices: Invoice;
   payments: Payment;
   payment_methods: PaymentMethod;

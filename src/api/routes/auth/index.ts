@@ -79,7 +79,6 @@ export const authRouter = new Hono<{ Variables: ContextVariables }>()
         .updateTable("users")
         .set({
           password: hashedPassword,
-          updatedAt: new Date(),
         })
         .where("id", "=", decoded.userId)
         .execute();
