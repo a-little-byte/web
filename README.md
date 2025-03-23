@@ -123,8 +123,4 @@ Cyna is a modern, full-featured cybersecurity platform built to protect enterpri
 
 ## Deployment 🌐
 
-This application is optimized for deployment on Vercel. Follow these steps:
-
-1. Connect your repository to Vercel
-2. Configure environment variables
-3. Deploy with default settings
+This application can be deploy with the provided docker image
