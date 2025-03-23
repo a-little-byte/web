@@ -6,7 +6,7 @@ export async function up(db: Kysely<any>) {
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
-    .addColumn("name", "text", (col) => col.notNull())
+    .addColumn("name", "text", (col) => col.notNull().unique())
     .addColumn("description", "text", (col) => col.notNull())
     .addColumn("price", "numeric", (col) => col.notNull())
     .addColumn("period", "text", (col) => col.notNull())
@@ -19,7 +19,7 @@ export async function up(db: Kysely<any>) {
     .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
-    .addColumn("email", "text", (col) => col.notNull())
+    .addColumn("email", "text", (col) => col.notNull().unique())
     .addColumn("password", "text", (col) => col.notNull())
     .addColumn("first_name", "text", (col) => col.notNull())
     .addColumn("last_name", "text", (col) => col.notNull())
