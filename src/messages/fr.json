@@ -214,6 +214,45 @@
       "content": "Ces mentions légales ont été mises à jour pour la dernière fois le 14 mars 2025."
     }
   },
+  "privacy": {
+    "title": "Politique de Confidentialité",
+    "intro": {
+      "title": "Introduction",
+      "content": "Bienvenue chez Cyna (\"Société\", \"nous\", \"notre\", \"nos\"). Cette Politique de Confidentialité (\"Politique\", \"Politique de Confidentialité\") décrit comment nous collectons, utilisons et protégeons vos informations personnelles lorsque vous visitez notre site web et utilisons nos services (collectivement, le \"Service\")."
+    },
+    "data": {
+      "title": "Collecte de Données",
+      "content": "Nous pouvons collecter des informations personnelles de vous lorsque vous visitez notre site web ou utilisons nos services. Cette information peut inclure votre nom, adresse e-mail, numéro de téléphone et d'autres informations de contact."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "Nous utilisons des cookies pour améliorer votre expérience sur notre site web. En utilisant notre site web, vous acceptez l'utilisation de cookies."
+    },
+    "third-party": {
+      "title": "Services de Tierces Parties",
+      "content": "Nous pouvons utiliser des services de tierces parties pour améliorer notre site web et nos services. Ces services peuvent collecter des informations sur votre utilisation de notre site web et de nos services."
+    },
+    "security": {
+      "title": "Sécurité",
+      "content": "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour assurer un niveau de sécurité adapté au risque, notamment :"
+    },
+    "changes": {
+      "title": "Modifications",
+      "content": "Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer cette Politique à tout moment. Nous vous informerons de tout changement en publiant les nouvelles Conditions sur cette page."
+    },
+    "contact": {
+      "title": "Contactez-Nous",
+      "content": "Si vous avez des questions sur cette Politique de Confidentialité, veuillez nous contacter."
+    },
+    "consent": {
+      "title": "Consentement",
+      "content": "En utilisant notre site web et nos services, vous acceptez de respecter cette Politique de Confidentialité."
+    },
+    "lastUpdated": {
+      "title": "Dernière Mise à Jour",
+      "content": "Cette Politique de Confidentialité a été mise à jour pour la dernière fois le 14 mars 2025."
+    }
+  },
   "terms": {
     "title": "Conditions Générales",
     "lastUpdated": "Dernière mise à jour : 14 mars 2025",

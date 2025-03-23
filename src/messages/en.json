@@ -125,6 +125,42 @@
       "content": "These legal notices were last updated on March 14, 2025."
     }
   },
+  "privacy": {
+    "title": "Privacy Policy",
+    "intro": "Welcome to Cyna (\"Company\", \"we\", \"our\", \"us\"). This Privacy Policy (\"Policy\") describes how we collect, use, and protect your personal information when you visit our website and use our services (collectively, the \"Service\").",
+    "data": {
+      "title": "Data Collection",
+      "content": "We may collect personal information from you when you visit our website or use our services. This information may include your name, email address, phone number, and other contact information."
+    },
+    "cookies": {
+      "title": "Cookies",
+      "content": "We use cookies to improve your experience on our website. By using our website, you consent to the use of cookies."
+    },
+    "third-party": {
+      "title": "Third-Party Services",
+      "content": "We may use third-party services to improve our website and services. These services may collect information about your use of our website and services."
+    },
+    "security": {
+      "title": "Security",
+      "content": "We implement appropriate technical and organizational measures to protect your personal information. However, no method of transmission over the internet is 100% secure."
+    },
+    "changes": {
+      "title": "Changes to Privacy Policy",
+      "content": "We reserve the right to update this Privacy Policy at any time. We will post any changes to this Privacy Policy on this page and, if the changes are significant, we will provide a more prominent notice."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "content": "If you have any questions about this Privacy Policy, please contact us."
+    },
+    "consent": {
+      "title": "Consent",
+      "content": "By using our website and services, you consent to the terms of this Privacy Policy."
+    },
+    "lastUpdated": {
+      "title": "Last Updated",
+      "content": "This Privacy Policy was last updated on March 14, 2025."
+    }
+  },
   "terms": {
     "title": "Terms and Conditions",
     "lastUpdated": "Last updated: March 14, 2025",

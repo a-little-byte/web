@@ -23,7 +23,7 @@ const navigation: Record<string, NavigationItem[]> = {
   ],
   legal: [
     { name: "Terms", href: "/terms" },
-    { name: "Privacy", href: "#" },
+    { name: "Privacy", href: "/privacy" },
     { name: "Legal Notices", href: "/legal" },
   ],
 } as const;
