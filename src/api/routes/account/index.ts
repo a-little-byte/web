@@ -1,5 +1,6 @@
 import { accountBillingAddresses } from "@/api/routes/account/billing-addresses";
 import { accountCartRouter } from "@/api/routes/account/cart";
+import { accountPaymentMethods } from "@/api/routes/account/payment-methods";
 import { PrivateContextVariables } from "@/api/types";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
@@ -9,6 +10,7 @@ import { z } from "zod";
 export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/cart", accountCartRouter)
   .route("/billing-addresses", accountBillingAddresses)
+  .route("/payment-methods", accountPaymentMethods)
   .get("/", async ({ var: { db, session }, json }) => {
     const user = await db
       .selectFrom("users")
