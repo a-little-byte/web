@@ -295,19 +295,25 @@
     "register": {
       "title": "Create an account",
       "description": "Enter your details below to create your account",
-      "fullName": {
-        "label": "Full Name",
-        "placeholder": "John Doe"
+      "first_name": {
+        "label": "First Name",
+        "placeholder": "John"
+      },
+      "last_name": {
+        "label": "Last Name",
+        "placeholder": "Doe"
       },
       "email": {
         "label": "Email",
         "placeholder": "name@company.com"
       },
       "password": {
-        "label": "Password"
+        "label": "Password",
+        "placeholder": "********"
       },
       "confirmPassword": {
-        "label": "Confirm Password"
+        "label": "Confirm Password",
+        "placeholder": "********"
       },
       "submit": "Create account",
       "loginLink": "Already have an account?",
