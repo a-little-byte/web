@@ -10,13 +10,9 @@ const navigation: Record<string, NavigationItem[]> = {
     { name: "XDR", href: "#" },
     { name: "Threat Intelligence", href: "#" },
   ],
-  support: [
-    { name: "Documentation", href: "#" },
-    { name: "Guides", href: "#" },
-    { name: "API Status", href: "#" },
-  ],
+  support: [{ name: "Contact", href: "/contact" }],
   company: [
-    { name: "About", href: "#" },
+    { name: "About", href: "/about" },
     { name: "Blog", href: "#" },
     { name: "Partners", href: "#" },
     { name: "Careers", href: "#" },
