@@ -1,11 +1,11 @@
 import { accountCartRouter } from "@/api/routes/account/cart";
-import { ContextVariables } from "@/api/types";
+import { PrivateContextVariables } from "@/api/types";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
 
-export const accountRoute = new Hono<{ Variables: ContextVariables }>()
+export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/cart", accountCartRouter)
   .get("/", async ({ var: { db, session }, json }) => {
     const user = await db

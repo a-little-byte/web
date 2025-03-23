@@ -1,10 +1,12 @@
-import { ContextVariables } from "@/api/types";
+import { checkPermissions } from "@/api/middlewares/checkPermissions";
+import { PrivateContextVariables } from "@/api/types";
 import { Hono } from "hono";
 
 export const subscriptionsRouter = new Hono<{
-  Variables: ContextVariables;
+  Variables: PrivateContextVariables;
 }>().get(
   "/",
+  checkPermissions("subscriptions.read"),
   async ({
     var: {
       db,

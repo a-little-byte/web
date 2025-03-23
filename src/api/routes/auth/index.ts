@@ -1,5 +1,5 @@
 import { authTotpRouter } from "@/api/routes/auth/totp";
-import { ContextVariables } from "@/api/types";
+import { PublicContextVariables } from "@/api/types";
 import { verifyEmail } from "@/lib/auth";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
@@ -11,7 +11,7 @@ import { z } from "zod";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-export const authRouter = new Hono<{ Variables: ContextVariables }>()
+export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get("/callback", async (c) => {
     const url = new URL(c.req.url);
     const origin = url.origin;

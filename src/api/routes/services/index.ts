@@ -1,5 +1,5 @@
-import { adminMiddleware, authMiddleware } from "@/api/middlewares";
-import { ContextVariables } from "@/api/types";
+import { checkPermissions } from "@/api/middlewares/checkPermissions";
+import { PrivateContextVariables, PublicContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -12,7 +12,7 @@ const serviceSchema = z.object({
   period: z.string(),
 });
 
-export const servicesRouter = new Hono<{ Variables: ContextVariables }>()
+export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get("/", async ({ var: { db }, json }) => {
     const services = await db
       .selectFrom("services")
@@ -22,49 +22,55 @@ export const servicesRouter = new Hono<{ Variables: ContextVariables }>()
 
     return json(services);
   })
-  .use(authMiddleware, adminMiddleware)
-  .post(
+  .route(
     "/",
-    zValidator("json", serviceSchema),
-    async ({ var: { db }, json, req }) => {
-      const data = req.valid("json");
+    new Hono<{ Variables: PrivateContextVariables }>()
+      .post(
+        "/",
+        checkPermissions("services.create"),
+        zValidator("json", serviceSchema),
+        async ({ var: { db }, json, req }) => {
+          const data = req.valid("json");
 
-      const service = await db
-        .insertInto("services")
-        .values(data)
-        .executeTakeFirstOrThrow();
+          const service = await db
+            .insertInto("services")
+            .values(data)
+            .executeTakeFirstOrThrow();
 
-      return json(service);
-    }
-  )
-  .patch(
-    "/:id",
-    zValidator("param", z.object({ id: idValidator })),
-    zValidator("json", serviceSchema.partial()),
-    async ({ var: { db }, json, req }) => {
-      const { id } = req.valid("param");
-      const data = req.valid("json");
+          return json(service);
+        }
+      )
+      .patch(
+        "/:id",
+        checkPermissions("services.update"),
+        zValidator("param", z.object({ id: idValidator })),
+        zValidator("json", serviceSchema.partial()),
+        async ({ var: { db }, json, req }) => {
+          const { id } = req.valid("param");
+          const data = req.valid("json");
 
-      const service = await db
-        .updateTable("services")
-        .set(data)
-        .where("id", "=", id)
-        .executeTakeFirstOrThrow();
+          const service = await db
+            .updateTable("services")
+            .set(data)
+            .where("id", "=", id)
+            .executeTakeFirstOrThrow();
 
-      return json(service);
-    }
-  )
-  .delete(
-    "/:id",
-    zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
-      const { id } = req.valid("param");
+          return json(service);
+        }
+      )
+      .delete(
+        "/:id",
+        checkPermissions("services.delete"),
+        zValidator("param", z.object({ id: idValidator })),
+        async ({ var: { db }, json, req }) => {
+          const { id } = req.valid("param");
 
-      const service = await db
-        .deleteFrom("services")
-        .where("id", "=", id)
-        .executeTakeFirstOrThrow();
+          const service = await db
+            .deleteFrom("services")
+            .where("id", "=", id)
+            .executeTakeFirstOrThrow();
 
-      return json(service);
-    }
+          return json(service);
+        }
+      )
   );

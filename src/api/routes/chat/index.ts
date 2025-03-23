@@ -1,4 +1,5 @@
-import { ContextVariables } from "@/api/types";
+import { checkPermissions } from "@/api/middlewares/checkPermissions";
+import { PrivateContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { PGVectorStore } from "@langchain/community/vectorstores/pgvector";
@@ -117,8 +118,8 @@ const generateOllamaResponse = async (
   }
 };
 
-export const chatRouter = new Hono<{ Variables: ContextVariables }>()
-  .post("/", async ({ var: { db }, json }) => {
+export const chatRouter = new Hono<{ Variables: PrivateContextVariables }>()
+  .post("/", checkPermissions("chat.create"), async ({ var: { db }, json }) => {
     const user = await db.selectFrom("users").selectAll().executeTakeFirst();
     if (!user) {
       return json({ error: "Not authenticated" }, 401);
@@ -137,6 +138,7 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
   })
   .post(
     "/:chatId",
+    checkPermissions("chat.send"),
     zValidator("param", z.object({ chatId: idValidator })),
     zValidator("json", z.object({ message: z.string() })),
     async ({ var: { db }, json, req }) => {
@@ -197,6 +199,7 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
   )
   .get(
     "/:chatId",
+    checkPermissions("chat.read"),
     zValidator("param", z.object({ chatId: idValidator })),
     async ({ var: { db }, json, req }) => {
       const { chatId } = req.valid("param");
@@ -217,6 +220,7 @@ export const chatRouter = new Hono<{ Variables: ContextVariables }>()
   )
   .post(
     "/ingest",
+    checkPermissions("chat.ingest"),
     zValidator(
       "json",
       z.object({

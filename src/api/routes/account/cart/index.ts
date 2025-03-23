@@ -1,4 +1,4 @@
-import { ContextVariables } from "@/api/types";
+import { PrivateContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
@@ -9,7 +9,9 @@ const addToCartSchema = z.object({
   quantity: z.number().int().positive().default(1),
 });
 
-export const accountCartRouter = new Hono<{ Variables: ContextVariables }>()
+export const accountCartRouter = new Hono<{
+  Variables: PrivateContextVariables;
+}>()
   .get("/", async ({ var: { db, session }, json }) => {
     const cart = await db
       .selectFrom("cart_items")

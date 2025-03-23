@@ -12,9 +12,10 @@ import {
   servicesRouter,
   subscriptionsRouter,
 } from "@/api/routes";
+import { enforcer } from "@/api/services/casbin";
 import { resend } from "@/api/services/resend";
 import { stripe } from "@/api/services/stripe";
-import type { ContextVariables } from "@/api/types";
+import type { PrivateContextVariables } from "@/api/types";
 import { db } from "@/db";
 import { prometheus } from "@hono/prometheus";
 import { sentry } from "@hono/sentry";
@@ -22,14 +23,15 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 
-const contextVariables: Omit<ContextVariables, "session"> = {
+const contextVariables: Omit<PrivateContextVariables, "session"> = {
   db,
   resend,
   stripe,
+  enforcer,
 };
 const { printMetrics, registerMetrics } = prometheus();
 
-export const api = new Hono<{ Variables: ContextVariables }>()
+export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .basePath("/api")
   .onError((err, c) => {
     console.error(err);
@@ -37,7 +39,7 @@ export const api = new Hono<{ Variables: ContextVariables }>()
   })
   .use(async (ctx, next) => {
     Object.entries(contextVariables).forEach(([key, value]) => {
-      ctx.set(key as keyof ContextVariables, value);
+      ctx.set(key as keyof PrivateContextVariables, value);
     });
     return next();
   })

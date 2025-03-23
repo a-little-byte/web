@@ -1,9 +1,11 @@
-import type { ContextVariables } from "@/api/types";
+import type { PrivateContextVariables } from "@/api/types";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
 
-export const sendRouter = new Hono<{ Variables: ContextVariables }>().post(
+export const sendRouter = new Hono<{
+  Variables: PrivateContextVariables;
+}>().post(
   "/",
   zValidator(
     "json",
