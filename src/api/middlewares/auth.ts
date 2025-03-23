@@ -1,10 +1,10 @@
-import { ContextVariables } from "@/api/types";
+import { PrivateContextVariables } from "@/api/types";
 import { MiddlewareHandler } from "hono";
 import jwt from "jsonwebtoken";
 import { UUID } from "node:crypto";
 
 export const authMiddleware: MiddlewareHandler<{
-  Variables: ContextVariables;
+  Variables: PrivateContextVariables;
 }> = async ({ set, json, var: { db }, req }, next) => {
   const token = req.header("Authorization")?.split(" ")[1];
 
