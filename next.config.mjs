@@ -13,7 +13,7 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   experimental: {
-    incrementalCache: true,
+    instrumentationHook: true,
   },
   webpack: (config, { isServer }) => {
     if (isServer) {
