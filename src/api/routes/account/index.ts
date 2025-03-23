@@ -1,3 +1,4 @@
+import { accountBillingAddresses } from "@/api/routes/account/billing-addresses";
 import { accountCartRouter } from "@/api/routes/account/cart";
 import { PrivateContextVariables } from "@/api/types";
 import { emailValidator } from "@/lib/validators";
@@ -7,6 +8,7 @@ import { z } from "zod";
 
 export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/cart", accountCartRouter)
+  .route("/billing-addresses", accountBillingAddresses)
   .get("/", async ({ var: { db, session }, json }) => {
     const user = await db
       .selectFrom("users")
@@ -28,7 +30,7 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         .refine((data) => data.newPassword !== data.oldPassword, {
           message: "New password cannot be the same as the old password",
           path: ["newPassword"],
-        }),
+        })
     ),
     async ({ var: { db, session }, json, req }) => {
       const data = req.valid("json");
@@ -40,7 +42,7 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         .execute();
 
       return json({ success: true });
-    },
+    }
   )
   .patch(
     "/",
@@ -52,7 +54,7 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
           last_name: z.string().min(1),
           email: emailValidator,
         })
-        .partial(),
+        .partial()
     ),
     async ({ var: { db, session }, json, req }) => {
       const data = req.valid("json");
@@ -64,7 +66,7 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         .execute();
 
       return json({ success: true });
-    },
+    }
   )
   .delete("/", async ({ var: { db, session }, json }) => {
     await db.deleteFrom("users").where("id", "=", session.user.id).execute();
