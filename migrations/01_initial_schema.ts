@@ -24,7 +24,7 @@ export async function up(db: Kysely<any>) {
     .addColumn("first_name", "text", (col) => col.notNull())
     .addColumn("last_name", "text", (col) => col.notNull())
     .addColumn("role", "text", (col) => col.defaultTo("user"))
-    .addColumn("email_verified", "boolean", (col) => col.defaultTo(false))
+    .addColumn("email_verified", "timestamptz")
     .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();

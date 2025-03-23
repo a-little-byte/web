@@ -80,7 +80,7 @@ export const Header = async () => {
             }
           />
 
-          <ShoppingCart />
+          {cookie.get("auth-token") && <ShoppingCart />}
 
           <div className="hidden sm:flex sm:items-center sm:gap-2">
             <SignOrDashboard />

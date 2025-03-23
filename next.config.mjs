@@ -12,6 +12,24 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    incrementalCache: true,
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [
+        ...config.externals,
+        "better-sqlite3",
+        "mysql2",
+        "oracledb",
+        "sqlite3",
+        "tedious",
+        "mysql",
+        "pg-query-stream",
+      ];
+    }
+    return config;
+  },
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {

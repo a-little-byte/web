@@ -1,9 +1,8 @@
 import { apiConfig } from "@/api/config";
-import { authMiddleware } from "@/api/middlewares";
+import { authMiddleware } from "@/api/middlewares/auth";
 import {
   accountRoute,
   authRouter,
-  chatRouter,
   checkoutRouter,
   heroRouter,
   ordersRouter,
@@ -70,7 +69,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/services", servicesRouter)
   .use(authMiddleware)
   .route("/account", accountRoute)
-  .route("/chat", chatRouter)
+  // .route("/chat", chatRouter)
   .route("/checkout", checkoutRouter)
   .route("/contact", sendRouter)
   .route("/subscriptions", subscriptionsRouter)

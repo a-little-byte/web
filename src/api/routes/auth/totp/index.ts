@@ -1,4 +1,4 @@
-import { authMiddleware } from "@/api/middlewares";
+import { authMiddleware } from "@/api/middlewares/auth";
 import type {
   PrivateContextVariables,
   PublicContextVariables,

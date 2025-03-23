@@ -1,6 +1,5 @@
 export * from "./account";
 export * from "./auth";
-export * from "./chat";
 export * from "./checkout";
 export * from "./contact";
 export * from "./hero";

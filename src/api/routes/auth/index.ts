@@ -162,7 +162,6 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
             password: hashedPassword,
             first_name,
             last_name,
-            email_verified: false,
             role: "user",
           })
           .returning(["id", "email", "first_name", "last_name", "createdAt"])
