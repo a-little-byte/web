@@ -8,7 +8,11 @@ export const CASBIN_TABLE = "casbin_rule";
 const adapter = await BasicAdapter.newAdapter(
   "pg",
   new Client({
-    connectionString: process.env.DATABASE_URL,
+    database: "test",
+    host: "localhost",
+    user: "admin",
+    password: "admin",
+    port: 5432,
   }),
   CASBIN_TABLE
 );
