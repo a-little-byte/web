@@ -14,7 +14,10 @@
     "searchEmpty": "No results found.",
     "overview": "Overview",
     "subscriptions": "Subscriptions",
-    "settings": "Settings"
+    "settings": "Settings",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "legal": "Legal"
   },
   "home": {
     "hero": {

@@ -76,7 +76,12 @@ export const Header = async () => {
             navigation={
               cookie.get("auth-token")
                 ? [...navigation, ...authNavigation]
-                : navigation
+                : [
+                    ...navigation,
+                    { name: "privacy", href: "/privacy" },
+                    { name: "terms", href: "/terms" },
+                    { name: "legal", href: "/legal" },
+                  ]
             }
           />
 
