@@ -63,7 +63,7 @@ export default function Subscriptions() {
     try {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
+        "$1",
       );
 
       const response = await apiClient.orders.$get(
@@ -72,7 +72,7 @@ export default function Subscriptions() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (!response.ok) {
@@ -108,7 +108,7 @@ export default function Subscriptions() {
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) => new Date(order.createdAt).getFullYear().toString())
+      orders.map((order) => new Date(order.createdAt).getFullYear().toString()),
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -207,7 +207,7 @@ export default function Subscriptions() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      )
+                      ),
                     )}
                   </TableRow>
                 </TableHeader>
@@ -283,7 +283,7 @@ export default function Subscriptions() {
                                           {format(
                                             new Date(order.createdAt),
                                             "PPP",
-                                            { locale: fr }
+                                            { locale: fr },
                                           )}
                                         </dd>
                                       </div>

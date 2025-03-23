@@ -44,7 +44,7 @@ const Login = () => {
   const totpForm = useForm(totpSchema);
 
   const onLoginSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
-    data
+    data,
   ) => {
     setIsLoading(true);
 

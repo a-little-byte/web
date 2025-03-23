@@ -27,7 +27,7 @@ export const ordersRouter = new Hono<{
       .innerJoin(
         "subscriptions",
         "subscriptions.id",
-        "payments.subscription_id"
+        "payments.subscription_id",
       )
       .where("subscriptions.user_id", "=", user.id)
       .orderBy("payments.createdAt", "desc")
@@ -82,9 +82,9 @@ export const ordersRouter = new Hono<{
           billing_address: billingAddress,
           invoice: invoice || undefined,
         };
-      })
+      }),
     );
 
     return json(ordersWithDetails);
-  }
+  },
 );

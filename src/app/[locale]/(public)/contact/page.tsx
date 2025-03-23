@@ -109,7 +109,7 @@ const Contact = () => {
               disabled={form.formState.isSubmitting}
             >
               {t(
-                `form.submit.${form.formState.isSubmitting ? "sending" : "default"}`
+                `form.submit.${form.formState.isSubmitting ? "sending" : "default"}`,
               )}
             </Button>
           </Form>

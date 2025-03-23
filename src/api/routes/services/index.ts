@@ -38,7 +38,7 @@ export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(service);
-        }
+        },
       )
       .patch(
         "/:id",
@@ -56,7 +56,7 @@ export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(service);
-        }
+        },
       )
       .delete(
         "/:id",
@@ -71,6 +71,6 @@ export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(service);
-        }
-      )
+        },
+      ),
   );

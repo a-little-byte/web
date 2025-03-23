@@ -65,7 +65,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         console.error("Password reset error:", error);
         return json({ error: "Failed to process password reset" }, 500);
       }
-    }
+    },
   )
   .post(
     "/reset-password",
@@ -84,14 +84,14 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         .execute();
 
       return json({ success: true });
-    }
+    },
   )
   .post("/verify", async (c) => {
     const { token } = await c.req.json();
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "your-secret-key"
+      process.env.JWT_SECRET || "your-secret-key",
     ) as { userId: UUID };
     await verifyEmail(decoded.userId);
 
@@ -101,7 +101,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     "/sign-in",
     zValidator(
       "json",
-      z.object({ email: emailValidator, password: z.string() })
+      z.object({ email: emailValidator, password: z.string() }),
     ),
     async ({ var: { db }, req, json }) => {
       const { email, password } = req.valid("json");
@@ -127,7 +127,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
       });
 
       return json({ success: true, token });
-    }
+    },
   )
   .post(
     "/sign-up",
@@ -138,7 +138,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         password: z.string().min(6),
         first_name: z.string().min(1),
         last_name: z.string().min(1),
-      })
+      }),
     ),
     async ({ var: { db, resend }, req, json }) => {
       try {
@@ -200,6 +200,6 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         console.error("Sign-up error:", error);
         return json({ error: "Failed to create account" }, 500);
       }
-    }
+    },
   )
   .route("/totp", authTotpRouter);

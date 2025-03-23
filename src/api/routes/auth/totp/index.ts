@@ -46,7 +46,7 @@ export const authTotpRouter = new Hono<{ Variables: PublicContextVariables }>()
       }
 
       return json({ success: true });
-    }
+    },
   )
 
   .route(
@@ -67,7 +67,7 @@ export const authTotpRouter = new Hono<{ Variables: PublicContextVariables }>()
         const otpauth = authenticator.keyuri(
           session.user.email!,
           "Cyna Security",
-          secret
+          secret,
         );
         const qrCode = await QRCode.toDataURL(otpauth);
 
@@ -121,6 +121,6 @@ export const authTotpRouter = new Hono<{ Variables: PublicContextVariables }>()
             .execute();
 
           return json({ success: true });
-        }
-      )
+        },
+      ),
   );

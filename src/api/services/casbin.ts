@@ -14,10 +14,10 @@ const adapter = await BasicAdapter.newAdapter(
     password: "admin",
     port: 5432,
   }),
-  CASBIN_TABLE
+  CASBIN_TABLE,
 );
 
 export const enforcer = await newEnforcer(
   path.join(__dirname, "src/db/models/rbac_model.conf"),
-  adapter
+  adapter,
 );

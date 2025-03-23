@@ -84,14 +84,15 @@ const ragChain = createRagChain();
 
 const generateOllamaResponse = async (
   messages: Array<{ role: string; content: string }>,
-  userMessage: string
+  userMessage: string,
 ) => {
   try {
     // Format chat history for the RAG chain
     const chatHistory = messages
       .filter((msg) => msg.role !== "system")
       .map(
-        (msg) => `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`
+        (msg) =>
+          `${msg.role === "user" ? "User" : "Assistant"}: ${msg.content}`,
       )
       .join("\n");
 
@@ -195,7 +196,7 @@ export const chatRouter = new Hono<{ Variables: PrivateContextVariables }>()
           },
         ],
       });
-    }
+    },
   )
   .get(
     "/:chatId",
@@ -216,7 +217,7 @@ export const chatRouter = new Hono<{ Variables: PrivateContextVariables }>()
         .execute();
 
       return json({ messages });
-    }
+    },
   )
   .post(
     "/ingest",
@@ -228,9 +229,9 @@ export const chatRouter = new Hono<{ Variables: PrivateContextVariables }>()
           z.object({
             content: z.string(),
             metadata: z.record(z.string(), z.any()).optional(),
-          })
+          }),
         ),
-      })
+      }),
     ),
     async ({ json, req }) => {
       const { documents } = req.valid("json");
@@ -243,5 +244,5 @@ export const chatRouter = new Hono<{ Variables: PrivateContextVariables }>()
       await vectorStore.addDocuments(formattedDocs);
 
       return json({ success: true, count: documents.length });
-    }
+    },
   );

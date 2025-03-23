@@ -116,7 +116,7 @@ const Dashboard = () => {
       ([name, value]) => ({
         name,
         value,
-      })
+      }),
     );
 
     setSalesData(salesDataArray);

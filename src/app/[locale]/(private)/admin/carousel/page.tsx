@@ -45,7 +45,7 @@ const CarouselManagement = () => {
   const [items, setItems] = useState<HeroCarouselSelect[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<HeroCarouselSelect | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -73,7 +73,7 @@ const CarouselManagement = () => {
           ...item,
           createdAt: new Date(item.createdAt),
           updatedAt: new Date(item.updatedAt),
-        }))
+        })),
       );
     } catch (error) {
       toast({
@@ -135,7 +135,7 @@ const CarouselManagement = () => {
             json: { order: index },
             param: { id: item.id },
           });
-        })
+        }),
       );
 
       fetchItems();

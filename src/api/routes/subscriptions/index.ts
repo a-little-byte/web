@@ -34,7 +34,7 @@ export const subscriptionsRouter = new Hono<{
           ...subscription,
           services: services[0] || null,
         };
-      })
+      }),
     );
 
     const payments = await db
@@ -43,19 +43,19 @@ export const subscriptionsRouter = new Hono<{
       .innerJoin(
         "subscriptions",
         "subscriptions.id",
-        "payments.subscription_id"
+        "payments.subscription_id",
       )
       .where("subscriptions.user_id", "=", user.id)
       .execute();
 
     const totalSpent = payments.reduce(
       (sum, payment) => sum + payment.amount,
-      0
+      0,
     );
 
     return json({
       subscriptions: subscriptionsWithServices,
       totalSpent,
     });
-  }
+  },
 );

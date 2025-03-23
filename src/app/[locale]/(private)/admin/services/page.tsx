@@ -39,7 +39,7 @@ const ServicesManagement = () => {
   const [services, setServices] = useState<ServiceSelect[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentService, setCurrentService] = useState<ServiceSelect | null>(
-    null
+    null,
   );
   const { toast } = useToast();
   const form = useForm(serviceSchema, {
@@ -65,7 +65,7 @@ const ServicesManagement = () => {
           ...service,
           createdAt: new Date(service.createdAt),
           updatedAt: new Date(service.updatedAt),
-        }))
+        })),
       );
     } catch (error) {
       toast({
@@ -185,7 +185,7 @@ const ServicesManagement = () => {
             {["name", "description", "price", "period", "actions"].map(
               (column) => (
                 <TableHead key={column}>{t(`table.${column}`)}</TableHead>
-              )
+              ),
             )}
           </TableRow>
         </TableHeader>

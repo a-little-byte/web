@@ -32,7 +32,7 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
             button_link: z.string(),
             active: z.boolean(),
             order: z.number(),
-          })
+          }),
         ),
         async ({ var: { db }, req, json }) => {
           const body = req.valid("json");
@@ -44,7 +44,7 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(result);
-        }
+        },
       )
       .patch(
         "/:id",
@@ -62,7 +62,7 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
               active: z.boolean(),
               order: z.number(),
             })
-            .partial()
+            .partial(),
         ),
         async ({ var: { db }, req, json }) => {
           const { id } = req.valid("param");
@@ -76,7 +76,7 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(result);
-        }
+        },
       )
       .delete(
         "/:id",
@@ -88,6 +88,6 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
           await db.deleteFrom("hero_carousel").where("id", "=", id).execute();
 
           return json({});
-        }
-      )
+        },
+      ),
   );

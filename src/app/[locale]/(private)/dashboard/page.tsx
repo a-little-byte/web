@@ -41,10 +41,10 @@ const Dashboard = () => {
             headers: {
               Authorization: `Bearer ${document.cookie.replace(
                 /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1"
+                "$1",
               )}`,
             },
-          }
+          },
         );
 
         const data = await response.json();

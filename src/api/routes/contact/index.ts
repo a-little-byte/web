@@ -16,7 +16,7 @@ export const sendRouter = new Hono<{
       company: z.string(),
       interest: z.string(),
       message: z.string(),
-    })
+    }),
   ),
   async ({ req, var: { resend }, json }) => {
     const { firstName, lastName, email, company, interest, message } =
@@ -38,5 +38,5 @@ export const sendRouter = new Hono<{
     });
 
     return json(data);
-  }
+  },
 );
