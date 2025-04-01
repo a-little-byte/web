@@ -1,48 +1,8 @@
-"use client";
+import { ContactForm } from "@/app/[locale]/(public)/contact/_components/ContactForm";
+import { getTranslations } from "next-intl/server";
 
-import { Form } from "@/components/base/Form";
-import { InputField } from "@/components/base/InputField";
-import { SelectField } from "@/components/base/SelectField";
-import { TextareaField } from "@/components/base/TextareaField";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { useForm } from "@/hooks/useForm";
-import { apiClient } from "@/lib/apiClient";
-import { useTranslations } from "next-intl";
-import { z } from "zod";
-
-const contactFormSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  email: z.string().email(),
-  company: z.string(),
-  interest: z.string(),
-  message: z.string(),
-});
-
-const Contact = () => {
-  const t = useTranslations("contact");
-  const { toast } = useToast();
-  const form = useForm(contactFormSchema);
-  const onSubmit = async (data: z.output<typeof contactFormSchema>) => {
-    try {
-      await apiClient.contact.$post({
-        json: data,
-      });
-
-      toast({
-        title: t("toast.success.title"),
-        description: t("toast.success.description"),
-      });
-      form.reset();
-    } catch (error) {
-      toast({
-        title: t("toast.error.title"),
-        description: t("toast.error.description"),
-        variant: "destructive",
-      });
-    }
-  };
+const ContactPage = async () => {
+  const t = await getTranslations("contact");
 
   return (
     <div className="py-24 sm:py-32">
@@ -55,68 +15,11 @@ const Contact = () => {
             {t("subtitle")}
           </p>
 
-          <Form form={form} onSubmit={onSubmit} className="mt-16 space-y-8">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <InputField
-                label={t("form.firstName")}
-                control={form.control}
-                name="firstName"
-                placeholder={t("form.firstName")}
-              />
-              <InputField
-                label={t("form.lastName")}
-                control={form.control}
-                name="lastName"
-                placeholder={t("form.lastName")}
-              />
-            </div>
-
-            <InputField
-              label={t("form.email")}
-              control={form.control}
-              name="email"
-              placeholder={t("form.email")}
-            />
-
-            <InputField
-              label={t("form.company")}
-              control={form.control}
-              name="company"
-              placeholder={t("form.company")}
-            />
-
-            <SelectField
-              label={t("form.interest.label")}
-              control={form.control}
-              name="interest"
-              placeholder={t("form.interest.placeholder")}
-              options={["soc", "edr", "xdr", "other"].map((key) => ({
-                label: t(`form.interest.options.${key}`),
-                value: key,
-              }))}
-            />
-
-            <TextareaField
-              label={t("form.message.label")}
-              control={form.control}
-              name="message"
-              placeholder={t("form.message.placeholder")}
-            />
-
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={form.formState.isSubmitting}
-            >
-              {t(
-                `form.submit.${form.formState.isSubmitting ? "sending" : "default"}`,
-              )}
-            </Button>
-          </Form>
+          <ContactForm />
         </div>
       </div>
     </div>
   );
 };
 
-export default Contact;
+export default ContactPage;
