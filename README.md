@@ -66,6 +66,10 @@ Cyna is a modern, full-featured cybersecurity platform built to protect enterpri
 
 - **GitHub Actions** - Continuous integration and deployment
 
+### 💻 Infrastructure
+
+- **Terraform** - IaC tool
+
 ### 📝 Code Quality
 
 - **ESLint** - JavaScript linting
