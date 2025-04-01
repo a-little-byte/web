@@ -20,6 +20,36 @@
     "legal": "Legal",
     "home": "Home"
   },
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "description": "Enterprise-grade cybersecurity solutions for your business. Protect your digital assets with industry-leading technology.",
+    "solutions": {
+      "title": "Solutions",
+      "soc": "SOC as a Service",
+      "edr": "EDR Protection",
+      "xdr": "XDR Platform",
+      "threatIntelligence": "Threat Intelligence Services"
+    },
+    "social": {
+      "title": "Social",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    },
+    "company": {
+      "title": "Company",
+      "about": "About",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "legal": {
+      "title": "Legal",
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "legalNotices": "Legal Notices"
+    }
+  },
   "home": {
     "hero": {
       "title": "Enterprise Security Made",

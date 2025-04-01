@@ -20,6 +20,35 @@
     "legal": "Mentions légales",
     "home": "Accueil"
   },
+  "footer": {
+    "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
+    "allRightsReserved": "Tous droits réservés.",
+    "solutions": {
+      "title": "Solutions",
+      "soc": "SOC en tant que Service",
+      "edr": "Protection EDR",
+      "xdr": "Plateforme XDR"
+    },
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "legal": {
+      "title": "Mentions Légales",
+      "terms": "Conditions",
+      "privacy": "Confidentialité",
+      "legalNotices": "Mentions Légales"
+    },
+    "social": {
+      "title": "Social",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
+  },
   "home": {
     "hero": {
       "title": "Sécurité d'Entreprise",
