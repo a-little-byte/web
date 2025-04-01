@@ -253,11 +253,7 @@
     "changes": {
       "title": "Changes",
       "content": "We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide notice of any changes by posting the new Terms on this page."
-    },
-    "accept": "Accept Terms",
-    "processing": "Processing...",
-    "accepted": "Terms Accepted",
-    "acceptedMessage": "Thank you for accepting our terms and conditions."
+    }
   },
   "contact": {
     "title": "Contact Us",

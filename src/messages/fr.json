@@ -344,11 +344,7 @@
     "changes": {
       "title": "Modifications",
       "content": "Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Nous vous informerons de tout changement en publiant les nouvelles Conditions sur cette page."
-    },
-    "accept": "Accepter les Conditions",
-    "processing": "En cours de traitement...",
-    "accepted": "Conditions Acceptées",
-    "acceptedMessage": "Merci d'avoir accepté nos conditions générales."
+    }
   },
   "admin": {
     "dashboard": {
