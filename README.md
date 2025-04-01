@@ -69,6 +69,7 @@ Cyna is a modern, full-featured cybersecurity platform built to protect enterpri
 ### 💻 Infrastructure
 
 - **Terraform** - IaC tool
+- **Kubernetes** - Container orchestrator
 
 ### 📝 Code Quality
 
