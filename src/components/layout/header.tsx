@@ -81,6 +81,7 @@ export const Header = async () => {
                     { name: "privacy", href: "/privacy" },
                     { name: "terms", href: "/terms" },
                     { name: "legal", href: "/legal" },
+                    { name: "home", href: "/" },
                   ]
             }
           />
