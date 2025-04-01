@@ -16,6 +16,11 @@ const nextConfig = {
     instrumentationHook: true,
   },
   webpack: (config, { isServer }) => {
+    config.module.rules.push({
+      test: /\.node$/,
+      use: 'node-loader'
+    });
+
     if (isServer) {
       config.externals = [
         ...config.externals,
@@ -27,6 +32,10 @@ const nextConfig = {
         "mysql",
         "pg-query-stream",
       ];
+       config.node = {
+        __dirname: true,
+        __filename: true,
+      };
     }
     return config;
   },

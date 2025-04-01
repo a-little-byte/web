@@ -1,0 +1,5 @@
+C:\work\web\src\api\c\hash\src\main.c;C:\work\web\src\api\c\hash\build\Release\obj\hash\src\main.obj
+C:\work\web\src\api\c\hash\src\pbkdf2.c;C:\work\web\src\api\c\hash\build\Release\obj\hash\src\pbkdf2.obj
+C:\work\web\src\api\c\hash\src\sha256.c;C:\work\web\src\api\c\hash\build\Release\obj\hash\src\sha256.obj
+C:\work\web\src\api\c\hash\src\utils.c;C:\work\web\src\api\c\hash\build\Release\obj\hash\src\utils.obj
+C:\Users\keena\AppData\Roaming\npm\node_modules\node-gyp\src\win_delay_load_hook.cc;C:\work\web\src\api\c\hash\build\Release\obj\hash\win_delay_load_hook.obj

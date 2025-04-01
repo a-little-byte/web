@@ -1,0 +1,23 @@
+{
+  "name": "hash-module",
+  "version": "1.0.0",
+  "description": "Native hash module with PBKDF2 and SHA-256",
+  "main": "index.js",
+  "scripts": {
+    "install": "node-gyp rebuild",
+    "build": "node-gyp rebuild",
+    "clean": "node-gyp clean"
+  },
+  "keywords": [
+    "hash",
+    "pbkdf2",
+    "sha256",
+    "native"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-gyp": "^9.4.1"
+  },
+  "gypfile": true
+} 

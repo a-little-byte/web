@@ -3,13 +3,14 @@ import { PublicContextVariables } from "@/api/types";
 import { verifyEmail } from "@/lib/auth";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
-import bcrypt from "bcryptjs";
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 import type { UUID } from "node:crypto";
 import { z } from "zod";
+import { hash, verify } from "@/api/c/hash/index";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+const PEPPER = process.env.hash_PEPPER || "default-pepper-value";
 
 export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get("/callback", async (c) => {
@@ -73,7 +74,8 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     async ({ var: { db }, req, json }) => {
       const { token, password } = req.valid("json");
       const decoded = jwt.verify(token, JWT_SECRET) as { userId: UUID };
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = hash(password, null, PEPPER);
+      
 
       await db
         .updateTable("users")
@@ -116,7 +118,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         return json({ error: "Invalid credentials" }, 401);
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = verify(password, user.password, PEPPER);
 
       if (!isPasswordValid) {
         return json({ error: "Invalid credentials" }, 401);
@@ -154,7 +156,8 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           return json({ error: "User already exists" }, 400);
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = hash(password, null, PEPPER);
+        console.log(hashedPassword);
         const user = await db
           .insertInto("users")
           .values({
@@ -173,13 +176,13 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         await resend.emails.send({
           from: "Cyna <onboarding@resend.dev>",
           to: [email],
-          subject: "Verify your email",
+          subject: "verify your email",
           html: `
         <div>
-          <h1>Verify Your Email</h1>
+          <h1>verify Your Email</h1>
           <p>Click the link below to verify your email address. This link will expire in 24 hours.</p>
           <a href="${process.env.NEXT_PUBLIC_URL}/auth/callback?token=${verificationToken}">
-            Verify Email
+            verify Email
           </a>
           <p>If you didn't create an account, you can safely ignore this email.</p>
         </div>

@@ -1,9 +1,11 @@
 import type { Database } from "@/db";
-import bcrypt from "bcrypt";
+import { Hash } from "@/api/c/hash/utils";
 import { type Kysely } from "kysely";
 
+const PEPPER = process.env.HASH_PEPPER || "default-pepper-value";
+
 export async function seed(db: Kysely<Database>): Promise<void> {
-  const hashedPassword = await bcrypt.hash("password", 10);
+  const hashedPassword = Hash("password", null, PEPPER);
 
   await db
     .insertInto("users")
