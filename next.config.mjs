@@ -15,6 +15,13 @@ const nextConfig = {
   experimental: {
     instrumentationHook: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
   webpack: (config, { isServer }) => {
     if (isServer) {
       config.externals = [

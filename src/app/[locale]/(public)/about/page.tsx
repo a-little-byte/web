@@ -1,25 +1,39 @@
+import {
+  Feature,
+  Features,
+} from "@/app/[locale]/(public)/about/_components/Features";
 import { Button } from "@/components/ui/button";
-import { Link } from "@/lib/i18n/routing";
+import { Link, locales } from "@/lib/i18n/routing";
 import { getTranslations } from "next-intl/server";
 
-const features = [
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
+
+const features: Array<Feature> = [
   {
     id: "expertTeam",
     translationKey: "whyChoose.features.expertTeam",
+    srcImage:
+      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
   },
   {
     id: "advancedTechnology",
     translationKey: "whyChoose.features.advancedTechnology",
+    srcImage:
+      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
   },
   {
     id: "support",
     translationKey: "whyChoose.features.support",
+    srcImage:
+      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
   },
   {
     id: "globalCoverage",
     translationKey: "whyChoose.features.globalCoverage",
+    srcImage:
+      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
   },
-] as const;
+];
 
 const About = async () => {
   const t = await getTranslations("about");
@@ -44,26 +58,7 @@ const About = async () => {
             </p>
           </div>
 
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold tracking-tight">
-              {t("whyChoose.title")}
-            </h2>
-            <div className="mt-8 grid gap-8 sm:grid-cols-2">
-              {features.map((feature) => (
-                <div
-                  key={feature.id}
-                  className="relative p-6 rounded-2xl border bg-card"
-                >
-                  <h3 className="text-lg font-semibold">
-                    {t(`${feature.translationKey}.title`)}
-                  </h3>
-                  <p className="mt-2 text-muted-foreground">
-                    {t(`${feature.translationKey}.description`)}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <Features data={features} />
 
           <div className="mt-16 text-center">
             <Button size="lg" asChild>
