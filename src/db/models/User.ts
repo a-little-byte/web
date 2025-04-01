@@ -6,6 +6,7 @@ export type User = {
   id: Generated<UUID>;
   email: string;
   password: string;
+  password_salt: string;
   first_name: string;
   last_name: string;
   role: string;

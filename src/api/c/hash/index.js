@@ -1,6 +1,6 @@
 const hash = require('./build/Release/hash.node');
 
-function generateSalt(length = 16) {
+const generateSalt = (length = 16) => {
     const array = new Uint8Array(length);
     crypto.getRandomValues(array);
     return Buffer.from(array).toString('base64');

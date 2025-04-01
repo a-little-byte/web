@@ -11,6 +11,7 @@ import type { TOTPSecret, TOTPTemp } from "@/db/models/Totp";
 import type { User } from "@/db/models/User";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
+import { InformationSchemaTables } from "./models/Information";
 
 export const db = new Kysely<Database>({
   dialect: new PostgresDialect({
@@ -33,6 +34,7 @@ export interface Database {
   chat_conversations: ChatConversation;
   chat_messages: ChatMessage;
   invoices: Invoice;
+  "information_schema.tables": InformationSchemaTables;
   payments: Payment;
   payment_methods: PaymentMethod;
   subscriptions: Subscription;

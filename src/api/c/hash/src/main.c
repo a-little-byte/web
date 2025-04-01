@@ -1,5 +1,6 @@
 #include <node_api.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../inc/main.h"
 #include "../inc/pbkdf2.h"
 #include "../inc/utils.h"
@@ -20,7 +21,7 @@
 
 napi_value Hash(napi_env env, napi_callback_info info)
 {
-    napi_status status;
+    //napi_status status;
     size_t argc = 5;
     napi_value args[5];
     NAPI_CALL(env, napi_get_cb_info(env, info, &argc, args, NULL, NULL));
@@ -90,7 +91,7 @@ napi_value Hash(napi_env env, napi_callback_info info)
 
 napi_value Verify(napi_env env, napi_callback_info info)
 {
-    napi_status status;
+    //napi_status status;
     size_t argc = 6;
     napi_value args[6];
     NAPI_CALL(env, napi_get_cb_info(env, info, &argc, args, NULL, NULL));

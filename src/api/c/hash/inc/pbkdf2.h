@@ -1,6 +1,7 @@
 #ifndef PBKDF2_H
 #define PBKDF2_H
 
+#include <stdlib.h>
 
 void pbkdf2(const char *password, size_t password_len,
             const unsigned char *salt, size_t salt_len,
