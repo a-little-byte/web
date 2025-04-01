@@ -13,25 +13,25 @@ const features: Array<Feature> = [
     id: "expertTeam",
     translationKey: "whyChoose.features.expertTeam",
     srcImage:
-      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "advancedTechnology",
     translationKey: "whyChoose.features.advancedTechnology",
     srcImage:
-      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
+      "https://images.unsplash.com/photo-1484662020986-75935d2ebc66?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "support",
     translationKey: "whyChoose.features.support",
     srcImage:
-      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
+      "https://images.unsplash.com/photo-1541976844346-f18aeac57b06?q=80&w=2448&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: "globalCoverage",
     translationKey: "whyChoose.features.globalCoverage",
     srcImage:
-      "https://images.unsplash.com/photo-1717501219716-b93a67d2f7b2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8",
+      "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
 ];
 

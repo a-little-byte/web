@@ -131,7 +131,7 @@ export const TextComponent = ({
         <div className="w-full px-4 pb-4">
           <div className="relative h-1 w-full overflow-hidden rounded-full">
             <div
-              className={cn("absolute top-0 left-0 h-1 bg-violet-500")}
+              className={cn("absolute top-0 left-0 h-1 bg-primary")}
               style={{ width: `${loadingWidthPercent}%` }}
             />
           </div>
