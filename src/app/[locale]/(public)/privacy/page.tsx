@@ -26,7 +26,7 @@ const PrivacyPage = async () => {
           <p>{t("intro")}</p>
           <div className="flex flex-col gap-8">
             {sections.map((section) => (
-              <Section key={section} ns={section} />
+              <Section key={section} ns={`privacy.${section}`} />
             ))}
           </div>
         </div>
