@@ -7,10 +7,10 @@ import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 import type { UUID } from "node:crypto";
 import { z } from "zod";
-import { hash, verify } from "@/api/c/hash/index";
+import { Hash, Verify } from "@/api/c/hash";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
-const PEPPER = process.env.hash_PEPPER || "default-pepper-value";
+const PEPPER = process.env.HASH_PEPPER || "default-pepper-value";
 
 export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get("/callback", async (c) => {
@@ -74,13 +74,14 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     async ({ var: { db }, req, json }) => {
       const { token, password } = req.valid("json");
       const decoded = jwt.verify(token, JWT_SECRET) as { userId: UUID };
-      const hashedPassword = hash(password, null, PEPPER);
+      const {hash, salt} = Hash(password, PEPPER);
       
 
       await db
         .updateTable("users")
         .set({
-          password: hashedPassword,
+          password: hash,
+          password_salt: salt
         })
         .where("id", "=", decoded.userId)
         .execute();
@@ -118,7 +119,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         return json({ error: "Invalid credentials" }, 401);
       }
 
-      const isPasswordValid = verify(password, user.password, PEPPER);
+      const isPasswordValid = Verify(password, user.password, user.password_salt, PEPPER);
 
       if (!isPasswordValid) {
         return json({ error: "Invalid credentials" }, 401);
@@ -144,6 +145,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     ),
     async ({ var: { db, resend }, req, json }) => {
       try {
+        console.log('entry')
         const { email, password, first_name, last_name } = req.valid("json");
 
         const existingUser = await db
@@ -156,13 +158,14 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           return json({ error: "User already exists" }, 400);
         }
 
-        const hashedPassword = hash(password, null, PEPPER);
-        console.log(hashedPassword);
+        const {hash, salt} = Hash(password, PEPPER);
+        console.log(hash);
         const user = await db
           .insertInto("users")
           .values({
             email,
-            password: hashedPassword,
+            password: hash,
+            password_salt: salt,
             first_name,
             last_name,
             role: "user",

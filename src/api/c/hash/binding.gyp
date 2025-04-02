@@ -8,7 +8,7 @@
       "src/utils.c"
     ],
     "include_dirs": [
-      "inc"
+      "inc",
     ],
     "cflags": ["-fPIC", "-O3"],
     "cflags!": ["-fno-exceptions"],

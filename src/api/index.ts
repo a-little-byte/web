@@ -32,38 +32,38 @@ const { printMetrics, registerMetrics } = prometheus();
 
 export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .basePath("/api")
-  .onError((err, c) => {
-    console.error(err);
-    return c.json({ error: err.message }, 500);
-  })
-  .use(async (ctx, next) => {
-    Object.entries(contextVariables).forEach(([key, value]) => {
-      ctx.set(key as keyof PrivateContextVariables, value);
-    });
-    return next();
-  })
+  //.onError((err, c) => {
+  //  console.error(err);
+    // return c.json({ error: err.message }, 500);
+  // })
+  // .use(async (ctx, next) => {
+  //   Object.entries(contextVariables).forEach(([key, value]) => {
+  //     ctx.set(key as keyof PrivateContextVariables, value);
+  //   });
+  //   return next();
+  // })
   .use(logger())
-  .use(
-    "*",
-    sentry({
-      enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
-      dsn: apiConfig.sentryDsn,
-      tracesSampleRate: 1.0,
-    }),
-  )
-  .use("*", registerMetrics)
-  .get("/metrics", printMetrics)
-  .use(
-    "/auth/*",
-    cors({
-      origin: "http://localhost:3000",
-      allowHeaders: ["Content-Type", "Authorization"],
-      allowMethods: ["POST", "GET", "OPTIONS", "PUT", "DELETE", "PATCH"],
-      exposeHeaders: ["Content-Length"],
-      maxAge: 600,
-      credentials: true,
-    }),
-  )
+  // .use(
+  //   "*",
+  //   sentry({
+  //     enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
+  //     dsn: apiConfig.sentryDsn,
+  //     tracesSampleRate: 1.0,
+  //   }),
+  // )
+  // .use("*", registerMetrics)
+  // .get("/metrics", printMetrics)
+  //.use(
+  //  "/auth/*",
+  //  cors({
+  //    origin: "http://localhost:3000",
+  //    allowHeaders: ["Content-Type", "Authorization"],
+  //    allowMethods: ["POST", "GET", "OPTIONS", "PUT", "DELETE", "PATCH"],
+  //    exposeHeaders: ["Content-Length"],
+  //    maxAge: 600,
+  //    credentials: true,
+  //  }),
+ // )
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
   .route("/services", servicesRouter)

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Native hash module with PBKDF2 and SHA-256",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "install": "node-gyp rebuild",
     "build": "node-gyp rebuild",

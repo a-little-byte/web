@@ -6,7 +6,7 @@ import type { UUID } from "node:crypto";
 export async function verifyEmail(userId: UUID): Promise<void> {
   await db
     .updateTable("users")
-    .set({ email_verified: true })
+    .set({ email_verified: new Date() })
     .where("id", "=", userId)
     .executeTakeFirstOrThrow();
 }
