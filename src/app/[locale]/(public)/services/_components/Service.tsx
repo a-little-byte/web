@@ -1,9 +1,20 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { ServiceSelect } from "@/db/models/Service";
+import { useToast } from "@/hooks/use-toast";
+import { apiClient } from "@/lib/apiClient";
 import { Check, Lock, Shield, Zap } from "lucide-react";
-
 import { useTranslations } from "next-intl";
+import { useCallback, useState } from "react";
+
 export const durationOptions = [
   { value: "1", multiplier: 1, discount: 0 },
   { value: "3", multiplier: 3, discount: 0.1 },
@@ -27,6 +38,33 @@ const icons = {
 
 export const Service = ({ service }: { service: ServiceSelect }) => {
   const t = useTranslations("services");
+  const [duration, setDuration] = useState(durationOptions[0].value);
+  const { toast } = useToast();
+
+  const addToCart = useCallback(async () => {
+    try {
+      await apiClient.account.cart.$post({
+        json: {
+          serviceId: service.id,
+          quantity: 1,
+          duration,
+        },
+      });
+
+      toast({
+        title: t("cart.success.title"),
+        description: t("cart.success.description", {
+          product: service.name,
+        }),
+      });
+    } catch (error) {
+      toast({
+        title: t("cart.error.addFailed.title"),
+        description: t("cart.error.addFailed.description"),
+        variant: "destructive",
+      });
+    }
+  }, []);
 
   return (
     <div
@@ -53,11 +91,38 @@ export const Service = ({ service }: { service: ServiceSelect }) => {
 
       <div className="mt-4">
         <div className="text-2xl font-bold mb-3">
-          ${service.price}{" "}
+          $
+          {Number(calculatePrice(service.price, duration).toFixed(2)) /
+            Number(
+              durationOptions.find((opt) => opt.value === duration)?.multiplier
+            )}{" "}
           <span className="text-sm text-muted-foreground/90">
             / {service.period}
           </span>
         </div>
+
+        <Select value={duration} onValueChange={setDuration}>
+          <SelectTrigger>
+            <SelectValue placeholder={t("duration.select")} />
+          </SelectTrigger>
+          <SelectContent>
+            {durationOptions.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {`${t(`duration.options.${option.value}`)} ${
+                  option.discount > 0
+                    ? `(${t("duration.discount", {
+                        discount: option.discount * 100,
+                      })})`
+                    : ""
+                }`}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+
+        <Button className="mt-6 w-full" onClick={addToCart}>
+          {t("cart.addToCart")}
+        </Button>
       </div>
     </div>
   );
