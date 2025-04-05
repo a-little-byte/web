@@ -7,6 +7,7 @@ export type CartItem = {
   user_id: UUID;
   service_id: UUID;
   quantity: number;
+  duration: string;
   createdAt: CreatedAt;
   updatedAt: UpdatedAt;
 };
