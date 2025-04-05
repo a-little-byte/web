@@ -18,7 +18,11 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.node$/,
-      use: 'node-loader'
+      use: [
+        {
+          loader: "node-loader",
+        },
+      ],
     });
 
     if (isServer) {
@@ -31,12 +35,28 @@ const nextConfig = {
         "tedious",
         "mysql",
         "pg-query-stream",
+        "hash",
+        "knex",
+        "casbin",
+        "casbin-basic-adapter",
+        { "knex/lib/migrations": "knex/lib/migrations" },
+        { "knex/lib/migrations/util/import-file": "knex/lib/migrations/util/import-file" },
       ];
-       config.node = {
+      config.node = {
         __dirname: true,
         __filename: true,
       };
     }
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        fs: false,
+        path: false,
+      };
+    }
+
     return config;
   },
 };

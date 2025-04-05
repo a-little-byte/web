@@ -7,8 +7,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
 import { Hash, Verify } from "@/api/c/hash";
-
-const PEPPER = process.env.HASH_PEPPER || "default-pepper-value";
+import { apiConfig } from "@/api/config";
 
 export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/cart", accountCartRouter)
@@ -50,12 +49,12 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         return json({ error: "User not found" }, 404);
       }
 
-      const isOldPasswordValid = Verify(data.oldPassword, user.password, user.password_salt, PEPPER);
+      const isOldPasswordValid = await Verify(data.oldPassword, user.password, user.password_salt, apiConfig.pepper);
       if (!isOldPasswordValid) {
         return json({ error: "Invalid old password" }, 400);
       }
 
-      const {hash, salt} = Hash(data.newPassword, PEPPER);
+      const {hash, salt} = await Hash(data.newPassword, apiConfig.pepper);
 
       await db
         .updateTable("users")

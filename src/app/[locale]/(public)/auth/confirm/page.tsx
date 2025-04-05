@@ -23,8 +23,10 @@ const ConfirmEmail = () => {
       try {
         if (!token) throw new Error(t("error.noToken"));
 
-        await apiClient.auth.verify.$post({
-          token,
+        await apiClient.auth["verify"].$post({
+          json:{
+            token
+          }
         });
 
         router.push("/auth/login");

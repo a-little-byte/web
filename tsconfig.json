@@ -14,8 +14,6 @@
     "jsx": "preserve",
     "incremental": true,
     "allowSyntheticDefaultImports": true,
-    "moduleResolution": "NodeNext",
-    "module": "NodeNext",
     "plugins": [
       {
         "name": "next"

@@ -1,11 +1,11 @@
 import type { Database } from "@/db";
 import { type Kysely } from "kysely";
 import { Hash, Verify } from "../src/api/c/hash/index.js";
+import { apiConfig } from "@/api/config.js";
 
-const PEPPER = process.env.HASH_PEPPER || "default-pepper-value";
 
 export async function seed(db: Kysely<Database>): Promise<void> {
-  const { hash, salt } = Hash("password", PEPPER);
+  const { hash, salt } = await Hash("password", apiConfig.pepper);
 
   await db
     .insertInto("users")

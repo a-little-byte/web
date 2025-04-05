@@ -1,24 +1,24 @@
 {
   "name": "hash-module",
   "version": "1.0.0",
-  "description": "Native hash module with PBKDF2 and SHA-256",
-  "main": "index.js",
-  "type": "module",
+  "description": "Password hashing module using PBKDF2 with WebAssembly",
+  "main": "index.ts",
   "scripts": {
-    "install": "node-gyp rebuild",
-    "build": "node-gyp rebuild",
-    "clean": "node-gyp clean"
+    "build": "node emscripten.build.js",
+    "clean": "rm -rf build",
+    "rebuild": "npm run clean && npm run build"
   },
   "keywords": [
     "hash",
+    "password",
     "pbkdf2",
-    "sha256",
-    "native"
+    "wasm",
+    "webassembly"
   ],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "node-gyp": "^9.4.1"
-  },
-  "gypfile": true
+  "author": "WookiesRpeople2",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
 } 
