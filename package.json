@@ -70,7 +70,7 @@
     "hono": "^4.7.2",
     "input-otp": "^1.4.2",
     "jsonwebtoken": "^9.0.2",
-    "kysely": "^0.27.5",
+    "kysely": "^0.27.6",
     "langchain": "^0.3.19",
     "lucide-react": "^0.350.0",
     "motion": "^12.4.10",
