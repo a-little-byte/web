@@ -438,100 +438,44 @@
       }
     }
   },
-  "pricing": {
-    "header": {
-      "title": "Pricing Plans",
-      "description": "Choose the right security package for your business. All plans include our core security features and expert support."
-    },
-    "tiers": {
-      "essential": {
-        "name": "Essential",
-        "price": "$2,999",
-        "description": "Essential security coverage for small to medium businesses.",
-        "features": [
-          "SOC monitoring (business hours)",
-          "Basic EDR protection",
-          "Email security",
-          "Vulnerability scanning",
-          "8x5 support"
-        ]
-      },
-      "professional": {
-        "name": "Professional",
-        "price": "$4,999",
-        "description": "Advanced security for growing organizations.",
-        "features": [
-          "24/7 SOC monitoring",
-          "Advanced EDR/XDR",
-          "SIEM integration",
-          "Threat hunting",
-          "Incident response",
-          "24/7 support"
-        ]
-      },
-      "enterprise": {
-        "name": "Enterprise",
-        "price": "Custom",
-        "description": "Comprehensive security for large enterprises.",
-        "features": [
-          "Custom SOC solutions",
-          "Advanced XDR platform",
-          "Custom integrations",
-          "Dedicated security team",
-          "Custom SLAs",
-          "Priority 24/7 support"
-        ]
-      }
-    },
-    "buttons": {
-      "subscribe": "Subscribe Now",
-      "processing": "Processing..."
-    },
-    "errors": {
-      "checkoutFailed": {
-        "title": "Error",
-        "description": "Failed to initiate checkout. Please try again."
-      }
-    }
-  },
   "services": {
     "header": {
       "title": "Security Solutions",
       "description": "Choose the security solution that best fits your organization's needs. All our products come with enterprise-grade support and SLA guarantees."
     },
     "products": {
-      "soc": {
+      "MDR": {
         "name": "SOC as a Service",
         "description": "Our Security Operations Center (SOC) provides 24/7 monitoring, threat detection, and incident response for your organization.",
-        "features": [
-          "24/7 Security Monitoring",
-          "Real-time Threat Detection",
-          "Incident Response",
-          "Compliance Reporting",
-          "Security Analytics"
-        ]
+        "features": {
+          "monitoring": "24/7 Security Monitoring",
+          "detection": "Real-time Threat Detection",
+          "response": "Incident Response",
+          "compliance": "Compliance Reporting",
+          "analytics": "Security Analytics"
+        }
       },
-      "edr": {
+      "EDR": {
         "name": "EDR Protection",
         "description": "Advanced Endpoint Detection and Response solution that protects your devices from sophisticated cyber threats.",
-        "features": [
-          "Real-time Protection",
-          "Behavioral Analysis",
-          "Automated Response",
-          "Device Control",
-          "Threat Hunting"
-        ]
+        "features": {
+          "protection": "Real-time Protection",
+          "analysis": "Behavioral Analysis",
+          "response": "Automated Response",
+          "control": "Device Control",
+          "hunting": "Threat Hunting"
+        }
       },
-      "xdr": {
+      "XDR": {
         "name": "XDR Platform",
         "description": "Extended Detection and Response platform that unifies security data across your entire technology stack.",
-        "features": [
-          "Cross-platform Protection",
-          "Advanced Analytics",
-          "Automated Workflows",
-          "Threat Intelligence",
-          "Custom Reporting"
-        ]
+        "features": {
+          "protection": "Cross-platform Protection",
+          "analytics": "Advanced Analytics",
+          "workflows": "Automated Workflows",
+          "intelligence": "Threat Intelligence",
+          "reporting": "Custom Reporting"
+        }
       }
     },
     "duration": {
