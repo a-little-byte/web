@@ -1,5 +1,11 @@
 import type { CreatedAt, UpdatedAt } from "@/db/utils";
-import type { Generated, Insertable, Selectable, Updateable } from "kysely";
+import type {
+  Generated,
+  Insertable,
+  JSONColumnType,
+  Selectable,
+  Updateable,
+} from "kysely";
 import type { UUID } from "node:crypto";
 
 export type Service = {
@@ -8,6 +14,7 @@ export type Service = {
   description: string;
   price: number;
   period: string;
+  features: JSONColumnType<Array<string>>;
   createdAt: CreatedAt;
   updatedAt: UpdatedAt;
 };
