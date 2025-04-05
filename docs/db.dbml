@@ -21,6 +21,7 @@ Table services {
   description text [not null]
   price numeric [not null]
   period text [not null]
+  features jsonb [not null]
   createdAt timestamptz [default: `now()`]
   updatedAt timestamptz [default: `now()`]
 }
@@ -70,6 +71,7 @@ Table cart_items {
   user_id uuid
   service_id uuid
   quantity integer [not null, default: 1]
+  duration text [not null, default: 1]
   createdAt timestamptz [default: `now()`]
   updatedAt timestamptz [default: `now()`]
 }
