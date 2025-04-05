@@ -1,7 +1,7 @@
-import type { EmscriptenModule } from './types';
+import type { EmscriptenModule } from '../types';
 import crypto from 'node:crypto';
 
-interface HashModule {
+type HashModule = {
   _hash: (password: string, salt: string, pepper: string, iterations: number, keylen: number) => string;
   _verify: (storedHash: string, password: string, salt: string, pepper: string, iterations: number, keylen: number) => boolean;
   ccall: (name: string, returnType: string, argTypes: string[], args: any[]) => any;
