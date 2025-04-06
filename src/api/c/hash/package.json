@@ -15,10 +15,5 @@
     "wasm",
     "webassembly"
   ],
-  "author": "WookiesRpeople2",
-  "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "typescript": "^5.0.0"
-  }
+  "license": "MIT"
 } 

@@ -12,8 +12,6 @@ import { apiConfig } from "@/api/config";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
-
-
 export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get("/callback", async (c) => {
     const url = new URL(c.req.url);
@@ -150,7 +148,6 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     ),
     async ({ var: { db, resend }, req, json }) => {
       try {
-        console.log('entry')
         const { email, password, first_name, last_name } = req.valid("json");
 
         const existingUser = await db

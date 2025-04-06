@@ -1,7 +1,7 @@
 import type { Database } from "@/db";
 import { type Kysely } from "kysely";
-import { Hash, Verify } from "../src/api/c/hash/index.js";
-import { apiConfig } from "@/api/config.js";
+import { Hash, Verify } from "../src/api/c/hash/index";
+import { apiConfig } from "../src/api/config";
 
 
 export async function seed(db: Kysely<Database>): Promise<void> {
