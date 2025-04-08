@@ -1,68 +1,24 @@
-"use client";
-
-import { Form } from "@/components/base/Form";
-import { InputField } from "@/components/base/InputField";
+import { ResetPasswordForm } from "@/app/[locale]/(public)/auth/reset-password/_components/ResetPasswordForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
-import { useForm } from "@/hooks/useForm";
-import { apiClient } from "@/lib/apiClient";
-import { Link, useRouter } from "@/lib/i18n/routing";
-import { Loader2 } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { useSearchParams } from "next/navigation";
-import { z } from "zod";
+import { Link, locales } from "@/lib/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
-const resetPasswordFormSchema = z.object({
-  password: z.string().min(4),
-  confirmPassword: z.string().min(4),
-});
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
-const ResetPassword = () => {
-  const t = useTranslations("auth.resetPassword");
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const token = searchParams.get("token");
-  const { toast } = useToast();
-  const form = useForm(resetPasswordFormSchema);
-
-  const onSubmit = async (data: z.infer<typeof resetPasswordFormSchema>) => {
-    try {
-      if (!token) {
-        throw new Error(t("errors.invalidLink"));
-      }
-
-      if (data.password !== data.confirmPassword) {
-        throw new Error(t("errors.passwordsMismatch"));
-      }
-
-      await apiClient.auth["reset-password"].$post({
-        json: { token, password: data.password },
-      });
-
-      toast({
-        title: t("success.title"),
-        description: t("success.description"),
-      });
-
-      router.push("/login");
-    } catch (error) {
-      console.error("Error:", error);
-      toast({
-        title: t("errors.title"),
-        description:
-          error instanceof Error ? error.message : t("errors.default"),
-        variant: "destructive",
-      });
-    }
-  };
+const ResetPasswordPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ token: string }>;
+}) => {
+  const token = (await searchParams).token;
+  const t = await getTranslations("auth.resetPassword");
 
   if (!token) {
     return (
@@ -88,40 +44,11 @@ const ResetPassword = () => {
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl">{t("form.title")}</CardTitle>
           <CardDescription>{t("form.description")}</CardDescription>
+          <ResetPasswordForm />
         </CardHeader>
-        <Form form={form} onSubmit={onSubmit}>
-          <CardContent className="grid gap-4">
-            <InputField
-              control={form.control}
-              name="password"
-              label={t("form.passwordLabel")}
-              placeholder={t("form.passwordPlaceholder")}
-              disabled={form.formState.isSubmitting}
-            />
-            <InputField
-              control={form.control}
-              name="confirmPassword"
-              label={t("form.confirmPasswordLabel")}
-              placeholder={t("form.confirmPasswordPlaceholder")}
-              disabled={form.formState.isSubmitting}
-            />
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button
-              className="w-full"
-              type="submit"
-              disabled={form.formState.isSubmitting}
-            >
-              {form.formState.isSubmitting && (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              )}
-              {t("form.submitButton")}
-            </Button>
-          </CardFooter>
-        </Form>
       </Card>
     </div>
   );
 };
 
-export default ResetPassword;
+export default ResetPasswordPage;
