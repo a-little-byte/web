@@ -1,7 +1,8 @@
 "use client";
 
 import ScrambleHover from "@/components/ui/scramble";
-import { Link, useRouter } from "@/lib/i18n/routing";
+import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
+import { cn } from "@/lib/utils";
 import { CreditCard, Home, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useEffect, useMemo } from "react";
@@ -9,6 +10,7 @@ import { ReactNode, useEffect, useMemo } from "react";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const t = useTranslations("navigation");
+  const pathname = usePathname();
 
   const SIDEBAR: Array<{ href: string; children: ReactNode }> = useMemo(
     () => [
@@ -40,13 +42,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         ),
       },
     ],
-    [],
+    []
   );
 
   useEffect(() => {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
+      "$1"
     );
 
     if (!token) {
@@ -71,7 +73,10 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-2 p-2 hover:bg-muted rounded-md"
+              className={cn(
+                "flex items-center gap-2 p-2 hover:bg-muted rounded-md",
+                pathname === href && "bg-muted"
+              )}
             >
               {childrenLink}
             </Link>
