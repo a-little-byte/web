@@ -16,15 +16,6 @@ const nextConfig = {
     instrumentationHook: true,
   },
   webpack: (config, { isServer }) => {
-    config.module.rules.push({
-      test: /\.node$/,
-      use: [
-        {
-          loader: "node-loader",
-        },
-      ],
-    });
-
     if (isServer) {
       config.externals = [
         ...config.externals,
