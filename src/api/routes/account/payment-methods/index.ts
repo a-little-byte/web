@@ -26,7 +26,7 @@ export const accountPaymentMethods = new Hono<{
         last_four: z.string(),
         type: z.string(),
         is_default: z.boolean(),
-      })
+      }),
     ),
     async ({ var: { db, session }, json, req }) => {
       const data = req.valid("json");
@@ -44,7 +44,7 @@ export const accountPaymentMethods = new Hono<{
         .execute();
 
       return json(paymentMethod);
-    }
+    },
   )
   .patch(
     "/:paymentMethodId",
@@ -52,7 +52,7 @@ export const accountPaymentMethods = new Hono<{
       "param",
       z.object({
         paymentMethodId: idValidator,
-      })
+      }),
     ),
     zValidator(
       "json",
@@ -64,7 +64,7 @@ export const accountPaymentMethods = new Hono<{
           type: z.string(),
           is_default: z.boolean(),
         })
-        .partial()
+        .partial(),
     ),
     async ({ var: { db, session }, json, req }) => {
       const { paymentMethodId } = req.valid("param");
@@ -78,7 +78,7 @@ export const accountPaymentMethods = new Hono<{
         .executeTakeFirst();
 
       return json(paymentMethod);
-    }
+    },
   )
   .delete(
     "/:paymentMethodId",
@@ -93,5 +93,5 @@ export const accountPaymentMethods = new Hono<{
         .execute();
 
       return json({ success: true });
-    }
+    },
   );

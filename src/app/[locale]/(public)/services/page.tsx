@@ -1,4 +1,4 @@
-import { Services } from "@/app/[locale]/(public)/services/_components/Services";
+import { Service } from "@/app/[locale]/(public)/services/_components/Service";
 import { db } from "@/db";
 import { getTranslations } from "next-intl/server";
 
@@ -18,7 +18,9 @@ const ServicesPage = async () => {
           </p>
         </div>
         <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
-          <Services services={services} />
+          {services.map((service) => (
+            <Service key={service.id} service={service} />
+          ))}
         </div>
       </div>
     </div>

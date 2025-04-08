@@ -1,4 +1,8 @@
+import { Section } from "@/app/[locale]/(public)/legal/_components/Section";
+import { locales } from "@/lib/i18n/routing";
 import { getTranslations } from "next-intl/server";
+
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
 const Legal = async () => {
   const t = await getTranslations("legal");
@@ -9,54 +13,25 @@ const Legal = async () => {
         <h1 className="text-3xl font-bold mb-8">{t("title")}</h1>
 
         <div className="prose dark:prose-invert max-w-none space-y-12">
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("copyright.title")}
-            </h2>
-            <p>{t("copyright.content")}</p>
-          </section>
+          <Section ns="legal.copyright" />
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("trademark.title")}
-            </h2>
-            <p>{t("trademark.content")}</p>
-          </section>
+          <Section ns="legal.trademark" />
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("disclaimer.title")}
-            </h2>
-            <p>{t("disclaimer.content")}</p>
+          <Section ns="legal.disclaimer">
             <p className="mt-4">{t("disclaimer.additional")}</p>
-          </section>
+          </Section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("liability.title")}
-            </h2>
-            <p>{t("liability.content")}</p>
+          <Section ns="legal.liability">
             <p className="mt-4">{t("liability.additional")}</p>
-          </section>
+          </Section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">{t("export.title")}</h2>
-            <p>{t("export.content")}</p>
+          <Section ns="legal.export">
             <p className="mt-4">{t("export.additional")}</p>
-          </section>
+          </Section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("governing.title")}
-            </h2>
-            <p>{t("governing.content")}</p>
-          </section>
+          <Section ns="legal.governing" />
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("contact.title")}
-            </h2>
-            <p>{t("contact.content")}</p>
+          <Section ns="legal.contact">
             <div className="mt-4">
               <p>{t("contact.company")}</p>
               <p>{t("contact.address.line1")}</p>
@@ -66,22 +41,13 @@ const Legal = async () => {
               <p className="mt-2">{t("contact.email")}</p>
               <p>{t("contact.phone")}</p>
             </div>
-          </section>
+          </Section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("changes.title")}
-            </h2>
-            <p>{t("changes.content")}</p>
+          <Section ns="legal.changes">
             <p className="mt-4">{t("changes.additional")}</p>
-          </section>
+          </Section>
 
-          <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              {t("lastUpdated.title")}
-            </h2>
-            <p>{t("lastUpdated.content")}</p>
-          </section>
+          <Section ns="legal.lastUpdated" />
         </div>
       </div>
     </div>

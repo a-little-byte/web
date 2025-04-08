@@ -1,0 +1,147 @@
+Project "Project-Detude" {
+  database_type: 'PostgreSQL'
+  Note: 'Database schema for Project-Detude application'
+}
+
+Table users {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  email text [not null, unique]
+  password text [not null]
+  first_name text [not null]
+  last_name text [not null]
+  role text [default: 'user']
+  email_verified timestamptz
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table services {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  name text [not null, unique]
+  description text [not null]
+  price numeric [not null]
+  period text [not null]
+  features jsonb [not null]
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table subscriptions {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  user_id uuid [not null]
+  service_id uuid [not null]
+  status text [not null, default: 'active']
+  current_period_start timestamptz [not null, default: `now()`]
+  current_period_end timestamptz [not null, default: `now()`]
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table billing_addresses {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  user_id uuid
+  street text [not null]
+  city text [not null]
+  state text [not null]
+  postal_code text [not null]
+  country text [not null]
+  is_default boolean [default: false]
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table chat_conversations {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  user_id uuid
+  title text
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table chat_messages {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  conversation_id uuid
+  role text [not null]
+  content text [not null]
+  createdAt timestamptz [default: `now()`]
+}
+
+Table cart_items {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  user_id uuid
+  service_id uuid
+  quantity integer [not null, default: 1]
+  duration text [not null, default: 1]
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table hero_carousel {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  title text [not null]
+  description text [not null]
+  image_url text [not null]
+  button_text text
+  button_link text
+  order integer [not null, default: 0]
+  active boolean [not null, default: true]
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table invoices {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  payment_id uuid
+  number text [not null]
+  file_url text [not null]
+  createdAt timestamptz [default: `now()`]
+}
+
+Table payment_methods {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  user_id uuid
+  type text [not null]
+  last_four text [not null]
+  expiry_month integer [not null]
+  expiry_year integer [not null]
+  is_default boolean [default: false]
+  createdAt timestamptz [default: `now()`]
+  updatedAt timestamptz [default: `now()`]
+}
+
+Table payments {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  subscription_id uuid [not null]
+  amount numeric [not null]
+  status text [not null]
+  payment_method text [not null]
+  createdAt timestamptz [default: `now()`]
+  billing_address_id uuid
+  payment_method_id uuid
+}
+
+Table casbin_rule {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  ptype varchar(100) [not null]
+  v0 varchar(100) [not null]
+  v1 varchar(100) [not null]
+  v2 varchar(100) [not null]
+  v3 varchar(100)
+  v4 varchar(100)
+  v5 varchar(100)
+}
+
+// Relationships
+Ref: subscriptions.user_id > users.id [delete: cascade]
+Ref: subscriptions.service_id > services.id [delete: cascade]
+Ref: billing_addresses.user_id > users.id [delete: cascade]
+Ref: chat_conversations.user_id > users.id
+Ref: chat_messages.conversation_id > chat_conversations.id [delete: cascade]
+Ref: cart_items.user_id > users.id [delete: cascade]
+Ref: cart_items.service_id > services.id [delete: cascade]
+Ref: payment_methods.user_id > users.id
+Ref: payments.subscription_id > subscriptions.id
+Ref: payments.billing_address_id > billing_addresses.id
+Ref: payments.payment_method_id > payment_methods.id
+Ref: invoices.payment_id > payments.id
+Ref: "cart_items"."service_id" < "cart_items"."updatedAt"

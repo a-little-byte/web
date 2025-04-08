@@ -5,4 +5,9 @@ Sentry.init({
   tracesSampleRate: 1,
   debug: false,
   enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
+  integrations: [
+    Sentry.redisIntegration(),
+    Sentry.httpIntegration(),
+    Sentry.postgresIntegration(),
+  ],
 });

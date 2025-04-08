@@ -26,7 +26,7 @@ export const accountBillingAddresses = new Hono<{
         state: z.string(),
         postal_code: z.string(),
         country: z.string(),
-      })
+      }),
     ),
     async ({ var: { db, session }, json, req }) => {
       const data = req.valid("json");
@@ -45,7 +45,7 @@ export const accountBillingAddresses = new Hono<{
         .execute();
 
       return json(billingAddress);
-    }
+    },
   )
   .patch(
     "/:billingAddressId",
@@ -53,7 +53,7 @@ export const accountBillingAddresses = new Hono<{
       "param",
       z.object({
         billingAddressId: idValidator,
-      })
+      }),
     ),
     zValidator(
       "json",
@@ -65,7 +65,7 @@ export const accountBillingAddresses = new Hono<{
           postal_code: z.string(),
           country: z.string(),
         })
-        .partial()
+        .partial(),
     ),
     async ({ var: { db, session }, json, req }) => {
       const { billingAddressId } = req.valid("param");
@@ -79,7 +79,7 @@ export const accountBillingAddresses = new Hono<{
         .executeTakeFirst();
 
       return json(billingAddress);
-    }
+    },
   )
   .delete(
     "/:billingAddressId",
@@ -94,5 +94,5 @@ export const accountBillingAddresses = new Hono<{
         .execute();
 
       return json({ success: true });
-    }
+    },
   );

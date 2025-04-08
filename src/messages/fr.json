@@ -17,7 +17,37 @@
     "settings": "Paramètres",
     "privacy": "Confidentialité",
     "terms": "Conditions",
-    "legal": "Mentions légales"
+    "legal": "Mentions légales",
+    "home": "Accueil"
+  },
+  "footer": {
+    "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
+    "allRightsReserved": "Tous droits réservés.",
+    "solutions": {
+      "title": "Solutions",
+      "soc": "SOC en tant que Service",
+      "edr": "Protection EDR",
+      "xdr": "Plateforme XDR"
+    },
+    "company": {
+      "title": "Entreprise",
+      "about": "À propos",
+      "blog": "Blog",
+      "contact": "Contact"
+    },
+    "legal": {
+      "title": "Mentions Légales",
+      "terms": "Conditions",
+      "privacy": "Confidentialité",
+      "legalNotices": "Mentions Légales"
+    },
+    "social": {
+      "title": "Social",
+      "twitter": "Twitter",
+      "linkedin": "LinkedIn",
+      "facebook": "Facebook",
+      "instagram": "Instagram"
+    }
   },
   "home": {
     "hero": {
@@ -59,43 +89,39 @@
       "title": "Solutions de Sécurité",
       "description": "Choisissez la solution de sécurité qui correspond le mieux aux besoins de votre organisation. Tous nos produits sont accompagnés d'un support de niveau entreprise et de garanties SLA."
     },
-    "tiers": {
-      "essential": {
-        "name": "Essentiel",
-        "price": "2 999 $",
-        "description": "Couverture de sécurité essentielle pour les petites et moyennes entreprises.",
-        "features": [
-          "Surveillance SOC (heures ouvrables)",
-          "Protection EDR de base",
-          "Sécurité des e-mails",
-          "Analyse des vulnérabilités",
-          "Support 8x5"
-        ]
+    "products": {
+      "MDR": {
+        "name": "SOC en tant que Service",
+        "description": "Notre Centre des Opérations de Sécurité (SOC) surveille 24/7, détecte les menaces et répond aux incidents pour votre organisation.",
+        "features": {
+          "monitoring": "Surveillance SOC 24/7",
+          "detection": "Détection des menaces en temps réel",
+          "response": "Réponse aux incidents",
+          "compliance": "Reporting de conformité",
+          "analytics": "Analyse de sécurité"
+        }
       },
-      "professional": {
-        "name": "Professionnel",
-        "price": "4 999 $",
-        "description": "Sécurité avancée pour les organisations en croissance.",
-        "features": [
-          "Surveillance SOC 24/7",
-          "EDR/XDR avancé",
-          "Intégration SIEM",
-          "Threat hunting",
-          "Réponse aux incidents",
-          "Support 24/7"
-        ]
+      "EDR": {
+        "name": "Protection EDR",
+        "description": "Solution de détection et de réponse aux menaces avancée qui protège vos appareils contre les menaces cyber sophistiquées.",
+        "features": {
+          "protection": "Protection en temps réel",
+          "analysis": "Analyse comportementale",
+          "response": "Réponse automatique",
+          "control": "Contrôle des appareils",
+          "hunting": "Chasse aux menaces"
+        }
       },
-      "enterprise": {
-        "name": "Entreprise",
-        "price": "Sur devis",
-        "description": "Solutions de sécurité sur mesure pour les grandes entreprises.",
-        "features": [
-          "Équipe de sécurité dédiée",
-          "Intégrations personnalisées",
-          "Exercices de simulation d'attaque",
-          "Évaluations de sécurité",
-          "Rapports personnalisés"
-        ]
+      "XDR": {
+        "name": "Plateforme XDR",
+        "description": "Plateforme de détection et de réponse étendue qui unifie les données de sécurité dans toute votre pile technologique.",
+        "features": {
+          "protection": "Protection multiplateforme",
+          "analytics": "Analyse avancée",
+          "workflows": "Workflows automatisés",
+          "intelligence": "Intelligence des menaces",
+          "reporting": "Rapports personnalisés"
+        }
       }
     },
     "duration": {
@@ -127,41 +153,6 @@
           "title": "Erreur",
           "description": "Échec de l'ajout de l'article au panier. Veuillez réessayer."
         }
-      }
-    },
-    "products": {
-      "soc": {
-        "name": "SOC en tant que Service",
-        "description": "Notre Centre des Opérations de Sécurité (SOC) fournit une surveillance 24/7, une détection des menaces et une réponse aux incidents pour votre organisation.",
-        "features": [
-          "Surveillance de Sécurité 24/7",
-          "Détection des Menaces en Temps Réel",
-          "Réponse aux Incidents",
-          "Rapports de Conformité",
-          "Analyses de Sécurité"
-        ]
-      },
-      "edr": {
-        "name": "Protection EDR",
-        "description": "Solution avancée de Détection et Réponse sur les Terminaux qui protège vos appareils contre les cybermenaces sophistiquées.",
-        "features": [
-          "Protection en Temps Réel",
-          "Analyse Comportementale",
-          "Réponse Automatisée",
-          "Contrôle des Appareils",
-          "Threat Hunting"
-        ]
-      },
-      "xdr": {
-        "name": "Plateforme XDR",
-        "description": "Plateforme de Détection et Réponse Étendue qui unifie les données de sécurité à travers toute votre pile technologique.",
-        "features": [
-          "Protection Multi-plateforme",
-          "Analyses Avancées",
-          "Flux de Travail Automatisés",
-          "Renseignement sur les Menaces",
-          "Rapports Personnalisés"
-        ]
       }
     }
   },
@@ -314,11 +305,7 @@
     "changes": {
       "title": "Modifications",
       "content": "Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Nous vous informerons de tout changement en publiant les nouvelles Conditions sur cette page."
-    },
-    "accept": "Accepter les Conditions",
-    "processing": "En cours de traitement...",
-    "accepted": "Conditions Acceptées",
-    "acceptedMessage": "Merci d'avoir accepté nos conditions générales."
+    }
   },
   "admin": {
     "dashboard": {

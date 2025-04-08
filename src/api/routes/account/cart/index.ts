@@ -7,6 +7,7 @@ import { z } from "zod";
 const addToCartSchema = z.object({
   serviceId: idValidator,
   quantity: z.number().int().positive().default(1),
+  duration: z.string(),
 });
 
 export const accountCartRouter = new Hono<{
@@ -24,7 +25,7 @@ export const accountCartRouter = new Hono<{
     "/",
     zValidator("json", addToCartSchema),
     async ({ var: { db, session }, json, req }) => {
-      const { serviceId, quantity } = req.valid("json");
+      const { serviceId, quantity, duration } = req.valid("json");
 
       const service = await db
         .selectFrom("services")
@@ -38,6 +39,7 @@ export const accountCartRouter = new Hono<{
           user_id: session.user.id,
           service_id: service.id,
           quantity,
+          duration,
         })
         .execute();
 
@@ -45,7 +47,7 @@ export const accountCartRouter = new Hono<{
         success: true,
         message: "Item added to cart successfully",
       });
-    },
+    }
   )
   .patch(
     "/:id",
@@ -53,7 +55,7 @@ export const accountCartRouter = new Hono<{
       "param",
       z.object({
         id: idValidator,
-      }),
+      })
     ),
     zValidator("json", z.object({ quantity: z.number().int().positive() })),
     async ({ var: { db }, json, req }) => {
@@ -70,7 +72,7 @@ export const accountCartRouter = new Hono<{
         success: true,
         message: "Item updated in cart successfully",
       });
-    },
+    }
   )
   .delete(
     "/:id",
@@ -84,5 +86,5 @@ export const accountCartRouter = new Hono<{
         success: true,
         message: "Item removed from cart successfully",
       });
-    },
+    }
   );

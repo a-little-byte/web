@@ -1,30 +1,36 @@
-import { NavigationItem } from "@/components/layout/Header";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Link } from "@/lib/i18n/routing";
 import { ShieldCheck } from "lucide-react";
+import { getTranslations } from "next-intl/server";
 
-const navigation: Record<string, NavigationItem[]> = {
+const navigation: Record<string, { id: string; href: string }[]> = {
   solutions: [
-    { name: "SOC", href: "#" },
-    { name: "EDR", href: "#" },
-    { name: "XDR", href: "#" },
-    { name: "Threat Intelligence", href: "#" },
+    { id: "soc", href: "#" },
+    { id: "edr", href: "#" },
+    { id: "xdr", href: "#" },
+    { id: "threatIntelligence", href: "#" },
   ],
-  support: [{ name: "Contact", href: "/contact" }],
   company: [
-    { name: "About", href: "/about" },
-    { name: "Blog", href: "#" },
-    { name: "Partners", href: "#" },
-    { name: "Careers", href: "#" },
+    { id: "about", href: "/about" },
+    { id: "blog", href: "#" },
+    { id: "contact", href: "/contact" },
   ],
   legal: [
-    { name: "Terms", href: "/terms" },
-    { name: "Privacy", href: "/privacy" },
-    { name: "Legal Notices", href: "/legal" },
+    { id: "terms", href: "/terms" },
+    { id: "privacy", href: "/privacy" },
+    { id: "legalNotices", href: "/legal" },
+  ],
+  social: [
+    { id: "twitter", href: "#" },
+    { id: "linkedin", href: "#" },
+    { id: "facebook", href: "#" },
+    { id: "instagram", href: "#" },
   ],
 } as const;
 
-export const Footer = () => {
+export const Footer = async () => {
+  const t = await getTranslations("footer");
+
   return (
     <footer className="bg-background" aria-labelledby="footer-heading">
       <h2 id="footer-heading" className="sr-only">
@@ -37,81 +43,31 @@ export const Footer = () => {
               <ShieldCheck className="h-6 w-6" />
               <span className="font-bold text-xl">Cyna</span>
             </Link>
-            <p className="text-sm text-muted-foreground">
-              Enterprise-grade cybersecurity solutions for your business.
-              Protect your digital assets with industry-leading technology.
-            </p>
+            <p className="text-sm text-muted-foreground">{t("description")}</p>
           </div>
-          <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold">Solutions</h3>
+          <div className="mt-16 flex flex-col sm:flex-row justify-between gap-8 xl:col-span-2 xl:mt-0">
+            {Object.entries(navigation).map(([key, items]) => (
+              <div key={key}>
+                <h3 className="text-sm font-semibold">{t(`${key}.title`)}</h3>
                 <ul role="list" className="mt-4 space-y-4">
-                  {navigation.solutions.map((item) => (
-                    <li key={item.name}>
+                  {items.map((item) => (
+                    <li key={item.id}>
                       <Link
                         href={item.href}
                         className="text-sm text-muted-foreground hover:text-foreground"
                       >
-                        {item.name}
+                        {t(`${key}.${item.id}`)}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold">Support</h3>
-                <ul role="list" className="mt-4 space-y-4">
-                  {navigation.support.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm text-muted-foreground hover:text-foreground"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-8">
-              <div>
-                <h3 className="text-sm font-semibold">Company</h3>
-                <ul role="list" className="mt-4 space-y-4">
-                  {navigation.company.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm text-muted-foreground hover:text-foreground"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-10 md:mt-0">
-                <h3 className="text-sm font-semibold">Legal</h3>
-                <ul role="list" className="mt-4 space-y-4">
-                  {navigation.legal.map((item) => (
-                    <li key={item.name}>
-                      <Link
-                        href={item.href}
-                        className="text-sm text-muted-foreground hover:text-foreground"
-                      >
-                        {item.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
         <div className="mt-12 border-t pt-8 flex justify-between items-center">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Cyna. All rights reserved.
+            &copy; {new Date().getFullYear()} Cyna. {t("allRightsReserved")}
           </p>
           <LanguageSwitcher />
         </div>

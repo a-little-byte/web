@@ -1,4 +1,19 @@
+import { Section } from "@/app/[locale]/(public)/privacy/_components/Section";
+import { locales } from "@/lib/i18n/routing";
 import { getTranslations } from "next-intl/server";
+
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
+
+const sections = [
+  "data",
+  "cookies",
+  "third-party",
+  "security",
+  "changes",
+  "contact",
+  "consent",
+  "lastUpdated",
+] as const;
 
 const PrivacyPage = async () => {
   const t = await getTranslations("privacy");
@@ -10,52 +25,9 @@ const PrivacyPage = async () => {
         <div className="prose dark:prose-invert max-w-none flex flex-col gap-4">
           <p>{t("intro")}</p>
           <div className="flex flex-col gap-8">
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">{t("data.title")}</h2>
-              <p>{t("data.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("cookies.title")}
-              </h2>
-              <p className="mt-4">{t("cookies.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("third-party.title")}
-              </h2>
-              <p className="mt-4">{t("third-party.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("security.title")}
-              </h2>
-              <p className="mt-4">{t("security.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("changes.title")}
-              </h2>
-              <p className="mt-4">{t("changes.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("contact.title")}
-              </h2>
-              <p className="mt-4">{t("contact.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("consent.title")}
-              </h2>
-              <p className="mt-4">{t("consent.content")}</p>
-            </section>
-            <section>
-              <h2 className="text-2xl font-semibold mb-4">
-                {t("lastUpdated.title")}
-              </h2>
-              <p className="mt-4">{t("lastUpdated.content")}</p>
-            </section>
+            {sections.map((section) => (
+              <Section key={section} ns={`privacy.${section}`} />
+            ))}
           </div>
         </div>
       </div>
