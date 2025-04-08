@@ -36,10 +36,10 @@ const Dashboard = () => {
             headers: {
               Authorization: `Bearer ${document.cookie.replace(
                 /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1",
+                "$1"
               )}`,
             },
-          },
+          }
         );
 
         const data = await response.json();
@@ -56,6 +56,8 @@ const Dashboard = () => {
     };
 
     fetchDashboardData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

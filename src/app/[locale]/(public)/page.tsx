@@ -3,6 +3,7 @@ import Typewriter from "@/components/ui/typewriter";
 import { Link } from "@/lib/i18n/routing";
 import { Globe, Lock, Shield, Zap } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import Image from "next/image";
 
 const features = [
   {
@@ -73,11 +74,13 @@ const Home = async () => {
             <div className="relative mt-6">
               <div className="grid grid-cols-2 place-items-center gap-2 md:grid-cols-4 xl:grid-cols-8 xl:gap-4">
                 {companies.map((logo, idx) => (
-                  <img
+                  <Image
                     key={idx}
                     src={`https://cdn.magicui.design/companies/${logo}.svg`}
                     className="h-10 w-40 px-2 dark:brightness-0 dark:invert"
                     alt={logo}
+                    width={160}
+                    height={40}
                   />
                 ))}
               </div>

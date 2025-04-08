@@ -64,6 +64,8 @@ export const Service = ({ service }: { service: ServiceSelect }) => {
         variant: "destructive",
       });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -94,7 +96,7 @@ export const Service = ({ service }: { service: ServiceSelect }) => {
           $
           {Number(calculatePrice(service.price, duration).toFixed(2)) /
             Number(
-              durationOptions.find((opt) => opt.value === duration)?.multiplier,
+              durationOptions.find((opt) => opt.value === duration)?.multiplier
             )}{" "}
           <span className="text-sm text-muted-foreground/90">
             / {service.period}

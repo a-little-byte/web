@@ -21,7 +21,7 @@ export const Features = ({ data }: { data: Array<Feature> }) => {
       setFeatureOpen(index);
       setTimer(0);
     },
-    [],
+    []
   );
 
   useEffect(() => {
@@ -37,6 +37,8 @@ export const Features = ({ data }: { data: Array<Feature> }) => {
       setFeatureOpen((prev) => (prev + 1) % data.length);
       setTimer(0);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer]);
 
   return (
@@ -68,7 +70,7 @@ export const Features = ({ data }: { data: Array<Feature> }) => {
         <div className="h-full">
           <div
             className={cn(
-              "relative h-[500px] w-full overflow-hidden rounded-lg",
+              "relative h-[500px] w-full overflow-hidden rounded-lg"
             )}
           >
             {data.map((item, index) => (
@@ -77,7 +79,7 @@ export const Features = ({ data }: { data: Array<Feature> }) => {
                 className={cn(
                   "absolute h-[500px] w-full transform-gpu rounded-lg object-cover transition-all duration-300",
                   featureOpen === index ? "scale-100" : "scale-70",
-                  featureOpen > index ? "translate-y-full" : "",
+                  featureOpen > index ? "translate-y-full" : ""
                 )}
                 height={800}
                 key={item.id}
@@ -109,7 +111,7 @@ export const TextComponent = ({
   <div
     className={cn(
       "transform-gpu rounded-lg transition-colors",
-      isOpen ? "bg-primary/10" : "opacity-50 saturate-0",
+      isOpen ? "bg-primary/10" : "opacity-50 saturate-0"
     )}
   >
     <div className="flex w-full items-center gap-4 p-4">
@@ -123,7 +125,7 @@ export const TextComponent = ({
     <div
       className={cn(
         "w-full transform-gpu overflow-hidden text-left text-gray-600 transition-all duration-500 dark:text-gray-400",
-        isOpen ? " max-h-64" : "max-h-0",
+        isOpen ? " max-h-64" : "max-h-0"
       )}
     >
       <p className="p-4 text-lg">{content}</p>

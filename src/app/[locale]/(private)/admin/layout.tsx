@@ -2,7 +2,7 @@
 
 import ScrambleHover from "@/components/ui/scramble";
 import { isAdmin } from "@/lib/auth";
-import { useRouter } from "@/lib/i18n/routing";
+import { Link, useRouter } from "@/lib/i18n/routing";
 import jwt from "jsonwebtoken";
 import type { UUID } from "node:crypto";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     const checkAdmin = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
+        "$1"
       );
 
       if (!token) {
@@ -25,7 +25,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       try {
         const decoded = jwt.verify(
           token,
-          process.env.JWT_SECRET || "your-secret-key",
+          process.env.JWT_SECRET || "your-secret-key"
         ) as { userId: UUID };
         const adminStatus = await isAdmin(decoded.userId);
 
@@ -38,7 +38,9 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     };
 
     checkAdmin();
-  }, [router]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex min-h-screen">
@@ -53,21 +55,21 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
               className="font-azeretMono"
             />
           </h2>
-          <a href="/admin" className="block p-2 hover:bg-accent rounded-md">
+          <Link href="/admin" className="block p-2 hover:bg-accent rounded-md">
             Dashboard
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/services"
             className="block p-2 hover:bg-accent rounded-md"
           >
             Services
-          </a>
-          <a
+          </Link>
+          <Link
             href="/admin/content"
             className="block p-2 hover:bg-accent rounded-md"
           >
             Page Content
-          </a>
+          </Link>
         </nav>
       </aside>
       <main className="flex-1 p-8">{children}</main>

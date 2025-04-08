@@ -15,6 +15,7 @@ import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
@@ -34,6 +35,8 @@ const SecuritySettings = () => {
 
   useEffect(() => {
     checkTOTPStatus();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const checkTOTPStatus = async () => {
@@ -122,7 +125,13 @@ const SecuritySettings = () => {
           ) : qrCode ? (
             <div className="space-y-4">
               <div className="flex justify-center">
-                <img src={qrCode} alt="QR Code" className="w-48 h-48" />
+                <Image
+                  src={qrCode}
+                  alt="QR Code"
+                  width={192}
+                  height={192}
+                  className="w-48 h-48"
+                />
               </div>
               <p className="text-sm text-muted-foreground text-center">
                 {t("twoFactor.scanQR")}

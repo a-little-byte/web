@@ -38,10 +38,14 @@ const ConfirmEmail = () => {
     };
 
     verifyEmail();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
   const handleReturnToLogin = useCallback(() => {
     router.push("/auth/login");
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (isVerifying) {

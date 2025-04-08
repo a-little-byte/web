@@ -57,13 +57,15 @@ export default function Subscriptions() {
 
   useEffect(() => {
     fetchOrders();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchOrders = async () => {
     try {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
+        "$1"
       );
 
       const response = await apiClient.orders.$get(
@@ -72,7 +74,7 @@ export default function Subscriptions() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
+        }
       );
 
       if (!response.ok) {
@@ -108,14 +110,13 @@ export default function Subscriptions() {
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) => new Date(order.createdAt).getFullYear().toString()),
+      orders.map((order) => new Date(order.createdAt).getFullYear().toString())
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
 
-  const getServices = () => {
-    return Array.from(new Set(orders.map((order) => order.service_name)));
-  };
+  const getServices = () =>
+    Array.from(new Set(orders.map((order) => order.service_name)));
 
   const groupOrdersByYear = (filteredOrders: OrderDetails[]) => {
     const grouped: { [key: string]: OrderDetails[] } = {};
@@ -207,7 +208,7 @@ export default function Subscriptions() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      ),
+                      )
                     )}
                   </TableRow>
                 </TableHeader>
@@ -283,7 +284,7 @@ export default function Subscriptions() {
                                           {format(
                                             new Date(order.createdAt),
                                             "PPP",
-                                            { locale: fr },
+                                            { locale: fr }
                                           )}
                                         </dd>
                                       </div>

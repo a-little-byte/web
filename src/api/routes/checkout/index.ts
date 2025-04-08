@@ -19,8 +19,8 @@ export const checkoutRouter = new Hono<{
           eb
             .selectFrom("services")
             .whereRef("services.id", "=", "cart_items.service_id")
-            .selectAll(),
-        ).as("services"),
+            .selectAll()
+        ).as("services")
       )
       .where("user_id", "=", user.id)
       .execute();
@@ -40,7 +40,7 @@ export const checkoutRouter = new Hono<{
       // discount = 0.1;
       // }
 
-      const totalBeforeDiscount = service?.price! * item.quantity;
+      const totalBeforeDiscount = service!.price! * item.quantity;
       finalPrice = totalBeforeDiscount * (1 - discount);
 
       return {

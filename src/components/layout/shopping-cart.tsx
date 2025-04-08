@@ -31,6 +31,8 @@ export const ShoppingCart = () => {
 
   useEffect(() => {
     fetchCartItems();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchCartItems = async () => {
@@ -42,10 +44,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       const data = await response.json();
       if (data.length > 0) {
@@ -54,7 +56,7 @@ export const ShoppingCart = () => {
             ...item,
             createdAt: new Date(item.createdAt),
             updatedAt: new Date(item.updatedAt),
-          })),
+          }))
         );
       }
     } catch (error) {
@@ -82,10 +84,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       await fetchCartItems();
     } catch (error) {
@@ -111,10 +113,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       await fetchCartItems();
     } catch (error) {
@@ -137,10 +139,10 @@ export const ShoppingCart = () => {
           headers: {
             Authorization: `Bearer ${document.cookie.replace(
               /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
+              "$1"
             )}`,
           },
-        },
+        }
       );
       const data = await response.json();
 

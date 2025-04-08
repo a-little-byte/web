@@ -25,6 +25,7 @@ import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import type { UUID } from "node:crypto";
 import { useEffect, useState } from "react";
 import { z } from "zod";
@@ -45,7 +46,7 @@ const CarouselManagement = () => {
   const [items, setItems] = useState<HeroCarouselSelect[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<HeroCarouselSelect | null>(
-    null,
+    null
   );
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -73,7 +74,7 @@ const CarouselManagement = () => {
           ...item,
           createdAt: new Date(item.createdAt),
           updatedAt: new Date(item.updatedAt),
-        })),
+        }))
       );
     } catch (error) {
       toast({
@@ -135,7 +136,7 @@ const CarouselManagement = () => {
             json: { order: index },
             param: { id: item.id },
           });
-        }),
+        })
       );
 
       fetchItems();
@@ -186,6 +187,8 @@ const CarouselManagement = () => {
 
   useEffect(() => {
     fetchItems();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -200,6 +203,8 @@ const CarouselManagement = () => {
         button_link: "",
       });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(currentItem)]);
 
   return (
@@ -257,10 +262,12 @@ const CarouselManagement = () => {
             <TableRow key={item.id}>
               <TableCell>{item.title}</TableCell>
               <TableCell>
-                <img
+                <Image
                   src={item.image_url}
                   alt={item.title}
                   className="w-20 h-12 object-cover rounded"
+                  width={80}
+                  height={48}
                 />
               </TableCell>
               <TableCell>

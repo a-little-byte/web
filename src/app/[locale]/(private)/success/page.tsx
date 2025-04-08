@@ -145,7 +145,7 @@ const Success = () => {
 
           <div className="text-center space-y-2">
             {["email", "manage"].map((key) => (
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground" key={key}>
                 {t(`confirmation.${key}`)}
               </p>
             ))}
