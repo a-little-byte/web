@@ -470,7 +470,7 @@
         "description": "Échec de la récupération des données d'abonnement"
       }
     },
-    "subscriptions": {
+    "order-history": {
       "title": "Historique des commandes",
       "search": {
         "placeholder": "Rechercher une commande..."

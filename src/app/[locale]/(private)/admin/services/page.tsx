@@ -24,7 +24,7 @@ import { ServiceSelect } from "@/db/models/Service";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { z } from "zod";
@@ -38,8 +38,11 @@ const serviceSchema = z.object({
 
 const ServicesManagement = () => {
   const t = useTranslations("admin.services");
-  const queryClient = useQueryClient();
-  const { data: services, isLoading } = useQuery({
+  const {
+    data: services,
+    isLoading,
+    refetch: refetchServices,
+  } = useQuery({
     queryKey: ["services"],
     queryFn: async () => {
       try {
@@ -119,7 +122,7 @@ const ServicesManagement = () => {
         description: t("toasts.deleteSuccess.description"),
       });
 
-      queryClient.invalidateQueries({ queryKey: ["services"] });
+      await refetchServices();
     } catch (error) {
       toast({
         title: t("toasts.deleteError.title"),

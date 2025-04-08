@@ -24,7 +24,7 @@ import { HeroCarouselSelect } from "@/db/models/HeroCarousel";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -45,8 +45,7 @@ const carouselSchemaForm = z.object({
 type FormData = z.infer<typeof carouselSchemaForm>;
 
 const CarouselManagement = () => {
-  const queryClient = useQueryClient();
-  const { data: items } = useQuery({
+  const { data: items, refetch: refetchItems } = useQuery({
     queryKey: ["hero-carousel"],
     queryFn: async () => {
       try {
@@ -110,7 +109,7 @@ const CarouselManagement = () => {
 
       setIsOpen(false);
       setCurrentItem(null);
-      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
+      await refetchItems();
     } catch (error) {
       toast({
         title: t("toasts.saveError.title"),
@@ -142,7 +141,7 @@ const CarouselManagement = () => {
         })
       );
 
-      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
+      await refetchItems();
     } catch (error) {
       toast({
         title: t("toasts.reorderError.title"),
@@ -159,7 +158,7 @@ const CarouselManagement = () => {
         param: { id },
       });
 
-      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
+      await refetchItems();
     } catch (error) {
       toast({
         title: t("toasts.updateError.title"),
@@ -178,7 +177,7 @@ const CarouselManagement = () => {
         description: t("toasts.deleteSuccess.description"),
       });
 
-      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
+      await refetchItems();
     } catch (error) {
       toast({
         title: t("toasts.deleteError.title"),

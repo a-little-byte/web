@@ -1,6 +1,11 @@
+import {
+  DangerTab,
+  PasswordTab,
+  ProfileTab,
+} from "@/app/[locale]/(private)/dashboard/settings/tabs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useTranslations } from "next-intl";
-import { DangerTab, PasswordTab, ProfileTab } from "./tabs";
+import { locales } from "@/lib/i18n/routing";
+import { getTranslations } from "next-intl/server";
 
 const tabs = [
   {
@@ -17,8 +22,10 @@ const tabs = [
   },
 ] as const;
 
-const SettingsPage = () => {
-  const t = useTranslations("dashboard.settings");
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
+
+const SettingsPage = async () => {
+  const t = await getTranslations("dashboard.settings");
 
   return (
     <div className="space-y-6">

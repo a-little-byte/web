@@ -13,10 +13,11 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
+import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -28,31 +29,26 @@ const formSchema = z.object({
 const SecuritySettings = () => {
   const t = useTranslations("dashboard.settings.security");
   const [isLoading, setIsLoading] = useState(false);
-  const [totpEnabled, setTotpEnabled] = useState(false);
   const [qrCode, setQrCode] = useState<string | null>(null);
   const { toast } = useToast();
   const form = useForm(formSchema);
+  const { data: totpStatus, refetch: refetchTotpStatus } = useQuery({
+    queryKey: ["totpStatus"],
+    queryFn: async () => {
+      try {
+        const response = await apiClient.auth.totp.status.$get();
+        const data = await response.json();
 
-  useEffect(() => {
-    checkTOTPStatus();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const checkTOTPStatus = async () => {
-    try {
-      const response = await apiClient.auth.totp.status.$get();
-      const data = await response.json();
-
-      setTotpEnabled(data.enabled);
-    } catch (error) {
-      toast({
-        title: t("toasts.fetchError.title"),
-        description: t("toasts.fetchError.description"),
-        variant: "destructive",
-      });
-    }
-  };
+        return data.enabled;
+      } catch (error) {
+        toast({
+          title: t("toasts.fetchError.title"),
+          description: t("toasts.fetchError.description"),
+          variant: "destructive",
+        });
+      }
+    },
+  });
 
   const setupTOTP = async () => {
     setIsLoading(true);
@@ -89,7 +85,7 @@ const SecuritySettings = () => {
         throw new Error();
       }
 
-      setTotpEnabled(true);
+      await refetchTotpStatus();
       setQrCode(null);
       form.reset();
 
@@ -116,7 +112,7 @@ const SecuritySettings = () => {
           <CardDescription>{t("twoFactor.description")}</CardDescription>
         </CardHeader>
         <CardContent>
-          {totpEnabled ? (
+          {totpStatus ? (
             <div>
               <p className="text-sm text-muted-foreground mb-4">
                 {t("twoFactor.enabled")}

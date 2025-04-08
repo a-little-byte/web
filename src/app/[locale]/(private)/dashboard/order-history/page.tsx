@@ -32,68 +32,62 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/apiClient";
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { InferResponseType } from "hono";
 import { ChevronDown, Download, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type OrderDetails = Exclude<
   InferResponseType<typeof apiClient.orders.$get>,
   { error: string }
 >[0];
 
-export default function Subscriptions() {
-  const t = useTranslations("dashboard.subscriptions");
-  const { toast } = useToast();
-  const [orders, setOrders] = useState<OrderDetails[]>([]);
+function OrderHistoryPage() {
+  const t = useTranslations("dashboard.order-history");
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedService, setSelectedService] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const { data: orders } = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      try {
+        const token = document.cookie.replace(
+          /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
+          "$1"
+        );
 
-  useEffect(() => {
-    fetchOrders();
+        const response = await apiClient.orders.$get(
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchOrders = async () => {
-    try {
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-
-      const response = await apiClient.orders.$get(
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        if (!response.ok) {
+          throw new Error();
         }
-      );
 
-      if (!response.ok) {
-        throw new Error();
+        return response.json();
+      } catch (error) {
+        toast({
+          title: t("toasts.fetchError.title"),
+          description: t("toasts.fetchError.description"),
+          variant: "destructive",
+        });
       }
+    },
+  });
 
-      const data = await response.json();
-      setOrders(data);
-    } catch (error) {
-      toast({
-        title: t("toasts.fetchError.title"),
-        description: t("toasts.fetchError.description"),
-        variant: "destructive",
-      });
-    }
-  };
-
-  const filterOrders = () => {
-    return orders.filter((order) => {
+  const filterOrders = () =>
+    orders?.filter((order) => {
       const orderYear = new Date(order.createdAt).getFullYear().toString();
       const matchesYear = selectedYear === "all" || orderYear === selectedYear;
       const matchesStatus =
@@ -105,18 +99,17 @@ export default function Subscriptions() {
         order.id.toLowerCase().includes(searchQuery.toLowerCase());
 
       return matchesYear && matchesStatus && matchesService && matchesSearch;
-    });
-  };
+    }) ?? [];
 
   const getYears = () => {
     const years = new Set(
-      orders.map((order) => new Date(order.createdAt).getFullYear().toString())
+      orders?.map((order) => new Date(order.createdAt).getFullYear().toString())
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
 
   const getServices = () =>
-    Array.from(new Set(orders.map((order) => order.service_name)));
+    Array.from(new Set(orders?.map((order) => order.service_name)));
 
   const groupOrdersByYear = (filteredOrders: OrderDetails[]) => {
     const grouped: { [key: string]: OrderDetails[] } = {};
@@ -358,3 +351,5 @@ export default function Subscriptions() {
     </div>
   );
 }
+
+export default OrderHistoryPage;
