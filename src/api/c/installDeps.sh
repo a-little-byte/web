@@ -107,12 +107,11 @@ verify_installation() {
 main() {
   check_dependencies
   install_emscripten
-  configure_environment
   verify_installation
 
   echo "INSTALL SUCCSESSFUL"
   echo "1. Open a new terminal window or restart your current terminal"
-  echo "2. Run: source \$HOME/emsdk/emsdk_env.sh"
+  echo "2. Run: source /$HOME/emsdk/emsdk_env.sh"
   echo ""
 }
 
