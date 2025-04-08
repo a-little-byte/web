@@ -26,4 +26,5 @@ export async function up(db: Kysely<Database>): Promise<void> {
 }
 
 export async function down(db: Kysely<Database>): Promise<void> {
+  await db.schema.dropTable("totp_secrets").execute();
 }
