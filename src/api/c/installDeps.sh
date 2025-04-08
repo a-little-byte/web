@@ -69,9 +69,6 @@ install_emscripten() {
 
   cd "$EMSDK_DIR"
 
-  echo "Updating Emscripten SDK..."
-  ./emsdk update
-
   echo "Installing latest Emscripten SDK..."
   ./emsdk install latest
 
