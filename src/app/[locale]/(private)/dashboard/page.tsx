@@ -21,11 +21,6 @@ interface Subscription {
   services: Service | null;
 }
 
-interface DashboardData {
-  subscriptions: Subscription[];
-  totalSpent: number;
-}
-
 const Dashboard = () => {
   const t = useTranslations("dashboard");
   const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
@@ -41,10 +36,10 @@ const Dashboard = () => {
             headers: {
               Authorization: `Bearer ${document.cookie.replace(
                 /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1",
+                "$1"
               )}`,
             },
-          },
+          }
         );
 
         const data = await response.json();
@@ -75,7 +70,7 @@ const Dashboard = () => {
             <CardTitle>{t("cards.activeSubscriptions.title")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{subscriptions.length}</p>
+            <p className="text-3xl font-bold">{subscriptions?.length ?? 0}</p>
           </CardContent>
         </Card>
 
@@ -84,7 +79,9 @@ const Dashboard = () => {
             <CardTitle>{t("cards.totalSpent.title")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">${totalSpent.toFixed(2)}</p>
+            <p className="text-3xl font-bold">
+              ${(totalSpent ?? 0).toFixed(2)}
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -93,40 +90,43 @@ const Dashboard = () => {
         {t("subscriptionsList.title")}
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
-        {subscriptions.map((sub) => (
-          <Card key={sub.id}>
-            <CardHeader>
-              <CardTitle>
-                {sub.services?.name || t("subscriptionsList.unknownService")}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                <p>
-                  <span className="font-medium">
-                    {t("subscriptionsList.details.status")}:
-                  </span>{" "}
-                  <span className="capitalize">{sub.status}</span>
-                </p>
-                {sub.services && (
-                  <p>
-                    <span className="font-medium">
-                      {t("subscriptionsList.details.price")}:
-                    </span>{" "}
-                    ${sub.services.price}/{sub.services.period}
-                  </p>
-                )}
-                <p>
-                  <span className="font-medium">
-                    {t("subscriptionsList.details.currentPeriod")}:
-                  </span>{" "}
-                  {format(new Date(sub.current_period_start), "PP")} -{" "}
-                  {format(new Date(sub.current_period_end), "PP")}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        {subscriptions
+          ? subscriptions.map((sub) => (
+              <Card key={sub.id}>
+                <CardHeader>
+                  <CardTitle>
+                    {sub.services?.name ||
+                      t("subscriptionsList.unknownService")}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <p>
+                      <span className="font-medium">
+                        {t("subscriptionsList.details.status")}:
+                      </span>{" "}
+                      <span className="capitalize">{sub.status}</span>
+                    </p>
+                    {sub.services && (
+                      <p>
+                        <span className="font-medium">
+                          {t("subscriptionsList.details.price")}:
+                        </span>{" "}
+                        ${sub.services.price}/{sub.services.period}
+                      </p>
+                    )}
+                    <p>
+                      <span className="font-medium">
+                        {t("subscriptionsList.details.currentPeriod")}:
+                      </span>{" "}
+                      {format(new Date(sub.current_period_start), "PP")} -{" "}
+                      {format(new Date(sub.current_period_end), "PP")}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          : null}
       </div>
     </div>
   );

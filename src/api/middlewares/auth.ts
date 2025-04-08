@@ -14,7 +14,7 @@ export const authMiddleware: MiddlewareHandler<{
 
   const decoded = jwt.verify(
     token,
-    process.env.JWT_SECRET || "your-secret-key",
+    process.env.JWT_SECRET || "your-secret-key"
   ) as { userId: UUID };
 
   const session = await db
