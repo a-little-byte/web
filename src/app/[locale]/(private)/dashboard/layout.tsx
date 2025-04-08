@@ -24,11 +24,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         ),
       },
       {
-        href: "/dashboard/subscriptions",
+        href: "/dashboard/order-history",
         children: (
           <>
             <CreditCard className="h-4 w-4" />
-            {t("subscriptions")}
+            {t("orderHistory")}
           </>
         ),
       },
