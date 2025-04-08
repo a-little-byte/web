@@ -31,88 +31,21 @@ const totpSchema = z.object({
   code: z.string().length(6),
 });
 
-const TOTPVerification = ({ 
-  onSubmit, 
-  onBack, 
-  isLoading, 
-  tTotp 
-}: { 
-  onSubmit: (data: { code: string }) => void;
-  onBack: () => void;
-  isLoading: boolean;
-  tTotp: (key: string) => string; 
-}) => {
-  const form = useForm(totpSchema);
-
-  const handleSubmit: SubmitHandler<z.infer<typeof totpSchema>> = async (data) => {
-    onSubmit(data);
-  };
-
-  return (
-    <div className="container flex h-screen w-screen flex-col items-center justify-center">
-      <Card className="w-full max-w-lg">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl">{tTotp("title")}</CardTitle>
-          <CardDescription>{tTotp("description")}</CardDescription>
-        </CardHeader>
-        <Form form={form} onSubmit={handleSubmit}>
-          <CardContent className="grid gap-4">
-            <InputField
-              control={form.control}
-              name="code"
-              label={tTotp("codeLabel")}
-              placeholder={tTotp("codePlaceholder")}
-              autoComplete="off"
-              disabled={isLoading}
-            />
-          </CardContent>
-          <CardFooter className="flex flex-col space-y-4">
-            <Button className="w-full" type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {tTotp("verifyButton")}
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full"
-              onClick={onBack}
-              disabled={isLoading}
-              type="button"
-            >
-              {tTotp("backButton")}
-            </Button>
-          </CardFooter>
-        </Form>
-      </Card>
-    </div>
-  );
-};
-
 const Login = () => {
   const t = useTranslations("auth.login");
   const tTotp = useTranslations("auth.totp");
   const [isLoading, setIsLoading] = useState(false);
   const [showTOTP, setShowTOTP] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [tokens, setTokens] = useState({ accessToken: "", refreshToken: "" });
   const router = useRouter();
   const searchParams = useSearchParams();
   const returnTo = searchParams.get("returnTo") || "/dashboard";
   const { toast } = useToast();
   const loginForm = useForm(loginSchema);
+  const totpForm = useForm(totpSchema);
 
-  const completeAuthentication = (data :{accessToken: string, refreshToken: string}) => {
-    document.cookie = `auth-token=${data.accessToken}; path=/`;
-    document.cookie = `refresh-token=${data.refreshToken}; path=/`;
-    
-    toast({
-      title: t("toasts.loginSuccess.title"),
-      description: t("toasts.loginSuccess.description"),
-    });
-     
-    router.push(returnTo);
-  };
-
-  const onLoginSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (data) => {
+  const onLoginSubmit: SubmitHandler<z.infer<typeof loginSchema>> = async (
+    data,
+  ) => {
     setIsLoading(true);
 
     try {
@@ -133,34 +66,18 @@ const Login = () => {
             description: t("toasts.emailNotVerified.description"),
             variant: "destructive",
           });
-          setIsLoading(false);
           return;
         }
-      }
 
-      setTokens({accessToken: authData.acsessToken, refreshToken: authData.refreshToken});
-      
-      try {
-        const totpStatusResponse = await apiClient.auth.totp.status.$get(
-          {},
-          {
-          headers: {
-            Authorization: `Bearer ${authData.acsessToken}`
-          }
+        toast({
+          title: t("toasts.loginSuccess.title"),
+          description: t("toasts.loginSuccess.description"),
         });
-        const totpStatus = await totpStatusResponse.json();
-        
-        if (totpStatus.enabled) {
-          setUserEmail(data.email);
-          setShowTOTP(true);
-          setIsLoading(false);
-          return;
-        }
-      } catch (error) {
-        console.log("TOTP status check failed or not enabled");
-      }
 
-      completeAuthentication(tokens);
+        document.cookie = `auth-token=${authData.acsessToken};`;
+        document.cookie = `refresh-token=${authData.refreshToken};`
+        router.push(returnTo);
+      }
     } catch (error) {
       console.error("Error:", error);
       toast({
@@ -173,55 +90,41 @@ const Login = () => {
     }
   };
 
-  const handleTOTPSubmit: SubmitHandler<z.infer<typeof totpSchema>> = async (data) => {
-    setIsLoading(true);
-    
-    try {
-      const response = await apiClient.auth.totp.validate.$post({
-        json: {
-          email: userEmail,
-          code: data.code
-        }
-      }, {
-        headers: {
-          Authorization: `Bearer ${tokens.accessToken}`
-        }
-      });
-      
-      const totpData = await response.json();
-      
-      if ("error" in totpData) {
-        throw new Error(totpData.error);
-      }
-      
-      if (totpData.success) {
-        completeAuthentication(tokens);
-      }
-    } catch (error) {
-      console.error("TOTP Error:", error);
-      toast({
-        title: tTotp("toasts.error.title"),
-        description: tTotp("toasts.error.description"),
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleBackToLogin = () => {
-    setShowTOTP(false);
-    setIsLoading(false);
-  };
-
   if (showTOTP) {
     return (
-      <TOTPVerification 
-        onSubmit={handleTOTPSubmit} 
-        onBack={handleBackToLogin} 
-        isLoading={isLoading}
-        tTotp={tTotp}
-      />
+      <div className="container flex h-screen w-screen flex-col items-center justify-center">
+        <Card className="w-full max-w-lg">
+          <CardHeader className="space-y-1">
+            <CardTitle className="text-2xl">{tTotp("title")}</CardTitle>
+            <CardDescription>{tTotp("description")}</CardDescription>
+          </CardHeader>
+          <Form form={totpForm} onSubmit={(data) => console.log(data)}>
+            <CardContent className="grid gap-4">
+              <InputField
+                control={totpForm.control}
+                name="code"
+                label={tTotp("codeLabel")}
+                placeholder={tTotp("codePlaceholder")}
+                disabled={isLoading}
+              />
+            </CardContent>
+            <CardFooter className="flex flex-col space-y-4">
+              <Button className="w-full" type="submit" disabled={isLoading}>
+                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                {tTotp("verifyButton")}
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full"
+                onClick={() => setShowTOTP(false)}
+                disabled={isLoading}
+              >
+                {tTotp("backButton")}
+              </Button>
+            </CardFooter>
+          </Form>
+        </Card>
+      </div>
     );
   }
 
