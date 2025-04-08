@@ -12,6 +12,7 @@ import type { User } from "@/db/models/User";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 import { InformationSchemaTables } from "./models/Information";
+import { LoginAttempts } from "./models/LoginAttempts";
 
 export const db = new Kysely<Database>({
   dialect: new PostgresDialect({
@@ -42,4 +43,5 @@ export interface Database {
   totp_temp: TOTPTemp;
   hero_carousel: HeroCarousel;
   casbin_rule: CasbinRule;
+  login_attempts: LoginAttempts;
 }

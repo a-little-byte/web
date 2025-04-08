@@ -4,13 +4,80 @@ import { verifyEmail } from "@/lib/auth";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import type { UUID } from "node:crypto";
 import { z } from "zod";
 import { Hash, Verify } from "@/api/c/hash";
 import { apiConfig } from "@/api/config";
+import { Database } from "@/db";
+import { Kysely } from "kysely";
+import {deleteCookie, getSignedCookie, setSignedCookie} from 'hono/cookie'
+import { isAccountLockedMiddleware } from "@/api/middlewares/isAccountLocked";
+import { Context } from "hono";
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+
+const UNIX_TIME_VARIBLE = 1000
+const MINUTES = 60
+const HOURS = 24
+
+const LOGINATTEMPTS_LAST = 15 // in minutes
+const LOGINATTEMPTS_LOCK = 60 // in minutes
+const ACCSESSTOKEN_EXPIRES_IN = 15 // in minutes
+const REFRESHTOKEN_EXPIRES_IN = 7 // in days
+
+const recordFailedLoginAttempt = async (db: Kysely<Database>, email: String, ip: String) => {
+  const now = new Date();
+  
+  await db
+    .insertInto("login_attempts")
+    .values({
+      email,
+      ip_address: ip
+    })
+    .execute();
+    
+  const failedAttempts = await db
+    .selectFrom("login_attempts")
+    .where("email", "=", email)
+    .where("attempted_at", ">", new Date(now.getTime() - LOGINATTEMPTS_LAST * MINUTES * UNIX_TIME_VARIBLE)) // Last 15 minutes
+    .select(db.fn.count("id").as("count"))
+    .executeTakeFirst();
+    
+  if (failedAttempts && Number(failedAttempts.count) >= 5) {
+    await db
+      .updateTable("login_attempts")
+      .set({
+        is_locked: true,
+        lock_expires_at: new Date(now.getTime() + LOGINATTEMPTS_LOCK * MINUTES * UNIX_TIME_VARIBLE) // Lock for 1 hour
+      })
+      .where("email", "=", email)
+      .execute();
+  }
+}
+
+const deleteUnlockedAccount = async(db:Kysely<Database>, email:String)=>
+      await db
+        .deleteFrom("login_attempts")
+        .where("email", "=", email)
+        .execute();
+
+const createSignedCookie = async (ctx:Context, name: string, value:string, path: string, expiresIn: number)=>
+    await setSignedCookie(
+        ctx,
+        name,
+        value,
+        apiConfig.cookie,
+        {
+          httpOnly: false,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "strict",
+          maxAge: expiresIn,
+          path: path,
+        }
+      );
+
 
 export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get("/callback", async (c) => {
@@ -105,9 +172,12 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
       "json",
       z.object({ email: emailValidator, password: z.string() }),
     ),
-    async ({ var: { db }, req, json }) => {
+    isAccountLockedMiddleware,
+    async (ctx) => {
+      const { var: { db }, req, json } = ctx;
       const { email, password } = req.valid("json");
-
+      const clientIp = req.header('x-forwarded-for') || 'unknown';
+      
       const user = await db
         .selectFrom("users")
         .where("email", "=", email)
@@ -126,17 +196,22 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
       );
 
       if (!isPasswordValid) {
+        await recordFailedLoginAttempt(db, email, clientIp);
         return json({ error: "Invalid credentials" }, 401);
       }
 
-      const acsessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      await deleteUnlockedAccount(db, email);
+      const accessToken = jwt.sign({ userId: user.id, type: "accsess" }, JWT_SECRET, {
         expiresIn: "24h",
       });
-      const refreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      const refreshToken = jwt.sign({ userId: user.id, type: "refresh" }, JWT_SECRET, {
         expiresIn: "7d",
       });
 
-      return json({ success: true, user, acsessToken, refreshToken });
+      await createSignedCookie(ctx, "auth-token", accessToken, "/", ACCSESSTOKEN_EXPIRES_IN * MINUTES * UNIX_TIME_VARIBLE)
+      await createSignedCookie(ctx, "refresh-token", refreshToken, "/", REFRESHTOKEN_EXPIRES_IN * HOURS * MINUTES * UNIX_TIME_VARIBLE)
+
+      return json({ success: true, email_verified: user.email_verified });
     },
   )
   .post(
@@ -178,7 +253,8 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           })
           .returning(["id", "email", "first_name", "last_name", "createdAt"])
           .executeTakeFirstOrThrow();
-        const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+        
+         const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
           expiresIn: "24h",
         });
 
