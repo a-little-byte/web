@@ -76,7 +76,6 @@ install_emscripten() {
   ./emsdk activate latest
 
   if [[ "$SHELL" == */bash ]]; then
-    chmod +x $HOME/emsdk/emsdk_env.sh
     if [[ "$OS" == "macOS" ]]; then
       SHELL_PROFILE="$HOME/.bash_profile"
     else
@@ -88,13 +87,6 @@ install_emscripten() {
     echo "Error: unknown shell"
     echo 'source "$HOME/emsdk/emsdk_env.sh"'
     return
-  fi
-
-  if ! grep -q "source \"\$HOME/emsdk/emsdk_env.sh\"" "$SHELL_PROFILE"; then
-    echo 'source "$HOME/emsdk/emsdk_env.sh"' >>"$SHELL_PROFILE"
-    echo "Added Emscripten environment to $SHELL_PROFILE"
-  else
-    echo "Emscripten environment already configured in $SHELL_PROFILE"
   fi
 }
 
