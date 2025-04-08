@@ -75,7 +75,6 @@ install_emscripten() {
   echo "Activating latest Emscripten SDK..."
   ./emsdk activate latest
 
-  Error: unknown shellll
   if [[ "$SHELL" == */bash ]]; then
     if [[ "$OS" == "macOS" ]]; then
       SHELL_PROFILE="$HOME/.bash_profile"
