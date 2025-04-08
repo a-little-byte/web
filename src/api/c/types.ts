@@ -3,14 +3,14 @@ export interface EmscriptenModule {
     ident: string,
     returnType: string,
     argTypes: string[],
-    args: any[]
+    args: any[],
   ) => any;
   cwrap: (
     ident: string,
     returnType: string,
-    argTypes: string[]
+    argTypes: string[],
   ) => (...args: any[]) => any;
   _malloc: (size: number) => number;
   _free: (ptr: number) => void;
   UTF8ToString: (ptr: number, maxBytesToRead?: number) => string;
-} 
+}

@@ -47,7 +47,7 @@ export const accountCartRouter = new Hono<{
         success: true,
         message: "Item added to cart successfully",
       });
-    }
+    },
   )
   .patch(
     "/:id",
@@ -55,7 +55,7 @@ export const accountCartRouter = new Hono<{
       "param",
       z.object({
         id: idValidator,
-      })
+      }),
     ),
     zValidator("json", z.object({ quantity: z.number().int().positive() })),
     async ({ var: { db }, json, req }) => {
@@ -72,7 +72,7 @@ export const accountCartRouter = new Hono<{
         success: true,
         message: "Item updated in cart successfully",
       });
-    }
+    },
   )
   .delete(
     "/:id",
@@ -86,5 +86,5 @@ export const accountCartRouter = new Hono<{
         success: true,
         message: "Item removed from cart successfully",
       });
-    }
+    },
   );

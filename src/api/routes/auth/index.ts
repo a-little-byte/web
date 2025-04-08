@@ -74,14 +74,13 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     async ({ var: { db }, req, json }) => {
       const { token, password } = req.valid("json");
       const decoded = jwt.verify(token, JWT_SECRET) as { userId: UUID };
-      const {hash, salt} = await Hash(password, apiConfig.pepper);
-      
+      const { hash, salt } = await Hash(password, apiConfig.pepper);
 
       await db
         .updateTable("users")
         .set({
           password: hash,
-          password_salt: salt
+          password_salt: salt,
         })
         .where("id", "=", decoded.userId)
         .execute();
@@ -119,7 +118,12 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         return json({ error: "Invalid credentials" }, 401);
       }
 
-      const isPasswordValid = await Verify(password, user.password, user.password_salt, apiConfig.pepper);
+      const isPasswordValid = await Verify(
+        password,
+        user.password,
+        user.password_salt,
+        apiConfig.pepper,
+      );
 
       if (!isPasswordValid) {
         return json({ error: "Invalid credentials" }, 401);
@@ -160,7 +164,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           return json({ error: "User already exists" }, 400);
         }
 
-        const {hash, salt} = await Hash(password, apiConfig.pepper);
+        const { hash, salt } = await Hash(password, apiConfig.pepper);
         console.log(hash);
         const user = await db
           .insertInto("users")
@@ -177,7 +181,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
           expiresIn: "24h",
         });
-        
+
         await resend.emails.send({
           from: "Cyna <no-reply@limerio.dev>",
           to: [email],

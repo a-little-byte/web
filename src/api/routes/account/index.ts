@@ -42,19 +42,24 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
       const user = await db
         .selectFrom("users")
         .where("id", "=", session.user.id)
-        .select(["password","password_salt"])
+        .select(["password", "password_salt"])
         .executeTakeFirst();
 
       if (!user) {
         return json({ error: "User not found" }, 404);
       }
 
-      const isOldPasswordValid = await Verify(data.oldPassword, user.password, user.password_salt, apiConfig.pepper);
+      const isOldPasswordValid = await Verify(
+        data.oldPassword,
+        user.password,
+        user.password_salt,
+        apiConfig.pepper,
+      );
       if (!isOldPasswordValid) {
         return json({ error: "Invalid old password" }, 400);
       }
 
-      const {hash, salt} = await Hash(data.newPassword, apiConfig.pepper);
+      const { hash, salt } = await Hash(data.newPassword, apiConfig.pepper);
 
       await db
         .updateTable("users")

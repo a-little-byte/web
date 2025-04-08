@@ -75,7 +75,7 @@ const Login = () => {
         });
 
         document.cookie = `auth-token=${authData.acsessToken};`;
-        document.cookie = `refresh-token=${authData.refreshToken};`
+        document.cookie = `refresh-token=${authData.refreshToken};`;
         router.push(returnTo);
       }
     } catch (error) {

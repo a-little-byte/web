@@ -10,8 +10,7 @@ export type InformationSchemaTables = {
   user_defined_type_catalog: string | null;
   user_defined_type_schema: string | null;
   user_defined_type_name: string | null;
-  is_insertable_into: 'YES' | 'NO';
-  is_typed: 'YES' | 'NO';
+  is_insertable_into: "YES" | "NO";
+  is_typed: "YES" | "NO";
   commit_action: string | null;
-}
-
+};
