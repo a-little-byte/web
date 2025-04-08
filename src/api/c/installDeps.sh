@@ -76,6 +76,7 @@ install_emscripten() {
   ./emsdk activate latest
 
   if [[ "$SHELL" == */bash ]]; then
+    chmod +x $HOME/emsdk/emsdk_env.sh
     if [[ "$OS" == "macOS" ]]; then
       SHELL_PROFILE="$HOME/.bash_profile"
     else
