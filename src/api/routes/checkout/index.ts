@@ -32,7 +32,7 @@ export const checkoutRouter = new Hono<{
     const lineItems = cartItems.map((item) => {
       const service = item.services;
       let finalPrice = service?.price;
-      let discount = 0;
+      const discount = 0;
 
       // if (item.duration >= 12) {
       // discount = 0.2;
