@@ -18,6 +18,6 @@ const adapter = await BasicAdapter.newAdapter(
 );
 
 export const enforcer = await newEnforcer(
-  path.join(__dirname, "src/db/models/rbac_model.conf"),
+  path.join(__dirname, "../../db/models/rbac_model.conf"),
   adapter,
 );

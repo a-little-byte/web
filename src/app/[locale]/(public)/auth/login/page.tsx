@@ -60,7 +60,7 @@ const Login = () => {
       }
 
       if (authData.user) {
-        if (!authData.user.email_confirmed_at) {
+        if (!authData.user.email_verified) {
           toast({
             title: t("toasts.emailNotVerified.title"),
             description: t("toasts.emailNotVerified.description"),
@@ -74,7 +74,8 @@ const Login = () => {
           description: t("toasts.loginSuccess.description"),
         });
 
-        document.cookie = `auth-token=${authData.session.access_token}; refresh-token=${authData.session.refresh_token}`;
+        document.cookie = `auth-token=${authData.acsessToken};`;
+        document.cookie = `refresh-token=${authData.refreshToken};`
         router.push(returnTo);
       }
     } catch (error) {

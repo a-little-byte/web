@@ -1,0 +1,19 @@
+{
+  "name": "hash-module",
+  "version": "1.0.0",
+  "description": "Password hashing module using PBKDF2 with WebAssembly",
+  "main": "index.ts",
+  "scripts": {
+    "build": "node emscripten.build.js",
+    "clean": "rm -rf build",
+    "rebuild": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "hash",
+    "password",
+    "pbkdf2",
+    "wasm",
+    "webassembly"
+  ],
+  "license": "MIT"
+} 

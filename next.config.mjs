@@ -33,8 +33,28 @@ const nextConfig = {
         "tedious",
         "mysql",
         "pg-query-stream",
+        "hash",
+        "knex",
+        "casbin",
+        "casbin-basic-adapter",
+        { "knex/lib/migrations": "knex/lib/migrations" },
+        { "knex/lib/migrations/util/import-file": "knex/lib/migrations/util/import-file" },
       ];
+      config.node = {
+        __dirname: true,
+        __filename: true,
+      };
     }
+
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        fs: false,
+        path: false,
+      };
+    }
+
     return config;
   },
 };

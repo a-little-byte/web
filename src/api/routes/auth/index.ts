@@ -3,11 +3,12 @@ import { PublicContextVariables } from "@/api/types";
 import { verifyEmail } from "@/lib/auth";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
-import bcrypt from "bcryptjs";
 import { Hono } from "hono";
 import jwt from "jsonwebtoken";
 import type { UUID } from "node:crypto";
 import { z } from "zod";
+import { Hash, Verify } from "@/api/c/hash";
+import { apiConfig } from "@/api/config";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
@@ -45,7 +46,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         });
 
         await resend.emails.send({
-          from: "Cyna <onboarding@resend.dev>",
+          from: "Cyna <no-reply@limerio.dev>",
           to: [email],
           subject: "Reset your password",
           html: `
@@ -73,12 +74,14 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
     async ({ var: { db }, req, json }) => {
       const { token, password } = req.valid("json");
       const decoded = jwt.verify(token, JWT_SECRET) as { userId: UUID };
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const {hash, salt} = await Hash(password, apiConfig.pepper);
+      
 
       await db
         .updateTable("users")
         .set({
-          password: hashedPassword,
+          password: hash,
+          password_salt: salt
         })
         .where("id", "=", decoded.userId)
         .execute();
@@ -116,17 +119,20 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         return json({ error: "Invalid credentials" }, 401);
       }
 
-      const isPasswordValid = await bcrypt.compare(password, user.password);
+      const isPasswordValid = await Verify(password, user.password, user.password_salt, apiConfig.pepper);
 
       if (!isPasswordValid) {
         return json({ error: "Invalid credentials" }, 401);
       }
 
-      const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
+      const acsessToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
         expiresIn: "24h",
       });
+      const refreshToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
+        expiresIn: "7d",
+      });
 
-      return json({ success: true, token });
+      return json({ success: true, user, acsessToken, refreshToken });
     },
   )
   .post(
@@ -154,12 +160,14 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           return json({ error: "User already exists" }, 400);
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const {hash, salt} = await Hash(password, apiConfig.pepper);
+        console.log(hash);
         const user = await db
           .insertInto("users")
           .values({
             email,
-            password: hashedPassword,
+            password: hash,
+            password_salt: salt,
             first_name,
             last_name,
             role: "user",
@@ -169,21 +177,27 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
           expiresIn: "24h",
         });
-
+        
         await resend.emails.send({
-          from: "Cyna <onboarding@resend.dev>",
+          from: "Cyna <no-reply@limerio.dev>",
           to: [email],
-          subject: "Verify your email",
+          subject: "Verify your email - Cyna",
           html: `
-        <div>
-          <h1>Verify Your Email</h1>
-          <p>Click the link below to verify your email address. This link will expire in 24 hours.</p>
-          <a href="${process.env.NEXT_PUBLIC_URL}/auth/callback?token=${verificationToken}">
-            Verify Email
-          </a>
-          <p>If you didn't create an account, you can safely ignore this email.</p>
-        </div>
-      `,
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+              <h1 style="color: #333;">Welcome to Cyna!</h1>
+              <p>Thank you for signing up. Please verify your email address by clicking the link below:</p>
+              <div style="margin: 20px 0;">
+                <a href="${process.env.NEXT_PUBLIC_URL}/auth/confirm?token=${verificationToken}" 
+                   style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+                  Verify Email Address
+                </a>
+              </div>
+              <p>This verification link will expire in 24 hours.</p>
+              <p>If you didn't create an account with us, please ignore this email.</p>
+              <hr style="margin: 20px 0; border: 1px solid #eee;">
+              <p style="color: #666; font-size: 12px;">This is an automated message, please do not reply to this email.</p>
+            </div>
+          `,
         });
 
         return json({

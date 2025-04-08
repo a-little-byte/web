@@ -6,6 +6,8 @@ import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { z } from "zod";
+import { Hash, Verify } from "@/api/c/hash";
+import { apiConfig } from "@/api/config";
 
 export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/cart", accountCartRouter)
@@ -37,9 +39,26 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
     async ({ var: { db, session }, json, req }) => {
       const data = req.valid("json");
 
+      const user = await db
+        .selectFrom("users")
+        .where("id", "=", session.user.id)
+        .select(["password","password_salt"])
+        .executeTakeFirst();
+
+      if (!user) {
+        return json({ error: "User not found" }, 404);
+      }
+
+      const isOldPasswordValid = await Verify(data.oldPassword, user.password, user.password_salt, apiConfig.pepper);
+      if (!isOldPasswordValid) {
+        return json({ error: "Invalid old password" }, 400);
+      }
+
+      const {hash, salt} = await Hash(data.newPassword, apiConfig.pepper);
+
       await db
         .updateTable("users")
-        .set({ password: data.newPassword })
+        .set({ password: hash, password_salt: salt })
         .where("id", "=", session.user.id)
         .execute();
 
