@@ -56,6 +56,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchSalesData();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeframe]);
 

@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -23,8 +24,9 @@ import { ServiceSelect } from "@/db/models/Service";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 
 const serviceSchema = z.object({
@@ -36,7 +38,28 @@ const serviceSchema = z.object({
 
 const ServicesManagement = () => {
   const t = useTranslations("admin.services");
-  const [services, setServices] = useState<ServiceSelect[]>([]);
+  const queryClient = useQueryClient();
+  const { data: services, isLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      try {
+        const res = await apiClient.services.$get();
+        const data = await res.json();
+
+        return data.map((service) => ({
+          ...service,
+          createdAt: new Date(service.createdAt),
+          updatedAt: new Date(service.updatedAt),
+        }));
+      } catch (error) {
+        toast({
+          title: t("toasts.fetchError.title"),
+          description: t("toasts.fetchError.description"),
+          variant: "destructive",
+        });
+      }
+    },
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [currentService, setCurrentService] = useState<ServiceSelect | null>(
     null
@@ -50,32 +73,6 @@ const ServicesManagement = () => {
       period: "",
     },
   });
-
-  useEffect(() => {
-    fetchServices();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchServices = async () => {
-    try {
-      const res = await apiClient.services.$get();
-      const data = await res.json();
-
-      setServices(
-        data.map((service) => ({
-          ...service,
-          createdAt: new Date(service.createdAt),
-          updatedAt: new Date(service.updatedAt),
-        }))
-      );
-    } catch (error) {
-      toast({
-        title: t("toasts.fetchError.title"),
-        description: t("toasts.fetchError.description"),
-        variant: "destructive",
-      });
-    }
-  };
 
   const handleSubmit = async (values: z.infer<typeof serviceSchema>) => {
     try {
@@ -97,7 +94,6 @@ const ServicesManagement = () => {
 
       setIsOpen(false);
       setCurrentService(null);
-      fetchServices();
     } catch (error) {
       toast({
         title: t("toasts.saveError.title"),
@@ -123,7 +119,7 @@ const ServicesManagement = () => {
         description: t("toasts.deleteSuccess.description"),
       });
 
-      fetchServices();
+      queryClient.invalidateQueries({ queryKey: ["services"] });
     } catch (error) {
       toast({
         title: t("toasts.deleteError.title"),
@@ -191,32 +187,40 @@ const ServicesManagement = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {services.map((service) => (
-            <TableRow key={service.id}>
-              <TableCell>{service.name}</TableCell>
-              <TableCell>{service.description}</TableCell>
-              <TableCell>${service.price}</TableCell>
-              <TableCell>{service.period}</TableCell>
-              <TableCell>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={handleEdit(service)}
-                  >
-                    {t("actions.edit")}
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleDelete(service.id)}
-                  >
-                    {t("actions.delete")}
-                  </Button>
-                </div>
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center">
+                <Skeleton className="w-full h-10" />
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            services?.map((service) => (
+              <TableRow key={service.id}>
+                <TableCell>{service.name}</TableCell>
+                <TableCell>{service.description}</TableCell>
+                <TableCell>${service.price}</TableCell>
+                <TableCell>{service.period}</TableCell>
+                <TableCell>
+                  <div className="flex gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleEdit(service)}
+                    >
+                      {t("actions.edit")}
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleDelete(service.id)}
+                    >
+                      {t("actions.delete")}
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>

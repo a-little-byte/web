@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
 import {
   Table,
@@ -23,6 +24,7 @@ import { HeroCarouselSelect } from "@/db/models/HeroCarousel";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -43,7 +45,29 @@ const carouselSchemaForm = z.object({
 type FormData = z.infer<typeof carouselSchemaForm>;
 
 const CarouselManagement = () => {
-  const [items, setItems] = useState<HeroCarouselSelect[]>([]);
+  const queryClient = useQueryClient();
+  const { data: items } = useQuery({
+    queryKey: ["hero-carousel"],
+    queryFn: async () => {
+      try {
+        const response = await apiClient.hero.$get();
+        const data = await response.json();
+
+        return data.map((item) => ({
+          ...item,
+          createdAt: new Date(item.createdAt),
+          updatedAt: new Date(item.updatedAt),
+        }));
+      } catch (error) {
+        toast({
+          title: t("toasts.fetchError.title"),
+          description: t("toasts.fetchError.description"),
+          variant: "destructive",
+        });
+      }
+    },
+  });
+
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<HeroCarouselSelect | null>(
     null
@@ -63,27 +87,6 @@ const CarouselManagement = () => {
       active: false,
     },
   });
-
-  const fetchItems = async () => {
-    try {
-      const response = await apiClient.hero.$get();
-      const data = await response.json();
-
-      setItems(
-        data.map((item) => ({
-          ...item,
-          createdAt: new Date(item.createdAt),
-          updatedAt: new Date(item.updatedAt),
-        }))
-      );
-    } catch (error) {
-      toast({
-        title: t("toasts.fetchError.title"),
-        description: t("toasts.fetchError.description"),
-        variant: "destructive",
-      });
-    }
-  };
 
   const onSubmit = async (json: FormData) => {
     setIsLoading(true);
@@ -107,7 +110,7 @@ const CarouselManagement = () => {
 
       setIsOpen(false);
       setCurrentItem(null);
-      fetchItems();
+      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
     } catch (error) {
       toast({
         title: t("toasts.saveError.title"),
@@ -120,10 +123,10 @@ const CarouselManagement = () => {
   };
 
   const handleMove = (id: string, direction: "up" | "down") => async () => {
-    const currentIndex = items.findIndex((item) => item.id === id);
+    const currentIndex = items?.findIndex((item) => item.id === id);
     const newIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
 
-    if (newIndex < 0 || newIndex >= items.length) return;
+    if (newIndex < 0 || newIndex >= items?.length) return;
 
     const updatedItems = [...items];
     const [movedItem] = updatedItems.splice(currentIndex, 1);
@@ -139,7 +142,7 @@ const CarouselManagement = () => {
         })
       );
 
-      fetchItems();
+      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
     } catch (error) {
       toast({
         title: t("toasts.reorderError.title"),
@@ -156,7 +159,7 @@ const CarouselManagement = () => {
         param: { id },
       });
 
-      fetchItems();
+      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
     } catch (error) {
       toast({
         title: t("toasts.updateError.title"),
@@ -175,7 +178,7 @@ const CarouselManagement = () => {
         description: t("toasts.deleteSuccess.description"),
       });
 
-      fetchItems();
+      queryClient.invalidateQueries({ queryKey: ["hero-carousel"] });
     } catch (error) {
       toast({
         title: t("toasts.deleteError.title"),
@@ -184,12 +187,6 @@ const CarouselManagement = () => {
       });
     }
   };
-
-  useEffect(() => {
-    fetchItems();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (currentItem) {
@@ -258,63 +255,71 @@ const CarouselManagement = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {items.map((item, index) => (
-            <TableRow key={item.id}>
-              <TableCell>{item.title}</TableCell>
-              <TableCell>
-                <Image
-                  src={item.image_url}
-                  alt={item.title}
-                  className="w-20 h-12 object-cover rounded"
-                  width={80}
-                  height={48}
-                />
-              </TableCell>
-              <TableCell>
-                <Switch
-                  checked={item.active}
-                  onCheckedChange={handleToggleActive(item.id)}
-                />
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={handleMove(item.id, "up")}
-                    disabled={index === 0}
-                  >
-                    <ArrowUp className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={handleMove(item.id, "down")}
-                    disabled={index === items.length - 1}
-                  >
-                    <ArrowDown className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => {
-                      setCurrentItem(item);
-                      setIsOpen(true);
-                    }}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    onClick={handleDelete(item.id)}
-                  >
-                    <Trash className="h-4 w-4" />
-                  </Button>
-                </div>
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={5} className="text-center">
+                <Skeleton className="w-full h-10" />
               </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            items?.map((item, index) => (
+              <TableRow key={item.id}>
+                <TableCell>{item.title}</TableCell>
+                <TableCell>
+                  <Image
+                    src={item.image_url}
+                    alt={item.title}
+                    className="w-20 h-12 object-cover rounded"
+                    width={80}
+                    height={48}
+                  />
+                </TableCell>
+                <TableCell>
+                  <Switch
+                    checked={item.active}
+                    onCheckedChange={handleToggleActive(item.id)}
+                  />
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={handleMove(item.id, "up")}
+                      disabled={index === 0}
+                    >
+                      <ArrowUp className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={handleMove(item.id, "down")}
+                      disabled={index === items.length - 1}
+                    >
+                      <ArrowDown className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => {
+                        setCurrentItem(item);
+                        setIsOpen(true);
+                      }}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={handleDelete(item.id)}
+                    >
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
       </Table>
     </div>
