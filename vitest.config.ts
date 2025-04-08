@@ -4,9 +4,11 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    globals: true,
-    environment: "jsdom",
-    setupFiles: "./setup.test.ts",
+    browser: {
+      enabled: true,
+      provider: "playwright",
+      instances: [{ browser: "chromium" }],
+    },
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
   },
   plugins: [react(), tsconfigPaths()],

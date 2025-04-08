@@ -106,15 +106,13 @@
     "@eslint/eslintrc": "^3.3.1",
     "@playwright/test": "^1.50.1",
     "@tanstack/eslint-plugin-query": "^5.66.1",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^14.6.1",
     "@types/bcrypt": "^5.0.2",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "@types/pg": "^8.11.11",
     "@types/qrcode": "^1.5.5",
     "@vitejs/plugin-react": "^4.3.4",
+    "@vitest/browser": "^3.1.1",
     "eslint": "^9.21.0",
     "eslint-config-next": "^15.2.4",
     "jsdom": "^26.0.0",
@@ -122,11 +120,13 @@
     "playwright": "^1.50.1",
     "prettier": "^3.5.1",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.0.7"
+    "vitest": "^3.0.7",
+    "vitest-browser-react": "^0.1.1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
       "bcrypt",
+      "msw",
       "esbuild"
     ]
   }
