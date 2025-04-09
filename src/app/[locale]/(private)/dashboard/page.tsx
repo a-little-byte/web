@@ -3,32 +3,16 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/apiClient";
+import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
-
-interface Service {
-  name: string;
-  price: number;
-  period: string;
-}
-
-interface Subscription {
-  id: string;
-  status: string;
-  current_period_start: string;
-  current_period_end: string;
-  services: Service | null;
-}
 
 const Dashboard = () => {
   const t = useTranslations("dashboard");
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-  const [totalSpent, setTotalSpent] = useState(0);
   const { toast } = useToast();
-
-  useEffect(() => {
-    const fetchDashboardData = async () => {
+  const { data } = useQuery({
+    queryKey: ["subscriptions"],
+    queryFn: async () => {
       try {
         const response = await apiClient.subscriptions.$get(
           {},
@@ -36,16 +20,13 @@ const Dashboard = () => {
             headers: {
               Authorization: `Bearer ${document.cookie.replace(
                 /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1",
+                "$1"
               )}`,
             },
-          },
+          }
         );
 
-        const data = await response.json();
-
-        setSubscriptions(data.subscriptions);
-        setTotalSpent(data.totalSpent);
+        return response.json();
       } catch (error) {
         toast({
           title: t("toasts.fetchError.title"),
@@ -53,12 +34,8 @@ const Dashboard = () => {
           variant: "destructive",
         });
       }
-    };
-
-    fetchDashboardData();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    },
+  });
 
   return (
     <div>
@@ -72,7 +49,9 @@ const Dashboard = () => {
             <CardTitle>{t("cards.activeSubscriptions.title")}</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold">{subscriptions?.length ?? 0}</p>
+            <p className="text-3xl font-bold">
+              {data?.subscriptions?.length ?? 0}
+            </p>
           </CardContent>
         </Card>
 
@@ -82,7 +61,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">
-              ${(totalSpent ?? 0).toFixed(2)}
+              ${(data?.totalSpent ?? 0).toFixed(2)}
             </p>
           </CardContent>
         </Card>
@@ -92,8 +71,8 @@ const Dashboard = () => {
         {t("subscriptionsList.title")}
       </h2>
       <div className="grid gap-4 md:grid-cols-2">
-        {subscriptions
-          ? subscriptions.map((sub) => (
+        {data?.subscriptions
+          ? data.subscriptions.map((sub) => (
               <Card key={sub.id}>
                 <CardHeader>
                   <CardTitle>
