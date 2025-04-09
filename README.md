@@ -29,8 +29,10 @@ Cyna is a modern, full-featured cybersecurity platform built to protect enterpri
 ### 🖥️ Frontend
 
 - **React** - UI library
+- **nuqs** - Search params state manager
 - **TypeScript** - Type-safe JavaScript
 - **Tailwind CSS** - Utility-first CSS framework
+- **TanStack Query** - Asynchronous state management
 - **shadcn/ui** - Reusable components built with Radix UI and Tailwind
 - **Sentry** - Error handling manager
 - **PostHog** - Analytics
