@@ -9,6 +9,11 @@ export async function verifyEmail(userId: UUID): Promise<void> {
     .set({ email_verified: new Date() })
     .where("id", "=", userId)
     .executeTakeFirstOrThrow();
+
+  await db
+    .deleteFrom("verification")
+    .where("user_id", "=", userId)
+    .executeTakeFirstOrThrow();
 }
 
 export async function isAdmin(userId: UUID): Promise<boolean> {
