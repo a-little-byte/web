@@ -10,9 +10,9 @@ import { zValidator } from "@hono/zod-validator";
 import { Context, Hono } from "hono";
 import { setSignedCookie } from "hono/cookie";
 import jwt from "jsonwebtoken";
-import { randomBytes } from "node:crypto";
 import { Kysely } from "kysely";
 import type { UUID } from "node:crypto";
+import { randomBytes } from "node:crypto";
 import { z } from "zod";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
@@ -21,15 +21,15 @@ const UNIX_TIME_VARIABLE = 1000;
 const MINUTES = 60;
 const HOURS = 24;
 
-const LOGINATTEMPTS_LAST = 15; // in minutes
-const LOGINATTEMPTS_LOCK = 60; // in minutes
-const ACCSESSTOKEN_EXPIRES_IN = 15; // in minutes
-const REFRESHTOKEN_EXPIRES_IN = 7; // in days
+const LOGIN_ATTEMPTS_LAST = 15; // in minutes
+const LOGIN_ATTEMPTS_LOCK = 60; // in minutes
+const ACCESS_TOKEN_EXPIRES_IN = 15; // in minutes
+const REFRESH_TOKEN_EXPIRES_IN = 7; // in days
 
 const recordFailedLoginAttempt = async (
   db: Kysely<Database>,
   email: string,
-  ip: string,
+  ip: string
 ) => {
   const now = new Date();
 
@@ -48,8 +48,8 @@ const recordFailedLoginAttempt = async (
       "attempted_at",
       ">",
       new Date(
-        now.getTime() - LOGINATTEMPTS_LAST * MINUTES * UNIX_TIME_VARIABLE,
-      ),
+        now.getTime() - LOGIN_ATTEMPTS_LAST * MINUTES * UNIX_TIME_VARIABLE
+      )
     ) // Last 15 minutes
     .select(db.fn.count("id").as("count"))
     .executeTakeFirst();
@@ -60,7 +60,7 @@ const recordFailedLoginAttempt = async (
       .set({
         is_locked: true,
         lock_expires_at: new Date(
-          now.getTime() + LOGINATTEMPTS_LOCK * MINUTES * UNIX_TIME_VARIABLE,
+          now.getTime() + LOGIN_ATTEMPTS_LOCK * MINUTES * UNIX_TIME_VARIABLE
         ), // Lock for 1 hour
       })
       .where("email", "=", email)
@@ -76,7 +76,7 @@ const createSignedCookie = (
   name: string,
   value: string,
   path: string,
-  expiresIn: number,
+  expiresIn: number
 ) =>
   setSignedCookie(ctx, name, value, apiConfig.cookie, {
     httpOnly: false,
@@ -140,7 +140,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         console.error("Password reset error:", error);
         return json({ error: "Failed to process password reset" }, 500);
       }
-    },
+    }
   )
   .post(
     "/reset-password",
@@ -160,7 +160,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         .execute();
 
       return json({ success: true });
-    },
+    }
   )
   .post("/verify", async (c) => {
     const { token } = await c.req.json();
@@ -179,14 +179,13 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
 
     await verifyEmail(verification.user_id);
 
-
     return c.json({ success: true });
   })
   .post(
     "/sign-in",
     zValidator(
       "json",
-      z.object({ email: emailValidator, password: z.string() }),
+      z.object({ email: emailValidator, password: z.string() })
     ),
     isAccountLockedMiddleware,
     async (ctx) => {
@@ -212,7 +211,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         password,
         user.password,
         user.password_salt,
-        apiConfig.pepper,
+        apiConfig.pepper
       );
 
       if (!isPasswordValid) {
@@ -226,14 +225,14 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         JWT_SECRET,
         {
           expiresIn: "24h",
-        },
+        }
       );
       const refreshToken = jwt.sign(
         { userId: user.id, type: "refresh" },
         JWT_SECRET,
         {
           expiresIn: "7d",
-        },
+        }
       );
 
       await createSignedCookie(
@@ -241,18 +240,18 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         "auth-token",
         accessToken,
         "/",
-        ACCSESSTOKEN_EXPIRES_IN * MINUTES * UNIX_TIME_VARIABLE,
+        ACCESS_TOKEN_EXPIRES_IN * MINUTES * UNIX_TIME_VARIABLE
       );
       await createSignedCookie(
         ctx,
         "refresh-token",
         refreshToken,
         "/",
-        REFRESHTOKEN_EXPIRES_IN * HOURS * MINUTES * UNIX_TIME_VARIABLE,
+        REFRESH_TOKEN_EXPIRES_IN * HOURS * MINUTES * UNIX_TIME_VARIABLE
       );
 
       return json({ success: true, email_verified: user.email_verified });
-    },
+    }
   )
   .post(
     "/sign-up",
@@ -263,7 +262,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         password: z.string().min(6),
         first_name: z.string().min(1),
         last_name: z.string().min(1),
-      }),
+      })
     ),
     async ({ var: { db, resend }, req, json }) => {
       try {
@@ -341,6 +340,6 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         console.error("Sign-up error:", error);
         return json({ error: "Failed to create account" }, 500);
       }
-    },
+    }
   )
   .route("/totp", authTotpRouter);

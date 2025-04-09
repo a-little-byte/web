@@ -1,16 +1,14 @@
 import type { PrivateContextVariables } from "@/api/types";
-import { emailValidator } from "@/lib/validators";
 import type { MiddlewareHandler } from "hono";
-import { z } from "zod";
 
-const loginAttemptBodyValidator = z.object({
-  email: emailValidator,
-});
-
-export const isAccountLockedMiddleware: MiddlewareHandler<{
-  Variables: PrivateContextVariables;
-}> = async ({ var: { db }, req, json }, next) => {
-  const body = await loginAttemptBodyValidator.parseAsync(await req.json());
+export const isAccountLockedMiddleware: MiddlewareHandler<
+  {
+    Variables: PrivateContextVariables;
+  },
+  "/auth/sign-in",
+  { out: { json: { email: string } } }
+> = async ({ var: { db }, req, json }, next) => {
+  const body = req.valid("json");
   const lockStatus = await db
     .selectFrom("login_attempts")
     .where("email", "=", body.email)
@@ -24,7 +22,7 @@ export const isAccountLockedMiddleware: MiddlewareHandler<{
         error:
           "Account is temporarily locked. Try again later or reset your password.",
       },
-      403,
+      403
     );
   }
 
