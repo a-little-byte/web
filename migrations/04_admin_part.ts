@@ -1,6 +1,7 @@
-import { Kysely, sql } from "kysely";
+import type { Database } from "@/db";
+import { type Kysely, sql } from "kysely";
 
-export async function up(db: Kysely<any>): Promise<void> {
+export const up = async (db: Kysely<Database>): Promise<void> => {
   await db.schema
     .createTable("service_management")
     .addColumn("id", "uuid", (col) =>
@@ -24,9 +25,9 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("createdAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .addColumn("updatedAt", "timestamptz", (col) => col.defaultTo(sql`now()`))
     .execute();
-}
+};
 
-export async function down(db: Kysely<any>): Promise<void> {
+export const down = async (db: Kysely<Database>): Promise<void> => {
   await db.schema.dropTable("page_content").execute();
   await db.schema.dropTable("service_management").execute();
-}
+};

@@ -1,6 +1,7 @@
-import { Kysely, sql } from "kysely";
+import type { Database } from "@/db";
+import { type Kysely, sql } from "kysely";
 
-export async function up(db: Kysely<any>): Promise<void> {
+export const up = async (db: Kysely<Database>): Promise<void> => {
   await db.schema
     .createTable("invoices")
     .addColumn("id", "uuid", (col) =>
@@ -40,10 +41,10 @@ export async function up(db: Kysely<any>): Promise<void> {
     .addColumn("billing_address_id", "uuid")
     .addColumn("payment_method_id", "uuid")
     .execute();
-}
+};
 
-export async function down(db: Kysely<any>): Promise<void> {
+export const down = async (db: Kysely<Database>): Promise<void> => {
   await db.schema.dropTable("invoices").execute();
   await db.schema.dropTable("payment_methods").execute();
   await db.schema.dropTable("payments").execute();
-}
+};
