@@ -735,7 +735,7 @@
         "description": "Failed to fetch subscription data"
       }
     },
-    "subscriptions": {
+    "order-history": {
       "title": "Order History",
       "search": {
         "placeholder": "Search for an order..."

@@ -1,5 +1,7 @@
 "use client";
 
+import { Form } from "@/components/base/Form";
+import { InputField } from "@/components/base/InputField";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -19,22 +21,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
 import { useRouter } from "@/lib/i18n/routing";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
-import * as z from "zod";
+import { z } from "zod";
 
 const profileSchema = z.object({
   fullName: z.string().min(1),
@@ -57,14 +50,12 @@ type PasswordFormValues = z.infer<typeof passwordSchema>;
 
 export const ProfileTab = () => {
   const t = useTranslations("dashboard.settings.profile");
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const profileForm = useForm(profileSchema);
 
   const onProfileSubmit = async (data: ProfileFormValues) => {
-    setIsLoading(true);
     try {
-      const result = await apiClient.account.$patch({
+      await apiClient.account.$patch({
         json: data,
       });
 
@@ -78,8 +69,6 @@ export const ProfileTab = () => {
         description: t("toasts.error.description"),
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -90,50 +79,24 @@ export const ProfileTab = () => {
         <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...profileForm}>
-          <form
-            onSubmit={profileForm.handleSubmit(onProfileSubmit)}
-            className="space-y-4"
-          >
-            <FormField
-              control={profileForm.control}
-              name="fullName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("form.fullName.label")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={t("form.fullName.placeholder")}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={profileForm.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("form.email.label")}</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      type="email"
-                      placeholder={t("form.email.placeholder")}
-                      disabled={isLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isLoading}>
-              {t("form.submit")}
-            </Button>
-          </form>
+        <Form form={profileForm} onSubmit={onProfileSubmit}>
+          <InputField
+            control={profileForm.control}
+            name="fullName"
+            label={t("form.fullName.label")}
+            placeholder={t("form.fullName.placeholder")}
+            disabled={profileForm.formState.isSubmitting}
+          />
+          <InputField
+            control={profileForm.control}
+            name="email"
+            label={t("form.email.label")}
+            placeholder={t("form.email.placeholder")}
+            disabled={profileForm.formState.isSubmitting}
+          />
+          <Button type="submit" disabled={profileForm.formState.isSubmitting}>
+            {t("form.submit")}
+          </Button>
         </Form>
       </CardContent>
     </Card>
@@ -142,12 +105,10 @@ export const ProfileTab = () => {
 
 export const PasswordTab = () => {
   const t = useTranslations("dashboard.settings.password");
-  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const passwordForm = useForm(passwordSchema);
 
   const onPasswordSubmit = async (data: PasswordFormValues) => {
-    setIsLoading(true);
     try {
       await apiClient.account.password.$patch({
         json: {
@@ -168,8 +129,6 @@ export const PasswordTab = () => {
         description: t("toasts.error.description"),
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -180,54 +139,31 @@ export const PasswordTab = () => {
         <CardDescription>{t("description")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...passwordForm}>
-          <form
-            onSubmit={passwordForm.handleSubmit(onPasswordSubmit)}
-            className="space-y-4"
-          >
-            <FormField
-              control={passwordForm.control}
-              name="oldPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("form.oldPassword.label")}</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="password" disabled={isLoading} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={passwordForm.control}
-              name="newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("form.newPassword.label")}</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="password" disabled={isLoading} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={passwordForm.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("form.confirmPassword.label")}</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="password" disabled={isLoading} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isLoading}>
-              {t("form.submit")}
-            </Button>
-          </form>
+        <Form form={passwordForm} onSubmit={onPasswordSubmit}>
+          <InputField
+            control={passwordForm.control}
+            name="oldPassword"
+            label={t("form.oldPassword.label")}
+            placeholder={t("form.oldPassword.placeholder")}
+            disabled={passwordForm.formState.isSubmitting}
+          />
+          <InputField
+            control={passwordForm.control}
+            name="newPassword"
+            label={t("form.newPassword.label")}
+            placeholder={t("form.newPassword.placeholder")}
+            disabled={passwordForm.formState.isSubmitting}
+          />
+          <InputField
+            control={passwordForm.control}
+            name="confirmPassword"
+            label={t("form.confirmPassword.label")}
+            placeholder={t("form.confirmPassword.placeholder")}
+            disabled={passwordForm.formState.isSubmitting}
+          />
+          <Button type="submit" disabled={passwordForm.formState.isSubmitting}>
+            {t("form.submit")}
+          </Button>
         </Form>
       </CardContent>
     </Card>
@@ -236,14 +172,15 @@ export const PasswordTab = () => {
 
 export const DangerTab = () => {
   const t = useTranslations("dashboard.settings.danger");
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync: accountDeletionMutation, isPending } = useMutation({
+    mutationFn: () => apiClient.account.$delete(),
+  });
   const router = useRouter();
   const { toast } = useToast();
 
   const handleAccountDeletion = async () => {
-    setIsLoading(true);
     try {
-      await apiClient.account.$delete();
+      await accountDeletionMutation();
 
       router.push("/");
 
@@ -257,8 +194,6 @@ export const DangerTab = () => {
         description: t("toasts.error.description"),
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -271,7 +206,7 @@ export const DangerTab = () => {
       <CardContent>
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive" disabled={isLoading}>
+            <Button variant="destructive" disabled={isPending}>
               {t("deleteAccount.button")}
             </Button>
           </AlertDialogTrigger>

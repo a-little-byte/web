@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Typewriter from "@/components/ui/typewriter";
-import { Link } from "@/lib/i18n/routing";
+import { Link, locales } from "@/lib/i18n/routing";
 import { Globe, Lock, Shield, Zap } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import Image from "next/image";
@@ -34,6 +34,8 @@ const companies = [
   "Uber",
   "Spotify",
 ] as const;
+
+export const generateStaticParams = () => locales.map((locale) => ({ locale }));
 
 const Home = async () => {
   const t = await getTranslations("home");
