@@ -49,7 +49,7 @@ const Dashboard = () => {
   const t = useTranslations("admin.dashboard");
   const [timeFrame, setTimeFrame] = useQueryState(
     "timeFrame",
-    parseAsStringLiteral(TIME_FRAMES).withDefault("week")
+    parseAsStringLiteral(TIME_FRAMES).withDefault("week"),
   );
   const { data } = useQuery({
     queryKey: ["salesData", timeFrame],
@@ -111,7 +111,7 @@ const Dashboard = () => {
         ([name, value]) => ({
           name,
           value,
-        })
+        }),
       );
 
       return { salesData: salesDataArray, categoryData: categoryDataArray };
