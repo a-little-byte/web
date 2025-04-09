@@ -24,7 +24,7 @@ export const isAccountLockedMiddleware: MiddlewareHandler<{
         error:
           "Account is temporarily locked. Try again later or reset your password.",
       },
-      403
+      403,
     );
   }
 

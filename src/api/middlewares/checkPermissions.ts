@@ -19,7 +19,6 @@ export const checkPermissions =
       }
 
       const [resource, permission] = attributes.split(".");
-
       const permitted = await enforcer.enforce(user.id, resource, permission);
 
       if (!permitted) {

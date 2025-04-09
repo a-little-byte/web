@@ -24,8 +24,8 @@ export async function seed(db: Kysely<Database>): Promise<void> {
     .insertInto("casbin_rule")
     .values({
       ptype: "g",
-      v0: "admin",
-      v1: user.id,
+      v0: user.id,
+      v1: "admin",
       v2: "",
     })
     .execute();
