@@ -10,9 +10,11 @@ import { zValidator } from "@hono/zod-validator";
 import { Context, Hono } from "hono";
 import { setSignedCookie } from "hono/cookie";
 import jwt from "jsonwebtoken";
+import { randomBytes } from "node:crypto";
 import { Kysely } from "kysely";
 import type { UUID } from "node:crypto";
 import { z } from "zod";
+import Success from "@/app/[locale]/(private)/success/page";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
@@ -164,11 +166,19 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
   .post("/verify", async (c) => {
     const { token } = await c.req.json();
 
-    const decoded = jwt.verify(
-      token,
-      process.env.JWT_SECRET || "your-secret-key"
-    ) as { userId: UUID };
-    await verifyEmail(decoded.userId);
+    const verification = await c.var.db
+      .selectFrom("verification")
+      .where("email_token", "=", token)
+      .where("email_token_time", ">", new Date())
+      .select(["email_token", "user_id"])
+      .executeTakeFirst();
+
+    if(!verification){
+      c.json({success: false}, 500)
+      return
+    }
+
+    await verifyEmail(verification.user_id);
 
     return c.json({ success: true });
   })
@@ -269,8 +279,10 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           return json({ error: "User already exists" }, 400);
         }
 
+        const emailVerificationToken = randomBytes(32).toString('hex');
+        const tokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
         const { hash, salt } = await Hash(password, apiConfig.pepper);
-        console.log(hash);
         const user = await db
           .insertInto("users")
           .values({
@@ -283,10 +295,15 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
           })
           .returning(["id", "email", "first_name", "last_name", "createdAt"])
           .executeTakeFirstOrThrow();
-
-        const verificationToken = jwt.sign({ userId: user.id }, JWT_SECRET, {
-          expiresIn: "24h",
-        });
+        
+        await db
+          .insertInto("verification")
+          .values({
+            user_id: user.id,
+            email_token: emailVerificationToken,
+            email_token_time: tokenExpiry
+          })
+          .execute()
 
         await resend.emails.send({
           from: "Cyna <no-reply@limerio.dev>",
@@ -297,7 +314,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
               <h1 style="color: #333;">Welcome to Cyna!</h1>
               <p>Thank you for signing up. Please verify your email address by clicking the link below:</p>
               <div style="margin: 20px 0;">
-                <a href="${process.env.NEXT_PUBLIC_URL}/auth/confirm?token=${verificationToken}" 
+                <a href="${process.env.NEXT_PUBLIC_URL}/auth/confirm?token=${emailVerificationToken}" 
                    style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
                   Verify Email Address
                 </a>
