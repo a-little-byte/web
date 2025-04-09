@@ -179,6 +179,7 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
 
     await verifyEmail(verification.user_id);
 
+
     return c.json({ success: true });
   })
   .post(

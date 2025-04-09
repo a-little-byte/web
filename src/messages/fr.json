@@ -157,6 +157,36 @@
       }
     }
   },
+  "about": {
+    "title": "À propos de Cyna",
+    "introduction": "Cyna est un fournisseur de solutions de cybersécurité de niveau entreprise. Notre mission est de protéger les entreprises contre les menaces cyber évolutives grâce à une technologie innovante et des services experts.",
+    "mission": {
+      "title": "Notre Mission",
+      "description": "Nous croyons que chaque entreprise mérite un accès à la sécurité de niveau entreprise. Nos solutions combinent la technologie de pointe avec l'intelligence humaine pour fournir une protection complète contre les menaces cyber modernes."
+    },
+    "whyChoose": {
+      "title": "Pourquoi choisir Cyna?",
+      "features": {
+        "expertTeam": {
+          "title": "Équipe Expert",
+          "description": "Nos experts en sécurité ont des décennies d'expérience combinées dans la cybersécurité, le renseignement sur les menaces et la réponse aux incidents."
+        },
+        "advancedTechnology": {
+          "title": "Technologie Avancée",
+          "description": "Nous utilisons les dernières technologies de l'IA et du machine learning pour fournir une détection et une réponse en temps réel aux menaces."
+        },
+        "support": {
+          "title": "Support 24/7",
+          "description": "Notre centre des opérations de sécurité fournit une surveillance et un support 24/7 pour protéger votre entreprise."
+        },
+        "globalCoverage": {
+          "title": "Couverture Mondiale",
+          "description": "Avec un réseau mondial de centres des opérations de sécurité, nous protégeons les entreprises dans le monde entier."
+        }
+      }
+    },
+    "cta": "Contactez-nous"
+  },
   "legal": {
     "title": "Mentions Légales",
     "copyright": {

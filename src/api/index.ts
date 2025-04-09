@@ -20,8 +20,9 @@ import { prometheus } from "@hono/prometheus";
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { logger } from "hono/logger";
 import { csrf } from "hono/csrf";
+import { logger } from "hono/logger";
+import { prettyJSON } from "hono/pretty-json";
 
 const contextVariables: Omit<PrivateContextVariables, "session"> = {
   db,
@@ -43,14 +44,14 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
     });
     return next();
   })
-  .use(logger())
+  .use(logger(), prettyJSON())
   .use(
     "*",
     sentry({
       enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
       dsn: apiConfig.sentryDsn,
       tracesSampleRate: 1.0,
-    }),
+    })
   )
   .use("*", registerMetrics)
   .get("/metrics", printMetrics)
@@ -64,7 +65,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
-    }),
+    })
   )
   .route("/auth", authRouter)
   .route("/hero", heroRouter)

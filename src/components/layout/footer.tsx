@@ -5,10 +5,9 @@ import { getTranslations } from "next-intl/server";
 
 const navigation: Record<string, { id: string; href: string }[]> = {
   solutions: [
-    { id: "soc", href: "#" },
-    { id: "edr", href: "#" },
-    { id: "xdr", href: "#" },
-    { id: "threatIntelligence", href: "#" },
+    { id: "soc", href: "/services" },
+    { id: "edr", href: "/services" },
+    { id: "xdr", href: "/services" },
   ],
   company: [
     { id: "about", href: "/about" },
