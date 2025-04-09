@@ -5,7 +5,7 @@ export type Verification = {
   id: Generated<UUID>;
   user_id: UUID;
   email_token?: string;
-  email_token_time?: Date; 
+  email_token_time?: Date;
 };
 
 export type UserSelect = Selectable<Verification>;

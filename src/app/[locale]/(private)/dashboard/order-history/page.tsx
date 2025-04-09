@@ -59,7 +59,7 @@ function OrderHistoryPage() {
       try {
         const token = document.cookie.replace(
           /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1"
+          "$1",
         );
 
         const response = await apiClient.orders.$get(
@@ -68,7 +68,7 @@ function OrderHistoryPage() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -103,7 +103,9 @@ function OrderHistoryPage() {
 
   const getYears = () => {
     const years = new Set(
-      orders?.map((order) => new Date(order.createdAt).getFullYear().toString())
+      orders?.map((order) =>
+        new Date(order.createdAt).getFullYear().toString(),
+      ),
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };

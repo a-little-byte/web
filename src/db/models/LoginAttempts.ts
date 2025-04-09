@@ -4,8 +4,8 @@ import { CreatedAt } from "../utils";
 
 export type LoginAttempts = {
   id: Generated<UUID>;
-  email: String;
-  ip_address: String;
+  email: string;
+  ip_address: string;
   attempted_at: CreatedAt;
   is_locked?: boolean;
   lock_expires_at?: Date;
