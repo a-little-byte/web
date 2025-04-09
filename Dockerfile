@@ -1,4 +1,4 @@
-FROM node:20-slim AS builder
+FROM node:23-slim AS builder
 
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
@@ -18,7 +18,7 @@ RUN cp -r .next/standalone/* ./
 RUN cp -r .next/static .next/standalone/.next/
 RUN cp -r public .next/standalone/
 
-FROM node:20-slim AS runner
+FROM node:23-slim AS runner
 
 WORKDIR /app
 
