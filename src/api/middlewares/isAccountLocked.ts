@@ -10,9 +10,7 @@ const loginAttemptBodyValidator = z.object({
 export const isAccountLockedMiddleware: MiddlewareHandler<{
   Variables: PrivateContextVariables;
 }> = async ({ var: { db }, req, json }, next) => {
-  const body = await loginAttemptBodyValidator.parseAsync(
-    await req.parseBody(),
-  );
+  const body = await loginAttemptBodyValidator.parseAsync(await req.json());
   const lockStatus = await db
     .selectFrom("login_attempts")
     .where("email", "=", body.email)
@@ -26,7 +24,7 @@ export const isAccountLockedMiddleware: MiddlewareHandler<{
         error:
           "Account is temporarily locked. Try again later or reset your password.",
       },
-      403,
+      403
     );
   }
 
