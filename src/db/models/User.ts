@@ -11,8 +11,6 @@ export type User = {
   last_name: string;
   role: string;
   email_verified?: Date;
-  email_token?: string;
-  email_token_time?: Date; 
   createdAt: CreatedAt;
   updatedAt: UpdatedAt;
 };
