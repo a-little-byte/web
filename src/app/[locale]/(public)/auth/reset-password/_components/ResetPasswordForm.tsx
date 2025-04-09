@@ -35,7 +35,7 @@ export const ResetPasswordForm = () => {
       if (data.password !== data.confirmPassword) {
         throw new Error(t("errors.passwordsMismatch"));
       }
-      Form;
+
       await apiClient.auth["reset-password"].$post({
         json: { token, password: data.password },
       });

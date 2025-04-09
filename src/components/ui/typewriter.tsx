@@ -2,7 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import { motion, type Variants } from "motion/react";
-import { type ReactNode, useCallback, useEffect, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 interface TypewriterProps {
   text: string | string[];
@@ -52,7 +58,7 @@ const Typewriter = ({
   const [isDeleting, setIsDeleting] = useState(false);
   const [currentTextIndex, setCurrentTextIndex] = useState(0);
 
-  const texts = Array.isArray(text) ? text : [text];
+  const texts = useMemo(() => (Array.isArray(text) ? text : [text]), [text]);
 
   const handleTyping = useCallback(
     (currentText: string) => {
@@ -61,7 +67,7 @@ const Typewriter = ({
         setCurrentIndex((prev) => prev + 1);
       }, speed);
     },
-    [speed, currentIndex],
+    [speed, currentIndex]
   );
 
   const handleDeleting = useCallback(() => {
@@ -134,7 +140,7 @@ const Typewriter = ({
             hideCursorOnType &&
               (currentIndex < texts[currentTextIndex].length || isDeleting)
               ? "hidden"
-              : "",
+              : ""
           )}
           initial="initial"
           animate="animate"

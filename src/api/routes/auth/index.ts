@@ -27,8 +27,8 @@ const REFRESHTOKEN_EXPIRES_IN = 7; // in days
 
 const recordFailedLoginAttempt = async (
   db: Kysely<Database>,
-  email: String,
-  ip: String,
+  email: string,
+  ip: string,
 ) => {
   const now = new Date();
 
