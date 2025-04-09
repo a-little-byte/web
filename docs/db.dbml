@@ -140,6 +140,15 @@ Table casbin_rule {
   v5 varchar(100)
 }
 
+Table login_attempts {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  email text [not null]
+  ip_address text [not null]
+  attempted_at timestamptz [default: `now()`]
+  is_locked boolean [default: `false`]
+  lock_expires_at timestamp
+}
+
 // Relationships
 Ref: subscriptions.user_id > users.id [delete: cascade]
 Ref: subscriptions.service_id > services.id [delete: cascade]
