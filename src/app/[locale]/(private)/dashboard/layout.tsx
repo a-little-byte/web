@@ -43,13 +43,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   useEffect(() => {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
+      "$1",
     );
 
     if (!token) {
@@ -78,7 +78,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               href={href}
               className={cn(
                 "flex items-center gap-2 p-2 hover:bg-muted rounded-md",
-                pathname === href && "bg-muted"
+                pathname === href && "bg-muted",
               )}
             >
               {childrenLink}

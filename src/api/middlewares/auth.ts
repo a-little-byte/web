@@ -1,12 +1,20 @@
 import { PrivateContextVariables } from "@/api/types";
 import { MiddlewareHandler } from "hono";
+import { getSignedCookie } from "hono/cookie";
 import jwt from "jsonwebtoken";
 import { UUID } from "node:crypto";
+import { apiConfig } from "../config";
 
 export const authMiddleware: MiddlewareHandler<{
   Variables: PrivateContextVariables;
-}> = async ({ set, json, var: { db }, req }, next) => {
-  const token = req.header("Authorization")?.split(" ")[1];
+}> = async (ctx, next) => {
+  const {
+    set,
+    json,
+    var: { db },
+    req,
+  } = ctx;
+  const token = await getSignedCookie(ctx, apiConfig.cookie, "auth-token");
 
   if (!token) {
     return json({ error: "Unauthorized" }, 401);

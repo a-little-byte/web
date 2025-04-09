@@ -201,7 +201,7 @@ function OrderHistoryPage() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      )
+                      ),
                     )}
                   </TableRow>
                 </TableHeader>
@@ -277,7 +277,7 @@ function OrderHistoryPage() {
                                           {format(
                                             new Date(order.createdAt),
                                             "PPP",
-                                            { locale: fr }
+                                            { locale: fr },
                                           )}
                                         </dd>
                                       </div>

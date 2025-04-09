@@ -69,7 +69,7 @@ const CarouselManagement = () => {
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<HeroCarouselSelect | null>(
-    null
+    null,
   );
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -138,7 +138,7 @@ const CarouselManagement = () => {
             json: { order: index },
             param: { id: item.id },
           });
-        })
+        }),
       );
 
       await refetchItems();

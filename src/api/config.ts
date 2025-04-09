@@ -5,6 +5,7 @@ export const apiConfigSchema = z.object({
   resendApiKey: z.string(),
   sentryDsn: z.string().url(),
   pepper: z.string(),
+  cookie: z.string(),
 });
 
 const configValues: z.input<typeof apiConfigSchema> = {
@@ -12,6 +13,7 @@ const configValues: z.input<typeof apiConfigSchema> = {
   resendApiKey: process.env.RESEND_API_KEY!,
   sentryDsn: process.env.NEXT_PUBLIC_SENTRY_DSN!,
   pepper: process.env.HASH_PEPPER!,
+  cookie: process.env.COOKIE_VALUE!,
 };
 
 export const apiConfig = apiConfigSchema.parse(configValues);

@@ -65,7 +65,7 @@ const ServicesManagement = () => {
   });
   const [isOpen, setIsOpen] = useState(false);
   const [currentService, setCurrentService] = useState<ServiceSelect | null>(
-    null
+    null,
   );
   const { toast } = useToast();
   const form = useForm(serviceSchema, {
@@ -185,7 +185,7 @@ const ServicesManagement = () => {
             {["name", "description", "price", "period", "actions"].map(
               (column) => (
                 <TableHead key={column}>{t(`table.${column}`)}</TableHead>
-              )
+              ),
             )}
           </TableRow>
         </TableHeader>

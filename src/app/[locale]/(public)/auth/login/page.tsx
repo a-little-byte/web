@@ -59,8 +59,8 @@ const Login = () => {
         throw new Error(authData.error);
       }
 
-      if (authData.user) {
-        if (!authData.user.email_verified) {
+      if (authData.success) {
+        if (!authData.email_verified) {
           toast({
             title: t("toasts.emailNotVerified.title"),
             description: t("toasts.emailNotVerified.description"),
@@ -74,8 +74,6 @@ const Login = () => {
           description: t("toasts.loginSuccess.description"),
         });
 
-        document.cookie = `auth-token=${authData.acsessToken};`;
-        document.cookie = `refresh-token=${authData.refreshToken};`;
         router.push(returnTo);
       }
     } catch (error) {
