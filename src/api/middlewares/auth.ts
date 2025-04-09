@@ -8,8 +8,13 @@ import { apiConfig } from "../config";
 export const authMiddleware: MiddlewareHandler<{
   Variables: PrivateContextVariables;
 }> = async (ctx, next) => {
-  const { set, json, var: { db }, req } = ctx
-  const token = await getSignedCookie(ctx, apiConfig.cookie, "auth-token")
+  const {
+    set,
+    json,
+    var: { db },
+    req,
+  } = ctx;
+  const token = await getSignedCookie(ctx, apiConfig.cookie, "auth-token");
 
   if (!token) {
     return json({ error: "Unauthorized" }, 401);

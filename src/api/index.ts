@@ -21,7 +21,7 @@ import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
-import {csrf} from "hono/csrf"
+import { csrf } from "hono/csrf";
 
 const contextVariables: Omit<PrivateContextVariables, "session"> = {
   db,
@@ -54,7 +54,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
   )
   .use("*", registerMetrics)
   .get("/metrics", printMetrics)
-  .use("*", csrf({origin: "http:localhost:3000"}))
+  .use("*", csrf({ origin: "http:localhost:3000" }))
   .use(
     "/auth/*",
     cors({
