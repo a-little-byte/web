@@ -153,5 +153,4 @@ Ref: payments.subscription_id > subscriptions.id
 Ref: payments.billing_address_id > billing_addresses.id
 Ref: payments.payment_method_id > payment_methods.id
 Ref: invoices.payment_id > payments.id
-Ref: "cart_items"."service_id" < "cart_items"."updatedAt"
 Ref: verification.user_id > users.id [delete: cascade]
