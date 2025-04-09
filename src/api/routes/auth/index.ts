@@ -14,7 +14,6 @@ import { randomBytes } from "node:crypto";
 import { Kysely } from "kysely";
 import type { UUID } from "node:crypto";
 import { z } from "zod";
-import Success from "@/app/[locale]/(private)/success/page";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 
