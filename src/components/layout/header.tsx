@@ -34,7 +34,7 @@ const authNavigation: NavigationItem[] = [
 
 export const Header = async () => {
   const t = await getTranslations("navigation");
-  const cookie = cookies();
+  const cookie = await cookies();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -99,7 +99,7 @@ export const Header = async () => {
 
 const SignOrDashboard = async () => {
   const t = await getTranslations("navigation");
-  const cookie = cookies();
+  const cookie = await cookies();
 
   if (cookie.get("auth-token")) {
     return (

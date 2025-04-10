@@ -12,9 +12,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    instrumentationHook: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -38,7 +35,10 @@ const nextConfig = {
         "casbin",
         "casbin-basic-adapter",
         { "knex/lib/migrations": "knex/lib/migrations" },
-        { "knex/lib/migrations/util/import-file": "knex/lib/migrations/util/import-file" },
+        {
+          "knex/lib/migrations/util/import-file":
+            "knex/lib/migrations/util/import-file",
+        },
       ];
       config.node = {
         __dirname: true,
