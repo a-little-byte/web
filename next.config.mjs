@@ -66,4 +66,6 @@ export default withSentryConfig(withNextIntl(nextConfig), {
   widenClientFileUpload: true,
   disableLogger: true,
   automaticVercelMonitors: true,
+  disable: process.env.NODE_ENV === "development",
+  hideSourceMaps: process.env.NODE_ENV === "development",
 });
