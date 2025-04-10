@@ -505,6 +505,12 @@
       "search": {
         "placeholder": "Rechercher une commande..."
       },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de la récupération de l'historique des commandes"
+        }
+      },
       "filters": {
         "year": {
           "label": "Année",

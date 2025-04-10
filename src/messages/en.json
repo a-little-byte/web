@@ -740,6 +740,12 @@
       "search": {
         "placeholder": "Search for an order..."
       },
+      "toasts": {
+        "fetchError": {
+          "title": "Error",
+          "description": "Failed to fetch order history"
+        }
+      },
       "filters": {
         "year": {
           "label": "Year",
