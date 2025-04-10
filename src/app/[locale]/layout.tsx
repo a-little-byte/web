@@ -1,4 +1,3 @@
-import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { routing, SupportedLocale } from "@/lib/i18n/routing";
@@ -43,10 +42,8 @@ const RootLayout = async ({
           disableTransitionOnChange
         >
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <PostHogProvider>
-              {children}
-              <Toaster />
-            </PostHogProvider>
+            {children}
+            <Toaster />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
