@@ -33,7 +33,7 @@ export const useQuery = <
   >
 ) => {
   const router = useRouter();
-  const query = useQueryBase<
+  return useQueryBase<
     Exclude<InferResponseType<T["$get"]>, { error: unknown }>,
     PublicError
   >({
@@ -68,9 +68,4 @@ export const useQuery = <
     },
     ...options,
   });
-
-  return {
-    ...query,
-    isSuccess: !(query.isFetching || query.isLoading),
-  };
 };

@@ -79,7 +79,7 @@ const Home = async () => {
                   <Image
                     key={idx}
                     src={`https://cdn.magicui.design/companies/${logo}.svg`}
-                    className="h-10 w-40 px-2 dark:brightness-0 dark:invert"
+                    className="px-2 dark:brightness-0 dark:invert"
                     alt={logo}
                     width={160}
                     height={40}
