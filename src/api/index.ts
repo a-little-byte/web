@@ -16,6 +16,7 @@ import { resend } from "@/api/services/resend";
 import { stripe } from "@/api/services/stripe";
 import type { PrivateContextVariables } from "@/api/types";
 import { db } from "@/db";
+import { HTTP_CODES, PublicError } from "@/errors";
 import { prometheus } from "@hono/prometheus";
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
@@ -35,14 +36,19 @@ const { printMetrics, registerMetrics } = prometheus();
 export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .basePath("/api")
   .onError((err, c) => {
-    console.error(err);
-    return c.json({ error: err.message }, 500);
+    if (err instanceof PublicError) {
+      return c.json({ error: err.message }, err.status);
+    }
+    return c.json(
+      { error: "Internal server error" },
+      HTTP_CODES.INTERNAL_SERVER_ERROR
+    );
   })
   .use(async (ctx, next) => {
     Object.entries(contextVariables).forEach(([key, value]) => {
       ctx.set(key as keyof PrivateContextVariables, value);
     });
-    return next();
+    await next();
   })
   .use(logger(), prettyJSON())
   .use(
@@ -51,7 +57,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
       dsn: apiConfig.sentryDsn,
       tracesSampleRate: 1.0,
-    }),
+    })
   )
   .use("*", registerMetrics)
   .get("/metrics", printMetrics)
@@ -65,7 +71,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
-    }),
+    })
   )
   .route("/auth", authRouter)
   .route("/hero", heroRouter)

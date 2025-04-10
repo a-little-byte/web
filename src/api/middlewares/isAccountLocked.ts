@@ -1,4 +1,5 @@
 import type { PrivateContextVariables } from "@/api/types";
+import { ForbiddenPublicError } from "@/errors";
 import type { MiddlewareHandler } from "hono";
 
 export const isAccountLockedMiddleware: MiddlewareHandler<
@@ -7,7 +8,7 @@ export const isAccountLockedMiddleware: MiddlewareHandler<
   },
   "/auth/sign-in",
   { out: { json: { email: string } } }
-> = async ({ var: { db }, req, json }, next) => {
+> = async ({ var: { db }, req }, next) => {
   const body = req.valid("json");
   const lockStatus = await db
     .selectFrom("login_attempts")
@@ -17,14 +18,10 @@ export const isAccountLockedMiddleware: MiddlewareHandler<
     .executeTakeFirst();
 
   if (lockStatus) {
-    return json(
-      {
-        error:
-          "Account is temporarily locked. Try again later or reset your password.",
-      },
-      403,
+    throw new ForbiddenPublicError(
+      "Account is temporarily locked. Try again later or reset your password."
     );
   }
 
-  return next();
+  await next();
 };
