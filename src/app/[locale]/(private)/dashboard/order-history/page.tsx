@@ -32,10 +32,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "@/hooks/use-toast";
+import { useQuery } from "@/hooks/useQuery";
 import { apiClient } from "@/lib/apiClient";
 import { useRouter } from "@/lib/i18n/routing";
-import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { InferResponseType } from "hono";
@@ -55,44 +54,12 @@ function OrderHistoryPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedService, setSelectedService] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const { data: orders } = useQuery({
-    queryKey: ["orders"],
-    queryFn: async () => {
-      try {
-        const token = document.cookie.replace(
-          /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1"
-        );
-
-        const response = await apiClient.orders.$get(
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(response.status.toString());
-        }
-
-        return response.json();
-      } catch (error) {
-        toast({
-          title: t("toasts.fetchError.title"),
-          description: t("toasts.fetchError.description"),
-          variant: "destructive",
-        });
-
-        if (error instanceof Error && error.message === "401") {
-          router.replace("/auth/login");
-        }
-
-        throw error;
-      }
-    },
-  });
+  const { data: orders } = useQuery(apiClient.orders);
+  // toast({
+  //   title: t("toasts.fetchError.title"),
+  //   description: t("toasts.fetchError.description"),
+  //   variant: "destructive",
+  // });
 
   const filterOrders = () =>
     orders?.filter((order) => {
