@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/style";
 import { motion, type Variants } from "motion/react";
 import {
   type ReactNode,
@@ -67,7 +67,7 @@ const Typewriter = ({
         setCurrentIndex((prev) => prev + 1);
       }, speed);
     },
-    [speed, currentIndex],
+    [speed, currentIndex]
   );
 
   const handleDeleting = useCallback(() => {
@@ -140,7 +140,7 @@ const Typewriter = ({
             hideCursorOnType &&
               (currentIndex < texts[currentTextIndex].length || isDeleting)
               ? "hidden"
-              : "",
+              : ""
           )}
           initial="initial"
           animate="animate"

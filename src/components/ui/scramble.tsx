@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/style";
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 
@@ -191,7 +191,7 @@ const ScrambleHover = ({
             className={cn(
               revealedIndices.has(index) || !isScrambling || !isHovering
                 ? className
-                : scrambledClassName,
+                : scrambledClassName
             )}
           >
             {char}

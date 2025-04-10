@@ -2,7 +2,7 @@
 
 import ScrambleHover from "@/components/ui/scramble";
 import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/style";
 import { CreditCard, Home, Settings } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useEffect, useMemo } from "react";
@@ -43,13 +43,13 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   useEffect(() => {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1",
+      "$1"
     );
 
     if (!token) {
@@ -78,7 +78,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
               href={href}
               className={cn(
                 "flex items-center gap-2 p-2 hover:bg-muted rounded-md",
-                pathname === href && "bg-muted",
+                pathname === href && "bg-muted"
               )}
             >
               {childrenLink}

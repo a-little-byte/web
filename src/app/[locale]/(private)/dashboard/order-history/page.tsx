@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/table";
 import { toast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/apiClient";
+import { useRouter } from "@/lib/i18n/routing";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -49,6 +50,7 @@ type OrderDetails = Exclude<
 
 function OrderHistoryPage() {
   const t = useTranslations("dashboard.order-history");
+  const router = useRouter();
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedService, setSelectedService] = useState<string>("all");
@@ -72,7 +74,7 @@ function OrderHistoryPage() {
         );
 
         if (!response.ok) {
-          throw new Error();
+          throw new Error(response.status.toString());
         }
 
         return response.json();
@@ -82,6 +84,10 @@ function OrderHistoryPage() {
           description: t("toasts.fetchError.description"),
           variant: "destructive",
         });
+
+        if (error instanceof Error && error.message === "401") {
+          router.replace("/auth/login");
+        }
 
         throw error;
       }
