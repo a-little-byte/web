@@ -46,6 +46,8 @@ const SecuritySettings = () => {
           description: t("toasts.fetchError.description"),
           variant: "destructive",
         });
+
+        throw error;
       }
     },
   });

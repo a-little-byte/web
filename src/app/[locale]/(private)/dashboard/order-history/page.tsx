@@ -59,7 +59,7 @@ function OrderHistoryPage() {
       try {
         const token = document.cookie.replace(
           /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1",
+          "$1"
         );
 
         const response = await apiClient.orders.$get(
@@ -68,7 +68,7 @@ function OrderHistoryPage() {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          },
+          }
         );
 
         if (!response.ok) {
@@ -82,6 +82,8 @@ function OrderHistoryPage() {
           description: t("toasts.fetchError.description"),
           variant: "destructive",
         });
+
+        throw error;
       }
     },
   });
@@ -103,9 +105,7 @@ function OrderHistoryPage() {
 
   const getYears = () => {
     const years = new Set(
-      orders?.map((order) =>
-        new Date(order.createdAt).getFullYear().toString(),
-      ),
+      orders?.map((order) => new Date(order.createdAt).getFullYear().toString())
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -203,7 +203,7 @@ function OrderHistoryPage() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      ),
+                      )
                     )}
                   </TableRow>
                 </TableHeader>
@@ -279,7 +279,7 @@ function OrderHistoryPage() {
                                           {format(
                                             new Date(order.createdAt),
                                             "PPP",
-                                            { locale: fr },
+                                            { locale: fr }
                                           )}
                                         </dd>
                                       </div>
