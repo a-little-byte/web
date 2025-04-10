@@ -40,11 +40,13 @@ export const SearchBar = ({ navigation }: SearchBarProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="hidden md:flex"
+        className="hidden md:flex md:items-center md:gap-6"
         onClick={() => setOpen(true)}
       >
-        <Search className="h-4 w-8 mr-2" />
-        {t("search")}
+        <div className="flex items-center gap-0.5">
+          <Search className="h-4 w-8" />
+          {t("search")}
+        </div>
         <kbd className="ml-2 pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
           ⌘K
         </kbd>
