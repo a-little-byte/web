@@ -80,20 +80,23 @@ export const ProfileTab = () => {
       </CardHeader>
       <CardContent>
         <Form form={profileForm} onSubmit={onProfileSubmit}>
-          <InputField
-            control={profileForm.control}
-            name="fullName"
-            label={t("form.fullName.label")}
-            placeholder={t("form.fullName.placeholder")}
-            disabled={profileForm.formState.isSubmitting}
-          />
-          <InputField
-            control={profileForm.control}
-            name="email"
-            label={t("form.email.label")}
-            placeholder={t("form.email.placeholder")}
-            disabled={profileForm.formState.isSubmitting}
-          />
+          <div className="flex flex-col gap-4 mb-4">
+            <InputField
+              control={profileForm.control}
+              name="fullName"
+              label={t("form.fullName.label")}
+              placeholder={t("form.fullName.placeholder")}
+              disabled={profileForm.formState.isSubmitting}
+            />
+            <InputField
+              control={profileForm.control}
+              name="email"
+              label={t("form.email.label")}
+              placeholder={t("form.email.placeholder")}
+              disabled={profileForm.formState.isSubmitting}
+            />
+          </div>
+
           <Button type="submit" disabled={profileForm.formState.isSubmitting}>
             {t("form.submit")}
           </Button>
@@ -140,27 +143,30 @@ export const PasswordTab = () => {
       </CardHeader>
       <CardContent>
         <Form form={passwordForm} onSubmit={onPasswordSubmit}>
-          <InputField
-            control={passwordForm.control}
-            name="oldPassword"
-            label={t("form.oldPassword.label")}
-            placeholder={t("form.oldPassword.placeholder")}
-            disabled={passwordForm.formState.isSubmitting}
-          />
-          <InputField
-            control={passwordForm.control}
-            name="newPassword"
-            label={t("form.newPassword.label")}
-            placeholder={t("form.newPassword.placeholder")}
-            disabled={passwordForm.formState.isSubmitting}
-          />
-          <InputField
-            control={passwordForm.control}
-            name="confirmPassword"
-            label={t("form.confirmPassword.label")}
-            placeholder={t("form.confirmPassword.placeholder")}
-            disabled={passwordForm.formState.isSubmitting}
-          />
+          <div className="flex flex-col gap-4 mb-4">
+            <InputField
+              control={passwordForm.control}
+              name="oldPassword"
+              label={t("form.oldPassword.label")}
+              placeholder={t("form.oldPassword.placeholder")}
+              disabled={passwordForm.formState.isSubmitting}
+            />
+            <InputField
+              control={passwordForm.control}
+              name="newPassword"
+              label={t("form.newPassword.label")}
+              placeholder={t("form.newPassword.placeholder")}
+              disabled={passwordForm.formState.isSubmitting}
+            />
+            <InputField
+              control={passwordForm.control}
+              name="confirmPassword"
+              label={t("form.confirmPassword.label")}
+              placeholder={t("form.confirmPassword.placeholder")}
+              disabled={passwordForm.formState.isSubmitting}
+            />
+          </div>
+
           <Button type="submit" disabled={passwordForm.formState.isSubmitting}>
             {t("form.submit")}
           </Button>

@@ -597,13 +597,16 @@
         "description": "Update your password to keep your account secure",
         "form": {
           "oldPassword": {
-            "label": "Mot de passe actuel"
+            "label": "Mot de passe actuel",
+            "placeholder": "Entrez votre mot de passe actuel"
           },
           "newPassword": {
-            "label": "Nouveau mot de passe"
+            "label": "Nouveau mot de passe",
+            "placeholder": "Entrez votre nouveau mot de passe"
           },
           "confirmPassword": {
-            "label": "Confirmer le nouveau mot de passe"
+            "label": "Confirmer le nouveau mot de passe",
+            "placeholder": "Confirmez votre nouveau mot de passe"
           },
           "submit": "Changer le mot de passe"
         },

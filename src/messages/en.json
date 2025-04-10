@@ -729,6 +729,7 @@
       },
       "unknownService": "Unknown service"
     },
+
     "errors": {
       "fetchError": {
         "title": "Error",
@@ -832,13 +833,16 @@
         "description": "Update your password to keep your account secure",
         "form": {
           "oldPassword": {
-            "label": "Current Password"
+            "label": "Current Password",
+            "placeholder": "Enter your current password"
           },
           "newPassword": {
-            "label": "New Password"
+            "label": "New Password",
+            "placeholder": "Enter your new password"
           },
           "confirmPassword": {
-            "label": "Confirm New Password"
+            "label": "Confirm New Password",
+            "placeholder": "Confirm your new password"
           },
           "submit": "Change Password"
         },
