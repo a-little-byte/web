@@ -1,3 +1,4 @@
+import { CynaIcon } from "@/components/icons/Cyna";
 import { SearchBar } from "@/components/layout/SearchBar";
 import { SheetNavigation } from "@/components/layout/SheetNavigation";
 import { ShoppingCart } from "@/components/layout/shopping-cart";
@@ -5,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import ScrambleHover from "@/components/ui/scramble";
 import { Link } from "@/lib/i18n/routing";
-import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
@@ -45,7 +45,7 @@ export const Header = async () => {
 
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <ShieldCheck className="h-8 w-8 text-foreground" />
+            <CynaIcon width={28} height={28} />
             <span className="font-black text-2xl uppercase tracking-wide">
               <ScrambleHover
                 text="Cyna"

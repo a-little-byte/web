@@ -1,6 +1,6 @@
+import { CynaIcon } from "@/components/icons/Cyna";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { Link } from "@/lib/i18n/routing";
-import { ShieldCheck } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 
 const navigation: Record<string, { id: string; href: string }[]> = {
@@ -38,8 +38,8 @@ export const Footer = async () => {
       <div className="container py-12 lg:py-16">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <Link href="/" className="flex items-center space-x-2">
-              <ShieldCheck className="h-6 w-6" />
+            <Link href="/" className="flex items-center gap-2">
+              <CynaIcon width={28} height={28} />
               <span className="font-bold text-xl">Cyna</span>
             </Link>
             <p className="text-sm text-muted-foreground">{t("description")}</p>
