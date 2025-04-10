@@ -1,8 +1,9 @@
 "use client";
 
-import ScrambleHover from "@/components/ui/scramble";
+import { AdminSidebar } from "@/components/layout/Sidebar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { isAdmin } from "@/lib/auth";
-import { Link, useRouter } from "@/lib/i18n/routing";
+import { useRouter } from "@/lib/i18n/routing";
 import jwt from "jsonwebtoken";
 import type { UUID } from "node:crypto";
 import { useEffect } from "react";
@@ -14,7 +15,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     const checkAdmin = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
+        "$1"
       );
 
       if (!token) {
@@ -25,7 +26,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       try {
         const decoded = jwt.verify(
           token,
-          process.env.JWT_SECRET || "your-secret-key",
+          process.env.JWT_SECRET || "your-secret-key"
         ) as { userId: UUID };
         const adminStatus = await isAdmin(decoded.userId);
 
@@ -44,35 +45,13 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="w-64 bg-card border-r">
-        <nav className="p-4 space-y-2">
-          <h2 className="text-lg font-semibold mb-4">
-            <ScrambleHover
-              text="Admin Dashboard"
-              sequential={true}
-              revealDirection="start"
-              useOriginalCharsOnly={false}
-              className="font-azeretMono"
-            />
-          </h2>
-          <Link href="/admin" className="block p-2 hover:bg-accent rounded-md">
-            Dashboard
-          </Link>
-          <Link
-            href="/admin/services"
-            className="block p-2 hover:bg-accent rounded-md"
-          >
-            Services
-          </Link>
-          <Link
-            href="/admin/content"
-            className="block p-2 hover:bg-accent rounded-md"
-          >
-            Page Content
-          </Link>
-        </nav>
-      </aside>
-      <main className="flex-1 p-8">{children}</main>
+      <SidebarProvider>
+        <AdminSidebar />
+        <main className="flex-1 px-8 py-4">
+          <SidebarTrigger className="mb-4" />
+          {children}
+        </main>
+      </SidebarProvider>
     </div>
   );
 };

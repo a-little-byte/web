@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSidebar } from "@/components/layout/Sidebar";
+import { DashboardSidebar } from "@/components/layout/Sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { useRouter } from "@/lib/i18n/routing";
 import { useEffect } from "react";
@@ -24,7 +24,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen">
       <SidebarProvider>
-        <AppSidebar />
+        <DashboardSidebar />
         <main className="flex-1 px-8 py-4">
           <SidebarTrigger className="mb-4" />
           {children}

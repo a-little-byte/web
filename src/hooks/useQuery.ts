@@ -37,7 +37,7 @@ export const useQuery = <
     Exclude<InferResponseType<T["$get"]>, { error: unknown }>,
     PublicError
   >({
-    queryKey: [...request.$url().pathname.split("/")],
+    queryKey: [request.$url().toString(), args],
     queryFn: async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
