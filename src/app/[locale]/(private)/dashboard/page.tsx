@@ -19,7 +19,9 @@ const Dashboard = () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>{t("cards.activeSubscriptions.title")}</CardTitle>
+            <CardTitle className="font-normal text-xl">
+              {t("cards.activeSubscriptions.title")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">
@@ -30,7 +32,9 @@ const Dashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t("cards.totalSpent.title")}</CardTitle>
+            <CardTitle className="font-normal text-xl">
+              {t("cards.totalSpent.title")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">
