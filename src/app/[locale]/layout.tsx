@@ -6,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -42,7 +43,7 @@ const RootLayout = async ({
           disableTransitionOnChange
         >
           <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
+            <NuqsAdapter>{children}</NuqsAdapter>
             <Toaster />
           </NextIntlClientProvider>
         </ThemeProvider>
