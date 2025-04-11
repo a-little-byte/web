@@ -1,4 +1,6 @@
 import { CynaIcon } from "@/components/icons/Cyna";
+import { SearchBar } from "@/components/layout/SearchBar";
+import { Kbd } from "@/components/ui/kbd";
 import ScrambleHover from "@/components/ui/scramble";
 import {
   Sidebar as BaseSidebar,
@@ -89,10 +91,28 @@ export const DashboardSidebar = () => {
           <SidebarGroupContent className="flex flex-col gap-2">
             <SidebarMenu>
               <SidebarMenuItem className="flex items-center gap-2">
-                <SidebarMenuButton className="min-w-8 py-4 mb-3 bg-[#1c1cae] text-primary-foreground duration-200 ease-linear hover:bg-primary hover:cursor-pointer">
-                  <Search className="h-4 w-4" />
-                  <span>Search</span>
-                </SidebarMenuButton>
+                <SearchBar
+                  as={SidebarMenuButton}
+                  className="min-w-8 mb-3 bg-[#1c1cae] text-primary-foreground hover:text-white duration-200 ease-linear hover:bg-primary hover:cursor-pointer"
+                  navigation={[
+                    {
+                      name: "orderHistory",
+                      href: "/dashboard/order-history",
+                    },
+                    {
+                      name: "settings",
+                      href: "/dashboard/settings",
+                    },
+                  ]}
+                >
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-2">
+                      <Search className="h-4 w-4" />
+                      <span>Search</span>
+                    </div>
+                    <Kbd>⌘K</Kbd>
+                  </div>
+                </SearchBar>
               </SidebarMenuItem>
               {SIDEBAR.map((item) => (
                 <SidebarMenuItem key={item.href}>

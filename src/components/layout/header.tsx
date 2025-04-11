@@ -4,8 +4,10 @@ import { SheetNavigation } from "@/components/layout/SheetNavigation";
 import { ShoppingCart } from "@/components/layout/shopping-cart";
 import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { Kbd } from "@/components/ui/kbd";
 import ScrambleHover from "@/components/ui/scramble";
 import { Link } from "@/lib/i18n/routing";
+import { Search } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
@@ -73,6 +75,7 @@ export const Header = async () => {
 
         <div className="flex items-center ml-auto gap-4">
           <SearchBar
+            className="hidden md:flex md:items-center md:gap-6"
             navigation={
               cookie.get("auth-token")
                 ? [...navigation, ...authNavigation]
@@ -84,7 +87,13 @@ export const Header = async () => {
                     { name: "home", href: "/" },
                   ]
             }
-          />
+          >
+            <div className="flex items-center gap-0.5">
+              <Search className="h-4 w-8" />
+              {t("search")}
+            </div>
+            <Kbd>⌘K</Kbd>
+          </SearchBar>
 
           {cookie.get("auth-token") && <ShoppingCart />}
 
