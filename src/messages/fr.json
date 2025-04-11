@@ -281,198 +281,126 @@
   "terms": {
     "title": "Conditions Générales",
     "lastUpdated": "Dernière mise à jour : 14 mars 2025",
-    "intro": {
-      "title": "Introduction",
-      "content": "Bienvenue chez Cyna (\"Société\", \"nous\", \"notre\", \"nos\"). Ces Conditions d'Utilisation (\"Conditions\", \"Conditions d'Utilisation\") régissent votre utilisation de notre site web et services (collectivement, le \"Service\") exploités par Cyna.",
-      "agreement": "En accédant ou en utilisant le Service, vous acceptez d'être lié par ces Conditions. Si vous n'êtes pas d'accord avec une partie des conditions, vous ne pouvez pas accéder au Service."
+    "definitions": {
+      "title": "Définitions",
+      "client": "Client : tout professionnel ou personne physique capable au sens des articles 1123 et suivants du code civil, ou personne morale, qui visite le site objet des présentes conditions générales.",
+      "services": "Prestations et services : https://www.cyna-it.fr met à disposition des clients :",
+      "content": "Contenu : ensemble des éléments constituants l'information présente sur le site, notamment textes, images, vidéos.",
+      "clientInfo": "Informations clients : ci-après dénommé « information(s) » qui correspondent à l'ensemble des données personnelles susceptibles d'être détenues par https://www.cyna-it.fr pour la gestion de votre compte, de la gestion de la relation client et à des fins d'analyses et de statistiques.",
+      "user": "Utilisateur : internaute se connectant, utilisant le site susnommé.",
+      "personalInfo": "Informations personnelles : « les informations qui permettent, sous quelque forme que ce soit, directement ou non, l'identification des personnes physiques auxquelles elles s'appliquent » (article 4 de la loi n° 78-17 du 6 janvier 1978).",
+      "gdpr": "Les termes « données à caractère personnel », « personne concernée », « sous-traitant » et « données sensibles » ont le sens défini par le règlement général sur la protection des données (RGPD : n° 2016-679)"
     },
-    "service": {
-      "title": "Description du Service",
-      "content": "Cyna fournit des solutions de cybersécurité de niveau entreprise, incluant mais non limité à :",
-      "items": [
-        "SOC en tant que Service",
-        "Protection EDR",
-        "Plateforme XDR",
-        "Services de Renseignement sur les Menaces"
-      ]
+    "presentation": {
+      "title": "1. Présentation du site internet",
+      "content": "En vertu de l'article 6 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique, il est précisé aux utilisateurs du site internet https://www.cyna-it.fr l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi :",
+      "owner": "Propriétaire : SAS Cyna-IT capital social de 1000 euros‚ numéro de TVA : FR20913711032 - 10 rue de Penthièvre 75008 Paris",
+      "publication": "Responsable publication : Elbaz Alexandre - alexandre.elbaz@cyna-it.fr",
+      "publicationNote": "Le responsable publication est une personne physique ou une personne morale.",
+      "host": "Hébergeur : OVH - 2 rue Kellermann 59100 Roubaix 1007",
+      "dpo": "Délégué à la protection des données : Nathan Bramli - nathan.bramli@cyna-it.fr"
     },
-    "accounts": {
-      "title": "Comptes Utilisateurs",
-      "content": "Lorsque vous créez un compte chez nous, vous devez fournir des informations exactes, complètes et à jour. Le non-respect de cette obligation constitue une violation des Conditions, qui peut entraîner la résiliation immédiate de votre compte.",
-      "responsibility": "Vous êtes responsable de la protection du mot de passe et de toutes les activités qui se produisent sous votre compte."
-    },
-    "subscription": {
-      "title": "Abonnement et Paiements",
-      "content": "Certaines parties du Service sont facturées sur la base d'un abonnement. Vous serez facturé à l'avance sur une base récurrente et périodique (\"Cycle de Facturation\").",
-      "payment": "Les moyens de paiement acceptés incluent les cartes de crédit, les virements bancaires et d'autres méthodes spécifiées. Vous acceptez de fournir des informations d'achat et de compte actuelles, complètes et exactes."
-    },
-    "sla": {
-      "title": "Accord de Niveau de Service",
-      "content": "Nous nous engageons à maintenir un niveau élevé de disponibilité et de performance du service. Les niveaux de service spécifiques sont détaillés dans votre contrat de service.",
-      "disruption": "En cas d'interruption de service, nous suivons des procédures établies pour la réponse et la résolution des incidents comme décrit dans notre SLA."
-    },
-    "data": {
-      "title": "Protection des Données",
-      "content": "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour assurer un niveau de sécurité adapté au risque, notamment :",
-      "measures": [
-        "Chiffrement des données personnelles",
-        "Capacité à assurer la confidentialité, l'intégrité et la disponibilité continues",
-        "Tests réguliers des mesures de sécurité",
-        "Conformité aux réglementations pertinentes sur la protection des données"
-      ]
-    },
-    "ip": {
-      "title": "Propriété Intellectuelle",
-      "content": "Le Service et son contenu original, ses fonctionnalités et sa fonctionnalité sont et resteront la propriété exclusive de Cyna et de ses concédants."
-    },
-    "termination": {
-      "title": "Résiliation",
-      "content": "Nous pouvons résilier ou suspendre votre compte immédiatement, sans préavis ni responsabilité, pour quelque raison que ce soit, y compris, sans limitation, si vous violez les Conditions."
-    },
-    "liability": {
-      "title": "Limitation de Responsabilité",
-      "content": "En aucun cas Cyna, ni ses directeurs, employés, partenaires, agents, fournisseurs ou affiliés, ne seront responsables de tout dommage indirect, accessoire, spécial, consécutif ou punitif."
-    },
-    "changes": {
-      "title": "Modifications",
-      "content": "Nous nous réservons le droit, à notre seule discrétion, de modifier ou de remplacer ces Conditions à tout moment. Nous vous informerons de tout changement en publiant les nouvelles Conditions sur cette page."
-    }
-  },
-  "admin": {
-    "dashboard": {
-      "title": "Tableau de bord des ventes",
-      "timeframeSelect": "Sélectionner la période",
-      "lastWeek": "7 derniers jours",
-      "lastMonth": "5 dernières semaines",
-      "dailySales": {
-        "title": "Ventes quotidiennes",
-        "description": "Total des ventes par jour"
-      },
-      "categorySales": {
-        "title": "Ventes par catégorie",
-        "description": "Répartition des ventes par service"
-      },
-      "averageBasket": {
-        "title": "Paniers moyens par catégorie",
-        "description": "Comparaison des ventes par service"
-      },
-      "subscriptions": {
-        "title": "Historique des commandes",
-        "search": {
-          "placeholder": "Rechercher une commande..."
-        },
-        "filters": {
-          "year": {
-            "label": "Année",
-            "all": "Toutes les années"
-          },
-          "status": {
-            "label": "Statut",
-            "all": "Tous les statuts",
-            "active": "Active",
-            "cancelled": "Résiliée",
-            "expired": "Expirée"
-          },
-          "service": {
-            "label": "Service",
-            "all": "Tous les services"
-          }
-        },
-        "table": {
-          "headers": {
-            "service": "Service",
-            "date": "Date",
-            "amount": "Montant",
-            "status": "Statut",
-            "actions": "Actions"
-          },
-          "actions": {
-            "details": "Détails"
-          }
-        },
-        "details": {
-          "title": "Détails de la commande",
-          "payment": {
-            "title": "Informations de paiement",
-            "method": "Méthode de paiement",
-            "amount": "Montant",
-            "date": "Date"
-          },
-          "billing": {
-            "title": "Adresse de facturation"
-          },
-          "invoice": {
-            "title": "Facture",
-            "number": "Numéro de facture: {number}",
-            "download": "Télécharger la facture"
-          }
-        },
-        "noOrders": "Aucune commande trouvée"
-      }
+    "conditions": {
+      "title": "2. Conditions générales d'utilisation du site et des services proposés",
+      "content": "Le site constitue une œuvre de l'esprit protégée par les dispositions du code de la propriété intellectuelle et des réglementations internationales applicables. Le client ne peut en aucune manière réutiliser, céder ou exploiter pour son propre compte tout ou partie des éléments ou travaux du site.",
+      "acceptance": "L'utilisation du site https://www.cyna-it.fr implique l'acceptation pleine et entière des conditions générales d'utilisation ci-après décrites. Ces conditions d'utilisation sont susceptibles d'être modifiées ou complétées à tout moment, les utilisateurs du site https://www.cyna-it.fr sont donc invités à les consulter de manière régulière.",
+      "availability": "Ce site internet est normalement accessible à tout moment aux utilisateurs. Une interruption pour raison de maintenance technique peut être toutefois décidée par https://www.cyna-it.fr, qui s'efforcera alors de communiquer préalablement aux utilisateurs les dates et heures de l'intervention. Le site web https://www.cyna-it.fr est mis à jour régulièrement par https://www.cyna-it.fr responsable. De la même façon, les mentions légales peuvent être modifiées à tout moment : elles s'imposent néanmoins à l'utilisateur qui est invité à s'y référer le plus souvent possible afin d'en prendre connaissance."
     },
     "services": {
-      "title": "Gestion des Services",
-      "addService": "Ajouter un Service",
-      "editService": "Modifier le Service",
-      "form": {
-        "name": {
-          "label": "Nom"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "price": {
-          "label": "Prix"
-        },
-        "period": {
-          "label": "Période"
-        },
-        "submit": {
-          "create": "Créer le Service",
-          "update": "Mettre à jour le Service"
-        }
+      "title": "3. Description des services fournis",
+      "content": "Le site internet https://www.cyna-it.fr a pour objet de fournir une information concernant l'ensemble des activités de la société. https://www.cyna-it.fr s'efforce de fournir sur le site https://www.cyna-it.fr des informations aussi précises que possible. Toutefois, il ne pourra être tenu responsable des oublis, des inexactitudes et des carences dans la mise à jour, qu'elles soient de son fait ou du fait des tiers partenaires qui lui fournissent ces informations.",
+      "information": "Toutes les informations indiquées sur le site https://www.cyna-it.fr sont données à titre indicatif, et sont susceptibles d'évoluer. Par ailleurs, les renseignements figurant sur le site https://www.cyna-it.fr ne sont pas exhaustifs. Ils sont donnés sous réserve de modifications ayant été apportées depuis leur mise en ligne."
+    },
+    "technical": {
+      "title": "4. Limitations contractuelles sur les données techniques",
+      "content": "Le site utilise la technologie JavaScript. Le site internet ne pourra être tenu responsable de dommages matériels liés à l'utilisation du site. De plus, l'utilisateur du site s'engage à accéder au site en utilisant un matériel récent, ne contenant pas de virus et avec un navigateur de dernière génération mis-à-jour. Le site https://www.cyna-it.fr est hébergé chez un prestataire sur le territoire de l'Union Européenne conformément aux dispositions du Règlement Général sur la Protection des Données (RGPD : n° 2016-679)",
+      "hosting": "L'objectif est d'apporter une prestation qui assure le meilleur taux d'accessibilité. L'hébergeur assure la continuité de son service 24 heures sur 24, tous les jours de l'année. Il se réserve néanmoins la possibilité d'interrompre le service d'hébergement pour les durées les plus courtes possibles notamment à des fins de maintenance, d'amélioration de ses infrastructures, de défaillance de ses infrastructures ou si les prestations et services génèrent un trafic réputé anormal. https://www.cyna-it.fr et l'hébergeur ne pourront être tenus responsables en cas de dysfonctionnement du réseau internet, des lignes téléphoniques ou du matériel informatique et de téléphonie lié notamment à l'encombrement du réseau empêchant l'accès au serveur."
+    },
+    "ip": {
+      "title": "5. Propriété intellectuelle et contrefaçons",
+      "content": "https://www.cyna-it.fr est propriétaire des droits de propriété intellectuelle et détient les droits d'usage sur tous les éléments accessibles sur le site internet, notamment les textes, images, graphismes, logos, vidéos, icônes et sons. Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable de https://www.cyna-it.fr.",
+      "infringement": "Toute exploitation non autorisée du site ou de l'un quelconque des éléments qu'il contient sera considérée comme constitutive d'une contrefaçon et poursuivie conformément aux dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle."
+    },
+    "liability": {
+      "title": "6. Limitations de responsabilité",
+      "content": "https://www.cyna-it.fr agit en tant qu'éditeur du site. https://www.cyna-it.fr est responsable de la qualité et de la véracité du contenu qu'il publie.",
+      "damages": "https://www.cyna-it.fr ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site internet https://www.cyna-it.fr, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications indiquées au point 4, soit de l'apparition d'un bug ou d'une incompatibilité.",
+      "indirect": "https://www.cyna-it.fr ne pourra également être tenu responsable des dommages indirects (tels par exemple qu'une perte de marché ou perte d'une chance) consécutifs à l'utilisation du site https://www.cyna-it.fr. Des espaces interactifs (possibilité de poser des questions dans l'espace contact) sont à la disposition des utilisateurs. https://www.cyna-it.fr se réserve le droit de supprimer, sans mise en demeure préalable, tout contenu déposé dans cet espace qui contreviendrait à la législation applicable en France, en particulier aux dispositions relatives à la protection des données. Le cas échéant, https://www.cyna-it.fr se réserve également la possibilité de mettre en cause la responsabilité civile et/ou pénale de l'utilisateur, notamment en cas de message à caractère raciste, injurieux, diffamant, ou pornographique, quel que soit le support utilisé (texte, photographie...)."
+    },
+    "data": {
+      "title": "7. Gestion des données personnelles",
+      "content": "Le client est informé des réglementations concernant la communication marketing, la loi du 21 juin 2014 pour la confiance dans l'économie numérique, la loi informatique et liberté du 06 août 2004 ainsi que du règlement général sur la protection des données (RGPD : n° 2016-679).",
+      "responsible": {
+        "title": "7.1 Responsables de la collecte des données personnelles",
+        "content": "Pour les données personnelles collectées dans le cadre de la création du compte personnel de l'utilisateur et de sa navigation sur le site, le responsable du traitement des données personnelles est : Cyna-IT. https://www.cyna-it.fr est représenté par Bramli Nathan, son représentant légal.",
+        "commitment": "En tant que responsable du traitement des données qu'il collecte, https://www.cyna-it.fr s'engage à respecter le cadre des dispositions légales en vigueur. Il lui appartient notamment au client d'établir les finalités de ses traitements de données, de fournir à ses prospects et clients, à partir de la collecte de leurs consentements, une information complète sur le traitement de leurs données personnelles et de maintenir un registre des traitements conforme à la réalité. Chaque fois que https://www.cyna-it.fr traite des données personnelles, https://www.cyna-it.fr prend toutes les mesures raisonnables pour s'assurer de l'exactitude et de la pertinence des données personnelles au regard des finalités pour lesquelles https://www.cyna-it.fr les traite."
       },
-      "table": {
-        "name": "Nom",
-        "description": "Description",
-        "price": "Prix",
-        "period": "Période",
-        "actions": "Actions"
+      "purpose": {
+        "title": "7.2 Finalité des données collectées",
+        "content": "https://www.cyna-it.fr est susceptible de traiter tout ou partie des données :",
+        "navigation": "- Pour permettre la navigation sur le site et la gestion et la traçabilité des prestations et services commandés par l'utilisateur : données de connexion et d'utilisation du site, facturation, historique des commandes, etc.",
+        "fraud": "- Pour prévenir et lutter contre la fraude informatique (spamming, hacking...) : matériel informatique utilisé pour la navigation, l'adresse IP, le mot de passe",
+        "improvement": "- Pour améliorer la navigation sur le site : données de connexion et d'utilisation pour mener des enquêtes de satisfaction facultatives sur https://www.cyna-it.fr : adresse email",
+        "communication": "- Pour mener des campagnes de communication (sms, mail) : numéro de téléphone, adresse email",
+        "usage": "https://www.cyna-it.fr ne commercialise pas vos données personnelles qui sont donc uniquement utilisées par nécessité ou à des fins statistiques et d'analyses."
       },
-      "actions": {
-        "edit": "Modifier",
-        "delete": "Supprimer"
+      "rights": {
+        "title": "7.3 Droit d'accès, de rectification et d'opposition",
+        "content": "Conformément à la réglementation européenne en vigueur, les utilisateurs de https://www.cyna-it.fr disposent des droits suivants :",
+        "access": "Droit d'accès (article 15 RGPD) et de rectification (article 16 RGPD), de mise à jour, de complétude des données des utilisateurs",
+        "lock": "Droit de verrouillage ou d'effacement des données des utilisateurs à caractère personnel (article 17 du RGPD), lorsqu'elles sont inexactes, incomplètes, équivoques, périmées, ou dont la collecte, l'utilisation, la communication ou la conservation est interdite",
+        "consent": "Droit de retirer à tout moment un consentement (article 13-2c RGPD)",
+        "limit": "Droit à la limitation du traitement des données des utilisateurs (article 18 RGPD)",
+        "objection": "Droit d'opposition au traitement des données des utilisateurs (article 21 RGPD)",
+        "portability": "Droit à la portabilité des données que les utilisateurs auront fournies, lorsque ces données font l'objet de traitements automatisés fondés sur leur consentement ou sur un contrat (article 20 RGPD)",
+        "death": "Droit de définir le sort des données des utilisateurs après leur mort et de choisir à qui https://www.cyna-it.fr devra communiquer (ou non) ses données à un tiers qu'ils aura préalablement désigné",
+        "posthumous": "Dès que https://www.cyna-it.fr a connaissance du décès d'un utilisateur et à défaut d'instructions de sa part, https://www.cyna-it.fr s'engage à détruire ses données, sauf si leur conservation s'avère nécessaire à des fins probatoires ou pour répondre à une obligation légale.",
+        "exercise": "Si l'utilisateur souhaite savoir comment https://www.cyna-it.fr utilise ses données personnelles, demander à les rectifier ou s'oppose à leur traitement, l'utilisateur peut contacter https://www.cyna-it.fr par écrit à l'adresse suivante :",
+        "contact": "Cyna-IT - DPO, Nathan Bramli\n10 rue de Penthièvre 75008 Paris.",
+        "identification": "Dans ce cas, l'utilisateur doit indiquer les données personnelles qu'il souhaiterait que https://www.cyna-it.fr corrige, mette à jour ou supprime, en s'identifiant précisément avec une copie d'une pièce d'identité (carte d'identité ou passeport).",
+        "deletion": "Les demandes de suppression de données personnelles seront soumises aux obligations qui sont imposées à https://www.cyna-it.fr par la loi, notamment en matière de conservation ou d'archivage des documents. Enfin, les utilisateurs de https://www.cyna-it.fr peuvent déposer une réclamation auprès des autorités de contrôle, et notamment de la CNIL (https://www.cnil.fr/fr/plaintes)."
       },
-      "toasts": {
-        "fetchError": {
-          "title": "Erreur",
-          "description": "Échec de la récupération des services"
-        },
-        "saveSuccess": {
-          "title": "Succès",
-          "description": "Service {action} avec succès"
-        },
-        "saveError": {
-          "title": "Erreur",
-          "description": "Échec de l'enregistrement du service"
-        },
-        "deleteSuccess": {
-          "title": "Succès",
-          "description": "Service supprimé avec succès"
-        },
-        "deleteError": {
-          "title": "Erreur",
-          "description": "Échec de la suppression du service"
-        },
-        "reorderError": {
-          "title": "Erreur",
-          "description": "Échec de la réorganisation des services"
-        },
-        "updateError": {
-          "title": "Erreur",
-          "description": "Échec de la mise à jour du service"
-        }
+      "noncommunication": {
+        "title": "7.4 Non-communication des données personnelles",
+        "content": "https://www.cyna-it.fr s'interdit de traiter, héberger ou transférer les informations collectées sur ses clients vers un pays situé en dehors de l'Union Européenne ou reconnu comme « non adéquat » par la Commission Européenne sans en informer préalablement le client. Pour autant, https://www.cyna-it.fr reste libre du choix de ses sous-traitants techniques et commerciaux à la condition qu'ils présentent les garanties suffisantes au regard des exigences du Règlement Général sur la Protection des Données (RGPD : n° 2016-679).",
+        "security": "https://www.cyna-it.fr s'engage à prendre toutes les précautions nécessaires afin de préserver la sécurité des informations et notamment qu'elles ne soient pas communiquées à des personnes non autorisées. Cependant, si un incident impactant l'intégrité ou la confidentialité des informations du client est portée à la connaissance de https://www.cyna-it.fr, celle-ci devra dans les meilleurs délais informer le client et lui communiquer les mesures de corrections prises. Par ailleurs https://www.cyna-it.fr ne collecte aucune « données sensibles ».",
+        "processing": "Les données personnelles de l'utilisateur peuvent être traitées par des filiales de https://www.cyna-it.fr et des sous-traitants (prestataires de services), exclusivement afin de réaliser les finalités de la présente politique.",
+        "access": "Dans la limite de leurs attributions respectives et pour les finalités rappelées ci-dessus, les principales personnes susceptibles d'avoir accès aux données des utilisateurs de https://www.cyna-it.fr sont principalement les agents de notre service client."
       }
+    },
+    "incident": {
+      "title": "8. Notification d'incident",
+      "content": "Quels que soient les efforts fournis, aucune méthode de transmission sur Internet et aucune méthode de stockage électronique n'est complètement sûre. Nous ne pouvons en conséquence pas garantir une sécurité absolue. Si nous prenions connaissance d'une brèche de la sécurité, nous avertirions les utilisateurs concernés afin qu'ils puissent prendre les mesures appropriées. Nos procédures de notification d'incident tiennent compte de nos obligations légales, qu'elles se situent au niveau national ou européen. Nous nous engageons à informer pleinement nos clients de toutes les questions relevant de la sécurité de leur compte et à leur fournir toutes les informations nécessaires pour les aider à respecter leurs propres obligations réglementaires en matière de reporting.",
+      "privacy": "Aucune information personnelle de l'utilisateur du site https://www.cyna-it.fr n'est publiée à l'insu de l'utilisateur, échangée, transférée, cédée ou vendue sur un support quelconque à des tiers. Seule l'hypothèse du rachat de https://www.cyna-it.fr et de ses droits permettrait la transmission des dites informations à l'éventuel acquéreur qui serait à son tour tenu de la même obligation de conservation et de modification des données vis à vis de l'utilisateur du site https://www.cyna-it.fr.",
+      "security": "Pour assurer la sécurité et la confidentialité des données personnelles et des données personnelles de santé, https://www.cyna-it.fr utilise des réseaux protégés par des dispositifs standards tels que par pare-feu, la pseudonymisation, l'encryption et mot de passe.",
+      "measures": "Lors du traitement des données personnelles, https://www.cyna-it.fr prend toutes les mesures raisonnables visant à les protéger contre toute perte, utilisation détournée, accès non autorisé, divulgation, altération ou destruction."
+    },
+    "cookies": {
+      "title": "9. Liens hypertextes, cookies et balises internet",
+      "content": "Le site https://www.cyna-it.fr contient un certain nombre de liens hypertextes vers d'autres sites, mis en place avec l'autorisation de https://www.cyna-it.fr. Cependant, https://www.cyna-it.fr n'a pas la possibilité de vérifier le contenu des sites ainsi visités, et n'assumera en conséquence aucune responsabilité de ce fait.",
+      "usage": "Sauf si vous décidez de désactiver les cookies, vous acceptez que le site puisse les utiliser. Vous pouvez à tout moment désactiver ces cookies et ce gratuitement à partir des possibilités de désactivation qui vous sont offertes et rappelées ci-après, sachant que cela peut réduire ou empêcher l'accessibilité à tout ou partie des services proposés par le site.",
+      "definition": {
+        "title": "9.1. Cookies",
+        "content": "Un « cookie » est un petit fichier d'information envoyé sur le navigateur de l'utilisateur et enregistré au sein du terminal de l'utilisateur (ex : ordinateur, smartphone), (ci-après « cookies »). Ce fichier comprend des informations telles que le nom de domaine de l'utilisateur, le fournisseur d'accès internet de l'utilisateur, le système d'exploitation de l'utilisateur, ainsi que la date et l'heure d'accès. Les cookies ne risquent en aucun cas d'endommager le terminal de l'utilisateur.",
+        "processing": "https://www.cyna-it.fr est susceptible de traiter les informations de l'utilisateur concernant sa visite du site, telles que les pages consultées, les recherches effectuées. Ces informations permettent à https://www.cyna-it.fr d'améliorer le contenu du site, de la navigation de l'utilisateur.",
+        "configuration": "Les cookies facilitant la navigation et/ou la fourniture des services proposés par le site, l'utilisateur peut configurer son navigateur pour qu'il lui permette de décider s'il souhaite ou non les accepter de manière à ce que des cookies soient enregistrés dans le terminal ou, au contraire, qu'ils soient rejetés, soit systématiquement, soit selon leur émetteur. L'utilisateur peut également configurer son logiciel de navigation de manière à ce que l'acceptation ou le refus des cookies lui soient proposés ponctuellement, avant qu'un cookie soit susceptible d'être enregistré dans son terminal. https://www.cyna-it.fr informe l'utilisateur que, dans ce cas, il se peut que les fonctionnalités de son logiciel de navigation ne soient pas toutes disponibles.",
+        "rejection": "Si l'utilisateur refuse l'enregistrement de cookies dans son terminal ou son navigateur, l'utilisateur est informé que sa navigation et son expérience sur le site peuvent être limitées. Cela pourrait également être le cas lorsque https://www.cyna-it.fr ou l'un de ses prestataires ne peut pas reconnaître, à des fins de compatibilité technique, le type de navigateur utilisé par le terminal, les paramètres de langue et d'affichage ou le pays depuis lequel le terminal semble connecté à internet.",
+        "responsibility": "Le cas échéant, https://www.cyna-it.fr décline toute responsabilité pour les conséquences liées au fonctionnement dégradé du site et des services éventuellement proposés par https://www.cyna-it.fr, résultant (i) du refus de cookies par l'utilisateur (ii) de l'impossibilité pour https://www.cyna-it.fr d'enregistrer ou de consulter les cookies nécessaires à leur fonctionnement du fait du choix de l'utilisateur. Pour la gestion des cookies et des choix de l'utilisateur, la configuration de chaque navigateur est différente. Elle est décrite dans le menu d'aide du navigateur, qui permettra de savoir de quelle manière l'utilisateur peut modifier ses souhaits en matière de cookies.",
+        "choices": "A tout moment, l'utilisateur peut faire le choix d'exprimer et de modifier ses souhaits en matière de cookies. https://www.cyna-it.fr pourra en outre faire appel aux services de prestataires externes pour l'aider à recueillir et traiter les informations décrites dans cette section.",
+        "socialMedia": "Enfin, en cliquant sur les icônes dédiées aux réseaux sociaux Twitter, Facebook, LinkedIn et Google Plus figurant sur le site de https://www.cyna-it.fr ou dans son application mobile et si l'utilisateur a accepté le dépôt de cookies en poursuivant sa navigation sur le site internet ou l'application mobile de https://www.cyna-it.fr, Twitter, Facebook, LinkedIn et Google Plus peuvent également déposer des cookies sur vos terminaux (ordinateur, tablette, téléphone portable).",
+        "consent": "Ces types de cookies ne sont déposés sur vos terminaux qu'à condition que vous y consentiez, en continuant votre navigation sur le site internet ou l'application mobile de https://www.cyna-it.fr. À tout moment, l'utilisateur peut néanmoins revenir sur son consentement à ce que https://www.cyna-it.fr dépose ce type de cookies."
+      },
+      "beacons": {
+        "title": "9.2. Balises internet",
+        "content": "https://www.cyna-it.fr peut employer occasionnellement des balises internet (également appelées « tags », ou balises d'action, GIF à un pixel, GIF transparents, GIF invisibles et GIF un à un) et les déployer par l'intermédiaire d'un partenaire spécialiste d'analyses web susceptible de se trouver (et donc de stocker les informations correspondantes, y compris l'adresse IP de l'utilisateur) dans un pays étranger.",
+        "usage": "Ces balises sont placées à la fois dans les publicités en ligne permettant aux internautes d'accéder au site, et sur les différentes pages de celui-ci.",
+        "purpose": "Cette technologie permet à https://www.cyna-it.fr d'évaluer les réponses des visiteurs face au site et l'efficacité de ses actions (par exemple, le nombre de fois d'une page est ouverte et les informations consultées), ainsi que l'utilisation de ce site par l'utilisateur.",
+        "thirdParty": "Le prestataire externe pourra éventuellement recueillir des informations sur les visiteurs du site et d'autres sites internet grâce à ces balises, constituer des rapports sur l'activité du site à l'attention de https://www.cyna-it.fr, et fournir d'autres services relatifs à l'utilisation de celui-ci et d'internet."
+      }
+    },
+    "jurisdiction": {
+      "title": "10. Droit applicable et attribution de juridiction",
+      "content": "Tout litige en relation avec l'utilisation du site https://www.cyna-it.fr est soumis au droit français. En dehors des cas où la loi ne le permet pas, il est fait attribution exclusive de juridiction aux tribunaux compétents de Paris."
     }
   },
   "dashboard": {
