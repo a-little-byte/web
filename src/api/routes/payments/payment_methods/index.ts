@@ -7,6 +7,7 @@ import { idValidator } from "@/lib/validators";
 
 const paymentMethodValidator = z.object({
   type: z.string(),
+  payment_token: z.string(),
   last_four: z.string().length(4).regex(/^\d{4}$/),
   expiry_month: z.number().int().min(1).max(12),
   expiry_year: z.number().int().min(2023),
