@@ -1,4 +1,4 @@
-export interface EmscriptenModule {
+export type EmscriptenModule = {
   ccall: (
     ident: string,
     returnType: string,
