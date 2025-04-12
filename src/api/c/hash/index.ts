@@ -1,29 +1,5 @@
-import type { EmscriptenModule } from "../types";
+import type { EmscriptenModule } from "../types.ts";
 import crypto from "node:crypto";
-
-type HashModule = {
-  _hash: (
-    password: string,
-    salt: string,
-    pepper: string,
-    iterations: number,
-    keylen: number,
-  ) => string;
-  _verify: (
-    storedHash: string,
-    password: string,
-    salt: string,
-    pepper: string,
-    iterations: number,
-    keylen: number,
-  ) => boolean;
-  ccall: (
-    name: string,
-    returnType: string,
-    argTypes: string[],
-    args: any[],
-  ) => any;
-};
 
 let wasmModule: EmscriptenModule | null = null;
 let initPromise: Promise<void> | null = null;
