@@ -22,7 +22,7 @@ importers:
         version: 3.10.0(react-hook-form@7.55.0(react@18.3.1))
       '@langchain/community':
         specifier: ^0.3.40
-        version: 0.3.40(@browserbasehq/sdk@2.5.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2))(@ibm-cloud/watsonx-ai@1.5.1(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.3.2)(ignore@5.3.2)(jsdom@26.0.0)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pg@8.14.1)(playwright@1.51.1)(ws@8.18.1)
+        version: 0.3.40(@browserbasehq/sdk@2.5.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.5.0)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2))(@ibm-cloud/watsonx-ai@1.5.1(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.3.2)(ignore@5.3.2)(jsdom@26.0.0)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pg@8.14.1)(playwright@1.51.1)(ws@8.18.1)
       '@langchain/core':
         specifier: ^0.3.44
         version: 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
@@ -177,8 +177,8 @@ importers:
         specifier: ^0.3.21
         version: 0.3.21(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(ws@8.18.1)
       lucide-react:
-        specifier: ^0.350.0
-        version: 0.350.0(react@18.3.1)
+        specifier: ^0.488.0
+        version: 0.488.0(react@18.3.1)
       motion:
         specifier: ^12.6.3
         version: 12.6.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3707,6 +3707,10 @@ packages:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
 
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
+    engines: {node: '>=12'}
+
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
     engines: {node: '>= 0.4'}
@@ -4732,10 +4736,10 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@0.350.0:
-    resolution: {integrity: sha512-5IZVKsxxG8Nn81gpsz4XLNgCAXkppCh0Y0P0GLO39h5iVD2WEaB9of6cPkLtzys1GuSfxJxmwsDh487y7LAf/g==}
+  lucide-react@0.488.0:
+    resolution: {integrity: sha512-ronlL0MyKut4CEzBY/ai2ZpKPxyWO4jUqdAkm2GNK5Zn3Rj+swDz+3lvyAUXN0PNqPKIX6XM9Xadwz/skLs/pQ==}
     peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -6575,13 +6579,13 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  '@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
+  '@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.5.0)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
       '@anthropic-ai/sdk': 0.27.3
       '@browserbasehq/sdk': 2.5.0
       '@playwright/test': 1.51.1
       deepmerge: 4.3.1
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       openai: 4.93.0(ws@8.18.1)(zod@3.24.2)
       ws: 8.18.1
       zod: 3.24.2
@@ -6997,9 +7001,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@langchain/community@0.3.40(@browserbasehq/sdk@2.5.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2))(@ibm-cloud/watsonx-ai@1.5.1(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.3.2)(ignore@5.3.2)(jsdom@26.0.0)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pg@8.14.1)(playwright@1.51.1)(ws@8.18.1)':
+  '@langchain/community@0.3.40(@browserbasehq/sdk@2.5.0)(@browserbasehq/stagehand@1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.5.0)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2))(@ibm-cloud/watsonx-ai@1.5.1(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.3.2)(ignore@5.3.2)(jsdom@26.0.0)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(pg@8.14.1)(playwright@1.51.1)(ws@8.18.1)':
     dependencies:
-      '@browserbasehq/stagehand': 1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
+      '@browserbasehq/stagehand': 1.14.0(@playwright/test@1.51.1)(deepmerge@4.3.1)(dotenv@16.5.0)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(zod@3.24.2)
       '@ibm-cloud/watsonx-ai': 1.5.1(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))
       '@langchain/core': 0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))
       '@langchain/openai': 0.5.5(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(ws@8.18.1)
@@ -9681,6 +9685,8 @@ snapshots:
 
   dotenv@16.4.7: {}
 
+  dotenv@16.5.0: {}
+
   dunder-proto@1.0.1:
     dependencies:
       call-bind-apply-helpers: 1.0.2
@@ -10421,14 +10427,14 @@ snapshots:
       axios: 1.8.4(debug@4.4.0)
       camelcase: 6.3.0
       debug: 4.4.0
-      dotenv: 16.4.7
+      dotenv: 16.5.0
       extend: 3.0.2
       file-type: 16.5.4
       form-data: 4.0.0
       isstream: 0.1.2
       jsonwebtoken: 9.0.2
       mime-types: 2.1.35
-      retry-axios: 2.6.0(axios@1.8.4(debug@4.4.0))
+      retry-axios: 2.6.0(axios@1.8.4)
       tough-cookie: 4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -10879,7 +10885,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@0.350.0(react@18.3.1):
+  lucide-react@0.488.0(react@18.3.1):
     dependencies:
       react: 18.3.1
 
@@ -11708,7 +11714,7 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
-  retry-axios@2.6.0(axios@1.8.4(debug@4.4.0)):
+  retry-axios@2.6.0(axios@1.8.4):
     dependencies:
       axios: 1.8.4(debug@4.4.0)
 
