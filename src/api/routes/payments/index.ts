@@ -4,6 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { jsonObjectFrom } from "kysely/helpers/postgres";
 import { z } from "zod";
+import { paymentMethodsRouter } from "./payment_methods";
 
 export const paymentsRouter = new Hono<{
   Variables: PrivateContextVariables;
@@ -44,4 +45,5 @@ export const paymentsRouter = new Hono<{
 
     return json(payments);
   },
-);
+)
+.route("/payment-methodes", paymentMethodsRouter);

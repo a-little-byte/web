@@ -1,10 +1,16 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusCircle, CreditCard, Trash2, CheckCircle } from "lucide-react";
-import { getTranslations } from "next-intl/server";
+import { PlusCircle, CreditCard, Trash2, CheckCircle, Edit } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { apiClient } from "@/lib/apiClient";
+import { toast } from "@/components/ui/use-toast";
+import { AddPaymentMethodDialog } from "./AddPaymentMethodDialog";
+import { EditPaymentMethodDialog } from "./EditPaymentMethodDialog";
+import { encrypt } from "@/api/c/AES";
 
 interface PaymentMethod {
   id: string;
@@ -15,56 +21,174 @@ interface PaymentMethod {
   is_default: boolean;
 }
 
+interface EditPaymentMethodFormData {
+  expiry_month: string;
+  expiry_year: string;
+}
+
+interface AddPaymentMethodFormData {
+  type: string;
+  card_number: string;
+  expiry_month: string;
+  expiry_year: string;
+  cvv: string;
+}
+
 const PaymentMethods = () => {
-  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
-  const [loading, setLoading] = useState(true);
+  const t = useTranslations("dashboard.payment-methods");
+  const queryClient = useQueryClient();
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(null);
 
-  useEffect(() => {
-    const fetchPaymentMethods = async () => {
+  const { data: paymentMethods = [], isLoading } = useQuery({
+    queryKey: ["paymentMethods"],
+    queryFn: async () => {
       try {
-        const mockData = [
-          {
-            id: "123e4567-e89b-12d3-a456-426614174000",
-            type: "visa",
-            last_four: "4242",
-            expiry_month: 12,
-            expiry_year: 2025,
-            is_default: true
-          },
-          {
-            id: "223e4567-e89b-12d3-a456-426614174001",
-            type: "mastercard",
-            last_four: "8888",
-            expiry_month: 3,
-            expiry_year: 2026,
-            is_default: false
-          }
-        ];
+        const response = await apiClient.payments["payment-methodes"].$get()
         
-        setPaymentMethods(mockData);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching payment methods:", error);
-        setLoading(false);
-      }
-    };
+        if (!response.ok) {
+          throw new Error();
+        }
 
-    fetchPaymentMethods();
-  }, []);
+        return response.json();
+      } catch (error) {
+        toast({
+          title: t("toasts.fetchError.title"),
+          description: t("toasts.fetchError.description"),
+          variant: "destructive",
+        });
+        return [];
+      }
+    },
+  });
+
+  const addMutation = useMutation({
+    mutationFn: async (data: AddPaymentMethodFormData) => 
+  {
+      const {ciphertext, iv} = await encrypt(data.card_number, process.env.NEXT_SECRET_KEY!, [data.expiry_month, data.expiry_year, data.type])
+      return apiClient.payments["payment-methodes"].$post(
+        {
+          json: {
+            type: data.type,
+            payment_token: , 
+            last_four: data.card_number.substring(-4),
+            expiry_month: parseInt(data.expiry_month),
+            expiry_year: parseInt(data.expiry_year),
+          }
+        },
+      )
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast({
+        title: t("toasts.add.title"),
+        description: t("toasts.add.description"),
+      });
+      setIsAddDialogOpen(false);
+    },
+    onError: () => {
+      toast({
+        title: t("toasts.addError.title"),
+        description: t("toasts.addError.description"),
+        variant: "destructive",
+      });
+    },
+  });
+
+  const editMutation = useMutation({
+    mutationFn: async ({ 
+      id,
+      data
+    }: { 
+      id: string;
+      data: EditPaymentMethodFormData;
+    }) => apiClient.payments["payment-methodes"][":id"].$patch(
+        {
+          param: {id},
+          json: {
+            expiry_month: parseInt(data.expiry_month),
+            expiry_year: parseInt(data.expiry_year),
+          }
+        },
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast({
+        title: t("toasts.edit.title"),
+        description: t("toasts.edit.description"),
+      });
+      setIsEditDialogOpen(false);
+      setCurrentMethod(null);
+    },
+    onError: () => {
+      toast({
+        title: t("toasts.editError.title"),
+        description: t("toasts.editError.description"),
+        variant: "destructive",
+      });
+    },
+  });
+
+  const setDefaultMutation = useMutation({
+    mutationFn: async (id: string) => apiClient.payments["payment-methodes"][":id"].$patch({param: {id}, json:{is_default: true}}),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast({
+        title: t("toasts.setDefault.title"),
+        description: t("toasts.setDefault.description"),
+      });
+    },
+    onError: () => {
+      toast({
+        title: t("toasts.setDefaultError.title"),
+        description: t("toasts.setDefaultError.description"),
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      await apiClient.payments["payment-methodes"][":id"].$delete({param: {id}})
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
+      toast({
+        title: t("toasts.delete.title"),
+        description: t("toasts.delete.description"),
+      });
+    },
+    onError: () => {
+      toast({
+        title: t("toasts.deleteError.title"),
+        description: t("toasts.deleteError.description"),
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleAddPaymentMethod = (data: AddPaymentMethodFormData) => {
+    addMutation.mutate(data);
+  };
+
+  const handleEditPaymentMethod = (data: EditPaymentMethodFormData) => {
+    if (currentMethod) {
+      editMutation.mutate({ id: currentMethod.id, data });
+    }
+  };
 
   const handleSetDefault = (id: string) => {
-    setPaymentMethods(
-      paymentMethods.map(method => ({
-        ...method,
-        is_default: method.id === id
-      }))
-    );
+    setDefaultMutation.mutate(id);
   };
 
   const handleDelete = (id: string) => {
-    setPaymentMethods(
-      paymentMethods.filter(method => method.id !== id)
-    );
+    deleteMutation.mutate(id);
+  };
+
+  const handleEditClick = (method: PaymentMethod) => {
+    setCurrentMethod(method);
+    setIsEditDialogOpen(true);
   };
 
   const formatExpiry = (month: number, year: number) => {
@@ -72,61 +196,74 @@ const PaymentMethods = () => {
   };
 
   return (
-    <div >
+    <div>
       <div className="container">
         <div>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl text-center">
-            Payment Methods
+            {t("title")}
           </h1>
           <p className="mt-6 text-lg leading-8 text-muted-foreground text-center">
-            Manage your payment methods securely and conveniently
+            {t("subtitle")}
           </p>
 
           <div className="mt-10 grid gap-6">
-            {loading ? (
+            {isLoading ? (
               <Card className="flex items-center justify-center h-40">
-                <p className="text-muted-foreground">Loading payment methods...</p>
+                <p className="text-muted-foreground">{t("loading")}</p>
               </Card>
             ) : paymentMethods.length === 0 ? (
               <Card className="flex items-center justify-center h-40">
-                <p className="text-muted-foreground">No payment methods found</p>
+                <p className="text-muted-foreground">{t("noMethods")}</p>
               </Card>
             ) : (
               paymentMethods.map((method) => (
                 <Card key={method.id} className="overflow-hidden">
                   <CardHeader className="flex flex-row items-center gap-4">
-                    <CreditCard className="h-8 w-8 text-primary" />                    <div>
+                    <CreditCard className="h-8 w-8 text-primary" />
+                    <div>
                       <CardTitle className="capitalize">
                         {method.type} •••• {method.last_four}
                         {method.is_default && (
                           <span className="ml-2 inline-flex items-center text-sm text-green-600">
-                            <CheckCircle className="mr-1 h-4 w-4" /> Default
+                            <CheckCircle className="mr-1 h-4 w-4" /> {t("default")}
                           </span>
                         )}
                       </CardTitle>
                       <CardDescription>
-                        Expires {formatExpiry(method.expiry_month, method.expiry_year)}
+                        {t("expires")} {formatExpiry(method.expiry_month, method.expiry_year)}
                       </CardDescription>
                     </div>
                   </CardHeader>
                   <CardFooter className="flex justify-between">
-                    {!method.is_default && (
+                    <div className="flex gap-2">
+                      {!method.is_default && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => handleSetDefault(method.id)}
+                          disabled={setDefaultMutation.isPending}
+                        >
+                          {t("setDefault")}
+                        </Button>
+                      )}
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => handleSetDefault(method.id)}
+                        onClick={() => handleEditClick(method)}
                       >
-                        Set as default
+                        <Edit className="mr-1 h-4 w-4" />
+                        {t("edit")}
                       </Button>
-                    )}
+                    </div>
                     <Button 
                       variant="ghost" 
                       size="sm" 
                       className="text-destructive"
                       onClick={() => handleDelete(method.id)}
+                      disabled={deleteMutation.isPending}
                     >
                       <Trash2 className="mr-1 h-4 w-4" />
-                      Remove
+                      {t("remove")}
                     </Button>
                   </CardFooter>
                 </Card>
@@ -135,9 +272,13 @@ const PaymentMethods = () => {
 
             <Card className="border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-10">
-                <Button variant="outline" className="gap-2">
+                <Button 
+                  variant="outline" 
+                  className="gap-2"
+                  onClick={() => setIsAddDialogOpen(true)}
+                >
                   <PlusCircle className="h-5 w-5" />
-                  Add new payment method
+                  {t("addNew")}
                 </Button>
               </CardContent>
             </Card>
@@ -145,34 +286,49 @@ const PaymentMethods = () => {
 
           <div className="mt-16">
             <h2 className="text-2xl font-bold tracking-tight">
-              Payment Information
+              {t("paymentInfo.title")}
             </h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Your payment information is securely stored and processed. We never store your full card details on our servers.
+              {t("paymentInfo.description")}
             </p>
             <ul className="mt-6 space-y-2 text-muted-foreground">
               <li className="flex items-center">
                 <CheckCircle className="mr-2 h-4 w-4 text-green-600" />
-                PCI DSS compliant processing
+                {t("paymentInfo.security.pci")}
               </li>
               <li className="flex items-center">
                 <CheckCircle className="mr-2 h-4 w-4 text-green-600" />
-                End-to-end encryption
+                {t("paymentInfo.security.encryption")}
               </li>
               <li className="flex items-center">
                 <CheckCircle className="mr-2 h-4 w-4 text-green-600" />
-                Automatic card verification
+                {t("paymentInfo.security.verification")}
               </li>
             </ul>
           </div>
 
           <div className="mt-16 text-center">
             <Button size="lg">
-              Manage Billing
+              {t("manageBilling")}
             </Button>
           </div>
         </div>
       </div>
+
+      <AddPaymentMethodDialog
+        open={isAddDialogOpen}
+        onOpenChange={setIsAddDialogOpen}
+        onSubmit={handleAddPaymentMethod}
+        isPending={addMutation.isPending}
+      />
+
+      <EditPaymentMethodDialog
+        open={isEditDialogOpen}
+        onOpenChange={setIsEditDialogOpen}
+        onSubmit={handleEditPaymentMethod}
+        isPending={editMutation.isPending}
+        paymentMethod={currentMethod}
+      />
     </div>
   );
 };
