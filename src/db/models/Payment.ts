@@ -6,6 +6,7 @@ export type PaymentMethod = {
   id: Generated<UUID>;
   user_id: UUID | null;
   payment_token: string;
+  iv: string;
   type: string;
   last_four: string;
   expiry_month: number;

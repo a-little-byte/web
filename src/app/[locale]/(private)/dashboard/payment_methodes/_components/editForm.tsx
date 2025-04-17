@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PaymentMethod } from "../page";
 
 
 const editPaymentMethodSchema = z.object({

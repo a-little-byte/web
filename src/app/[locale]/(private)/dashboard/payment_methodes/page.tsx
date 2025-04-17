@@ -7,31 +7,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { PlusCircle, CreditCard, Trash2, CheckCircle, Edit } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { apiClient } from "@/lib/apiClient";
-import { toast } from "@/components/ui/use-toast";
-import { AddPaymentMethodDialog } from "./AddPaymentMethodDialog";
-import { EditPaymentMethodDialog } from "./EditPaymentMethodDialog";
+import { toast } from "@/hooks/use-toast";
+import { AddPaymentMethodDialog } from "./_components/addForm";
+import { EditPaymentMethodDialog } from "./_components/editForm";
 import { encrypt } from "@/api/c/AES";
+import { AddPaymentMethodFormData } from "./_components/addForm";
+import { EditPaymentMethodFormData } from "./_components/editForm";
 
-interface PaymentMethod {
+
+export type PaymentMethod ={
   id: string;
   type: string;
   last_four: string;
   expiry_month: number;
   expiry_year: number;
   is_default: boolean;
-}
-
-interface EditPaymentMethodFormData {
-  expiry_month: string;
-  expiry_year: string;
-}
-
-interface AddPaymentMethodFormData {
-  type: string;
-  card_number: string;
-  expiry_month: string;
-  expiry_year: string;
-  cvv: string;
 }
 
 const PaymentMethods = () => {
@@ -41,7 +31,7 @@ const PaymentMethods = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(null);
 
-  const { data: paymentMethods = [], isLoading } = useQuery({
+  const { data: cards, isLoading } = useQuery({
     queryKey: ["paymentMethods"],
     queryFn: async () => {
       try {
@@ -58,7 +48,6 @@ const PaymentMethods = () => {
           description: t("toasts.fetchError.description"),
           variant: "destructive",
         });
-        return [];
       }
     },
   });
@@ -71,7 +60,8 @@ const PaymentMethods = () => {
         {
           json: {
             type: data.type,
-            payment_token: , 
+            payment_token: ciphertext.toString(),
+            iv: iv.toString(),
             last_four: data.card_number.substring(-4),
             expiry_month: parseInt(data.expiry_month),
             expiry_year: parseInt(data.expiry_year),
@@ -195,6 +185,22 @@ const PaymentMethods = () => {
     return `${month.toString().padStart(2, '0')}/${year.toString().slice(-2)}`;
   };
 
+  if(!cards){
+    return(
+      <Card className="flex items-center justify-center h-40">
+        <p className="text-muted-foreground">{t("noMethods")}</p>
+      </Card>
+    )
+  }
+
+  if(isLoading){
+    return (
+      <Card className="flex items-center justify-center h-40">
+        <p className="text-muted-foreground">{t("loading")}</p>
+      </Card>
+    )
+  }
+
   return (
     <div>
       <div className="container">
@@ -207,16 +213,7 @@ const PaymentMethods = () => {
           </p>
 
           <div className="mt-10 grid gap-6">
-            {isLoading ? (
-              <Card className="flex items-center justify-center h-40">
-                <p className="text-muted-foreground">{t("loading")}</p>
-              </Card>
-            ) : paymentMethods.length === 0 ? (
-              <Card className="flex items-center justify-center h-40">
-                <p className="text-muted-foreground">{t("noMethods")}</p>
-              </Card>
-            ) : (
-              paymentMethods.map((method) => (
+             {cards.paymentMethods.map((method) => (
                 <Card key={method.id} className="overflow-hidden">
                   <CardHeader className="flex flex-row items-center gap-4">
                     <CreditCard className="h-8 w-8 text-primary" />
@@ -267,9 +264,7 @@ const PaymentMethods = () => {
                     </Button>
                   </CardFooter>
                 </Card>
-              ))
-            )}
-
+            ))}
             <Card className="border-dashed">
               <CardContent className="flex flex-col items-center justify-center py-10">
                 <Button 
