@@ -75,7 +75,7 @@
     "lucide-react": "^0.350.0",
     "motion": "^12.6.3",
     "next": "^15.2.5",
-    "next-intl": "^3.26.5",
+    "next-intl": "^4.0.2",
     "next-themes": "^0.2.1",
     "nuqs": "^2.4.1",
     "ollama": "^0.5.14",
