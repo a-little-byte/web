@@ -13,16 +13,9 @@ import { EditPaymentMethodDialog } from "./_components/editForm";
 import { encrypt } from "@/api/c/AES";
 import { AddPaymentMethodFormData } from "./_components/addForm";
 import { EditPaymentMethodFormData } from "./_components/editForm";
+import { PaymentMethod } from "@/db/models/Payment";
+import { UUID } from "node:crypto";
 
-
-export type PaymentMethod ={
-  id: string;
-  type: string;
-  last_four: string;
-  expiry_month: number;
-  expiry_year: number;
-  is_default: boolean;
-}
 
 const PaymentMethods = () => {
   const t = useTranslations("dashboard.payment-methods");
@@ -55,7 +48,9 @@ const PaymentMethods = () => {
   const addMutation = useMutation({
     mutationFn: async (data: AddPaymentMethodFormData) => 
   {
-      const {ciphertext, iv} = await encrypt(data.card_number, process.env.NEXT_SECRET_KEY!, [data.expiry_month, data.expiry_year, data.type])
+      const {ciphertext, iv} = await encrypt(data.card_number, 
+        process.env.NEXT_SECRET_KEY!, 
+        [data.cvv, data.expiry_month, data.expiry_year, data.type])
       return apiClient.payments["payment-methodes"].$post(
         {
           json: {
@@ -164,7 +159,8 @@ const PaymentMethods = () => {
 
   const handleEditPaymentMethod = (data: EditPaymentMethodFormData) => {
     if (currentMethod) {
-      editMutation.mutate({ id: currentMethod.id, data });
+      const id = currentMethod.id as unknown as string
+      editMutation.mutate({ id, data });
     }
   };
 

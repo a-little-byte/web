@@ -27,8 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { PaymentMethod } from "../page";
-
+import type { PaymentMethod } from "@/db/models/Payment";
 
 const editPaymentMethodSchema = z.object({
   expiry_month: z.string().refine((val) => {
@@ -64,24 +63,16 @@ export function EditPaymentMethodDialog({
   const form = useForm(editPaymentMethodSchema,
     {
       defaultValues: {
-        expiry_month: "",
-        expiry_year: "",
+        expiry_month: paymentMethod ? paymentMethod.expiry_month.toString() : "",
+        expiry_year: paymentMethod ? paymentMethod.expiry_year.toString() : "",
       },
     }
   );
-
-  useEffect(() => {
-    if (paymentMethod) {
-      form.setValue("expiry_month", paymentMethod.expiry_month.toString());
-      form.setValue("expiry_year", paymentMethod.expiry_year.toString());
-    }
-  }, [paymentMethod, form]);
 
   const handleSubmit = (data: EditPaymentMethodFormData) => {
     onSubmit(data);
   };
 
-  // Reset form when dialog closes
   const handleOpenChange = (open: boolean) => {
     if (!open) {
       form.reset();
@@ -89,7 +80,6 @@ export function EditPaymentMethodDialog({
     onOpenChange(open);
   };
 
-  // Generate month options for select fields
   const monthOptions = Array.from({ length: 12 }, (_, i) => {
     const month = i + 1;
     return (
@@ -99,7 +89,6 @@ export function EditPaymentMethodDialog({
     );
   });
 
-  // Generate year options for select fields
   const currentYear = new Date().getFullYear();
   const yearOptions = Array.from({ length: 10 }, (_, i) => {
     const year = currentYear + i;

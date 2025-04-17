@@ -213,7 +213,7 @@ export const AddPaymentMethodDialog = ({
                         maxLength={4}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage about="This is to authenticate the card and will not be saved in the database" />
                   </FormItem>
                 )}
               />
