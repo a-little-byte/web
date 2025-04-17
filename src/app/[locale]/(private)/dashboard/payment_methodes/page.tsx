@@ -242,7 +242,7 @@ const PaymentMethods = () => {
                       <Button 
                         variant="outline" 
                         size="sm"
-                        onClick={() => handleEditClick(method)}
+                        onClick={() => handleEditClick(method as unknown as PaymentMethod)}
                       >
                         <Edit className="mr-1 h-4 w-4" />
                         {t("edit")}
