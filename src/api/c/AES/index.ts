@@ -1,5 +1,5 @@
 import { initWasmModule } from "../utils";
-import crypto from "node:crypto";
+import crypto from "crypto";
 
 const module = "aes";
 
