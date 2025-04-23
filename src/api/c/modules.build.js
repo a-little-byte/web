@@ -77,7 +77,7 @@ function buildModule(module) {
     "-o", outputFile,
     "-s", "WASM=1",
     "-s", `EXPORTED_FUNCTIONS=['${exportedFunctions.join("','")}']`,
-    "-s", `EXPORTED_RUNTIME_METHODS=['ccall','cwrap','UTF8ToString','stringToUTF8','lengthBytesUTF8']`,
+    "-s", `EXPORTED_RUNTIME_METHODS=['ccall','cwrap','UTF8ToString','stringToUTF8','lengthBytesUTF8','setValue','getValue','HEAPU8']`,
     "-s", "ALLOW_MEMORY_GROWTH=1",
     "-s", "INITIAL_MEMORY=16777216",
     "-s", "MAXIMUM_MEMORY=2147483648",

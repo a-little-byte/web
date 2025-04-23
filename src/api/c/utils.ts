@@ -13,20 +13,25 @@ export type EmscriptenModule = {
   _malloc: (size: number) => number;
   _free: (ptr: number) => void;
   UTF8ToString: (ptr: number, maxBytesToRead?: number) => string;
-}
+  stringToUTF8: (str: string, outPtr: number, maxBytesToWrite: number) => void;
+  lengthBytesUTF8: (str: string) => number;
+  setValue: (ptr: number, value: any, type: string) => void;
+  getValue: (ptr: number, type: string) => any;
+  HEAPU8: Uint8Array;
+};
 
 
-export const initWasmModule = async (module: string) => {
+export const initWasmModule = async (module: string, wasmName?:string) => {
     let wasmModule: EmscriptenModule | null = null;
 
     try {
       if (typeof window === "undefined") {
         // Server-side
-        const { default: moduleFactory } = await import(`./${module}/build/${module.toLocaleLowerCase()}.js`);
+        const { default: moduleFactory } = await import(`./${module}/build/${wasmName ? wasmName : module}.js`);
         wasmModule = await moduleFactory();
       } else {
         // Client-side
-        const moduleFactory = (await import(`./${module}/build/${module.toLocaleLowerCase()}.js`)).default;
+        const moduleFactory = (await import(`./${module}/build/${wasmName ? wasmName : module}.js`)).default;
         wasmModule = await moduleFactory();
       }
     } catch (err) {

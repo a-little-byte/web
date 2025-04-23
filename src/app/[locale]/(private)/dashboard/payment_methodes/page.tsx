@@ -8,14 +8,10 @@ import { PlusCircle, CreditCard, Trash2, CheckCircle, Edit } from "lucide-react"
 import { useTranslations } from "next-intl";
 import { apiClient } from "@/lib/apiClient";
 import { toast } from "@/hooks/use-toast";
-import { AddPaymentMethodDialog } from "./_components/addForm";
-import { EditPaymentMethodDialog } from "./_components/editForm";
+import { AddPaymentMethodDialog, AddPaymentMethodFormData } from "./_components/addForm";
+import { EditPaymentMethodDialog, EditPaymentMethodFormData } from "./_components/editForm";
 import { encrypt } from "@/api/c/AES";
-import { AddPaymentMethodFormData } from "./_components/addForm";
-import { EditPaymentMethodFormData } from "./_components/editForm";
 import { PaymentMethod } from "@/db/models/Payment";
-import { UUID } from "node:crypto";
-
 
 const PaymentMethods = () => {
   const t = useTranslations("dashboard.payment-methods");
@@ -24,7 +20,7 @@ const PaymentMethods = () => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(null);
 
-  const { data: cards, isLoading } = useQuery({
+  const { data: paymentMethods, error, isLoading } = useQuery({
     queryKey: ["paymentMethods"],
     queryFn: async () => {
       try {
@@ -34,7 +30,8 @@ const PaymentMethods = () => {
           throw new Error();
         }
 
-        return response.json();
+        const data = await response.json();
+        return data.paymentMethods || []
       } catch (error) {
         toast({
           title: t("toasts.fetchError.title"),
@@ -48,21 +45,26 @@ const PaymentMethods = () => {
   const addMutation = useMutation({
     mutationFn: async (data: AddPaymentMethodFormData) => 
   {
-      const {ciphertext, iv} = await encrypt(data.card_number, 
-        process.env.NEXT_SECRET_KEY!, 
+    let ciphertext, iv;
+    if(data){
+      const ecryptedData = await encrypt(data.card_number, 
+        process.env.NEXT_PUBLIC_SECRET_KEY!, 
         [data.cvv, data.expiry_month, data.expiry_year, data.type])
-      return apiClient.payments["payment-methodes"].$post(
-        {
-          json: {
-            type: data.type,
-            payment_token: ciphertext.toString(),
-            iv: iv.toString(),
-            last_four: data.card_number.substring(-4),
-            expiry_month: parseInt(data.expiry_month),
-            expiry_year: parseInt(data.expiry_year),
-          }
-        },
-      )
+      ciphertext = ecryptedData.ciphertext
+      iv = ecryptedData.iv
+    }
+    return apiClient.payments["payment-methodes"].$post(
+      {
+        json: {
+          type: data.type,
+          payment_token: ciphertext ? ciphertext : "",
+          iv: iv ? iv : "",
+          last_four: data.card_number.slice(-4),
+          expiry_month: parseInt(data.expiry_month),
+          expiry_year: parseInt(data.expiry_year),
+        }
+      }
+    )
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
@@ -181,20 +183,20 @@ const PaymentMethods = () => {
     return `${month.toString().padStart(2, '0')}/${year.toString().slice(-2)}`;
   };
 
-  if(!cards){
-    return(
-      <Card className="flex items-center justify-center h-40">
-        <p className="text-muted-foreground">{t("noMethods")}</p>
-      </Card>
-    )
-  }
-
-  if(isLoading){
+  if(isLoading || error){
     return (
       <Card className="flex items-center justify-center h-40">
         <p className="text-muted-foreground">{t("loading")}</p>
       </Card>
     )
+  }
+
+  if (!paymentMethods) {
+  return (
+    <Card className="flex items-center justify-center h-40">
+      <p className="text-muted-foreground">{t("noMethods")}</p>
+    </Card>
+  );
   }
 
   return (
@@ -209,7 +211,7 @@ const PaymentMethods = () => {
           </p>
 
           <div className="mt-10 grid gap-6">
-             {cards.paymentMethods.map((method) => (
+             {paymentMethods.map((method) => (
                 <Card key={method.id} className="overflow-hidden">
                   <CardHeader className="flex flex-row items-center gap-4">
                     <CreditCard className="h-8 w-8 text-primary" />
