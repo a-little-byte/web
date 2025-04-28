@@ -3,6 +3,7 @@ import { z } from "zod";
 import { zValidator } from "@hono/zod-validator";
 import { PrivateContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
+import { checkPermissions } from "@/api/middlewares/checkPermissions";
 
 
 const paymentMethodValidator = z.object({
@@ -19,6 +20,7 @@ export const paymentMethodsRouter = new Hono<{
   Variables: PrivateContextVariables;
 }>()
   .get("/", 
+  checkPermissions("payment_methods.read"),
   async ({ var: { db, session }, json }) => {
     const paymentMethods = await db
       .selectFrom("payment_methods")
@@ -32,6 +34,7 @@ export const paymentMethodsRouter = new Hono<{
     });
   })
   .get("/:id",
+  checkPermissions("payment_methods.read"),
     zValidator("param", z.object({ id: idValidator })),
     async ({ var: { db, session }, req, json }) => {
       const {id} = req.valid("param");
@@ -54,6 +57,7 @@ export const paymentMethodsRouter = new Hono<{
   })
   .post(
     "/",
+  checkPermissions("payment_methods.create"),
     zValidator("json", paymentMethodValidator),
     async ({ var: { db, session }, req, json }) => {
         const paymentMethodData = req.valid("json");
@@ -91,6 +95,7 @@ export const paymentMethodsRouter = new Hono<{
     })
     .patch(
     "/:id",
+  checkPermissions("payment_methods.update"),
     zValidator("param", z.object({id: idValidator})),
      zValidator(
     "json",
@@ -139,9 +144,10 @@ export const paymentMethodsRouter = new Hono<{
     })
     .delete(
   "/:id",
+  checkPermissions("payment_methods.delete"),
   zValidator("param", z.object({ id: idValidator })),
   async ({ var: {db, session}, req, json }) => {
-    try{const { id } = req.valid("param");
+    const { id } = req.valid("param");
     const methodToDelete = await db
       .selectFrom("payment_methods")
       .where("id", "=", id)
@@ -180,9 +186,6 @@ export const paymentMethodsRouter = new Hono<{
       success: true,
       message: "Payment method deleted successfully"
     });
-    }catch(e:any){
-      json({error: e.message})
-    }
   }
 );
 

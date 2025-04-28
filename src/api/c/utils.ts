@@ -29,7 +29,7 @@ export const initWasmModule = async (module: string, wasmName?: string) => {
   try {
     if (typeof window === "undefined") {
       // Server-side
-      const { default: moduleFactory } = await import(`./${module}/build/${moduleName}.js`);
+      const { default: moduleFactory } = await import(`./${module}/build/${wasmName ? wasmName : module}.js`);
       wasmModule = await moduleFactory();
     } else {
       // Client-side
@@ -49,7 +49,7 @@ export const initWasmModule = async (module: string, wasmName?: string) => {
           }
           return path;
         }
-      }).init();
+      });
     }
   } catch (err) {
     console.error("Failed to initialize WASM module:", err);

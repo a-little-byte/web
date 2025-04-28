@@ -132,9 +132,7 @@ const PaymentMethods = () => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      await apiClient.payments["payment-methodes"][":id"].$delete({param: {id}})
-    },
+    mutationFn: async (id: string) => apiClient.payments["payment-methodes"][":id"].$delete({param: {id}}),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
       toast({

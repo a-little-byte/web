@@ -6,6 +6,8 @@ const path = require("path");
 
 const rootDir = process.cwd();
 
+const frontendModules = ["AES"]
+
 function findEmscriptenModules() {
   const modules = [];
   
@@ -20,6 +22,7 @@ function findEmscriptenModules() {
       if (sourceFiles.length > 0) {
         modules.push({
           name: path.basename(dir),
+          single: frontendModules.includes(path.basename(dir)),
           path: dir,
           srcDir,
           incDir
@@ -84,7 +87,7 @@ function buildModule(module) {
     "-s", "MODULARIZE=1",
     "-s", "EXPORT_ES6=1", 
     "-s", "ENVIRONMENT=web,worker",
-    //"-s", "SINGLE_FILE=1",
+    module.single ? "" : "-s SINGLE_FILE=1",
     "-O3"
   ].join(" ");
   
