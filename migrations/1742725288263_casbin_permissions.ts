@@ -1,7 +1,6 @@
-import { Database } from "@/db";
 import type { Kysely } from "kysely";
 
-export const up = async (db: Kysely<Database>): Promise<void> => {
+export const up = async (db: Kysely<any>): Promise<void> => {
   await db
     .insertInto("casbin_rule")
     .values([
@@ -25,6 +24,6 @@ export const up = async (db: Kysely<Database>): Promise<void> => {
     .execute();
 };
 
-export const down = async (db: Kysely<Database>): Promise<void> => {
+export const down = async (db: Kysely<any>): Promise<void> => {
   await db.deleteFrom("casbin_rule").execute();
 };

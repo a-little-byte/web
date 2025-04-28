@@ -1,16 +1,15 @@
-import { Database } from '@/db';
-import { sql, type Kysely } from 'kysely'
+import { sql, type Kysely } from "kysely";
 
-export async function up(db: Kysely<Database>): Promise<void> {
+export async function up(db: Kysely<any>): Promise<void> {
   await db.schema
-   .createTable("verification")
-   .addColumn("id", "uuid", (col) =>
+    .createTable("verification")
+    .addColumn("id", "uuid", (col) =>
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
-  .addColumn("user_id", "uuid")
-  .addColumn("email_token", "text", (col)=>col.notNull())
-  .addColumn("email_token_time", "text", (col)=>col.notNull())
-  .execute()
+    .addColumn("user_id", "uuid")
+    .addColumn("email_token", "text", (col) => col.notNull())
+    .addColumn("email_token_time", "text", (col) => col.notNull())
+    .execute();
 
   await db.schema
     .alterTable("verification")
@@ -23,17 +22,13 @@ export async function up(db: Kysely<Database>): Promise<void> {
     .onDelete("cascade")
     .execute();
 
-
   await db.schema
     .createIndex("idx_email_token")
     .on("verification")
     .column("email_token")
     .execute();
-
 }
 
-export async function down(db: Kysely<Database>): Promise<void> {
-  await db.schema
-    .dropTable("verification")
-    .execute()
+export async function down(db: Kysely<any>): Promise<void> {
+  await db.schema.dropTable("verification").execute();
 }

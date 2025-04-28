@@ -1,13 +1,12 @@
-import type { Database } from "@/db";
 import type { Kysely } from "kysely";
 import { sql } from "kysely";
 
-export const up = async (db: Kysely<Database>): Promise<void> => {
+export const up = async (db: Kysely<any>): Promise<void> => {
   await db.schema.dropTable("service_management").execute();
   await db.schema.dropTable("page_content").execute();
 };
 
-export const down = async (db: Kysely<Database>): Promise<void> => {
+export const down = async (db: Kysely<any>): Promise<void> => {
   await db.schema
     .createTable("service_management")
     .addColumn("id", "uuid", (col) =>

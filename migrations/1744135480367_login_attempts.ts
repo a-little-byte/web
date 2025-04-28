@@ -1,7 +1,6 @@
-import { Database } from "@/db";
 import { sql, type Kysely } from "kysely";
 
-export const up = async (db: Kysely<Database>): Promise<void> => {
+export const up = async (db: Kysely<any>): Promise<void> => {
   await db.schema
     .createTable("login_attempts")
     .addColumn("id", "uuid", (col) =>
@@ -17,6 +16,6 @@ export const up = async (db: Kysely<Database>): Promise<void> => {
     .execute();
 };
 
-export const down = async (db: Kysely<Database>): Promise<void> => {
+export const down = async (db: Kysely<any>): Promise<void> => {
   await db.schema.dropTable("login_attempts").execute();
 };
