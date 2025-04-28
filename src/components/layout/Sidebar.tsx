@@ -96,6 +96,14 @@ export const DashboardSidebar = () => {
                   className="min-w-8 mb-3 bg-[#1c1cae] text-primary-foreground hover:text-white duration-200 ease-linear hover:bg-primary hover:cursor-pointer"
                   navigation={[
                     {
+                      name: "home",
+                      href: "/",
+                    },
+                    {
+                      name: "dashboard",
+                      href: "/dashboard",
+                    },
+                    {
                       name: "orderHistory",
                       href: "/dashboard/order-history",
                     },

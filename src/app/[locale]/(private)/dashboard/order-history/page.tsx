@@ -34,14 +34,13 @@ import {
 } from "@/components/ui/table";
 import { useQuery } from "@/hooks/useQuery";
 import { apiClient } from "@/lib/apiClient";
-import { useRouter } from "@/lib/i18n/routing";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { InferResponseType } from "hono";
 import { ChevronDown, Download, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
-
 type OrderDetails = Exclude<
   InferResponseType<typeof apiClient.orders.$get>,
   { error: string }
@@ -49,11 +48,13 @@ type OrderDetails = Exclude<
 
 function OrderHistoryPage() {
   const t = useTranslations("dashboard.order-history");
-  const router = useRouter();
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedService, setSelectedService] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useQueryState(
+    "q",
+    parseAsString.withDefault("")
+  );
   const { data: orders } = useQuery(apiClient.orders);
   // toast({
   //   title: t("toasts.fetchError.title"),

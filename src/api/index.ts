@@ -39,6 +39,8 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
     if (err instanceof PublicError) {
       return c.json({ error: err.message }, err.status);
     }
+
+    console.error(err);
     return c.json(
       { error: "Internal server error" },
       HTTP_CODES.INTERNAL_SERVER_ERROR
