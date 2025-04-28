@@ -1,34 +1,41 @@
 import { initWasmModule } from "../utils";
-import crypto from "crypto";
 
-const module = "AES";
-const wasmName = "aes";
+const textEncoder = new TextEncoder();
+const textDecoder = new TextDecoder();
 
-const generateIV = (length = 12) => {
-  return crypto.randomBytes(length);
+const base64Encode = (buf: Uint8Array): string => {
+  return btoa(String.fromCharCode.apply(null, [...new Uint8Array(buf)]));
+};
+
+const base64Decode = (str: string): Uint8Array => {
+  return Uint8Array.from(atob(str), c => c.charCodeAt(0));
+};
+
+const generateIV = (length = 12): Uint8Array => {
+  return crypto.getRandomValues(new Uint8Array(length));
 };
 
 export const encrypt = async (
-  plaintext: string | Buffer,
-  key: string | Buffer,
-  aad?: Array<string | Buffer>
+  plaintext: string | Uint8Array,
+  key: string | Uint8Array,
+  aad?: Array<string | Uint8Array>
 ) => {
   const plaintextBuffer = typeof plaintext === "string" 
-    ? Buffer.from(plaintext) 
+    ? textEncoder.encode(plaintext) 
     : plaintext;
   
   const keyBuffer = typeof key === "string" 
-    ? Buffer.from(key) 
+    ? textEncoder.encode(key) 
     : key;
   
   const ivBuffer = generateIV();
 
   const aadBuffers = aad?.map(item => 
-    typeof item === "string" ? Buffer.from(item) : item
+    typeof item === "string" ? textEncoder.encode(item) : item
   ) || [];
 
   try {
-    const wasmModule = await initWasmModule(module, wasmName);
+    const wasmModule = await initWasmModule("AES", "aes");
 
     if (!wasmModule?.ccall) {
       throw new Error("WASM module not properly initialized");
@@ -88,7 +95,7 @@ export const encrypt = async (
     }
 
     const encryptedData = new Uint8Array(wasmModule.HEAPU8.buffer, outputPtr, outputSize);
-    const ciphertext = Buffer.from(encryptedData);
+    const ciphertext = new Uint8Array(encryptedData);
 
     wasmModule._free(outputPtr);
     wasmModule._free(plaintextPtr);
@@ -105,8 +112,8 @@ export const encrypt = async (
     }
 
     return {
-      ciphertext: ciphertext.toString("base64"),
-      iv: ivBuffer.toString("base64"),
+      ciphertext: base64Encode(ciphertext),
+      iv: base64Encode(ivBuffer),
     };
   } catch (err) {
     const error = err as Error;
@@ -116,29 +123,29 @@ export const encrypt = async (
 };
 
 export const decrypt = async (
-  ciphertext: string | Buffer,
-  key: string | Buffer,
-  iv: string | Buffer,
-  aad?: Array<string | Buffer>
+  ciphertext: string | Uint8Array,
+  key: string | Uint8Array,
+  iv: string | Uint8Array,
+  aad?: Array<string | Uint8Array>
 ) => {
   const ciphertextBuffer = typeof ciphertext === "string" 
-    ? Buffer.from(ciphertext, 'base64') 
+    ? base64Decode(ciphertext) 
     : ciphertext;
   
   const keyBuffer = typeof key === "string" 
-    ? Buffer.from(key) 
+    ? textEncoder.encode(key) 
     : key;
   
   const ivBuffer = typeof iv === "string" 
-    ? Buffer.from(iv, 'base64') 
+    ? base64Decode(iv) 
     : iv;
 
   const aadBuffers = aad?.map(item => 
-    typeof item === "string" ? Buffer.from(item) : item
+    typeof item === "string" ? textEncoder.encode(item) : item
   ) || [];
 
   try {
-    const wasmModule = await initWasmModule(module, wasmName);
+    const wasmModule = await initWasmModule("AES", "aes");
 
     if (!wasmModule?.ccall) {
       throw new Error("WASM module not properly initialized");
@@ -198,8 +205,7 @@ export const decrypt = async (
     }
 
     const decryptedData = new Uint8Array(wasmModule.HEAPU8.buffer, outputPtr, outputSize);
-    const plaintext = Buffer.from(decryptedData);
-
+    
     wasmModule._free(outputPtr);
     wasmModule._free(ciphertextPtr);
     wasmModule._free(keyPtr);
@@ -214,7 +220,7 @@ export const decrypt = async (
       }
     }
 
-    return plaintext.toString("utf8");
+    return textDecoder.decode(decryptedData);
   } catch (err) {
     const error = err as Error;
     console.error("Decryption error:", error.message || error);

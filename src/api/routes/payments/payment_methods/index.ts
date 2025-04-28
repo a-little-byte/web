@@ -92,7 +92,16 @@ export const paymentMethodsRouter = new Hono<{
     .patch(
     "/:id",
     zValidator("param", z.object({id: idValidator})),
-    zValidator("json", paymentMethodValidator.partial()),
+     zValidator(
+    "json",
+    z
+      .object({
+        expiry_month: z.number().int().min(1).max(12).optional(),
+        expiry_year: z.number().int().min(2020).optional(),
+        is_default: z.boolean().optional(),
+      })
+      .strict()
+    ),
     async ({ var: { db, session }, req, json }) => {
         const {id} = req.valid("param");
         const updateData = req.valid("json");
@@ -117,26 +126,22 @@ export const paymentMethodsRouter = new Hono<{
             .execute();
         }
         
-        const updatedPaymentMethod = await db
+        await db
           .updateTable("payment_methods")
-          .set({
-            ...updateData,
-          })
+          .set(updateData)
           .where("id", "=", id)
           .where("user_id", "=", session.user.id)
           .executeTakeFirstOrThrow();
         
         return json({
           success: true,
-          paymentMethod: updatedPaymentMethod,
         });
     })
     .delete(
   "/:id",
   zValidator("param", z.object({ id: idValidator })),
-  async ({ var: { db, session }, req, json }) => {
-    const { id } = req.valid("param");
-
+  async ({ var: {db, session}, req, json }) => {
+    try{const { id } = req.valid("param");
     const methodToDelete = await db
       .selectFrom("payment_methods")
       .where("id", "=", id)
@@ -173,8 +178,11 @@ export const paymentMethodsRouter = new Hono<{
 
     return json({
       success: true,
-      message: "Payment method deleted successfully",
+      message: "Payment method deleted successfully"
     });
+    }catch(e:any){
+      json({error: e.message})
+    }
   }
 );
 

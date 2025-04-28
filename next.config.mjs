@@ -52,7 +52,7 @@ const nextConfig = {
         crypto: false,
         fs: false,
         path: false,
-        child_process: false 
+        child_process: false, 
       };
     }
 

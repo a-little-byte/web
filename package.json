@@ -57,6 +57,7 @@
     "@types/node": "^20.17.30",
     "@types/react": "^18.3.20",
     "@types/react-dom": "^18.3.6",
+    "Buffer": "^0.0.0",
     "autoprefixer": "^10.4.21",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",

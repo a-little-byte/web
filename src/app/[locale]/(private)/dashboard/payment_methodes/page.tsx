@@ -45,20 +45,16 @@ const PaymentMethods = () => {
   const addMutation = useMutation({
     mutationFn: async (data: AddPaymentMethodFormData) => 
   {
-    let ciphertext, iv;
-    if(data){
-      const ecryptedData = await encrypt(data.card_number, 
+    const {ciphertext, iv}  = await encrypt(data.card_number, 
         process.env.NEXT_PUBLIC_SECRET_KEY!, 
         [data.cvv, data.expiry_month, data.expiry_year, data.type])
-      ciphertext = ecryptedData.ciphertext
-      iv = ecryptedData.iv
-    }
+    
     return apiClient.payments["payment-methodes"].$post(
       {
         json: {
           type: data.type,
-          payment_token: ciphertext ? ciphertext : "",
-          iv: iv ? iv : "",
+          payment_token: ciphertext,
+          iv,
           last_four: data.card_number.slice(-4),
           expiry_month: parseInt(data.expiry_month),
           expiry_year: parseInt(data.expiry_year),
@@ -298,12 +294,6 @@ const PaymentMethods = () => {
                 {t("paymentInfo.security.verification")}
               </li>
             </ul>
-          </div>
-
-          <div className="mt-16 text-center">
-            <Button size="lg">
-              {t("manageBilling")}
-            </Button>
           </div>
         </div>
       </div>
