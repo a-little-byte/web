@@ -1,11 +1,7 @@
-"use client";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const queryClient = new QueryClient();
+import { QueryClientProvider } from "@/components/providers/QueryClientProvider";
 
 const PrivateLayout = ({ children }: { children: React.ReactNode }) => (
-  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  <QueryClientProvider>{children}</QueryClientProvider>
 );
 
 export default PrivateLayout;

@@ -15,6 +15,7 @@ export type NavigationItem = { name: string; href: string };
 
 const navigation: NavigationItem[] = [
   { name: "services", href: "/services" },
+  { name: "products", href: "/products" },
   { name: "about", href: "/about" },
   { name: "contact", href: "/contact" },
 ];
