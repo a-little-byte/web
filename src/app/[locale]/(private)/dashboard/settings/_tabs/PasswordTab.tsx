@@ -10,9 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PublicError } from "@/errors";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
+import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { z } from "zod";
 
@@ -32,31 +34,41 @@ type PasswordFormValues = z.infer<typeof passwordSchema>;
 export const PasswordTab = () => {
   const t = useTranslations("dashboard.settings.password");
   const { toast } = useToast();
-  const passwordForm = useForm(passwordSchema);
+  const passwordForm = useForm(passwordSchema, {
+    defaultValues: {
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    },
+  });
 
-  const onPasswordSubmit = async (data: PasswordFormValues) => {
-    try {
-      await apiClient.account.password.$patch({
-        json: {
-          oldPassword: data.oldPassword,
-          newPassword: data.newPassword,
-        },
-      });
-
+  const { mutate: changePasswordMutation, isPending } = useMutation<
+    {},
+    PublicError,
+    { oldPassword: string; newPassword: string }
+  >({
+    mutationFn: (data) =>
+      apiClient.account.password.$patch({
+        json: data,
+      }),
+    onSuccess: () => {
       passwordForm.reset();
 
       toast({
         title: t("toasts.success.title"),
         description: t("toasts.success.description"),
       });
-    } catch (error) {
+    },
+    onError: () => {
       toast({
         title: t("toasts.error.title"),
         description: t("toasts.error.description"),
-        variant: "destructive",
       });
-    }
-  };
+    },
+  });
+
+  const onPasswordSubmit = (data: PasswordFormValues) =>
+    changePasswordMutation(data);
 
   return (
     <Card>
@@ -72,25 +84,28 @@ export const PasswordTab = () => {
               name="oldPassword"
               label={t("form.oldPassword.label")}
               placeholder={t("form.oldPassword.placeholder")}
-              disabled={passwordForm.formState.isSubmitting}
+              disabled={isPending}
+              type="password"
             />
             <InputField
               control={passwordForm.control}
               name="newPassword"
               label={t("form.newPassword.label")}
               placeholder={t("form.newPassword.placeholder")}
-              disabled={passwordForm.formState.isSubmitting}
+              disabled={isPending}
+              type="password"
             />
             <InputField
               control={passwordForm.control}
               name="confirmPassword"
               label={t("form.confirmPassword.label")}
               placeholder={t("form.confirmPassword.placeholder")}
-              disabled={passwordForm.formState.isSubmitting}
+              disabled={isPending}
+              type="password"
             />
           </div>
 
-          <Button type="submit" disabled={passwordForm.formState.isSubmitting}>
+          <Button type="submit" disabled={isPending}>
             {t("form.submit")}
           </Button>
         </Form>

@@ -875,9 +875,13 @@
         "title": "Profile",
         "description": "Update your personal information",
         "form": {
-          "fullName": {
-            "label": "Full Name",
-            "placeholder": "John Doe"
+          "firstName": {
+            "label": "First Name",
+            "placeholder": "John"
+          },
+          "lastName": {
+            "label": "Last Name",
+            "placeholder": "Doe"
           },
           "email": {
             "label": "Email",

@@ -30,8 +30,12 @@ const authNavigation: NavigationItem[] = [
     href: "/dashboard",
   },
   {
-    name: "subscriptions",
-    href: "/dashboard/subscriptions",
+    name: "billing-addresses",
+    href: "/dashboard/billing-addresses",
+  },
+  {
+    name: "payment-methods",
+    href: "/dashboard/payment-methods",
   },
   {
     name: "settings",

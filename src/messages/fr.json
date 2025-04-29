@@ -503,9 +503,13 @@
         "title": "Profil",
         "description": "Mettre à jour vos informations personnelles",
         "form": {
-          "fullName": {
-            "label": "Nom complet",
-            "placeholder": "John Doe"
+          "firstName": {
+            "label": "Prénom",
+            "placeholder": "John"
+          },
+          "lastName": {
+            "label": "Nom",
+            "placeholder": "Doe"
           },
           "email": {
             "label": "Email",
