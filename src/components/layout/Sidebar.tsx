@@ -5,6 +5,7 @@ import ScrambleHover from "@/components/ui/scramble";
 import {
   Sidebar as BaseSidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -12,6 +13,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useToast } from "@/hooks/use-toast";
+import { apiClient } from "@/lib/apiClient";
 import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
 import {
   BookUser,
@@ -20,6 +23,7 @@ import {
   HistoryIcon,
   Home,
   LayoutDashboard,
+  LogOut,
   Package,
   Search,
   Settings,
@@ -30,6 +34,7 @@ import { ReactNode, useCallback, useMemo } from "react";
 export const DashboardSidebar = () => {
   const t = useTranslations("navigation");
   const router = useRouter();
+  const { toast } = useToast();
   const pathname = usePathname();
   const SIDEBAR: Array<{ href: string; children: ReactNode }> = useMemo(
     () => [
@@ -89,6 +94,24 @@ export const DashboardSidebar = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await apiClient.account.logout.$post();
+      router.push("/auth/login");
+      toast({
+        title: t("logoutSuccess.title"),
+        description: t("logoutSuccess.description"),
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: t("logoutError.title"),
+        description: t("logoutError.description"),
+        variant: "destructive",
+      });
+    }
+  }, [router, toast]);
 
   return (
     <BaseSidebar>
@@ -178,6 +201,16 @@ export const DashboardSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem className="mt-auto pt-4">
+            <SidebarMenuButton onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              <span>{t("logout")}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </BaseSidebar>
   );
 };
@@ -185,6 +218,7 @@ export const DashboardSidebar = () => {
 export const AdminSidebar = () => {
   const t = useTranslations("navigation");
   const router = useRouter();
+  const { toast } = useToast();
   const pathname = usePathname();
   const SIDEBAR: Array<{ href: string; children: ReactNode }> = useMemo(
     () => [
@@ -245,6 +279,24 @@ export const AdminSidebar = () => {
     []
   );
 
+  const handleLogout = useCallback(async () => {
+    try {
+      await apiClient.account.logout.$post();
+      router.push("/auth/login");
+      toast({
+        title: t("logoutSuccess.title"),
+        description: t("logoutSuccess.description"),
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: t("logoutError.title"),
+        description: t("logoutError.description"),
+        variant: "destructive",
+      });
+    }
+  }, []);
+
   return (
     <BaseSidebar>
       <SidebarHeader>
@@ -293,6 +345,16 @@ export const AdminSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem className="mt-auto pt-4">
+            <SidebarMenuButton onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              <span>{t("logout")}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </BaseSidebar>
   );
 };

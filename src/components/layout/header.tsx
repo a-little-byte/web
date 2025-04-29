@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
 import { Kbd } from "@/components/ui/kbd";
 import ScrambleHover from "@/components/ui/scramble";
+import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
-import { File, Home, Lock, LucideIcon, Paperclip, Search } from "lucide-react";
+import { LucideIcon, Search } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
@@ -42,6 +43,22 @@ const authNavigation: NavigationItem[] = [
     href: "/dashboard/settings",
   },
 ];
+
+const isAuthenticated = async () => {
+  const cookie = await cookies();
+  return (
+    cookie.get("auth-token") &&
+    typeof (
+      await (
+        await apiClient.account.$get({
+          headers: {
+            Authorization: `Bearer ${cookie.get("auth-token")?.value}`,
+          },
+        })
+      ).json()
+    ).id !== "undefined"
+  );
+};
 
 export const Header = async () => {
   const t = await getTranslations("navigation");
@@ -86,14 +103,14 @@ export const Header = async () => {
           <SearchBar
             className="hidden md:flex md:items-center md:gap-6"
             navigation={
-              cookie.get("auth-token")
+              (await isAuthenticated())
                 ? [...navigation, ...authNavigation]
                 : [
                     ...navigation,
-                    { name: "privacy", href: "/privacy", Icon: Lock },
-                    { name: "terms", href: "/terms", Icon: File },
-                    { name: "legal", href: "/legal", Icon: Paperclip },
-                    { name: "home", href: "/", Icon: Home },
+                    { name: "privacy", href: "/privacy" },
+                    { name: "terms", href: "/terms" },
+                    { name: "legal", href: "/legal" },
+                    { name: "home", href: "/" },
                   ]
             }
           >
@@ -104,7 +121,7 @@ export const Header = async () => {
             <Kbd>⌘K</Kbd>
           </SearchBar>
 
-          {cookie.get("auth-token") && <ShoppingCart />}
+          {(await isAuthenticated()) && <ShoppingCart />}
 
           <div className="hidden sm:flex sm:items-center sm:gap-2">
             <SignOrDashboard />
@@ -117,9 +134,8 @@ export const Header = async () => {
 
 const SignOrDashboard = async () => {
   const t = await getTranslations("navigation");
-  const cookie = await cookies();
 
-  if (cookie.get("auth-token")) {
+  if (await isAuthenticated()) {
     return (
       <InteractiveHoverButton as={Link} href="/dashboard" className="font-bold">
         {t("dashboard")}

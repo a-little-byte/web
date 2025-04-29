@@ -23,7 +23,16 @@
     "products": "Products",
     "productCategories": "Product Categories",
     "content": "Content",
-    "billing-addresses": "Billing Addresses"
+    "billing-addresses": "Billing Addresses",
+    "logout": "Logout",
+    "logoutSuccess": {
+      "title": "Logged out",
+      "description": "You have been successfully logged out"
+    },
+    "logoutError": {
+      "title": "Error",
+      "description": "Failed to logout. Please try again."
+    }
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",

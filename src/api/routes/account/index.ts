@@ -7,12 +7,32 @@ import { PrivateContextVariables } from "@/api/types";
 import { emailValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
+import { setSignedCookie } from "hono/cookie";
 import { z } from "zod";
 
 export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/cart", accountCartRouter)
   .route("/billing-addresses", accountBillingAddresses)
   .route("/payment-methods", accountPaymentMethods)
+  .post("/logout", async (ctx) => {
+    await setSignedCookie(ctx, "auth-token", "", apiConfig.cookie, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 0,
+      path: "/",
+    });
+
+    await setSignedCookie(ctx, "refresh-token", "", apiConfig.cookie, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 0,
+      path: "/",
+    });
+
+    return ctx.json({ success: true });
+  })
   .get("/", async ({ var: { db, session }, json }) => {
     const user = await db
       .selectFrom("users")

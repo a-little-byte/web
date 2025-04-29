@@ -23,7 +23,16 @@
     "products": "Produits",
     "productCategories": "Catégories de Produits",
     "content": "Contenu",
-    "billing-addresses": "Adresses de facturation"
+    "billing-addresses": "Adresses de facturation",
+    "logout": "Se déconnecter",
+    "logoutSuccess": {
+      "title": "Déconnecté",
+      "description": "Vous avez été déconnecté avec succès"
+    },
+    "logoutError": {
+      "title": "Erreur",
+      "description": "Échec de la déconnexion. Veuillez réessayer."
+    }
   },
   "footer": {
     "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
