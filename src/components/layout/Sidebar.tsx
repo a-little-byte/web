@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
 import {
+  BookUser,
   CreditCard,
   Database,
   HistoryIcon,
@@ -59,6 +60,15 @@ export const DashboardSidebar = () => {
         ),
       },
       {
+        href: "/dashboard/billing-addresses",
+        children: (
+          <>
+            <BookUser className="h-4 w-4" />
+            <span>{t("billing-addresses")}</span>
+          </>
+        ),
+      },
+      {
         href: "/dashboard/settings",
         children: (
           <>
@@ -69,14 +79,14 @@ export const DashboardSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   return (
@@ -210,14 +220,14 @@ export const AdminSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   return (

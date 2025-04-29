@@ -23,7 +23,8 @@
     "payment-methods": "Payment Methods",
     "products": "Products",
     "productCategories": "Product Categories",
-    "content": "Content"
+    "content": "Content",
+    "billing-addresses": "Billing Addresses"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
@@ -798,7 +799,6 @@
       },
       "unknownService": "Unknown service"
     },
-
     "errors": {
       "fetchError": {
         "title": "Error",
@@ -1112,6 +1112,69 @@
         "validMonth": "Must be a valid month (1-12)",
         "validYear": "Must be a valid year",
         "cvvLength": "CVV must be 3-4 digits"
+      }
+    },
+    "billingAddresses": {
+      "title": "Billing Addresses",
+      "loading": "Loading billing addresses...",
+      "empty": {
+        "title": "No billing addresses found",
+        "description": "You haven't added any billing addresses yet. Add one to get started."
+      },
+      "actions": {
+        "add": "Add Address",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "create": "Create"
+      },
+      "dialog": {
+        "add": {
+          "title": "Add Billing Address",
+          "description": "Add a new billing address to your account."
+        },
+        "edit": {
+          "title": "Edit Billing Address",
+          "description": "Update your billing address information."
+        }
+      },
+      "form": {
+        "street": "Street",
+        "streetPlaceholder": "123 Main St",
+        "city": "City",
+        "cityPlaceholder": "New York",
+        "state": "State/Province",
+        "statePlaceholder": "NY",
+        "postalCode": "Postal Code",
+        "postalCodePlaceholder": "10001",
+        "country": "Country",
+        "countryPlaceholder": "United States"
+      },
+      "toasts": {
+        "add": {
+          "title": "Address Added",
+          "description": "Your billing address has been added successfully."
+        },
+        "addError": {
+          "title": "Error",
+          "description": "There was a problem adding your billing address."
+        },
+        "edit": {
+          "title": "Address Updated",
+          "description": "Your billing address has been updated successfully."
+        },
+        "editError": {
+          "title": "Error",
+          "description": "There was a problem updating your billing address."
+        },
+        "delete": {
+          "title": "Address Deleted",
+          "description": "Your billing address has been removed."
+        },
+        "deleteError": {
+          "title": "Error",
+          "description": "There was a problem deleting your billing address."
+        }
       }
     }
   },

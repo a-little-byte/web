@@ -23,7 +23,8 @@
     "payment-methods": "Moyens de paiement",
     "products": "Produits",
     "productCategories": "Catégories de Produits",
-    "content": "Contenu"
+    "content": "Contenu",
+    "billing-addresses": "Adresses de facturation"
   },
   "footer": {
     "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
@@ -739,6 +740,69 @@
         "validMonth": "Doit être un mois valide (1-12)",
         "validYear": "Doit être une année valide",
         "cvvLength": "Le CVV doit comporter entre 3 et 4 chiffres"
+      }
+    },
+    "billingAddresses": {
+      "title": "Adresses de facturation",
+      "loading": "Chargement des adresses de facturation...",
+      "empty": {
+        "title": "Aucune adresse de facturation trouvée",
+        "description": "Vous n'avez pas encore ajouté d'adresse de facturation. Ajoutez-en une pour commencer."
+      },
+      "actions": {
+        "add": "Ajouter une adresse",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "save": "Enregistrer",
+        "create": "Créer"
+      },
+      "dialog": {
+        "add": {
+          "title": "Ajouter une adresse de facturation",
+          "description": "Ajoutez une nouvelle adresse de facturation à votre compte."
+        },
+        "edit": {
+          "title": "Modifier l'adresse de facturation",
+          "description": "Mettez à jour les informations de votre adresse de facturation."
+        }
+      },
+      "form": {
+        "street": "Rue",
+        "streetPlaceholder": "123 Rue Principale",
+        "city": "Ville",
+        "cityPlaceholder": "Paris",
+        "state": "État/Province",
+        "statePlaceholder": "Île-de-France",
+        "postalCode": "Code postal",
+        "postalCodePlaceholder": "75001",
+        "country": "Pays",
+        "countryPlaceholder": "France"
+      },
+      "toasts": {
+        "add": {
+          "title": "Adresse ajoutée",
+          "description": "Votre adresse de facturation a été ajoutée avec succès."
+        },
+        "addError": {
+          "title": "Erreur",
+          "description": "Un problème est survenu lors de l'ajout de votre adresse de facturation."
+        },
+        "edit": {
+          "title": "Adresse mise à jour",
+          "description": "Votre adresse de facturation a été mise à jour avec succès."
+        },
+        "editError": {
+          "title": "Erreur",
+          "description": "Un problème est survenu lors de la mise à jour de votre adresse de facturation."
+        },
+        "delete": {
+          "title": "Adresse supprimée",
+          "description": "Votre adresse de facturation a été supprimée."
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Un problème est survenu lors de la suppression de votre adresse de facturation."
+        }
       }
     }
   },
