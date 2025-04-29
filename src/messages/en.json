@@ -672,6 +672,10 @@
         "title": "Sales by Category",
         "description": "Revenue breakdown by service category"
       },
+      "averageBasket": {
+        "title": "Average Basket",
+        "description": "Average basket size over time"
+      },
       "toasts": {
         "fetchError": {
           "title": "Error",
