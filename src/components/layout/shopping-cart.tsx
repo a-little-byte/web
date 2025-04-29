@@ -22,9 +22,14 @@ import {
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
+type CartItemWithService = {
+  services_name: string;
+  services_price: number;
+} & CartItemSelect;
+
 export const ShoppingCart = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItemSelect[] | null>(null);
+  const [cartItems, setCartItems] = useState<CartItemWithService[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("shoppingCart");
@@ -38,17 +43,7 @@ export const ShoppingCart = () => {
   const fetchCartItems = async () => {
     setIsLoading(true);
     try {
-      const response = await apiClient.account.cart.$get(
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${document.cookie.replace(
-              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
-            )}`,
-          },
-        },
-      );
+      const response = await apiClient.account.cart.$get();
       const data = await response.json();
       if (data.length > 0) {
         setCartItems(
@@ -58,6 +53,8 @@ export const ShoppingCart = () => {
             updatedAt: new Date(item.updatedAt),
           })),
         );
+      } else {
+        setCartItems([]);
       }
     } catch (error) {
       toast({
@@ -79,15 +76,7 @@ export const ShoppingCart = () => {
         {
           param: { id: itemId },
           json: { quantity },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${document.cookie.replace(
-              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
-            )}`,
-          },
-        },
+        }
       );
       await fetchCartItems();
     } catch (error) {
@@ -109,14 +98,6 @@ export const ShoppingCart = () => {
         {
           param: { id: itemId },
         },
-        {
-          headers: {
-            Authorization: `Bearer ${document.cookie.replace(
-              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
-            )}`,
-          },
-        },
       );
       await fetchCartItems();
     } catch (error) {
@@ -133,17 +114,7 @@ export const ShoppingCart = () => {
 
   const handleCheckout = async () => {
     try {
-      const response = await apiClient.checkout.$post(
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${document.cookie.replace(
-              /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-              "$1",
-            )}`,
-          },
-        },
-      );
+      const response = await apiClient.checkout.$post({})
       const data = await response.json();
 
       if ("url" in data && data.url !== null) {
@@ -160,11 +131,10 @@ export const ShoppingCart = () => {
     }
   };
 
-  const total = 0;
-  // cartItems?.reduce(
-  //   (sum, item) => sum + item.services?.price * item.quantity,
-  //   0
-  // ) ?? 0;
+  const total = cartItems?.reduce(
+    (sum, item) => sum + (item.services_price || 0) * item.quantity,
+    0
+  ) ?? 0;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -187,7 +157,7 @@ export const ShoppingCart = () => {
           <div className="flex-1 flex items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin" />
           </div>
-        ) : cartItems?.length === 0 ? (
+        ) : !cartItems || cartItems.length === 0 ? (
           <div className="flex-1 flex items-center justify-center text-muted-foreground">
             {t("empty")}
           </div>
@@ -195,18 +165,18 @@ export const ShoppingCart = () => {
           <>
             <ScrollArea className="flex-1 -mx-6 px-6">
               <div className="space-y-4">
-                {cartItems?.map((item) => (
+                {cartItems.map((item) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-between space-x-4 border-b pb-4"
                   >
                     <div className="space-y-1">
-                      {/* <h4 className="font-medium">{item.services.name}</h4> */}
+                      <h4 className="font-medium">{item.services_name}</h4>
                       <p className="text-sm text-muted-foreground">
-                        {/* {t("item.pricePerPeriod", {
-                          price: item.services.price,
-                          period: item.services.period,
-                        })} */}
+                        {t("item.pricePerPeriod", {
+                          price: item.services_price,
+                          period: item.duration,
+                        })}
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">

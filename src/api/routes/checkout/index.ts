@@ -1,6 +1,8 @@
 import { PrivateContextVariables } from "@/api/types";
 import { Hono } from "hono";
 import { jsonObjectFrom } from "kysely/helpers/postgres";
+import { Stripe } from "stripe";
+
 export const checkoutRouter = new Hono<{
   Variables: PrivateContextVariables;
 }>().post("/", async ({ var: { stripe, db }, json }) => {
@@ -29,25 +31,28 @@ export const checkoutRouter = new Hono<{
       return json({ error: "Cart is empty" }, 400);
     }
 
-    const lineItems = cartItems.map((item) => {
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = cartItems.map((item) => {
       const service = item.services;
-      let finalPrice = service?.price;
-      const discount = 0;
+      let discount = 0;
 
-      // if (item.duration >= 12) {
-      // discount = 0.2;
-      // } else if (item.duration >= 3) {
-      // discount = 0.1;
+      // Uncomment if you want to enable discounts based on duration
+      // if (item.quantity >= 12) {
+      //   discount = 0.2;
+      // } else if (item.quantity >= 3) {
+      //   discount = 0.1;
       // }
 
-      const totalBeforeDiscount = service!.price! * item.quantity;
-      finalPrice = totalBeforeDiscount * (1 - discount);
+      const servicePrice = service?.price || 0;
+      const totalBeforeDiscount = servicePrice * item.quantity;
+      const finalPrice = totalBeforeDiscount * (1 - discount);
+
+      const serviceName = service?.name || "Service";
 
       return {
         price_data: {
           currency: "usd",
           product_data: {
-            name: service?.name,
+            name: serviceName,
             description: `${item.quantity} month${
               item.quantity > 1 ? "s" : ""
             } subscription${
@@ -57,7 +62,7 @@ export const checkoutRouter = new Hono<{
           unit_amount: Math.round(finalPrice * 100),
           recurring: {
             interval: "month",
-            interval_count: item.quantity,
+            interval_count: 1, // Use fixed interval of 1 month with quantity instead
           },
         },
         quantity: item.quantity,
