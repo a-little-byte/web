@@ -173,15 +173,26 @@
 "use client";
 
 import { CheckCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const Success = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 5000);
+  }, []);
+
   return (
     <div className="container max-w-2xl py-20">
       <div className="text-center">
         <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
         <h1 className="text-3xl font-bold mb-2">Success!</h1>
         <p className="text-muted-foreground text-lg">
-          Your purchase was completed successfully.
+          Your purchase was completed successfully. You will be redirected to
+          the dashboard in 5 seconds.
         </p>
       </div>
     </div>
@@ -189,4 +200,3 @@ const Success = () => {
 };
 
 export default Success;
-
