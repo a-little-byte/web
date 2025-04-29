@@ -7,6 +7,7 @@ import {
   heroRouter,
   ordersRouter,
   paymentsRouter,
+  productsRouter,
   sendRouter,
   servicesRouter,
   subscriptionsRouter,
@@ -78,6 +79,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
   .route("/services", servicesRouter)
+  .route("/products", productsRouter)
   .use(authMiddleware)
   .route("/account", accountRoute)
   // .route("/chat", chatRouter)

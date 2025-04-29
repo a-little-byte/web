@@ -7,7 +7,6 @@ export async function up(db: Kysely<any>): Promise<void> {
       col.primaryKey().defaultTo(sql`gen_random_uuid()`)
     )
     .addColumn("name", "text", (col) => col.notNull())
-    .addColumn("description", "text", (col) => col.notNull())
     .addColumn("category_id", "uuid", (col) =>
       col.references("product_categories.id").notNull().onDelete("cascade")
     )

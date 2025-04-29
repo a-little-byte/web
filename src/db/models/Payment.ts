@@ -1,9 +1,14 @@
 import type { CreatedAt, UpdatedAt } from "@/db/utils";
-import type { Generated, Insertable, Selectable, Updateable } from "kysely";
+import type {
+  GeneratedAlways,
+  Insertable,
+  Selectable,
+  Updateable,
+} from "kysely";
 import type { UUID } from "node:crypto";
 
 export type PaymentMethod = {
-  id: Generated<UUID>;
+  id: GeneratedAlways<UUID>;
   user_id: UUID | null;
   payment_token: string;
   iv: string;
@@ -21,7 +26,7 @@ export type PaymentMethodInsert = Insertable<PaymentMethod>;
 export type PaymentMethodUpdate = Updateable<PaymentMethod>;
 
 export type Payment = {
-  id: Generated<UUID>;
+  id: GeneratedAlways<UUID>;
   subscription_id: UUID;
   amount: number;
   status: string;

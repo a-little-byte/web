@@ -20,7 +20,10 @@
     "terms": "Conditions",
     "legal": "Mentions légales",
     "home": "Accueil",
-    "payment-methodes": "Moyens de paiement"
+    "payment-methodes": "Moyens de paiement",
+    "products": "Produits",
+    "productCategories": "Catégories de Produits",
+    "content": "Contenu"
   },
   "footer": {
     "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
@@ -940,5 +943,18 @@
         "description": "Veuillez réessayer plus tard."
       }
     }
+  },
+  "products": {
+    "title": "Produits",
+    "viewDetails": "Voir les détails",
+    "addToCart": "Ajouter au panier",
+    "details": "Détails",
+    "description": "Description",
+    "category": "Catégorie",
+    "backToProducts": "Retour aux produits",
+    "noProducts": "Aucun produit disponible.",
+    "loading": "Chargement des produits...",
+    "placeholder": "Les informations détaillées du produit seront affichées ici. Actuellement, il s'agit d'un texte provisoire car les détails du produit ne sont pas disponibles dans la réponse de l'API.",
+    "product": "{count, plural, =0 {produits} 1 {produit} other {produits}}"
   }
 }

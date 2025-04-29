@@ -20,7 +20,10 @@
     "terms": "Terms",
     "legal": "Legal",
     "home": "Home",
-    "payment-methodes": "Payment Methods"
+    "payment-methodes": "Payment Methods",
+    "products": "Products",
+    "productCategories": "Product Categories",
+    "content": "Content"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
@@ -1138,5 +1141,18 @@
         "description": "Failed to checkout"
       }
     }
+  },
+  "products": {
+    "title": "Products",
+    "viewDetails": "View Details",
+    "addToCart": "Add to Cart",
+    "details": "Product Details",
+    "description": "Description",
+    "category": "Category",
+    "backToProducts": "Back to Products",
+    "noProducts": "No products available.",
+    "loading": "Loading products...",
+    "placeholder": "Detailed product information will be displayed here. Currently, this is a placeholder as the product details are not available in the API response.",
+    "product": "{count, plural, =0 {products} 1 {product} other {products}}"
   }
 }

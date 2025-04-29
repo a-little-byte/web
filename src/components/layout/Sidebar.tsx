@@ -13,7 +13,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
-import { CreditCard, Home, Search, Settings } from "lucide-react";
+import {
+  CreditCard,
+  Database,
+  Home,
+  Package,
+  Search,
+  Settings,
+} from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useCallback, useMemo } from "react";
 
@@ -161,6 +168,24 @@ export const AdminSidebar = () => {
           <>
             <CreditCard className="h-4 w-4" />
             <span>{t("services")}</span>
+          </>
+        ),
+      },
+      {
+        href: "/admin/products",
+        children: (
+          <>
+            <Package className="h-4 w-4" />
+            <span>{t("products")}</span>
+          </>
+        ),
+      },
+      {
+        href: "/admin/products/categories",
+        children: (
+          <>
+            <Database className="h-4 w-4" />
+            <span>{t("productCategories")}</span>
           </>
         ),
       },
