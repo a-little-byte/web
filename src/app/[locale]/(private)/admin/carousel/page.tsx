@@ -1,5 +1,6 @@
 "use client";
 
+import { useHeroCarousels } from "@/app/[locale]/(private)/admin/carousel/_hooks/useHeroCarousels";
 import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,6 @@ import { HeroCarouselSelect } from "@/db/models/HeroCarousel";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
-import { useQuery } from "@tanstack/react-query";
 import { ArrowDown, ArrowUp, Trash } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
@@ -45,27 +45,7 @@ const carouselSchemaForm = z.object({
 type FormData = z.infer<typeof carouselSchemaForm>;
 
 const CarouselManagement = () => {
-  const { data: items, refetch: refetchItems } = useQuery({
-    queryKey: ["hero-carousel"],
-    queryFn: async () => {
-      try {
-        const response = await apiClient.hero.$get();
-        const data = await response.json();
-
-        return data.map((item) => ({
-          ...item,
-          createdAt: new Date(item.createdAt),
-          updatedAt: new Date(item.updatedAt),
-        }));
-      } catch (error) {
-        toast({
-          title: t("toasts.fetchError.title"),
-          description: t("toasts.fetchError.description"),
-          variant: "destructive",
-        });
-      }
-    },
-  });
+  const { data: items, refetch: refetchItems } = useHeroCarousels();
 
   const [isOpen, setIsOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState<HeroCarouselSelect | null>(
@@ -74,7 +54,6 @@ const CarouselManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("admin.carousel");
-
   const form = useForm(carouselSchemaForm, {
     defaultValues: {
       title: "",

@@ -7,6 +7,7 @@ import {
   heroRouter,
   ordersRouter,
   paymentsRouter,
+  productsRouter,
   sendRouter,
   servicesRouter,
   subscriptionsRouter,
@@ -16,6 +17,7 @@ import { resend } from "@/api/services/resend";
 import { stripe } from "@/api/services/stripe";
 import type { PrivateContextVariables } from "@/api/types";
 import { db } from "@/db";
+import { HTTP_CODES, PublicError } from "@/errors";
 import { prometheus } from "@hono/prometheus";
 import { sentry } from "@hono/sentry";
 import { Hono } from "hono";
@@ -35,14 +37,21 @@ const { printMetrics, registerMetrics } = prometheus();
 export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .basePath("/api")
   .onError((err, c) => {
+    if (err instanceof PublicError) {
+      return c.json({ error: err.message }, err.status);
+    }
+
     console.error(err);
-    return c.json({ error: err.message }, 500);
+    return c.json(
+      { error: "Internal server error" },
+      HTTP_CODES.INTERNAL_SERVER_ERROR,
+    );
   })
   .use(async (ctx, next) => {
     Object.entries(contextVariables).forEach(([key, value]) => {
       ctx.set(key as keyof PrivateContextVariables, value);
     });
-    return next();
+    await next();
   })
   .use(logger(), prettyJSON())
   .use(
@@ -55,9 +64,9 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
   )
   .use("*", registerMetrics)
   .get("/metrics", printMetrics)
-  .use("*", csrf({ origin: "http:localhost:3000" }))
+  .use("*", csrf({ origin: "http://localhost:3000" }))
   .use(
-    "/auth/*",
+    "/",
     cors({
       origin: "http://localhost:3000",
       allowHeaders: ["Content-Type", "Authorization"],
@@ -70,6 +79,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
   .route("/services", servicesRouter)
+  .route("/products", productsRouter)
   .use(authMiddleware)
   .route("/account", accountRoute)
   // .route("/chat", chatRouter)

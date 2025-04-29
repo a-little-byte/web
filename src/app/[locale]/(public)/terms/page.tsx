@@ -14,49 +14,35 @@ const Terms = async () => {
         <div className="prose dark:prose-invert max-w-none">
           <p className="text-muted-foreground mb-8">{t("lastUpdated")}</p>
           <div className="flex flex-col gap-8">
-            <Section ns="terms.intro">
-              <p className="mt-4">{t("intro.agreement")}</p>
-            </Section>
+            <Section ns="terms.definitions" />
 
-            <Section ns="terms.service">
-              <ul className="list-disc pl-6 mt-2">
-                {Array(4)
-                  .fill(null)
-                  .map((_, i) => (
-                    <li key={i}>{t(`service.items.${i}`)}</li>
-                  ))}
-              </ul>
-            </Section>
+            <Section ns="terms.presentation" />
 
-            <Section ns="terms.accounts">
-              <p className="mt-4">{t("accounts.responsibility")}</p>
-            </Section>
+            <Section ns="terms.conditions" />
 
-            <Section ns="terms.subscription">
-              <p className="mt-4">{t("subscription.payment")}</p>
-            </Section>
+            <Section ns="terms.services" />
 
-            <Section ns="terms.sla">
-              <p className="mt-4">{t("sla.disruption")}</p>
-            </Section>
-
-            <Section ns="terms.data">
-              <ul className="list-disc pl-6 mt-2">
-                {Array(4)
-                  .fill(null)
-                  .map((_, i) => (
-                    <li key={i}>{t(`data.measures.${i}`)}</li>
-                  ))}
-              </ul>
-            </Section>
+            <Section ns="terms.technical" />
 
             <Section ns="terms.ip" />
 
-            <Section ns="terms.termination" />
-
             <Section ns="terms.liability" />
 
-            <Section ns="terms.changes" />
+            <Section ns="terms.data">
+              <Section ns="terms.data.responsible" className="mt-4 ml-4" />
+              <Section ns="terms.data.purpose" className="mt-4 ml-4" />
+              <Section ns="terms.data.rights" className="mt-4 ml-4" />
+              <Section ns="terms.data.noncommunication" className="mt-4 ml-4" />
+            </Section>
+
+            <Section ns="terms.incident" />
+
+            <Section ns="terms.cookies">
+              <Section ns="terms.cookies.definition" className="mt-4 ml-4" />
+              <Section ns="terms.cookies.beacons" className="mt-4 ml-4" />
+            </Section>
+
+            <Section ns="terms.jurisdiction" />
           </div>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { HeroCarouselSelect } from "@/db/models/HeroCarousel";
 import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/style";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 

@@ -1,41 +1,14 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
+import { useQuery } from "@/hooks/useQuery";
 import { apiClient } from "@/lib/apiClient";
-import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 
 const Dashboard = () => {
   const t = useTranslations("dashboard");
-  const { toast } = useToast();
-  const { data } = useQuery({
-    queryKey: ["subscriptions"],
-    queryFn: async () => {
-      try {
-        const response = await apiClient.subscriptions.$get(
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${document.cookie.replace(
-                /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-                "$1",
-              )}`,
-            },
-          },
-        );
-
-        return response.json();
-      } catch (error) {
-        toast({
-          title: t("toasts.fetchError.title"),
-          description: t("toasts.fetchError.description"),
-          variant: "destructive",
-        });
-      }
-    },
-  });
+  const { data } = useQuery(apiClient.subscriptions);
 
   return (
     <div>
@@ -46,7 +19,9 @@ const Dashboard = () => {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>{t("cards.activeSubscriptions.title")}</CardTitle>
+            <CardTitle className="font-normal text-xl">
+              {t("cards.activeSubscriptions.title")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">
@@ -57,7 +32,9 @@ const Dashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t("cards.totalSpent.title")}</CardTitle>
+            <CardTitle className="font-normal text-xl">
+              {t("cards.totalSpent.title")}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">

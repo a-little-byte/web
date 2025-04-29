@@ -29,6 +29,11 @@ export const ATTRIBUTES = {
     update: "update",
     delete: "delete",
   },
+  products: {
+    create: "create",
+    update: "update",
+    delete: "delete",
+  },
   subscriptions: {
     read: "read",
   },
@@ -46,6 +51,12 @@ export const ATTRIBUTES = {
   },
   payments: {
     read: "read",
+  },
+  payment_methods: {
+    read: "read",
+    create: "create",
+    update: "update",
+    delete: "delete",
   },
 } as const;
 

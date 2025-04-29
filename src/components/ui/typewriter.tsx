@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/style";
 import { motion, type Variants } from "motion/react";
 import {
   type ReactNode,

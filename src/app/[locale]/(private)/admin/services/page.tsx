@@ -1,5 +1,6 @@
 "use client";
 
+import { useServices } from "@/app/[locale]/(private)/admin/services/_hooks/useServices";
 import { Form } from "@/components/base/Form";
 import { InputField } from "@/components/base/InputField";
 import { TextareaField } from "@/components/base/TextareaField";
@@ -24,7 +25,6 @@ import { ServiceSelect } from "@/db/models/Service";
 import { useToast } from "@/hooks/use-toast";
 import { useForm } from "@/hooks/useForm";
 import { apiClient } from "@/lib/apiClient";
-import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { z } from "zod";
@@ -38,31 +38,7 @@ const serviceSchema = z.object({
 
 const ServicesManagement = () => {
   const t = useTranslations("admin.services");
-  const {
-    data: services,
-    isLoading,
-    refetch: refetchServices,
-  } = useQuery({
-    queryKey: ["services"],
-    queryFn: async () => {
-      try {
-        const res = await apiClient.services.$get();
-        const data = await res.json();
-
-        return data.map((service) => ({
-          ...service,
-          createdAt: new Date(service.createdAt),
-          updatedAt: new Date(service.updatedAt),
-        }));
-      } catch (error) {
-        toast({
-          title: t("toasts.fetchError.title"),
-          description: t("toasts.fetchError.description"),
-          variant: "destructive",
-        });
-      }
-    },
-  });
+  const { data: services, isLoading, refetch: refetchServices } = useServices();
   const [isOpen, setIsOpen] = useState(false);
   const [currentService, setCurrentService] = useState<ServiceSelect | null>(
     null,

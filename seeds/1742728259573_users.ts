@@ -6,7 +6,7 @@ import { type Kysely } from "kysely";
 export async function seed(db: Kysely<Database>): Promise<void> {
   const { hash, salt } = await Hash("password", apiConfig.pepper);
 
-  const user = await db
+  const adminUser = await db
     .insertInto("users")
     .values({
       email: "admin@example.com",
@@ -24,8 +24,32 @@ export async function seed(db: Kysely<Database>): Promise<void> {
     .insertInto("casbin_rule")
     .values({
       ptype: "g",
-      v0: user.id,
+      v0: adminUser.id,
       v1: "admin",
+      v2: "",
+    })
+    .execute();
+
+  const userUser = await db
+    .insertInto("users")
+    .values({
+      email: "user@example.com",
+      password: hash,
+      password_salt: salt,
+      email_verified: new Date(),
+      first_name: "User",
+      last_name: "User",
+      role: "user",
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  await db
+    .insertInto("casbin_rule")
+    .values({
+      ptype: "g",
+      v0: userUser.id,
+      v1: "user",
       v2: "",
     })
     .execute();

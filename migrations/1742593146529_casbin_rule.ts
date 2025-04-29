@@ -1,7 +1,6 @@
-import { Database } from "@/db";
 import { sql, type Kysely } from "kysely";
 
-export const up = async (db: Kysely<Database>): Promise<void> => {
+export const up = async (db: Kysely<any>): Promise<void> => {
   await db.schema
     .createTable("casbin_rule")
     .addColumn("id", "uuid", (col) =>
@@ -66,7 +65,7 @@ export const up = async (db: Kysely<Database>): Promise<void> => {
     .execute();
 };
 
-export const down = async (db: Kysely<Database>): Promise<void> => {
+export const down = async (db: Kysely<any>): Promise<void> => {
   await db.schema.dropIndex("ptype_index").on("casbin_rule").execute();
   await db.schema.dropIndex("v0_index").on("casbin_rule").execute();
   await db.schema.dropIndex("v1_index").on("casbin_rule").execute();

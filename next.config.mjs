@@ -12,9 +12,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    instrumentationHook: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -38,7 +35,10 @@ const nextConfig = {
         "casbin",
         "casbin-basic-adapter",
         { "knex/lib/migrations": "knex/lib/migrations" },
-        { "knex/lib/migrations/util/import-file": "knex/lib/migrations/util/import-file" },
+        {
+          "knex/lib/migrations/util/import-file":
+            "knex/lib/migrations/util/import-file",
+        },
       ];
       config.node = {
         __dirname: true,
@@ -52,6 +52,7 @@ const nextConfig = {
         crypto: false,
         fs: false,
         path: false,
+        child_process: false, 
       };
     }
 
@@ -66,4 +67,6 @@ export default withSentryConfig(withNextIntl(nextConfig), {
   widenClientFileUpload: true,
   disableLogger: true,
   automaticVercelMonitors: true,
+  disable: process.env.NODE_ENV === "development",
+  hideSourceMaps: process.env.NODE_ENV === "development",
 });

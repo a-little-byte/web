@@ -32,16 +32,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { toast } from "@/hooks/use-toast";
+import { useQuery } from "@/hooks/useQuery";
 import { apiClient } from "@/lib/apiClient";
-import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { InferResponseType } from "hono";
 import { ChevronDown, Download, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { parseAsString, useQueryState } from "nuqs";
 import { useState } from "react";
-
 type OrderDetails = Exclude<
   InferResponseType<typeof apiClient.orders.$get>,
   { error: string }
@@ -52,39 +51,16 @@ function OrderHistoryPage() {
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [selectedStatus, setSelectedStatus] = useState<string>("all");
   const [selectedService, setSelectedService] = useState<string>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const { data: orders } = useQuery({
-    queryKey: ["orders"],
-    queryFn: async () => {
-      try {
-        const token = document.cookie.replace(
-          /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-          "$1",
-        );
-
-        const response = await apiClient.orders.$get(
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
-
-        if (!response.ok) {
-          throw new Error();
-        }
-
-        return response.json();
-      } catch (error) {
-        toast({
-          title: t("toasts.fetchError.title"),
-          description: t("toasts.fetchError.description"),
-          variant: "destructive",
-        });
-      }
-    },
-  });
+  const [searchQuery, setSearchQuery] = useQueryState(
+    "q",
+    parseAsString.withDefault(""),
+  );
+  const { data: orders } = useQuery(apiClient.orders);
+  // toast({
+  //   title: t("toasts.fetchError.title"),
+  //   description: t("toasts.fetchError.description"),
+  //   variant: "destructive",
+  // });
 
   const filterOrders = () =>
     orders?.filter((order) => {

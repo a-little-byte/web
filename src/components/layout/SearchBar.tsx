@@ -11,18 +11,26 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Link, useRouter } from "@/lib/i18n/routing";
-import { Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 
 interface SearchBarProps {
   navigation: NavigationItem[];
+  children: React.ReactNode;
+  className?: string;
+  as?: React.ElementType;
 }
 
-export const SearchBar = ({ navigation }: SearchBarProps) => {
+export const SearchBar = ({
+  navigation,
+  children,
+  className,
+  as,
+}: SearchBarProps) => {
   const [open, setOpen] = useState(false);
   const t = useTranslations("navigation");
   const router = useRouter();
+  const Comp = as ?? Button;
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -37,18 +45,9 @@ export const SearchBar = ({ navigation }: SearchBarProps) => {
 
   return (
     <>
-      <Button
-        variant="ghost"
-        size="sm"
-        className="hidden md:flex"
-        onClick={() => setOpen(true)}
-      >
-        <Search className="h-4 w-8 mr-2" />
-        {t("search")}
-        <kbd className="ml-2 pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-          ⌘K
-        </kbd>
-      </Button>
+      <Comp className={className} onClick={() => setOpen(true)}>
+        {children}
+      </Comp>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder={t("searchPlaceholder")} />

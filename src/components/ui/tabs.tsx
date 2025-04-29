@@ -4,7 +4,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import { motion } from "motion/react";
 import * as React from "react";
 
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/style";
 
 const Tabs = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Root>,

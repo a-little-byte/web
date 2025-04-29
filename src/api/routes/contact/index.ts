@@ -23,7 +23,7 @@ export const sendRouter = new Hono<{
       req.valid("json");
 
     const data = await resend.emails.send({
-      from: "Cyna <onboarding@cyna.io>",
+      from: "Cyna <onboarding@limerio.dev>",
       to: [email],
       subject: `New Contact Form Submission from ${firstName} ${lastName}`,
       html: `<div>

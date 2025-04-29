@@ -131,6 +131,9 @@ importers:
       '@types/react-dom':
         specifier: ^18.3.6
         version: 18.3.6(@types/react@18.3.20)
+      Buffer:
+        specifier: ^0.0.0
+        version: 0.0.0
       autoprefixer:
         specifier: ^10.4.21
         version: 10.4.21(postcss@8.5.3)
@@ -171,8 +174,8 @@ importers:
         specifier: ^9.0.2
         version: 9.0.2
       kysely:
-        specifier: ^0.27.6
-        version: 0.27.6
+        specifier: ^0.28.2
+        version: 0.28.2
       langchain:
         specifier: ^0.3.21
         version: 0.3.21(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(ws@8.18.1)
@@ -209,9 +212,6 @@ importers:
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
-      posthog-js:
-        specifier: ^1.235.0
-        version: 1.235.0
       prom-client:
         specifier: ^15.1.3
         version: 15.1.3
@@ -307,8 +307,8 @@ importers:
         specifier: ^26.0.0
         version: 26.0.0
       kysely-ctl:
-        specifier: ^0.12.1
-        version: 0.12.1(kysely@0.27.6)
+        specifier: ^0.12.2
+        version: 0.12.2(kysely@0.28.2)
       playwright:
         specifier: ^1.51.1
         version: 1.51.1
@@ -3097,6 +3097,10 @@ packages:
   '@xtuc/long@4.2.2':
     resolution: {integrity: sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==}
 
+  Buffer@0.0.0:
+    resolution: {integrity: sha512-+zdncl8lI5TCkARStn9F1BwcuJYofYmD0oEHe5FNfCvGfeDJwf6+dSikCdQN6BMXXmHMhNNUagBN367WST1AIQ==}
+    engines: {node: '>= 0.2.0'}
+
   abbrev@1.1.1:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
 
@@ -3509,9 +3513,6 @@ packages:
   cookie@0.7.2:
     resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
     engines: {node: '>= 0.6'}
-
-  core-js@3.41.0:
-    resolution: {integrity: sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -3998,9 +3999,6 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
-
-  fflate@0.4.8:
-    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
 
   file-entry-cache@8.0.0:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
@@ -4587,20 +4585,20 @@ packages:
       tedious:
         optional: true
 
-  kysely-ctl@0.12.1:
-    resolution: {integrity: sha512-WfXt/+lB3Vqhdy7osq1ghe2ZMUtIj/Qizu+H5ewdCWLLB4CYJcGt//yBvInlOVw44wvjvHHnXx3L+44t3OXJNg==}
+  kysely-ctl@0.12.2:
+    resolution: {integrity: sha512-icDPoaib8gi4O6ScQz9ynHJmhnC7hFzSSq9FiVb6lwjtJKAipkmu04auQutNP59zSzhzke5xnaZ0ohzZ0UZXuQ==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:
-      kysely: '>=0.18.1 <0.28.0'
+      kysely: '>=0.18.1 <0.29.0'
       kysely-postgres-js: ^2
     peerDependenciesMeta:
       kysely-postgres-js:
         optional: true
 
-  kysely@0.27.6:
-    resolution: {integrity: sha512-FIyV/64EkKhJmjgC0g2hygpBv5RNWVPyNCqSAD7eTCv6eFWNIi4PN1UvdSJGicN/o35bnevgis4Y0UDC0qi8jQ==}
-    engines: {node: '>=14.0.0'}
+  kysely@0.28.2:
+    resolution: {integrity: sha512-4YAVLoF0Sf0UTqlhgQMFU9iQECdah7n+13ANkiuVfRvlK+uI0Etbgd7bVP36dKlG+NXWbhGua8vnGt+sdhvT7A==}
+    engines: {node: '>=18.0.0'}
 
   langchain@0.3.21:
     resolution: {integrity: sha512-fpor/V/xJRoLM7s1yQGlUE6aZIe6LLm7ciZcstNbBUYdFpCSigvADsW2cqlBCdbMXJxb5I/z9jznjGnmciJ+aw==}
@@ -5346,20 +5344,6 @@ packages:
 
   postgres-range@1.1.4:
     resolution: {integrity: sha512-i/hbxIE9803Alj/6ytL7UHQxRvZkI9O4Sy+J3HGc4F4oo/2eQAjTSNJ0bfxyse3bH0nuVesCk+3IRLaMtG3H6w==}
-
-  posthog-js@1.235.0:
-    resolution: {integrity: sha512-H/s2lgqXhp4lBmYUxue1RlObnt1rfYAg0kLXIU5fUrP6gFLe1OIqs46ip3zGHonCkh+6ZB0oRLnFApWsA1+1YQ==}
-    peerDependencies:
-      '@rrweb/types': 2.0.0-alpha.17
-      rrweb-snapshot: 2.0.0-alpha.17
-    peerDependenciesMeta:
-      '@rrweb/types':
-        optional: true
-      rrweb-snapshot:
-        optional: true
-
-  preact@10.26.5:
-    resolution: {integrity: sha512-fmpDkgfGU6JYux9teDWLhj9mKN55tyepwYbxHgQuIxbWQzgFg5vk7Mrrtfx7xRxq798ynkY4DDDxZr235Kk+4w==}
 
   prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
@@ -6276,9 +6260,6 @@ packages:
   web-streams-polyfill@4.0.0-beta.3:
     resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
     engines: {node: '>= 14'}
-
-  web-vitals@4.2.4:
-    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -9088,6 +9069,8 @@ snapshots:
 
   '@xtuc/long@4.2.2': {}
 
+  Buffer@0.0.0: {}
+
   abbrev@1.1.1: {}
 
   abbrev@2.0.0: {}
@@ -9280,7 +9263,7 @@ snapshots:
   axios@1.8.4(debug@4.4.0):
     dependencies:
       follow-redirects: 1.15.9(debug@4.4.0)
-      form-data: 4.0.0
+      form-data: 4.0.2
       proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
@@ -9537,8 +9520,6 @@ snapshots:
 
   cookie@0.7.2:
     optional: true
-
-  core-js@3.41.0: {}
 
   cross-spawn@7.0.6:
     dependencies:
@@ -10145,8 +10126,6 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.2
 
-  fflate@0.4.8: {}
-
   file-entry-cache@8.0.0:
     dependencies:
       flat-cache: 4.0.1
@@ -10458,7 +10437,7 @@ snapshots:
       isstream: 0.1.2
       jsonwebtoken: 9.0.2
       mime-types: 2.1.35
-      retry-axios: 2.6.0(axios@1.8.4)
+      retry-axios: 2.6.0(axios@1.8.4(debug@4.4.0))
       tough-cookie: 4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -10800,13 +10779,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  kysely-ctl@0.12.1(kysely@0.27.6):
+  kysely-ctl@0.12.2(kysely@0.28.2):
     dependencies:
       c12: 2.0.4
       citty: 0.1.6
       consola: 3.4.2
       jiti: 2.4.2
-      kysely: 0.27.6
+      kysely: 0.28.2
       nypm: 0.5.4
       ofetch: 1.4.1
       pathe: 2.0.3
@@ -10815,7 +10794,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  kysely@0.27.6: {}
+  kysely@0.28.2: {}
 
   langchain@0.3.21(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2)))(@langchain/ollama@0.2.0(@langchain/core@0.3.44(openai@4.93.0(ws@8.18.1)(zod@3.24.2))))(axios@1.8.4)(openai@4.93.0(ws@8.18.1)(zod@3.24.2))(ws@8.18.1):
     dependencies:
@@ -11471,15 +11450,6 @@ snapshots:
 
   postgres-range@1.1.4: {}
 
-  posthog-js@1.235.0:
-    dependencies:
-      core-js: 3.41.0
-      fflate: 0.4.8
-      preact: 10.26.5
-      web-vitals: 4.2.4
-
-  preact@10.26.5: {}
-
   prelude-ls@1.2.1: {}
 
   prettier@3.5.3: {}
@@ -11708,7 +11678,7 @@ snapshots:
     dependencies:
       debug: 4.4.0
       module-details-from-path: 1.0.3
-      resolve: 1.22.8
+      resolve: 1.22.10
     transitivePeerDependencies:
       - supports-color
 
@@ -11747,7 +11717,7 @@ snapshots:
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
 
-  retry-axios@2.6.0(axios@1.8.4):
+  retry-axios@2.6.0(axios@1.8.4(debug@4.4.0)):
     dependencies:
       axios: 1.8.4(debug@4.4.0)
 
@@ -12545,8 +12515,6 @@ snapshots:
       graceful-fs: 4.2.11
 
   web-streams-polyfill@4.0.0-beta.3: {}
-
-  web-vitals@4.2.4: {}
 
   webidl-conversions@3.0.1: {}
 

@@ -1,11 +1,13 @@
+import { CynaIcon } from "@/components/icons/Cyna";
 import { SearchBar } from "@/components/layout/SearchBar";
 import { SheetNavigation } from "@/components/layout/SheetNavigation";
 import { ShoppingCart } from "@/components/layout/shopping-cart";
 import { Button } from "@/components/ui/button";
 import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button";
+import { Kbd } from "@/components/ui/kbd";
 import ScrambleHover from "@/components/ui/scramble";
 import { Link } from "@/lib/i18n/routing";
-import { ShieldCheck } from "lucide-react";
+import { Search } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
@@ -13,6 +15,7 @@ export type NavigationItem = { name: string; href: string };
 
 const navigation: NavigationItem[] = [
   { name: "services", href: "/services" },
+  { name: "products", href: "/products" },
   { name: "about", href: "/about" },
   { name: "contact", href: "/contact" },
 ];
@@ -34,7 +37,7 @@ const authNavigation: NavigationItem[] = [
 
 export const Header = async () => {
   const t = await getTranslations("navigation");
-  const cookie = cookies();
+  const cookie = await cookies();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -45,7 +48,7 @@ export const Header = async () => {
 
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-2">
-            <ShieldCheck className="h-8 w-8 text-foreground" />
+            <CynaIcon width={28} height={28} />
             <span className="font-black text-2xl uppercase tracking-wide">
               <ScrambleHover
                 text="Cyna"
@@ -73,6 +76,7 @@ export const Header = async () => {
 
         <div className="flex items-center ml-auto gap-4">
           <SearchBar
+            className="hidden md:flex md:items-center md:gap-6"
             navigation={
               cookie.get("auth-token")
                 ? [...navigation, ...authNavigation]
@@ -84,7 +88,13 @@ export const Header = async () => {
                     { name: "home", href: "/" },
                   ]
             }
-          />
+          >
+            <div className="flex items-center gap-0.5">
+              <Search className="h-4 w-8" />
+              {t("search")}
+            </div>
+            <Kbd>⌘K</Kbd>
+          </SearchBar>
 
           {cookie.get("auth-token") && <ShoppingCart />}
 
@@ -99,7 +109,7 @@ export const Header = async () => {
 
 const SignOrDashboard = async () => {
   const t = await getTranslations("navigation");
-  const cookie = cookies();
+  const cookie = await cookies();
 
   if (cookie.get("auth-token")) {
     return (

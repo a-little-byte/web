@@ -1,4 +1,3 @@
-import { PostHogProvider } from "@/components/providers/PostHogProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { routing, SupportedLocale } from "@/lib/i18n/routing";
@@ -7,6 +6,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { notFound } from "next/navigation";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type { ReactNode } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -18,11 +18,13 @@ export const metadata: Metadata = {
 
 const RootLayout = async ({
   children,
-  params: { locale },
+  params,
 }: {
   children: ReactNode;
-  params: { locale: SupportedLocale };
+  params: Promise<{ locale: SupportedLocale }>;
 }) => {
+  const { locale } = await params;
+
   if (!routing.locales.includes(locale)) {
     notFound();
   }
@@ -41,10 +43,8 @@ const RootLayout = async ({
           disableTransitionOnChange
         >
           <NextIntlClientProvider locale={locale} messages={messages}>
-            <PostHogProvider>
-              {children}
-              <Toaster />
-            </PostHogProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+            <Toaster />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

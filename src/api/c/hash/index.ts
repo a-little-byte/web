@@ -1,55 +1,7 @@
-import type { EmscriptenModule } from "../types";
+import { initWasmModule } from "../utils";
 import crypto from "node:crypto";
 
-type HashModule = {
-  _hash: (
-    password: string,
-    salt: string,
-    pepper: string,
-    iterations: number,
-    keylen: number,
-  ) => string;
-  _verify: (
-    storedHash: string,
-    password: string,
-    salt: string,
-    pepper: string,
-    iterations: number,
-    keylen: number,
-  ) => boolean;
-  ccall: (
-    name: string,
-    returnType: string,
-    argTypes: string[],
-    args: any[],
-  ) => any;
-};
-
-let wasmModule: EmscriptenModule | null = null;
-let initPromise: Promise<void> | null = null;
-
-const initWasmModule = async () => {
-  if (!initPromise) {
-    initPromise = (async () => {
-      try {
-        if (typeof window === "undefined") {
-          // Server-side
-          const { default: moduleFactory } = await import("./build/hash.js");
-          wasmModule = await moduleFactory();
-        } else {
-          // Client-side
-          const moduleFactory = (await import("./build/hash.js")).default;
-          wasmModule = await moduleFactory();
-        }
-      } catch (err) {
-        console.error("Failed to initialize WASM hash module:", err);
-        initPromise = null;
-        throw new Error("Hash module failed to initialize");
-      }
-    })();
-  }
-  return initPromise;
-};
+const module = "hash";
 
 const generateSalt = (length = 16) => {
   return crypto.randomBytes(length).toString("base64");
@@ -68,7 +20,7 @@ export const Hash = async (
   const salt = generateSalt();
 
   try {
-    await initWasmModule();
+    const wasmModule = await initWasmModule(module);
 
     if (!wasmModule?.ccall) {
       throw new Error("WASM module not properly initialized");
@@ -89,7 +41,7 @@ export const Hash = async (
   } catch (err) {
     const error = err as Error;
     console.error("Hash generation error:", error.message || error);
-    throw new Error("Failed to generate hash");
+    throw new Error("Failed to generate hash ");
   }
 };
 
@@ -105,24 +57,18 @@ export const Verify = async (
     throw new Error("Password, stored hash, and salt are required");
   }
 
-  try {
-    await initWasmModule();
+  const wasmModule = await initWasmModule(module);
 
-    if (!wasmModule?.ccall) {
-      throw new Error("WASM module not properly initialized");
-    }
-
-    const result = wasmModule.ccall(
-      "_verify",
-      "number",
-      ["string", "string", "string", "string", "number", "number"],
-      [storedHash, password, salt, pepper, iterations, keylen],
-    );
-
-    return result === 1;
-  } catch (err) {
-    const error = err as Error;
-    console.error("Hash verification error:", error.message || error);
-    throw new Error("Failed to verify hash");
+  if (!wasmModule?.ccall) {
+    throw new Error("Hash: WASM module not properly initialized");
   }
+
+  const result = wasmModule.ccall(
+    "_verify",
+    "number",
+    ["string", "string", "string", "string", "number", "number"],
+    [storedHash, password, salt, pepper, iterations, keylen],
+  );
+
+  return result === 1;
 };
