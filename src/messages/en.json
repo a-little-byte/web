@@ -1228,6 +1228,6 @@
     "noProducts": "No products available.",
     "loading": "Loading products...",
     "placeholder": "Detailed product information will be displayed here. Currently, this is a placeholder as the product details are not available in the API response.",
-    "product": "{count, plural, =0 {products} 1 {product} other {products}}"
+    "product": "{count, plural, =1 {1 product} other {# products}}"
   }
 }

@@ -9,12 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@/hooks/useQuery";
 import { apiClient } from "@/lib/apiClient";
 import { Link } from "@/lib/i18n/routing";
 import { formatCurrency } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 interface GroupedProducts {
   [categoryName: string]: Array<{
@@ -26,11 +27,41 @@ interface GroupedProducts {
   }>;
 }
 
+const ProductCardSkeleton = () => (
+  <Card className="overflow-hidden">
+    <CardHeader className="pb-3">
+      <Skeleton className="h-6 w-3/4" />
+    </CardHeader>
+    <CardContent>
+      <Skeleton className="h-8 w-1/3" />
+    </CardContent>
+    <CardFooter className="bg-muted/50 pt-3 flex flex-col gap-2">
+      <Skeleton className="h-10 w-full" />
+      <Skeleton className="h-10 w-full" />
+    </CardFooter>
+  </Card>
+);
+
+const CategorySkeleton = () => (
+  <div className="space-y-4">
+    <div className="flex items-center justify-between">
+      <Skeleton className="h-8 w-1/4" />
+      <Skeleton className="h-6 w-20" />
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <ProductCardSkeleton key={i} />
+      ))}
+    </div>
+  </div>
+);
+
 export const ProductList = () => {
   const { data: products, isLoading } = useQuery(apiClient.products);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
   const t = useTranslations("products");
   const locale = useLocale();
+  console.log(products);
   const groupedProducts: GroupedProducts = useMemo(() => {
     if (!products) return {};
 
@@ -44,20 +75,12 @@ export const ProductList = () => {
     }, {});
   }, [JSON.stringify(products)]);
 
-  const handleToggleCategory = (categoryName: string) => {
-    setExpandedCategories((prev) =>
-      prev.includes(categoryName)
-        ? prev.filter((name) => name !== categoryName)
-        : [...prev, categoryName],
-    );
-  };
-
   if (isLoading) {
     return (
-      <div className="container py-10">
-        <div className="flex justify-center">
-          <p className="text-lg">{t("loading")}</p>
-        </div>
+      <div className="space-y-8">
+        {Array.from({ length: 2 }).map((_, i) => (
+          <CategorySkeleton key={i} />
+        ))}
       </div>
     );
   }
@@ -109,7 +132,7 @@ export const ProductList = () => {
                   ))}
                 </div>
               </div>
-            ),
+            )
           )}
         </div>
       )}

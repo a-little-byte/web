@@ -1031,6 +1031,6 @@
     "noProducts": "Aucun produit disponible.",
     "loading": "Chargement des produits...",
     "placeholder": "Les informations détaillées du produit seront affichées ici. Actuellement, il s'agit d'un texte provisoire car les détails du produit ne sont pas disponibles dans la réponse de l'API.",
-    "product": "{count, plural, =0 {produits} 1 {produit} other {produits}}"
+    "product": "{count, plural, =1 {1 produit} other {# produits}}"
   }
 }
