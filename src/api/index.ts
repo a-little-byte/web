@@ -11,6 +11,7 @@ import {
   sendRouter,
   servicesRouter,
   subscriptionsRouter,
+  usersRouter,
 } from "@/api/routes";
 import { enforcer } from "@/api/services/casbin";
 import { resend } from "@/api/services/resend";
@@ -44,7 +45,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
     console.error(err);
     return c.json(
       { error: "Internal server error" },
-      HTTP_CODES.INTERNAL_SERVER_ERROR,
+      HTTP_CODES.INTERNAL_SERVER_ERROR
     );
   })
   .use(async (ctx, next) => {
@@ -60,7 +61,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
       dsn: apiConfig.sentryDsn,
       tracesSampleRate: 1.0,
-    }),
+    })
   )
   .use("*", registerMetrics)
   .get("/metrics", printMetrics)
@@ -74,7 +75,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
-    }),
+    })
   )
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
@@ -82,6 +83,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
   .route("/products", productsRouter)
   .use(authMiddleware)
   .route("/account", accountRoute)
+  .route("/users", usersRouter)
   // .route("/chat", chatRouter)
   .route("/checkout", checkoutRouter)
   .route("/contact", sendRouter)

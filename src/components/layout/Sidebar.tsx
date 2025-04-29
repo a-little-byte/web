@@ -28,6 +28,7 @@ import {
   Projector,
   Search,
   Settings,
+  Users,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useCallback, useMemo } from "react";
@@ -265,6 +266,15 @@ export const AdminSidebar = () => {
           <>
             <Projector className="h-4 w-4" />
             <span>{t("carousel")}</span>
+          </>
+        ),
+      },
+      {
+        href: "/admin/users",
+        children: (
+          <>
+            <Users className="h-4 w-4" />
+            <span>{t("users")}</span>
           </>
         ),
       },

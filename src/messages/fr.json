@@ -33,7 +33,8 @@
       "title": "Erreur",
       "description": "Échec de la déconnexion. Veuillez réessayer."
     },
-    "carousel": "Carrousel"
+    "carousel": "Carrousel",
+    "users": "Utilisateurs"
   },
   "footer": {
     "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
@@ -1102,58 +1103,16 @@
         }
       }
     },
-    "content": {
-      "title": "Gestion du Contenu",
-      "sections": {
-        "hero": {
-          "title": "Section d'Accueil",
-          "form": {
-            "title": "Titre",
-            "description": "Description",
-            "buttonText": "Texte du Bouton",
-            "buttonLink": "Lien du Bouton"
-          }
-        },
-        "features": {
-          "title": "Section Fonctionnalités",
-          "form": {
-            "title": "Titre",
-            "description": "Description"
-          }
-        },
-        "cta": {
-          "title": "Section CTA",
-          "form": {
-            "title": "Titre",
-            "description": "Description"
-          }
-        }
-      },
-      "buttons": {
-        "save": "Enregistrer les Modifications"
-      },
-      "toasts": {
-        "success": {
-          "title": "Succès",
-          "description": "Contenu mis à jour avec succès"
-        },
-        "error": {
-          "title": "Erreur",
-          "fetchError": "Échec de récupération du contenu",
-          "saveError": "Échec de l'enregistrement du contenu"
-        }
-      }
-    },
     "dashboard": {
-      "title": "Tableau de Bord des Ventes",
+      "title": "Tableau de Bord Admin",
       "timeframeSelect": "Sélectionner la période",
-      "lastWeek": "7 derniers jours",
-      "lastMonth": "5 dernières semaines",
+      "lastWeek": "Dernière semaine",
+      "lastMonth": "Dernier mois",
       "dailySales": {
         "title": "Ventes Quotidiennes",
-        "description": "Total des ventes par jour"
+        "description": "Performance des ventes dans le temps"
       },
-      "categorySales": {
+      "salesByCategory": {
         "title": "Ventes par Catégorie",
         "description": "Répartition des ventes par service"
       },
@@ -1231,6 +1190,39 @@
           "description": "Échec de la suppression du service"
         }
       }
+    },
+    "users": {
+      "title": "Gestion des Utilisateurs",
+      "description": "Gérer les comptes utilisateurs du système",
+      "name": "Nom",
+      "email": "Email",
+      "role": "Rôle",
+      "verified": "Vérifié",
+      "createdAt": "Créé le",
+      "actions": "Actions",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "editUser": "Modifier l'Utilisateur",
+      "updateUserDetails": "Mettre à jour les détails de l'utilisateur",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "selectRole": "Sélectionner un rôle",
+      "user": "Utilisateur",
+      "admin": "Administrateur",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "deleteUser": "Supprimer l'Utilisateur",
+      "deleteUserConfirmation": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action ne peut pas être annulée.",
+      "deleteUserWarning": "Vous êtes sur le point de supprimer l'utilisateur {name} ({email}).",
+      "cancel": "Annuler",
+      "deleting": "Suppression...",
+      "success": "Succès",
+      "error": "Erreur",
+      "userUpdated": "Utilisateur mis à jour avec succès",
+      "userDeleted": "Utilisateur supprimé avec succès",
+      "errorFetchingUsers": "Échec de récupération des utilisateurs",
+      "errorUpdatingUser": "Échec de mise à jour de l'utilisateur",
+      "errorDeletingUser": "Échec de suppression de l'utilisateur"
     }
   }
 }

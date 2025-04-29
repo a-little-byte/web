@@ -33,7 +33,8 @@
       "title": "Error",
       "description": "Failed to logout. Please try again."
     },
-    "carousel": "Carousel"
+    "carousel": "Carousel",
+    "users": "Users"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
@@ -658,64 +659,18 @@
         }
       }
     },
-    "content": {
-      "title": "Content Management",
-      "sections": {
-        "hero": {
-          "title": "Hero Section",
-          "form": {
-            "title": "Title",
-            "description": "Description",
-            "buttonText": "Button Text",
-            "buttonLink": "Button Link"
-          }
-        },
-        "features": {
-          "title": "Features Section",
-          "form": {
-            "title": "Title",
-            "description": "Description"
-          }
-        },
-        "cta": {
-          "title": "CTA Section",
-          "form": {
-            "title": "Title",
-            "description": "Description"
-          }
-        }
-      },
-      "buttons": {
-        "save": "Save Changes"
-      },
-      "toasts": {
-        "success": {
-          "title": "Success",
-          "description": "Content updated successfully"
-        },
-        "error": {
-          "title": "Error",
-          "fetchError": "Failed to fetch content",
-          "saveError": "Failed to save content"
-        }
-      }
-    },
     "dashboard": {
-      "title": "Sales Dashboard",
-      "timeframeSelect": "Select timeframe",
-      "lastWeek": "Last 7 days",
-      "lastMonth": "Last 5 weeks",
+      "title": "Admin Dashboard",
+      "timeframeSelect": "Select Timeframe",
+      "lastWeek": "Last Week",
+      "lastMonth": "Last Month",
       "dailySales": {
         "title": "Daily Sales",
-        "description": "Total sales per day"
+        "description": "Sales performance over time"
       },
-      "categorySales": {
+      "salesByCategory": {
         "title": "Sales by Category",
-        "description": "Sales distribution by service"
-      },
-      "averageBasket": {
-        "title": "Average Basket by Category",
-        "description": "Sales comparison by service"
+        "description": "Revenue breakdown by service category"
       },
       "toasts": {
         "fetchError": {
@@ -787,6 +742,39 @@
           "description": "Failed to delete service"
         }
       }
+    },
+    "users": {
+      "title": "Users Management",
+      "description": "Manage user accounts in the system",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "verified": "Verified",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editUser": "Edit User",
+      "updateUserDetails": "Update user details",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "selectRole": "Select a role",
+      "user": "User",
+      "admin": "Admin",
+      "save": "Save",
+      "saving": "Saving...",
+      "deleteUser": "Delete User",
+      "deleteUserConfirmation": "Are you sure you want to delete this user? This action cannot be undone.",
+      "deleteUserWarning": "You are about to delete the user {name} ({email}).",
+      "cancel": "Cancel",
+      "deleting": "Deleting...",
+      "success": "Success",
+      "error": "Error",
+      "userUpdated": "User updated successfully",
+      "userDeleted": "User deleted successfully",
+      "errorFetchingUsers": "Failed to fetch users",
+      "errorUpdatingUser": "Failed to update user",
+      "errorDeletingUser": "Failed to delete user"
     }
   },
   "dashboard": {
