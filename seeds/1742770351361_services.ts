@@ -10,6 +10,7 @@ export const seed = async (db: Kysely<Database>): Promise<void> => {
         description: "Managed Detection and Response",
         price: 1000,
         period: "monthly",
+        stripe_id: "price_1RJDaxRSoOb0mCIyuN2DK7nm",
         features: JSON.stringify([
           "monitoring",
           "detection",
@@ -23,6 +24,7 @@ export const seed = async (db: Kysely<Database>): Promise<void> => {
         description: "Endpoint Detection and Response",
         price: 1000,
         period: "monthly",
+        stripe_id: "price_1RJDbERSoOb0mCIyoYjlwZzV",
         features: JSON.stringify([
           "protection",
           "analysis",
@@ -36,6 +38,7 @@ export const seed = async (db: Kysely<Database>): Promise<void> => {
         description: "Extended Detection and Response",
         price: 1000,
         period: "monthly",
+        stripe_id: "price_1RJDbVRSoOb0mCIyVdnTLsJH",
         features: JSON.stringify([
           "protection",
           "analytics",
