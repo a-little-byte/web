@@ -18,7 +18,7 @@ const generateIV = (length = 12): Uint8Array => {
 export const encrypt = async (
   plaintext: string | Uint8Array,
   key: string | Uint8Array,
-  aad?: Array<string | Uint8Array>,
+  aad?: Array<string | Uint8Array>
 ) => {
   const plaintextBuffer =
     typeof plaintext === "string" ? textEncoder.encode(plaintext) : plaintext;
@@ -29,7 +29,7 @@ export const encrypt = async (
 
   const aadBuffers =
     aad?.map((item) =>
-      typeof item === "string" ? textEncoder.encode(item) : item,
+      typeof item === "string" ? textEncoder.encode(item) : item
     ) || [];
 
   try {
@@ -96,7 +96,7 @@ export const encrypt = async (
         aadPtrsPtr, // AAD pointers array
         aadLengthsPtr, // AAD lengths array
         aadBuffers.length, // Number of AAD buffers
-      ],
+      ]
     );
 
     if (result < 0) {
@@ -106,7 +106,7 @@ export const encrypt = async (
     const encryptedData = new Uint8Array(
       wasmModule.HEAPU8.buffer,
       outputPtr,
-      outputSize,
+      outputSize
     );
     const ciphertext = new Uint8Array(encryptedData);
 
@@ -139,7 +139,7 @@ export const decrypt = async (
   ciphertext: string | Uint8Array,
   key: string | Uint8Array,
   iv: string | Uint8Array,
-  aad?: Array<string | Uint8Array>,
+  aad?: Array<string | Uint8Array>
 ) => {
   const ciphertextBuffer =
     typeof ciphertext === "string" ? base64Decode(ciphertext) : ciphertext;
@@ -150,7 +150,7 @@ export const decrypt = async (
 
   const aadBuffers =
     aad?.map((item) =>
-      typeof item === "string" ? textEncoder.encode(item) : item,
+      typeof item === "string" ? textEncoder.encode(item) : item
     ) || [];
 
   try {
@@ -217,7 +217,7 @@ export const decrypt = async (
         aadPtrsPtr, // AAD pointers array
         aadLengthsPtr, // AAD lengths array
         aadBuffers.length, // Number of AAD buffers
-      ],
+      ]
     );
 
     if (result < 0) {
@@ -227,7 +227,7 @@ export const decrypt = async (
     const decryptedData = new Uint8Array(
       wasmModule.HEAPU8.buffer,
       outputPtr,
-      outputSize,
+      outputSize
     );
 
     wasmModule._free(outputPtr);

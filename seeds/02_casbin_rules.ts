@@ -69,6 +69,30 @@ export const seed = async (db: Kysely<Database>) => {
           v1: "chat",
           v2: "read",
         },
+        {
+          ptype: "p",
+          v0: "user",
+          v1: "payment_methods",
+          v2: "read",
+        },
+        {
+          ptype: "p",
+          v0: "user",
+          v1: "payment_methods",
+          v2: "create",
+        },
+        {
+          ptype: "p",
+          v0: "user",
+          v1: "payment_methods",
+          v2: "update",
+        },
+        {
+          ptype: "p",
+          v0: "user",
+          v1: "payment_methods",
+          v2: "delete",
+        },
       ],
     ])
     .execute();

@@ -16,6 +16,7 @@ import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
 import {
   CreditCard,
   Database,
+  HistoryIcon,
   Home,
   Package,
   Search,
@@ -43,8 +44,17 @@ export const DashboardSidebar = () => {
         href: "/dashboard/order-history",
         children: (
           <>
-            <CreditCard className="h-4 w-4" />
+            <HistoryIcon className="h-4 w-4" />
             <span>{t("orderHistory")}</span>
+          </>
+        ),
+      },
+      {
+        href: "/dashboard/payment-methods",
+        children: (
+          <>
+            <CreditCard className="h-4 w-4" />
+            <span>{t("payment-methods")}</span>
           </>
         ),
       },
@@ -59,14 +69,14 @@ export const DashboardSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   return (
@@ -200,14 +210,14 @@ export const AdminSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   return (
