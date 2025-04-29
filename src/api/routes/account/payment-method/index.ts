@@ -1,9 +1,9 @@
-import { Hono } from "hono";
-import { z } from "zod";
-import { zValidator } from "@hono/zod-validator";
+import { checkPermissions } from "@/api/middlewares/checkPermissions";
 import { PrivateContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
-import { checkPermissions } from "@/api/middlewares/checkPermissions";
+import { zValidator } from "@hono/zod-validator";
+import { Hono } from "hono";
+import { z } from "zod";
 
 const paymentMethodValidator = z.object({
   type: z.string(),
@@ -18,7 +18,7 @@ const paymentMethodValidator = z.object({
   is_default: z.boolean().optional().default(false),
 });
 
-export const paymentMethodsRouter = new Hono<{
+export const accountPaymentMethods = new Hono<{
   Variables: PrivateContextVariables;
 }>()
   .get(
@@ -35,7 +35,7 @@ export const paymentMethodsRouter = new Hono<{
         success: true,
         paymentMethods,
       });
-    },
+    }
   )
   .get(
     "/:id",
@@ -59,7 +59,7 @@ export const paymentMethodsRouter = new Hono<{
         success: true,
         paymentMethod,
       });
-    },
+    }
   )
   .post(
     "/",
@@ -98,7 +98,7 @@ export const paymentMethodsRouter = new Hono<{
         success: true,
         paymentMethod,
       });
-    },
+    }
   )
   .patch(
     "/:id",
@@ -112,7 +112,7 @@ export const paymentMethodsRouter = new Hono<{
           expiry_year: z.number().int().min(2020).optional(),
           is_default: z.boolean().optional(),
         })
-        .strict(),
+        .strict()
     ),
     async ({ var: { db, session }, req, json }) => {
       const { id } = req.valid("param");
@@ -148,7 +148,7 @@ export const paymentMethodsRouter = new Hono<{
       return json({
         success: true,
       });
-    },
+    }
   )
   .delete(
     "/:id",
@@ -194,5 +194,5 @@ export const paymentMethodsRouter = new Hono<{
         success: true,
         message: "Payment method deleted successfully",
       });
-    },
+    }
   );
