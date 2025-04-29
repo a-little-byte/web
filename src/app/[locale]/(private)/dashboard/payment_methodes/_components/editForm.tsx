@@ -4,13 +4,13 @@ import { useForm } from "@/hooks/useForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -49,25 +49,23 @@ type EditPaymentMethodDialogProps = {
   onSubmit: (data: EditPaymentMethodFormData) => void;
   isPending: boolean;
   paymentMethod: PaymentMethod | null;
-}
+};
 
 export function EditPaymentMethodDialog({
   open,
   onOpenChange,
   onSubmit,
   isPending,
-  paymentMethod
+  paymentMethod,
 }: EditPaymentMethodDialogProps) {
   const t = useTranslations("dashboard.payment-methods");
-  
-  const form = useForm(editPaymentMethodSchema,
-    {
-      defaultValues: {
-        expiry_month: paymentMethod ? paymentMethod.expiry_month.toString() : "",
-        expiry_year: paymentMethod ? paymentMethod.expiry_year.toString() : "",
-      },
-    }
-  );
+
+  const form = useForm(editPaymentMethodSchema, {
+    defaultValues: {
+      expiry_month: paymentMethod ? paymentMethod.expiry_month.toString() : "",
+      expiry_year: paymentMethod ? paymentMethod.expiry_year.toString() : "",
+    },
+  });
 
   const handleSubmit = (data: EditPaymentMethodFormData) => {
     onSubmit(data);
@@ -84,7 +82,7 @@ export function EditPaymentMethodDialog({
     const month = i + 1;
     return (
       <SelectItem key={month} value={month.toString()}>
-        {month.toString().padStart(2, '0')}
+        {month.toString().padStart(2, "0")}
       </SelectItem>
     );
   });
@@ -107,13 +105,18 @@ export function EditPaymentMethodDialog({
           <DialogDescription>
             {paymentMethod && (
               <>
-                {t("dialogs.edit.description")} {paymentMethod.type.toUpperCase()} •••• {paymentMethod.last_four}
+                {t("dialogs.edit.description")}{" "}
+                {paymentMethod.type.toUpperCase()} ••••{" "}
+                {paymentMethod.last_four}
               </>
             )}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -121,18 +124,13 @@ export function EditPaymentMethodDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("dialogs.edit.expiryMonth")}</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
-                      value={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="MM" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {monthOptions}
-                      </SelectContent>
+                      <SelectContent>{monthOptions}</SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -144,18 +142,13 @@ export function EditPaymentMethodDialog({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("dialogs.edit.expiryYear")}</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
-                      value={field.value}
-                    >
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="YYYY" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {yearOptions}
-                      </SelectContent>
+                      <SelectContent>{yearOptions}</SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -163,17 +156,14 @@ export function EditPaymentMethodDialog({
               />
             </div>
             <DialogFooter className="pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => handleOpenChange(false)}
               >
                 {t("dialogs.cancel")}
               </Button>
-              <Button 
-                type="submit" 
-                disabled={isPending}
-              >
+              <Button type="submit" disabled={isPending}>
                 {isPending ? t("dialogs.updating") : t("dialogs.edit.submit")}
               </Button>
             </DialogFooter>

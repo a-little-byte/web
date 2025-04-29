@@ -19,7 +19,7 @@ export const isAccountLockedMiddleware: MiddlewareHandler<
 
   if (lockStatus) {
     throw new ForbiddenPublicError(
-      "Account is temporarily locked. Try again later or reset your password."
+      "Account is temporarily locked. Try again later or reset your password.",
     );
   }
 

@@ -191,7 +191,7 @@ const ScrambleHover = ({
             className={cn(
               revealedIndices.has(index) || !isScrambling || !isHovering
                 ? className
-                : scrambledClassName
+                : scrambledClassName,
             )}
           >
             {char}

@@ -52,7 +52,7 @@ export const ATTRIBUTES = {
     create: "create",
     update: "update",
     delete: "delete",
-  }
+  },
 } as const;
 
 export type Attribute = {

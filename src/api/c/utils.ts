@@ -25,30 +25,34 @@ export const initWasmModule = async (module: string, wasmName?: string) => {
   let wasmModule: EmscriptenModule | null = null;
   const moduleName = wasmName ? wasmName : module;
 
-
   try {
     if (typeof window === "undefined") {
       // Server-side
-      const { default: moduleFactory } = await import(`./${module}/build/${wasmName ? wasmName : module}.js`);
+      const { default: moduleFactory } = await import(
+        `./${module}/build/${wasmName ? wasmName : module}.js`
+      );
       wasmModule = await moduleFactory();
     } else {
       // Client-side
       const wasmUrl = `/wasm/${moduleName}.wasm`;
-      
+
       const wasmResponse = await fetch(wasmUrl);
       if (!wasmResponse.ok) {
-        throw new Error(`Failed to fetch WASM file: ${wasmUrl}, status: ${wasmResponse.status}`);
+        throw new Error(
+          `Failed to fetch WASM file: ${wasmUrl}, status: ${wasmResponse.status}`,
+        );
       }
-      
-      const moduleFactory = (await import(`./${module}/build/${moduleName}.js`)).default;
-      
+
+      const moduleFactory = (await import(`./${module}/build/${moduleName}.js`))
+        .default;
+
       wasmModule = await moduleFactory({
         locateFile: (path: string) => {
-          if (path.endsWith('.wasm')) {
+          if (path.endsWith(".wasm")) {
             return wasmUrl;
           }
           return path;
-        }
+        },
       });
     }
   } catch (err) {
@@ -57,4 +61,4 @@ export const initWasmModule = async (module: string, wasmName?: string) => {
   }
 
   return wasmModule;
-}
+};

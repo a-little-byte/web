@@ -3,13 +3,13 @@ import { useForm } from "@/hooks/useForm";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -29,7 +29,10 @@ import {
 
 const addPaymentMethodSchema = z.object({
   type: z.string().min(1, "Card type is required"),
-  card_number: z.string().min(15, "Card number must be at least 15 digits").max(19, "Card number must not exceed 19 digits"),
+  card_number: z
+    .string()
+    .min(15, "Card number must be at least 15 digits")
+    .max(19, "Card number must not exceed 19 digits"),
   expiry_month: z.string().refine((val) => {
     const month = parseInt(val);
     return month >= 1 && month <= 12;
@@ -39,33 +42,36 @@ const addPaymentMethodSchema = z.object({
     const currentYear = new Date().getFullYear();
     return year >= currentYear && year <= currentYear + 20;
   }, "Must be a valid year"),
-  cvv: z.string().min(3, "CVV must be at least 3 digits").max(4, "CVV must not exceed 4 digits"),
+  cvv: z
+    .string()
+    .min(3, "CVV must be at least 3 digits")
+    .max(4, "CVV must not exceed 4 digits"),
 });
 
 export type AddPaymentMethodFormData = z.infer<typeof addPaymentMethodSchema>;
 
-type AddPaymentMethodDialogProps  = {
+type AddPaymentMethodDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: AddPaymentMethodFormData) => void;
   isPending: boolean;
-}
+};
 
-export const AddPaymentMethodDialog = ({ 
-  open, 
-  onOpenChange, 
-  onSubmit, 
-  isPending 
+export const AddPaymentMethodDialog = ({
+  open,
+  onOpenChange,
+  onSubmit,
+  isPending,
 }: AddPaymentMethodDialogProps) => {
   const t = useTranslations("dashboard.payment-methods");
-  const form = useForm(addPaymentMethodSchema,{
+  const form = useForm(addPaymentMethodSchema, {
     defaultValues: {
       type: "visa",
       card_number: "",
       expiry_month: "",
       expiry_year: "",
       cvv: "",
-    }
+    },
   });
 
   const handleSubmit = (data: AddPaymentMethodFormData) => {
@@ -83,7 +89,7 @@ export const AddPaymentMethodDialog = ({
     const month = i + 1;
     return (
       <SelectItem key={month} value={month.toString()}>
-        {month.toString().padStart(2, '0')}
+        {month.toString().padStart(2, "0")}
       </SelectItem>
     );
   });
@@ -103,25 +109,28 @@ export const AddPaymentMethodDialog = ({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>{t("dialogs.add.title")}</DialogTitle>
-          <DialogDescription>
-            {t("dialogs.add.description")}
-          </DialogDescription>
+          <DialogDescription>{t("dialogs.add.description")}</DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{t("dialogs.add.cardType")}</FormLabel>
-                  <Select 
-                    onValueChange={field.onChange} 
+                  <Select
+                    onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={t("dialogs.add.selectCardType")} />
+                        <SelectValue
+                          placeholder={t("dialogs.add.selectCardType")}
+                        />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -142,9 +151,9 @@ export const AddPaymentMethodDialog = ({
                 <FormItem>
                   <FormLabel>{t("dialogs.add.cardNumber")}</FormLabel>
                   <FormControl>
-                    <Input 
-                      placeholder="XXXX XXXX XXXX XXXX" 
-                      {...field} 
+                    <Input
+                      placeholder="XXXX XXXX XXXX XXXX"
+                      {...field}
                       maxLength={19}
                     />
                   </FormControl>
@@ -159,8 +168,8 @@ export const AddPaymentMethodDialog = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("dialogs.add.expiryMonth")}</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
+                    <Select
+                      onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -168,9 +177,7 @@ export const AddPaymentMethodDialog = ({
                           <SelectValue placeholder="MM" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {monthOptions}
-                      </SelectContent>
+                      <SelectContent>{monthOptions}</SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -182,8 +189,8 @@ export const AddPaymentMethodDialog = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("dialogs.add.expiryYear")}</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
+                    <Select
+                      onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
                       <FormControl>
@@ -191,9 +198,7 @@ export const AddPaymentMethodDialog = ({
                           <SelectValue placeholder="YYYY" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent>
-                        {yearOptions}
-                      </SelectContent>
+                      <SelectContent>{yearOptions}</SelectContent>
                     </Select>
                     <FormMessage />
                   </FormItem>
@@ -206,10 +211,10 @@ export const AddPaymentMethodDialog = ({
                   <FormItem>
                     <FormLabel>{t("dialogs.add.cvv")}</FormLabel>
                     <FormControl>
-                      <Input 
-                        type="password" 
-                        placeholder="CVV" 
-                        {...field} 
+                      <Input
+                        type="password"
+                        placeholder="CVV"
+                        {...field}
                         maxLength={4}
                       />
                     </FormControl>
@@ -219,17 +224,14 @@ export const AddPaymentMethodDialog = ({
               />
             </div>
             <DialogFooter className="pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={() => handleOpenChange(false)}
               >
                 {t("dialogs.cancel")}
               </Button>
-              <Button 
-                type="submit" 
-                disabled={isPending}
-              >
+              <Button type="submit" disabled={isPending}>
                 {isPending ? t("dialogs.adding") : t("dialogs.add.submit")}
               </Button>
             </DialogFooter>
@@ -238,4 +240,4 @@ export const AddPaymentMethodDialog = ({
       </DialogContent>
     </Dialog>
   );
-}
+};

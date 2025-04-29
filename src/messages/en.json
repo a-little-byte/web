@@ -1087,7 +1087,7 @@
           "description": "Failed to update payment method"
         },
         "setDefault": {
-          "title": "Success", 
+          "title": "Success",
           "description": "Default payment method updated"
         },
         "setDefaultError": {

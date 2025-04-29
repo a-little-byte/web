@@ -53,7 +53,7 @@ function OrderHistoryPage() {
   const [selectedService, setSelectedService] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useQueryState(
     "q",
-    parseAsString.withDefault("")
+    parseAsString.withDefault(""),
   );
   const { data: orders } = useQuery(apiClient.orders);
   // toast({
@@ -79,7 +79,9 @@ function OrderHistoryPage() {
 
   const getYears = () => {
     const years = new Set(
-      orders?.map((order) => new Date(order.createdAt).getFullYear().toString())
+      orders?.map((order) =>
+        new Date(order.createdAt).getFullYear().toString(),
+      ),
     );
     return Array.from(years).sort((a, b) => parseInt(b) - parseInt(a));
   };
@@ -177,7 +179,7 @@ function OrderHistoryPage() {
                         <TableHead key={header}>
                           {t(`table.headers.${header}`)}
                         </TableHead>
-                      )
+                      ),
                     )}
                   </TableRow>
                 </TableHeader>
@@ -253,7 +255,7 @@ function OrderHistoryPage() {
                                           {format(
                                             new Date(order.createdAt),
                                             "PPP",
-                                            { locale: fr }
+                                            { locale: fr },
                                           )}
                                         </dd>
                                       </div>

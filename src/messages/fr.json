@@ -714,7 +714,7 @@
           "description": "Échec de la mise à jour du moyen de paiement"
         },
         "setDefault": {
-          "title": "Succès", 
+          "title": "Succès",
           "description": "Moyen de paiement par défaut mis à jour"
         },
         "setDefaultError": {

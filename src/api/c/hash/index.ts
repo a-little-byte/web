@@ -1,7 +1,7 @@
 import { initWasmModule } from "../utils";
 import crypto from "node:crypto";
 
-const module  = "hash"
+const module = "hash";
 
 const generateSalt = (length = 16) => {
   return crypto.randomBytes(length).toString("base64");
@@ -57,18 +57,18 @@ export const Verify = async (
     throw new Error("Password, stored hash, and salt are required");
   }
 
-    const wasmModule  = await initWasmModule(module);
+  const wasmModule = await initWasmModule(module);
 
-    if (!wasmModule?.ccall) {
-      throw new Error("Hash: WASM module not properly initialized");
-    }
+  if (!wasmModule?.ccall) {
+    throw new Error("Hash: WASM module not properly initialized");
+  }
 
-    const result = wasmModule.ccall(
-      "_verify",
-      "number",
-      ["string", "string", "string", "string", "number", "number"],
-      [storedHash, password, salt, pepper, iterations, keylen],
-    );
+  const result = wasmModule.ccall(
+    "_verify",
+    "number",
+    ["string", "string", "string", "string", "number", "number"],
+    [storedHash, password, salt, pepper, iterations, keylen],
+  );
 
-    return result === 1;
+  return result === 1;
 };

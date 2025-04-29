@@ -72,7 +72,7 @@ export const useSalesData = (timeFrame: "week" | "month") =>
         ([name, value]) => ({
           name,
           value,
-        })
+        }),
       );
 
       return { salesData: salesDataArray, categoryData: categoryDataArray };
