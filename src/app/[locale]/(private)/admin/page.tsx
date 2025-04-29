@@ -38,7 +38,7 @@ const Dashboard = () => {
   const t = useTranslations("admin.dashboard");
   const [timeFrame, setTimeFrame] = useQueryState(
     "timeFrame",
-    parseAsStringLiteral(TIME_FRAMES).withDefault("week"),
+    parseAsStringLiteral(TIME_FRAMES).withDefault("week")
   );
   const { data } = useSalesData(timeFrame);
 
@@ -83,8 +83,10 @@ const Dashboard = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t("categorySales.title")}</CardTitle>
-            <CardDescription>{t("categorySales.description")}</CardDescription>
+            <CardTitle>{t("salesByCategory.title")}</CardTitle>
+            <CardDescription>
+              {t("salesByCategory.description")}
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="h-[400px]">

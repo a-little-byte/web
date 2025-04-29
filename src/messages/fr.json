@@ -12,7 +12,6 @@
     "toggleMenu": "Basculer le menu",
     "searchPlaceholder": "Tapez une commande ou recherchez...",
     "searchEmpty": "Aucun résultat trouvé.",
-    "overview": "Vue d'ensemble",
     "subscriptions": "Abonnements",
     "settings": "Paramètres",
     "privacy": "Confidentialité",
@@ -23,7 +22,19 @@
     "payment-methods": "Moyens de paiement",
     "products": "Produits",
     "productCategories": "Catégories de Produits",
-    "content": "Contenu"
+    "content": "Contenu",
+    "billing-addresses": "Adresses de facturation",
+    "logout": "Se déconnecter",
+    "logoutSuccess": {
+      "title": "Déconnecté",
+      "description": "Vous avez été déconnecté avec succès"
+    },
+    "logoutError": {
+      "title": "Erreur",
+      "description": "Échec de la déconnexion. Veuillez réessayer."
+    },
+    "carousel": "Carrousel",
+    "users": "Utilisateurs"
   },
   "footer": {
     "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
@@ -503,9 +514,13 @@
         "title": "Profil",
         "description": "Mettre à jour vos informations personnelles",
         "form": {
-          "fullName": {
-            "label": "Nom complet",
-            "placeholder": "John Doe"
+          "firstName": {
+            "label": "Prénom",
+            "placeholder": "John"
+          },
+          "lastName": {
+            "label": "Nom",
+            "placeholder": "Doe"
           },
           "email": {
             "label": "Email",
@@ -740,6 +755,69 @@
         "validYear": "Doit être une année valide",
         "cvvLength": "Le CVV doit comporter entre 3 et 4 chiffres"
       }
+    },
+    "billingAddresses": {
+      "title": "Adresses de facturation",
+      "loading": "Chargement des adresses de facturation...",
+      "empty": {
+        "title": "Aucune adresse de facturation trouvée",
+        "description": "Vous n'avez pas encore ajouté d'adresse de facturation. Ajoutez-en une pour commencer."
+      },
+      "actions": {
+        "add": "Ajouter une adresse",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "save": "Enregistrer",
+        "create": "Créer"
+      },
+      "dialog": {
+        "add": {
+          "title": "Ajouter une adresse de facturation",
+          "description": "Ajoutez une nouvelle adresse de facturation à votre compte."
+        },
+        "edit": {
+          "title": "Modifier l'adresse de facturation",
+          "description": "Mettez à jour les informations de votre adresse de facturation."
+        }
+      },
+      "form": {
+        "street": "Rue",
+        "streetPlaceholder": "123 Rue Principale",
+        "city": "Ville",
+        "cityPlaceholder": "Paris",
+        "state": "État/Province",
+        "statePlaceholder": "Île-de-France",
+        "postalCode": "Code postal",
+        "postalCodePlaceholder": "75001",
+        "country": "Pays",
+        "countryPlaceholder": "France"
+      },
+      "toasts": {
+        "add": {
+          "title": "Adresse ajoutée",
+          "description": "Votre adresse de facturation a été ajoutée avec succès."
+        },
+        "addError": {
+          "title": "Erreur",
+          "description": "Un problème est survenu lors de l'ajout de votre adresse de facturation."
+        },
+        "edit": {
+          "title": "Adresse mise à jour",
+          "description": "Votre adresse de facturation a été mise à jour avec succès."
+        },
+        "editError": {
+          "title": "Erreur",
+          "description": "Un problème est survenu lors de la mise à jour de votre adresse de facturation."
+        },
+        "delete": {
+          "title": "Adresse supprimée",
+          "description": "Votre adresse de facturation a été supprimée."
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Un problème est survenu lors de la suppression de votre adresse de facturation."
+        }
+      }
     }
   },
   "shoppingCart": {
@@ -955,6 +1033,196 @@
     "noProducts": "Aucun produit disponible.",
     "loading": "Chargement des produits...",
     "placeholder": "Les informations détaillées du produit seront affichées ici. Actuellement, il s'agit d'un texte provisoire car les détails du produit ne sont pas disponibles dans la réponse de l'API.",
-    "product": "{count, plural, =0 {produits} 1 {produit} other {produits}}"
+    "product": "{count, plural, =1 {1 produit} other {# produits}}"
+  },
+  "admin": {
+    "carousel": {
+      "title": "Gestion du Carrousel d'Accueil",
+      "addSlide": "Ajouter une Diapositive",
+      "editSlide": "Modifier la Diapositive",
+      "form": {
+        "title": {
+          "label": "Titre",
+          "placeholder": "Entrez le titre de la diapositive"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Entrez la description de la diapositive"
+        },
+        "image_url": {
+          "label": "URL de l'Image",
+          "placeholder": "Entrez l'URL de l'image"
+        },
+        "button_text": {
+          "label": "Texte du Bouton",
+          "placeholder": "Entrez le texte du bouton"
+        },
+        "button_link": {
+          "label": "Lien du Bouton",
+          "placeholder": "Entrez le lien du bouton"
+        },
+        "submit": {
+          "create": "Créer la Diapositive",
+          "update": "Mettre à Jour la Diapositive"
+        }
+      },
+      "table": {
+        "title": "Titre",
+        "image": "Image",
+        "active": "Active",
+        "actions": "Actions"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de récupération des éléments du carrousel"
+        },
+        "saveSuccess": {
+          "title": "Succès",
+          "description": "Élément du carrousel {action} avec succès"
+        },
+        "saveError": {
+          "title": "Erreur",
+          "description": "Échec de l'enregistrement de l'élément du carrousel"
+        },
+        "reorderError": {
+          "title": "Erreur",
+          "description": "Échec de la réorganisation des éléments"
+        },
+        "updateError": {
+          "title": "Erreur",
+          "description": "Échec de la mise à jour de l'élément du carrousel"
+        },
+        "deleteSuccess": {
+          "title": "Succès",
+          "description": "Élément du carrousel supprimé avec succès"
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression de l'élément du carrousel"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "Tableau de Bord Admin",
+      "timeframeSelect": "Sélectionner la période",
+      "lastWeek": "Dernière semaine",
+      "lastMonth": "Dernier mois",
+      "dailySales": {
+        "title": "Ventes Quotidiennes",
+        "description": "Performance des ventes dans le temps"
+      },
+      "salesByCategory": {
+        "title": "Ventes par Catégorie",
+        "description": "Répartition des ventes par service"
+      },
+      "averageBasket": {
+        "title": "Panier Moyen par Catégorie",
+        "description": "Comparaison des ventes par service"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de récupération des données du tableau de bord"
+        }
+      },
+      "subscriptions": {
+        "toasts": {
+          "fetchError": {
+            "title": "Erreur",
+            "description": "Échec de récupération des données d'abonnement"
+          }
+        }
+      }
+    },
+    "services": {
+      "title": "Gestion des Services",
+      "addService": "Ajouter un Service",
+      "editService": "Modifier le Service",
+      "form": {
+        "name": {
+          "label": "Nom"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "price": {
+          "label": "Prix"
+        },
+        "period": {
+          "label": "Période"
+        },
+        "submit": {
+          "create": "Créer le Service",
+          "update": "Mettre à Jour le Service"
+        }
+      },
+      "table": {
+        "name": "Nom",
+        "description": "Description",
+        "price": "Prix",
+        "period": "Période",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de récupération des services"
+        },
+        "saveSuccess": {
+          "title": "Succès",
+          "description": "Service {action} avec succès"
+        },
+        "saveError": {
+          "title": "Erreur",
+          "description": "Échec de l'enregistrement du service"
+        },
+        "deleteSuccess": {
+          "title": "Succès",
+          "description": "Service supprimé avec succès"
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression du service"
+        }
+      }
+    },
+    "users": {
+      "title": "Gestion des Utilisateurs",
+      "description": "Gérer les comptes utilisateurs du système",
+      "name": "Nom",
+      "email": "Email",
+      "role": "Rôle",
+      "verified": "Vérifié",
+      "createdAt": "Créé le",
+      "actions": "Actions",
+      "edit": "Modifier",
+      "delete": "Supprimer",
+      "editUser": "Modifier l'Utilisateur",
+      "updateUserDetails": "Mettre à jour les détails de l'utilisateur",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "selectRole": "Sélectionner un rôle",
+      "user": "Utilisateur",
+      "admin": "Administrateur",
+      "save": "Enregistrer",
+      "saving": "Enregistrement...",
+      "deleteUser": "Supprimer l'Utilisateur",
+      "deleteUserConfirmation": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action ne peut pas être annulée.",
+      "deleteUserWarning": "Vous êtes sur le point de supprimer l'utilisateur {name} ({email}).",
+      "cancel": "Annuler",
+      "deleting": "Suppression...",
+      "success": "Succès",
+      "error": "Erreur",
+      "userUpdated": "Utilisateur mis à jour avec succès",
+      "userDeleted": "Utilisateur supprimé avec succès",
+      "errorFetchingUsers": "Échec de récupération des utilisateurs",
+      "errorUpdatingUser": "Échec de mise à jour de l'utilisateur",
+      "errorDeletingUser": "Échec de suppression de l'utilisateur"
+    }
   }
 }

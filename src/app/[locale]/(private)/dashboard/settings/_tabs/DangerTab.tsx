@@ -24,33 +24,33 @@ import { apiClient } from "@/lib/apiClient";
 import { useRouter } from "@/lib/i18n/routing";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useCallback } from "react";
 
 export const DangerTab = () => {
   const t = useTranslations("dashboard.settings.danger");
-  const { mutateAsync: accountDeletionMutation, isPending } = useMutation({
-    mutationFn: () => apiClient.account.$delete(),
-  });
-  const router = useRouter();
   const { toast } = useToast();
-
-  const handleAccountDeletion = async () => {
-    try {
-      await accountDeletionMutation();
-
+  const router = useRouter();
+  const { mutate: accountDeletionMutation, isPending } = useMutation({
+    mutationFn: () => apiClient.account.$delete(),
+    onSuccess: () => {
       router.push("/");
 
       toast({
         title: t("toasts.success.title"),
         description: t("toasts.success.description"),
       });
-    } catch (error) {
+    },
+    onError: () => {
       toast({
         title: t("toasts.error.title"),
         description: t("toasts.error.description"),
         variant: "destructive",
       });
-    }
-  };
+    },
+  });
+  const handleAccountDeletion = useCallback(() => {
+    accountDeletionMutation();
+  }, []);
 
   return (
     <Card>

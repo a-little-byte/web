@@ -22,9 +22,29 @@ export async function seed(db: Kysely<Database>): Promise<void> {
     .insertInto("products")
     .values([
       {
-        name: "diagcyber",
+        name: "Diagnostic Cyber",
         price: 4500,
         category_id: prevention.id,
+      },
+      {
+        name: "Test d'intrusion",
+        price: 4000,
+        category_id: prevention.id,
+      },
+      {
+        name: "Micro SOC",
+        price: 5000,
+        category_id: protection.id,
+      },
+      {
+        name: "SOC Managé",
+        price: 7000,
+        category_id: protection.id,
+      },
+      {
+        name: "Investigation, éradication, remédiation",
+        price: 8500,
+        category_id: response.id,
       },
     ])
     .execute();

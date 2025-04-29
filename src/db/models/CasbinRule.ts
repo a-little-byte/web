@@ -58,6 +58,12 @@ export const ATTRIBUTES = {
     update: "update",
     delete: "delete",
   },
+  users: {
+    read: "read",
+    create: "create",
+    update: "update",
+    delete: "delete",
+  },
 } as const;
 
 export type Attribute = {

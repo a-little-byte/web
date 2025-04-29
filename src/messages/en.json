@@ -12,7 +12,6 @@
     "toggleMenu": "Toggle menu",
     "searchPlaceholder": "Type a command or search...",
     "searchEmpty": "No results found.",
-    "overview": "Overview",
     "subscriptions": "Subscriptions",
     "orderHistory": "Order History",
     "settings": "Settings",
@@ -23,7 +22,19 @@
     "payment-methods": "Payment Methods",
     "products": "Products",
     "productCategories": "Product Categories",
-    "content": "Content"
+    "content": "Content",
+    "billing-addresses": "Billing Addresses",
+    "logout": "Logout",
+    "logoutSuccess": {
+      "title": "Logged out",
+      "description": "You have been successfully logged out"
+    },
+    "logoutError": {
+      "title": "Error",
+      "description": "Failed to logout. Please try again."
+    },
+    "carousel": "Carousel",
+    "users": "Users"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
@@ -594,15 +605,15 @@
           "label": "Description",
           "placeholder": "Enter slide description"
         },
-        "imageUrl": {
+        "image_url": {
           "label": "Image URL",
           "placeholder": "Enter image URL"
         },
-        "buttonText": {
+        "button_text": {
           "label": "Button Text",
           "placeholder": "Enter button text"
         },
-        "buttonLink": {
+        "button_link": {
           "label": "Button Link",
           "placeholder": "Enter button link"
         },
@@ -648,64 +659,22 @@
         }
       }
     },
-    "content": {
-      "title": "Content Management",
-      "sections": {
-        "hero": {
-          "title": "Hero Section",
-          "form": {
-            "title": "Title",
-            "description": "Description",
-            "buttonText": "Button Text",
-            "buttonLink": "Button Link"
-          }
-        },
-        "features": {
-          "title": "Features Section",
-          "form": {
-            "title": "Title",
-            "description": "Description"
-          }
-        },
-        "cta": {
-          "title": "CTA Section",
-          "form": {
-            "title": "Title",
-            "description": "Description"
-          }
-        }
-      },
-      "buttons": {
-        "save": "Save Changes"
-      },
-      "toasts": {
-        "success": {
-          "title": "Success",
-          "description": "Content updated successfully"
-        },
-        "error": {
-          "title": "Error",
-          "fetchError": "Failed to fetch content",
-          "saveError": "Failed to save content"
-        }
-      }
-    },
     "dashboard": {
-      "title": "Sales Dashboard",
-      "timeframeSelect": "Select timeframe",
-      "lastWeek": "Last 7 days",
-      "lastMonth": "Last 5 weeks",
+      "title": "Admin Dashboard",
+      "timeframeSelect": "Select Timeframe",
+      "lastWeek": "Last Week",
+      "lastMonth": "Last Month",
       "dailySales": {
         "title": "Daily Sales",
-        "description": "Total sales per day"
+        "description": "Sales performance over time"
       },
-      "categorySales": {
+      "salesByCategory": {
         "title": "Sales by Category",
-        "description": "Sales distribution by service"
+        "description": "Revenue breakdown by service category"
       },
       "averageBasket": {
-        "title": "Average Basket by Category",
-        "description": "Sales comparison by service"
+        "title": "Average Basket",
+        "description": "Average basket size over time"
       },
       "toasts": {
         "fetchError": {
@@ -777,6 +746,39 @@
           "description": "Failed to delete service"
         }
       }
+    },
+    "users": {
+      "title": "Users Management",
+      "description": "Manage user accounts in the system",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "verified": "Verified",
+      "createdAt": "Created At",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "editUser": "Edit User",
+      "updateUserDetails": "Update user details",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "selectRole": "Select a role",
+      "user": "User",
+      "admin": "Admin",
+      "save": "Save",
+      "saving": "Saving...",
+      "deleteUser": "Delete User",
+      "deleteUserConfirmation": "Are you sure you want to delete this user? This action cannot be undone.",
+      "deleteUserWarning": "You are about to delete the user {name} ({email}).",
+      "cancel": "Cancel",
+      "deleting": "Deleting...",
+      "success": "Success",
+      "error": "Error",
+      "userUpdated": "User updated successfully",
+      "userDeleted": "User deleted successfully",
+      "errorFetchingUsers": "Failed to fetch users",
+      "errorUpdatingUser": "Failed to update user",
+      "errorDeletingUser": "Failed to delete user"
     }
   },
   "dashboard": {
@@ -798,7 +800,6 @@
       },
       "unknownService": "Unknown service"
     },
-
     "errors": {
       "fetchError": {
         "title": "Error",
@@ -876,9 +877,13 @@
         "title": "Profile",
         "description": "Update your personal information",
         "form": {
-          "fullName": {
-            "label": "Full Name",
-            "placeholder": "John Doe"
+          "firstName": {
+            "label": "First Name",
+            "placeholder": "John"
+          },
+          "lastName": {
+            "label": "Last Name",
+            "placeholder": "Doe"
           },
           "email": {
             "label": "Email",
@@ -1113,6 +1118,69 @@
         "validYear": "Must be a valid year",
         "cvvLength": "CVV must be 3-4 digits"
       }
+    },
+    "billingAddresses": {
+      "title": "Billing Addresses",
+      "loading": "Loading billing addresses...",
+      "empty": {
+        "title": "No billing addresses found",
+        "description": "You haven't added any billing addresses yet. Add one to get started."
+      },
+      "actions": {
+        "add": "Add Address",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "create": "Create"
+      },
+      "dialog": {
+        "add": {
+          "title": "Add Billing Address",
+          "description": "Add a new billing address to your account."
+        },
+        "edit": {
+          "title": "Edit Billing Address",
+          "description": "Update your billing address information."
+        }
+      },
+      "form": {
+        "street": "Street",
+        "streetPlaceholder": "123 Main St",
+        "city": "City",
+        "cityPlaceholder": "New York",
+        "state": "State/Province",
+        "statePlaceholder": "NY",
+        "postalCode": "Postal Code",
+        "postalCodePlaceholder": "10001",
+        "country": "Country",
+        "countryPlaceholder": "United States"
+      },
+      "toasts": {
+        "add": {
+          "title": "Address Added",
+          "description": "Your billing address has been added successfully."
+        },
+        "addError": {
+          "title": "Error",
+          "description": "There was a problem adding your billing address."
+        },
+        "edit": {
+          "title": "Address Updated",
+          "description": "Your billing address has been updated successfully."
+        },
+        "editError": {
+          "title": "Error",
+          "description": "There was a problem updating your billing address."
+        },
+        "delete": {
+          "title": "Address Deleted",
+          "description": "Your billing address has been removed."
+        },
+        "deleteError": {
+          "title": "Error",
+          "description": "There was a problem deleting your billing address."
+        }
+      }
     }
   },
   "shoppingCart": {
@@ -1153,6 +1221,6 @@
     "noProducts": "No products available.",
     "loading": "Loading products...",
     "placeholder": "Detailed product information will be displayed here. Currently, this is a placeholder as the product details are not available in the API response.",
-    "product": "{count, plural, =0 {products} 1 {product} other {products}}"
+    "product": "{count, plural, =1 {1 product} other {# products}}"
   }
 }

@@ -44,6 +44,7 @@ export const ShoppingCart = () => {
     setIsLoading(true);
     try {
       const response = await apiClient.account.cart.$get();
+
       const data = await response.json();
       if (data.length > 0) {
         setCartItems(
@@ -51,7 +52,7 @@ export const ShoppingCart = () => {
             ...item,
             createdAt: new Date(item.createdAt),
             updatedAt: new Date(item.updatedAt),
-          })),
+          }))
         );
       } else {
         setCartItems([]);
@@ -139,36 +140,44 @@ export const ShoppingCart = () => {
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative hover:bg-primary/10 transition-colors"
+        >
           <CartIcon className="h-5 w-5" />
           {cartItems?.length && cartItems.length > 0 && (
-            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-xs text-primary-foreground flex items-center justify-center">
+            <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-primary text-xs text-primary-foreground flex items-center justify-center shadow-sm animate-in zoom-in-50 duration-300">
               {cartItems.length}
             </span>
           )}
           <span className="sr-only">{t("title")}</span>
         </Button>
       </SheetTrigger>
-      <SheetContent className="flex flex-col">
-        <SheetHeader>
-          <SheetTitle>{t("title")}</SheetTitle>
+      <SheetContent className="flex flex-col border-l shadow-lg">
+        <SheetHeader className="border-b pb-4">
+          <SheetTitle className="text-xl font-bold flex items-center gap-2">
+            <CartIcon className="h-5 w-5" />
+            {t("title")}
+          </SheetTitle>
         </SheetHeader>
         {isLoading ? (
           <div className="flex-1 flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin" />
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
           </div>
-        ) : !cartItems || cartItems.length === 0 ? (
-          <div className="flex-1 flex items-center justify-center text-muted-foreground">
-            {t("empty")}
+        ) : cartItems?.length === 0 ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-muted-foreground gap-4 py-10">
+            <CartIcon className="h-16 w-16 opacity-20" />
+            <p className="text-center">{t("empty")}</p>
           </div>
         ) : (
           <>
-            <ScrollArea className="flex-1 -mx-6 px-6">
-              <div className="space-y-4">
-                {cartItems.map((item) => (
+            <ScrollArea className="flex-1 -mx-6 px-6 py-4">
+              <div className="space-y-6">
+                {cartItems?.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between space-x-4 border-b pb-4"
+                    className="flex items-center justify-between space-x-4 border-b pb-6 group hover:bg-muted/30 p-3 rounded-lg transition-colors"
                   >
                     <div className="space-y-1">
                       <h4 className="font-medium">{item.services_name}</h4>
@@ -180,31 +189,33 @@ export const ShoppingCart = () => {
                       </p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <div className="flex items-center space-x-1">
+                      <div className="flex items-center space-x-1 bg-background rounded-md border shadow-sm">
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 rounded-r-none"
                           onClick={updateQuantity(item.id, item.quantity - 1)}
                           disabled={isLoading || item.quantity <= 1}
                         >
-                          <Minus className="h-4 w-4" />
+                          <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
+                        <span className="w-8 text-center font-medium">
+                          {item.quantity}
+                        </span>
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="icon"
-                          className="h-8 w-8"
+                          className="h-8 w-8 rounded-l-none"
                           onClick={updateQuantity(item.id, item.quantity + 1)}
                           disabled={isLoading}
                         >
-                          <Plus className="h-4 w-4" />
+                          <Plus className="h-3 w-3" />
                         </Button>
                       </div>
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8"
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                         onClick={removeItem(item.id)}
                         disabled={isLoading}
                       >
@@ -215,17 +226,22 @@ export const ShoppingCart = () => {
                 ))}
               </div>
             </ScrollArea>
-            <div className="border-t pt-4 space-y-4">
+            <div className="border-t pt-6 space-y-4 mt-auto bg-background/80 backdrop-blur-sm">
               <div className="flex items-center justify-between text-lg font-medium">
                 <span>{t("total")}</span>
-                <span>${total.toFixed(2)}</span>
+                <span className="text-primary font-bold">
+                  ${total.toFixed(2)}
+                </span>
               </div>
               <Button
-                className="w-full"
+                className="w-full font-semibold transition-all hover:scale-[1.02]"
                 size="lg"
                 onClick={handleCheckout}
                 disabled={isLoading}
               >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                ) : null}
                 {t("checkout")}
               </Button>
             </div>

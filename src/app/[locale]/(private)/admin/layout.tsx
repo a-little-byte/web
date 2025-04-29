@@ -2,10 +2,7 @@
 
 import { AdminSidebar } from "@/components/layout/Sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { isAdmin } from "@/lib/auth";
 import { useRouter } from "@/lib/i18n/routing";
-import jwt from "jsonwebtoken";
-import type { UUID } from "node:crypto";
 import { useEffect } from "react";
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
@@ -15,26 +12,12 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
     const checkAdmin = async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1",
+        "$1"
       );
 
       if (!token) {
         router.push("/auth/login");
         return;
-      }
-
-      try {
-        const decoded = jwt.verify(
-          token,
-          process.env.JWT_SECRET || "your-secret-key",
-        ) as { userId: UUID };
-        const adminStatus = await isAdmin(decoded.userId);
-
-        if (!adminStatus) {
-          router.push("/");
-        }
-      } catch (error) {
-        // router.push("/auth/login");
       }
     };
 

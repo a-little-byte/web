@@ -56,12 +56,14 @@ export const SearchBar = ({
           <CommandGroup heading="Navigation">
             {navigation.map((item) => (
               <CommandItem
+                className="flex items-center gap-2"
                 onSelect={() => {
                   setOpen(false);
                   router.push(item.href);
                 }}
                 key={item.name}
               >
+                {item.Icon && <item.Icon className="w-4 h-4" />}
                 <Link className="w-full" href={item.href}>
                   {t(item.name)}
                 </Link>

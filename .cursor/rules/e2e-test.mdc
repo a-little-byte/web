@@ -1,7 +1,8 @@
 ---
 description: E2E tests playwritght
-globs: tests/*.spec.ts
+globs: src/tests/**/*.spec.ts
+alwaysApply: false
 ---
 
 - Use playwright with typescript to do the tests.
-- Every e2e test should be in the `tests` folder.
+- Every e2e test should be in the `src/tests` folder.

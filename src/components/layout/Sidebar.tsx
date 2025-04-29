@@ -5,6 +5,7 @@ import ScrambleHover from "@/components/ui/scramble";
 import {
   Sidebar as BaseSidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarHeader,
@@ -12,15 +13,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useToast } from "@/hooks/use-toast";
+import { apiClient } from "@/lib/apiClient";
 import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
 import {
+  BookUser,
   CreditCard,
   Database,
   HistoryIcon,
   Home,
+  LayoutDashboard,
+  LogOut,
   Package,
+  Projector,
   Search,
   Settings,
+  Users,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { ReactNode, useCallback, useMemo } from "react";
@@ -28,6 +36,7 @@ import { ReactNode, useCallback, useMemo } from "react";
 export const DashboardSidebar = () => {
   const t = useTranslations("navigation");
   const router = useRouter();
+  const { toast } = useToast();
   const pathname = usePathname();
   const SIDEBAR: Array<{ href: string; children: ReactNode }> = useMemo(
     () => [
@@ -35,8 +44,8 @@ export const DashboardSidebar = () => {
         href: "/dashboard",
         children: (
           <>
-            <Home className="h-4 w-4" />
-            <span>{t("overview")}</span>
+            <LayoutDashboard className="h-4 w-4" />
+            <span>{t("dashboard")}</span>
           </>
         ),
       },
@@ -59,6 +68,15 @@ export const DashboardSidebar = () => {
         ),
       },
       {
+        href: "/dashboard/billing-addresses",
+        children: (
+          <>
+            <BookUser className="h-4 w-4" />
+            <span>{t("billing-addresses")}</span>
+          </>
+        ),
+      },
+      {
         href: "/dashboard/settings",
         children: (
           <>
@@ -69,15 +87,33 @@ export const DashboardSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await apiClient.account.logout.$post();
+      router.push("/auth/login");
+      toast({
+        title: t("logoutSuccess.title"),
+        description: t("logoutSuccess.description"),
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: t("logoutError.title"),
+        description: t("logoutError.description"),
+        variant: "destructive",
+      });
+    }
+  }, [router, toast]);
 
   return (
     <BaseSidebar>
@@ -115,18 +151,32 @@ export const DashboardSidebar = () => {
                     {
                       name: "home",
                       href: "/",
+                      Icon: Home,
                     },
                     {
                       name: "dashboard",
                       href: "/dashboard",
+                      Icon: LayoutDashboard,
                     },
                     {
                       name: "orderHistory",
                       href: "/dashboard/order-history",
+                      Icon: HistoryIcon,
+                    },
+                    {
+                      name: "payment-methods",
+                      href: "/dashboard/payment-methods",
+                      Icon: CreditCard,
+                    },
+                    {
+                      name: "billing-addresses",
+                      href: "/dashboard/billing-addresses",
+                      Icon: BookUser,
                     },
                     {
                       name: "settings",
                       href: "/dashboard/settings",
+                      Icon: Settings,
                     },
                   ]}
                 >
@@ -153,6 +203,16 @@ export const DashboardSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem className="mt-auto pt-4">
+            <SidebarMenuButton onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              <span>{t("logout")}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </BaseSidebar>
   );
 };
@@ -160,6 +220,7 @@ export const DashboardSidebar = () => {
 export const AdminSidebar = () => {
   const t = useTranslations("navigation");
   const router = useRouter();
+  const { toast } = useToast();
   const pathname = usePathname();
   const SIDEBAR: Array<{ href: string; children: ReactNode }> = useMemo(
     () => [
@@ -167,8 +228,8 @@ export const AdminSidebar = () => {
         href: "/admin",
         children: (
           <>
-            <Home className="h-4 w-4" />
-            <span>{t("overview")}</span>
+            <LayoutDashboard className="h-4 w-4" />
+            <span>{t("dashboard")}</span>
           </>
         ),
       },
@@ -200,25 +261,52 @@ export const AdminSidebar = () => {
         ),
       },
       {
-        href: "/admin/content",
+        href: "/admin/carousel",
         children: (
           <>
-            <CreditCard className="h-4 w-4" />
-            <span>{t("content")}</span>
+            <Projector className="h-4 w-4" />
+            <span>{t("carousel")}</span>
+          </>
+        ),
+      },
+      {
+        href: "/admin/users",
+        children: (
+          <>
+            <Users className="h-4 w-4" />
+            <span>{t("users")}</span>
           </>
         ),
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
+
+  const handleLogout = useCallback(async () => {
+    try {
+      await apiClient.account.logout.$post();
+      router.push("/auth/login");
+      toast({
+        title: t("logoutSuccess.title"),
+        description: t("logoutSuccess.description"),
+      });
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast({
+        title: t("logoutError.title"),
+        description: t("logoutError.description"),
+        variant: "destructive",
+      });
+    }
+  }, []);
 
   return (
     <BaseSidebar>
@@ -268,6 +356,16 @@ export const AdminSidebar = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem className="mt-auto pt-4">
+            <SidebarMenuButton onClick={handleLogout}>
+              <LogOut className="h-4 w-4" />
+              <span>{t("logout")}</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </BaseSidebar>
   );
 };

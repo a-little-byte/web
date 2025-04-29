@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { encrypt } from "@/api/c/AES";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,16 +10,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { PaymentMethod } from "@/db/models/Payment";
+import { toast } from "@/hooks/use-toast";
+import { apiClient } from "@/lib/apiClient";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  PlusCircle,
-  CreditCard,
-  Trash2,
   CheckCircle,
+  CreditCard,
   Edit,
+  PlusCircle,
+  Trash2,
 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { apiClient } from "@/lib/apiClient";
-import { toast } from "@/hooks/use-toast";
+import { useState } from "react";
 import {
   AddPaymentMethodDialog,
   AddPaymentMethodFormData,
@@ -29,8 +31,6 @@ import {
   EditPaymentMethodDialog,
   EditPaymentMethodFormData,
 } from "./_components/editForm";
-import { encrypt } from "@/api/c/AES";
-import { PaymentMethod } from "@/db/models/Payment";
 
 const PaymentMethods = () => {
   const t = useTranslations("dashboard.payment-methods");
@@ -38,7 +38,7 @@ const PaymentMethods = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(
-    null,
+    null
   );
 
   const {
@@ -49,7 +49,7 @@ const PaymentMethods = () => {
     queryKey: ["paymentMethods"],
     queryFn: async () => {
       try {
-        const response = await apiClient.payments["payment-methodes"].$get();
+        const response = await apiClient.account["payment-methods"].$get();
 
         if (!response.ok) {
           throw new Error();
@@ -72,10 +72,10 @@ const PaymentMethods = () => {
       const { ciphertext, iv } = await encrypt(
         data.card_number,
         process.env.NEXT_PUBLIC_SECRET_KEY!,
-        [data.cvv, data.expiry_month, data.expiry_year, data.type],
+        [data.cvv, data.expiry_month, data.expiry_year, data.type]
       );
 
-      return apiClient.payments["payment-methodes"].$post({
+      return apiClient.account["payment-methods"].$post({
         json: {
           type: data.type,
           payment_token: ciphertext,
@@ -111,7 +111,7 @@ const PaymentMethods = () => {
       id: string;
       data: EditPaymentMethodFormData;
     }) =>
-      apiClient.payments["payment-methodes"][":id"].$patch({
+      apiClient.account["payment-methods"][":id"].$patch({
         param: { id },
         json: {
           expiry_month: parseInt(data.expiry_month),
@@ -138,7 +138,7 @@ const PaymentMethods = () => {
 
   const setDefaultMutation = useMutation({
     mutationFn: (id: string) =>
-      apiClient.payments["payment-methodes"][":id"].$patch({
+      apiClient.account["payment-methods"][":id"].$patch({
         param: { id },
         json: { is_default: true },
       }),
@@ -160,7 +160,7 @@ const PaymentMethods = () => {
 
   const deleteMutation = useMutation({
     mutationFn: (id: string) =>
-      apiClient.payments["payment-methodes"][":id"].$delete({ param: { id } }),
+      apiClient.account["payment-methods"][":id"].$delete({ param: { id } }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["paymentMethods"] });
       toast({
