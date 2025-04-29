@@ -209,7 +209,7 @@ const CategoriesPage = () => {
                   onClick={() => {
                     if (
                       window.confirm(
-                        "Are you sure you want to delete this category?"
+                        "Are you sure you want to delete this category?",
                       )
                     ) {
                       deleteCategoryMutation.mutate(category.id);

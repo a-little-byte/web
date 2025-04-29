@@ -48,7 +48,7 @@ export const ProductList = () => {
     setExpandedCategories((prev) =>
       prev.includes(categoryName)
         ? prev.filter((name) => name !== categoryName)
-        : [...prev, categoryName]
+        : [...prev, categoryName],
     );
   };
 
@@ -109,7 +109,7 @@ export const ProductList = () => {
                   ))}
                 </div>
               </div>
-            )
+            ),
           )}
         </div>
       )}

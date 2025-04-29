@@ -39,7 +39,7 @@ export const productCategoriesRouter = new Hono<{
       }
 
       return json(category);
-    }
+    },
   )
   .route(
     "/",
@@ -59,7 +59,7 @@ export const productCategoriesRouter = new Hono<{
             .executeTakeFirstOrThrow();
 
           return json(category);
-        }
+        },
       )
       .patch(
         "/:id",
@@ -78,7 +78,7 @@ export const productCategoriesRouter = new Hono<{
             .executeTakeFirstOrThrow();
 
           return json(category);
-        }
+        },
       )
       .delete(
         "/:id",
@@ -93,6 +93,6 @@ export const productCategoriesRouter = new Hono<{
             .executeTakeFirstOrThrow();
 
           return json({ success: true });
-        }
-      )
+        },
+      ),
   );

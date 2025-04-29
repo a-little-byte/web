@@ -64,7 +64,7 @@ const ProductsPage = () => {
     refetch: refetchProducts,
   } = useQuery(apiClient.products);
   const { data: categories, isLoading: isLoadingCategories } = useQuery(
-    apiClient.products.categories
+    apiClient.products.categories,
   );
   const createProductMutation = useMutation({
     mutationFn: async (data: ProductFormValues) => {
@@ -220,7 +220,7 @@ const ProductsPage = () => {
                   onClick={() => {
                     if (
                       window.confirm(
-                        "Are you sure you want to delete this product?"
+                        "Are you sure you want to delete this product?",
                       )
                     ) {
                       deleteProductMutation.mutate(product.id);

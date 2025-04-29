@@ -21,7 +21,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
       .innerJoin(
         "product_categories",
         "products.category_id",
-        "product_categories.id"
+        "product_categories.id",
       )
       .select([
         "products.id",
@@ -48,7 +48,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
         .leftJoin(
           "product_categories",
           "products.category_id",
-          "product_categories.id"
+          "product_categories.id",
         )
         .select([
           "products.id",
@@ -67,7 +67,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
       }
 
       return json(product);
-    }
+    },
   )
   .route(
     "/",
@@ -87,7 +87,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(product);
-        }
+        },
       )
       .patch(
         "/:id",
@@ -106,7 +106,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json(product);
-        }
+        },
       )
       .delete(
         "/:id",
@@ -121,6 +121,6 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
             .executeTakeFirstOrThrow();
 
           return json({ success: true });
-        }
-      )
+        },
+      ),
   );

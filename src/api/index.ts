@@ -44,7 +44,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
     console.error(err);
     return c.json(
       { error: "Internal server error" },
-      HTTP_CODES.INTERNAL_SERVER_ERROR
+      HTTP_CODES.INTERNAL_SERVER_ERROR,
     );
   })
   .use(async (ctx, next) => {
@@ -60,7 +60,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       enabled: process.env.NEXT_PUBLIC_NODE_ENV === "production",
       dsn: apiConfig.sentryDsn,
       tracesSampleRate: 1.0,
-    })
+    }),
   )
   .use("*", registerMetrics)
   .get("/metrics", printMetrics)
@@ -74,7 +74,7 @@ export const api = new Hono<{ Variables: PrivateContextVariables }>()
       exposeHeaders: ["Content-Length"],
       maxAge: 600,
       credentials: true,
-    })
+    }),
   )
   .route("/auth", authRouter)
   .route("/hero", heroRouter)
