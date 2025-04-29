@@ -10,6 +10,8 @@ import type { UUID } from "node:crypto";
 export type PaymentMethod = {
   id: GeneratedAlways<UUID>;
   user_id: UUID | null;
+  payment_token: string;
+  iv: string;
   type: string;
   last_four: string;
   expiry_month: number;

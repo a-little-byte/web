@@ -20,6 +20,7 @@
     "terms": "Terms",
     "legal": "Legal",
     "home": "Home",
+    "payment-methodes": "Payment Methods",
     "products": "Products",
     "productCategories": "Product Categories",
     "content": "Content"
@@ -1020,6 +1021,97 @@
       "fetchError": {
         "title": "Error",
         "description": "Failed to fetch dashboard data"
+      }
+    },
+    "payment-methods": {
+      "title": "Payment Methods",
+      "subtitle": "Manage your payment methods for billing and subscriptions",
+      "noMethods": "No payment methods found",
+      "loading": "Loading payment methods...",
+      "default": "Default",
+      "expires": "Expires",
+      "setDefault": "Set as default",
+      "edit": "Edit",
+      "remove": "Remove",
+      "addNew": "Add new payment method",
+      "manageBilling": "Manage Billing",
+      "paymentInfo": {
+        "title": "Payment Information Security",
+        "description": "We take the security of your payment information seriously. Here's how we protect your data:",
+        "security": {
+          "pci": "PCI DSS compliant payment processing",
+          "encryption": "End-to-end encryption for all payment details",
+          "verification": "Advanced fraud detection and verification"
+        }
+      },
+      "dialogs": {
+        "add": {
+          "title": "Add Payment Method",
+          "description": "Enter your card details to add a new payment method",
+          "cardType": "Card Type",
+          "selectCardType": "Select card type",
+          "cardNumber": "Card Number",
+          "expiryMonth": "Month",
+          "expiryYear": "Year",
+          "cvv": "CVV",
+          "cvvInfo": "This is to authenticate the card and will not be stored",
+          "submit": "Add Payment Method"
+        },
+        "cancel": "Cancel",
+        "adding": "Adding...",
+        "edit": {
+          "title": "Edit Payment Method",
+          "description": "Update your payment method details for",
+          "expiryMonth": "Month",
+          "expiryYear": "Year",
+          "submit": "Update Payment Method"
+        },
+        "updating": "Updating..."
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Error",
+          "description": "Failed to load payment methods"
+        },
+        "add": {
+          "title": "Success",
+          "description": "Payment method added successfully"
+        },
+        "addError": {
+          "title": "Error",
+          "description": "Failed to add payment method"
+        },
+        "edit": {
+          "title": "Success",
+          "description": "Payment method updated successfully"
+        },
+        "editError": {
+          "title": "Error",
+          "description": "Failed to update payment method"
+        },
+        "setDefault": {
+          "title": "Success",
+          "description": "Default payment method updated"
+        },
+        "setDefaultError": {
+          "title": "Error",
+          "description": "Failed to set default payment method"
+        },
+        "delete": {
+          "title": "Success",
+          "description": "Payment method removed successfully"
+        },
+        "deleteError": {
+          "title": "Error",
+          "description": "Failed to remove payment method"
+        }
+      },
+      "validation": {
+        "cardTypeRequired": "Card type is required",
+        "cardNumberLength": "Card number must be between 15-19 digits",
+        "validMonth": "Must be a valid month (1-12)",
+        "validYear": "Must be a valid year",
+        "cvvLength": "CVV must be 3-4 digits"
       }
     }
   },

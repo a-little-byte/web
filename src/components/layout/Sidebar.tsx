@@ -59,14 +59,14 @@ export const DashboardSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   return (
@@ -200,14 +200,14 @@ export const AdminSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   return (

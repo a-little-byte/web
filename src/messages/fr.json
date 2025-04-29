@@ -20,6 +20,7 @@
     "terms": "Conditions",
     "legal": "Mentions légales",
     "home": "Accueil",
+    "payment-methodes": "Moyens de paiement",
     "products": "Produits",
     "productCategories": "Catégories de Produits",
     "content": "Contenu"
@@ -647,6 +648,97 @@
       "fetchError": {
         "title": "Erreur",
         "description": "Échec de la récupération des données du tableau de bord"
+      }
+    },
+    "payment-methods": {
+      "title": "Moyens de paiement",
+      "subtitle": "Gérez vos moyens de paiement pour la facturation et les abonnements",
+      "noMethods": "Aucun moyen de paiement trouvé",
+      "loading": "Chargement des moyens de paiement...",
+      "default": "Par défaut",
+      "expires": "Expire le",
+      "setDefault": "Définir par défaut",
+      "edit": "Modifier",
+      "remove": "Supprimer",
+      "addNew": "Ajouter un moyen de paiement",
+      "manageBilling": "Gérer la facturation",
+      "paymentInfo": {
+        "title": "Sécurité des informations de paiement",
+        "description": "Nous prenons très au sérieux la sécurité de vos informations de paiement. Voici comment nous protégeons vos données :",
+        "security": {
+          "pci": "Traitement des paiements conforme à la norme PCI DSS",
+          "encryption": "Chiffrement de bout en bout pour toutes les données de paiement",
+          "verification": "Détection avancée des fraudes et vérification"
+        }
+      },
+      "dialogs": {
+        "add": {
+          "title": "Ajouter un moyen de paiement",
+          "description": "Saisissez les informations de votre carte pour ajouter un nouveau moyen de paiement",
+          "cardType": "Type de carte",
+          "selectCardType": "Sélectionner le type de carte",
+          "cardNumber": "Numéro de carte",
+          "expiryMonth": "Mois",
+          "expiryYear": "Année",
+          "cvv": "CVV",
+          "cvvInfo": "Ceci est utilisé pour authentifier la carte et ne sera pas enregistré",
+          "submit": "Ajouter un moyen de paiement"
+        },
+        "cancel": "Annuler",
+        "adding": "Ajout en cours...",
+        "edit": {
+          "title": "Modifier le moyen de paiement",
+          "description": "Mettez à jour les détails de votre moyen de paiement",
+          "expiryMonth": "Mois",
+          "expiryYear": "Année",
+          "submit": "Mettre à jour le moyen de paiement"
+        },
+        "updating": "Mise à jour en cours..."
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Impossible de charger les moyens de paiement"
+        },
+        "add": {
+          "title": "Succès",
+          "description": "Moyen de paiement ajouté avec succès"
+        },
+        "addError": {
+          "title": "Erreur",
+          "description": "Échec de l'ajout du moyen de paiement"
+        },
+        "edit": {
+          "title": "Succès",
+          "description": "Moyen de paiement mis à jour avec succès"
+        },
+        "editError": {
+          "title": "Erreur",
+          "description": "Échec de la mise à jour du moyen de paiement"
+        },
+        "setDefault": {
+          "title": "Succès",
+          "description": "Moyen de paiement par défaut mis à jour"
+        },
+        "setDefaultError": {
+          "title": "Erreur",
+          "description": "Impossible de définir le moyen de paiement par défaut"
+        },
+        "delete": {
+          "title": "Succès",
+          "description": "Moyen de paiement supprimé avec succès"
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression du moyen de paiement"
+        }
+      },
+      "validation": {
+        "cardTypeRequired": "Le type de carte est requis",
+        "cardNumberLength": "Le numéro de carte doit comporter entre 15 et 19 chiffres",
+        "validMonth": "Doit être un mois valide (1-12)",
+        "validYear": "Doit être une année valide",
+        "cvvLength": "Le CVV doit comporter entre 3 et 4 chiffres"
       }
     }
   },

@@ -11,7 +11,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = document.cookie.replace(
       /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-      "$1"
+      "$1",
     );
 
     if (!token) {

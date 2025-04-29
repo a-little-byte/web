@@ -9,7 +9,7 @@ export const checkPermissions =
     {
       var: { session, enforcer },
     }: Context<{ Variables: PrivateContextVariables }>,
-    next: Next
+    next: Next,
   ) => {
     const user = session.user;
 

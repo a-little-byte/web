@@ -33,8 +33,8 @@ export const Tabs = () => {
   const [tab, setTab] = useQueryState(
     "tab",
     parseAsStringLiteral(tabs.map((tab) => tab.value)).withDefault(
-      tabs[0].value
-    )
+      tabs[0].value,
+    ),
   );
 
   const handleTabChange = useCallback((value: string) => {
