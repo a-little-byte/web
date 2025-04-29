@@ -38,7 +38,7 @@ export const DashboardSidebar = () => {
         children: (
           <>
             <LayoutDashboard className="h-4 w-4" />
-            <span>{t("overview")}</span>
+            <span>{t("dashboard")}</span>
           </>
         ),
       },
