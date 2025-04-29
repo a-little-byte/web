@@ -4,7 +4,7 @@ import { zValidator } from "@hono/zod-validator";
 import { Hono } from "hono";
 import { jsonObjectFrom } from "kysely/helpers/postgres";
 import { z } from "zod";
-import { paymentMethodsRouter } from "./payment_methods";
+import { paymentMethodsRouter } from "./payment-methods/";
 
 export const paymentsRouter = new Hono<{
   Variables: PrivateContextVariables;

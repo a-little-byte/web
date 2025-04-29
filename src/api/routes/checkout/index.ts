@@ -5,77 +5,76 @@ import { Stripe } from "stripe";
 
 export const checkoutRouter = new Hono<{
   Variables: PrivateContextVariables;
-}>().post("/", async ({ var: { stripe, db }, json }) => {
+}>().post("/", async ({ var: { stripe, db, session: s }, json }) => {
   try {
-    const user = await db.selectFrom("users").selectAll().executeTakeFirst();
-
-    if (!user) {
-      return json({ error: "Not authenticated" }, 401);
-    }
 
     const cartItems = await db
-      .selectFrom("cart_items")
-      .selectAll()
-      .select((eb) =>
-        jsonObjectFrom(
-          eb
-            .selectFrom("services")
-            .whereRef("services.id", "=", "cart_items.service_id")
-            .selectAll(),
-        ).as("services"),
-      )
-      .where("user_id", "=", user.id)
-      .execute();
+    .selectFrom("cart_items")
+    .leftJoin("services", "cart_items.service_id", "services.id")
+    .selectAll()
+    .where("user_id", "=", s.user.id)
+    .execute();
 
-    if (!cartItems?.length) {
-      return json({ error: "Cart is empty" }, 400);
-    }
 
+    // if (!cartItems?.length) {
+    //   return json({ error: "Cart is empty" }, 400);
+    // }
+
+    // const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = cartItems.map((item) => {
+    //   let discount = 0;
+    //
+    //   // Uncomment if you want to enable discounts based on duration
+    //   // if (item.quantity >= 12) {
+    //   //   discount = 0.2;
+    //   // } else if (item.quantity >= 3) {
+    //   //   discount = 0.1;
+    //   // }
+    //
+    //   const servicePrice = item.price || 0;
+    //   const totalBeforeDiscount = servicePrice * item.quantity;
+    //   const finalPrice = totalBeforeDiscount * (1 - discount);
+    //
+    //   const serviceName = item.name || "Service";
+    //
+    //   return {
+    //     price_data: {
+    //       currency: "usd",
+    //       product_data: {
+    //         name: serviceName,
+    //         description: `${item.quantity} month${
+    //           item.quantity > 1 ? "s" : ""
+    //         } subscription${
+    //           discount > 0 ? ` (${discount * 100}% discount applied)` : ""
+    //         }`,
+    //       },
+    //       unit_amount: Math.round(finalPrice * 100),
+    //       recurring: {
+    //         interval: "month",
+    //         interval_count: 1, // Use fixed interval of 1 month with quantity instead
+    //       },
+    //     },
+    //     quantity: item.quantity,
+    //   };
+    // });
+    //
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = cartItems.map((item) => {
-      const service = item.services;
-      let discount = 0;
-
-      // Uncomment if you want to enable discounts based on duration
-      // if (item.quantity >= 12) {
-      //   discount = 0.2;
-      // } else if (item.quantity >= 3) {
-      //   discount = 0.1;
-      // }
-
-      const servicePrice = service?.price || 0;
-      const totalBeforeDiscount = servicePrice * item.quantity;
-      const finalPrice = totalBeforeDiscount * (1 - discount);
-
-      const serviceName = service?.name || "Service";
-
       return {
-        price_data: {
-          currency: "usd",
-          product_data: {
-            name: serviceName,
-            description: `${item.quantity} month${
-              item.quantity > 1 ? "s" : ""
-            } subscription${
-              discount > 0 ? ` (${discount * 100}% discount applied)` : ""
-            }`,
-          },
-          unit_amount: Math.round(finalPrice * 100),
-          recurring: {
-            interval: "month",
-            interval_count: 1, // Use fixed interval of 1 month with quantity instead
-          },
-        },
+        price: item.stripe_id!,
         quantity: item.quantity,
       };
     });
 
+    const customer = await stripe.customers.create({
+       email: s.user.email,
+    });
+
     const session = await stripe.checkout.sessions.create({
-      customer_email: user.email,
+      customer: customer.id,
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: lineItems,
       metadata: {
-        user_id: user.id,
+        user_id: s.user.id,
       },
       success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_URL}/cart`,

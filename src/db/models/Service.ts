@@ -14,6 +14,7 @@ export type Service = {
   description: string;
   price: number;
   period: string;
+  stripe_id: string;
   features: JSONColumnType<Array<string>>;
   createdAt: CreatedAt;
   updatedAt: UpdatedAt;
