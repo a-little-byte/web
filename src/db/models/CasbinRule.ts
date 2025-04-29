@@ -29,6 +29,11 @@ export const ATTRIBUTES = {
     update: "update",
     delete: "delete",
   },
+  products: {
+    create: "create",
+    update: "update",
+    delete: "delete",
+  },
   subscriptions: {
     read: "read",
   },

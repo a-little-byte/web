@@ -1,5 +1,5 @@
-import type { ColumnType } from "kysely";
+import type { GeneratedAlways } from "kysely";
 
-export type CreatedAt = ColumnType<Date, never, never>;
+export type CreatedAt = GeneratedAlways<Date>;
 
-export type UpdatedAt = ColumnType<Date, never, never>;
+export type UpdatedAt = GeneratedAlways<Date>;
