@@ -604,15 +604,15 @@
           "label": "Description",
           "placeholder": "Enter slide description"
         },
-        "imageUrl": {
+        "image_url": {
           "label": "Image URL",
           "placeholder": "Enter image URL"
         },
-        "buttonText": {
+        "button_text": {
           "label": "Button Text",
           "placeholder": "Enter button text"
         },
-        "buttonLink": {
+        "button_link": {
           "label": "Button Link",
           "placeholder": "Enter button link"
         },

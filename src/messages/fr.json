@@ -1033,5 +1033,204 @@
     "loading": "Chargement des produits...",
     "placeholder": "Les informations détaillées du produit seront affichées ici. Actuellement, il s'agit d'un texte provisoire car les détails du produit ne sont pas disponibles dans la réponse de l'API.",
     "product": "{count, plural, =1 {1 produit} other {# produits}}"
+  },
+  "admin": {
+    "carousel": {
+      "title": "Gestion du Carrousel d'Accueil",
+      "addSlide": "Ajouter une Diapositive",
+      "editSlide": "Modifier la Diapositive",
+      "form": {
+        "title": {
+          "label": "Titre",
+          "placeholder": "Entrez le titre de la diapositive"
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Entrez la description de la diapositive"
+        },
+        "image_url": {
+          "label": "URL de l'Image",
+          "placeholder": "Entrez l'URL de l'image"
+        },
+        "button_text": {
+          "label": "Texte du Bouton",
+          "placeholder": "Entrez le texte du bouton"
+        },
+        "button_link": {
+          "label": "Lien du Bouton",
+          "placeholder": "Entrez le lien du bouton"
+        },
+        "submit": {
+          "create": "Créer la Diapositive",
+          "update": "Mettre à Jour la Diapositive"
+        }
+      },
+      "table": {
+        "title": "Titre",
+        "image": "Image",
+        "active": "Active",
+        "actions": "Actions"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de récupération des éléments du carrousel"
+        },
+        "saveSuccess": {
+          "title": "Succès",
+          "description": "Élément du carrousel {action} avec succès"
+        },
+        "saveError": {
+          "title": "Erreur",
+          "description": "Échec de l'enregistrement de l'élément du carrousel"
+        },
+        "reorderError": {
+          "title": "Erreur",
+          "description": "Échec de la réorganisation des éléments"
+        },
+        "updateError": {
+          "title": "Erreur",
+          "description": "Échec de la mise à jour de l'élément du carrousel"
+        },
+        "deleteSuccess": {
+          "title": "Succès",
+          "description": "Élément du carrousel supprimé avec succès"
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression de l'élément du carrousel"
+        }
+      }
+    },
+    "content": {
+      "title": "Gestion du Contenu",
+      "sections": {
+        "hero": {
+          "title": "Section d'Accueil",
+          "form": {
+            "title": "Titre",
+            "description": "Description",
+            "buttonText": "Texte du Bouton",
+            "buttonLink": "Lien du Bouton"
+          }
+        },
+        "features": {
+          "title": "Section Fonctionnalités",
+          "form": {
+            "title": "Titre",
+            "description": "Description"
+          }
+        },
+        "cta": {
+          "title": "Section CTA",
+          "form": {
+            "title": "Titre",
+            "description": "Description"
+          }
+        }
+      },
+      "buttons": {
+        "save": "Enregistrer les Modifications"
+      },
+      "toasts": {
+        "success": {
+          "title": "Succès",
+          "description": "Contenu mis à jour avec succès"
+        },
+        "error": {
+          "title": "Erreur",
+          "fetchError": "Échec de récupération du contenu",
+          "saveError": "Échec de l'enregistrement du contenu"
+        }
+      }
+    },
+    "dashboard": {
+      "title": "Tableau de Bord des Ventes",
+      "timeframeSelect": "Sélectionner la période",
+      "lastWeek": "7 derniers jours",
+      "lastMonth": "5 dernières semaines",
+      "dailySales": {
+        "title": "Ventes Quotidiennes",
+        "description": "Total des ventes par jour"
+      },
+      "categorySales": {
+        "title": "Ventes par Catégorie",
+        "description": "Répartition des ventes par service"
+      },
+      "averageBasket": {
+        "title": "Panier Moyen par Catégorie",
+        "description": "Comparaison des ventes par service"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de récupération des données du tableau de bord"
+        }
+      },
+      "subscriptions": {
+        "toasts": {
+          "fetchError": {
+            "title": "Erreur",
+            "description": "Échec de récupération des données d'abonnement"
+          }
+        }
+      }
+    },
+    "services": {
+      "title": "Gestion des Services",
+      "addService": "Ajouter un Service",
+      "editService": "Modifier le Service",
+      "form": {
+        "name": {
+          "label": "Nom"
+        },
+        "description": {
+          "label": "Description"
+        },
+        "price": {
+          "label": "Prix"
+        },
+        "period": {
+          "label": "Période"
+        },
+        "submit": {
+          "create": "Créer le Service",
+          "update": "Mettre à Jour le Service"
+        }
+      },
+      "table": {
+        "name": "Nom",
+        "description": "Description",
+        "price": "Prix",
+        "period": "Période",
+        "actions": "Actions"
+      },
+      "actions": {
+        "edit": "Modifier",
+        "delete": "Supprimer"
+      },
+      "toasts": {
+        "fetchError": {
+          "title": "Erreur",
+          "description": "Échec de récupération des services"
+        },
+        "saveSuccess": {
+          "title": "Succès",
+          "description": "Service {action} avec succès"
+        },
+        "saveError": {
+          "title": "Erreur",
+          "description": "Échec de l'enregistrement du service"
+        },
+        "deleteSuccess": {
+          "title": "Succès",
+          "description": "Service supprimé avec succès"
+        },
+        "deleteError": {
+          "title": "Erreur",
+          "description": "Échec de la suppression du service"
+        }
+      }
+    }
   }
 }
