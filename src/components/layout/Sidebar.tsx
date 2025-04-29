@@ -25,6 +25,7 @@ import {
   LayoutDashboard,
   LogOut,
   Package,
+  Projector,
   Search,
   Settings,
 } from "lucide-react";
@@ -226,8 +227,8 @@ export const AdminSidebar = () => {
         href: "/admin",
         children: (
           <>
-            <Home className="h-4 w-4" />
-            <span>{t("overview")}</span>
+            <LayoutDashboard className="h-4 w-4" />
+            <span>{t("dashboard")}</span>
           </>
         ),
       },
@@ -259,11 +260,11 @@ export const AdminSidebar = () => {
         ),
       },
       {
-        href: "/admin/content",
+        href: "/admin/carousel",
         children: (
           <>
-            <CreditCard className="h-4 w-4" />
-            <span>{t("content")}</span>
+            <Projector className="h-4 w-4" />
+            <span>{t("carousel")}</span>
           </>
         ),
       },

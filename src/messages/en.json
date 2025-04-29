@@ -32,7 +32,8 @@
     "logoutError": {
       "title": "Error",
       "description": "Failed to logout. Please try again."
-    }
+    },
+    "carousel": "Carousel"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
