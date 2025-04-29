@@ -19,6 +19,7 @@ import {
   Database,
   HistoryIcon,
   Home,
+  LayoutDashboard,
   Package,
   Search,
   Settings,
@@ -36,7 +37,7 @@ export const DashboardSidebar = () => {
         href: "/dashboard",
         children: (
           <>
-            <Home className="h-4 w-4" />
+            <LayoutDashboard className="h-4 w-4" />
             <span>{t("overview")}</span>
           </>
         ),
@@ -125,18 +126,32 @@ export const DashboardSidebar = () => {
                     {
                       name: "home",
                       href: "/",
+                      Icon: Home,
                     },
                     {
                       name: "dashboard",
                       href: "/dashboard",
+                      Icon: LayoutDashboard,
                     },
                     {
                       name: "orderHistory",
                       href: "/dashboard/order-history",
+                      Icon: HistoryIcon,
+                    },
+                    {
+                      name: "payment-methods",
+                      href: "/dashboard/payment-methods",
+                      Icon: CreditCard,
+                    },
+                    {
+                      name: "billing-addresses",
+                      href: "/dashboard/billing-addresses",
+                      Icon: BookUser,
                     },
                     {
                       name: "settings",
                       href: "/dashboard/settings",
+                      Icon: Settings,
                     },
                   ]}
                 >

@@ -7,11 +7,15 @@ import { InteractiveHoverButton } from "@/components/ui/interactive-hover-button
 import { Kbd } from "@/components/ui/kbd";
 import ScrambleHover from "@/components/ui/scramble";
 import { Link } from "@/lib/i18n/routing";
-import { Search } from "lucide-react";
+import { File, Home, Lock, LucideIcon, Paperclip, Search } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { cookies } from "next/headers";
 
-export type NavigationItem = { name: string; href: string };
+export type NavigationItem = {
+  name: string;
+  href: string;
+  Icon?: LucideIcon;
+};
 
 const navigation: NavigationItem[] = [
   { name: "services", href: "/services" },
@@ -82,10 +86,10 @@ export const Header = async () => {
                 ? [...navigation, ...authNavigation]
                 : [
                     ...navigation,
-                    { name: "privacy", href: "/privacy" },
-                    { name: "terms", href: "/terms" },
-                    { name: "legal", href: "/legal" },
-                    { name: "home", href: "/" },
+                    { name: "privacy", href: "/privacy", Icon: Lock },
+                    { name: "terms", href: "/terms", Icon: File },
+                    { name: "legal", href: "/legal", Icon: Paperclip },
+                    { name: "home", href: "/", Icon: Home },
                   ]
             }
           >
