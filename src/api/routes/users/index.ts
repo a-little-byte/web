@@ -53,7 +53,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       }
 
       return json(user);
-    },
+    }
   )
   .patch(
     "/:id",
@@ -65,8 +65,8 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         first_name: z.string().min(1).optional(),
         last_name: z.string().min(1).optional(),
         email: emailValidator.optional(),
-        role: z.enum(["admin", "user"]).optional(),
-      }),
+        role: z.string().optional(),
+      })
     ),
     async ({ var: { db }, json, req }) => {
       const { id } = req.valid("param");
@@ -94,7 +94,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       }
 
       return json(updatedUser);
-    },
+    }
   )
   .patch(
     "/:id/suspend",
@@ -121,7 +121,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         .executeTakeFirstOrThrow();
 
       return json(updatedUser);
-    },
+    }
   )
   .delete(
     "/:id",
@@ -152,5 +152,5 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       await db.deleteFrom("users").where("id", "=", id).execute();
 
       return json({});
-    },
+    }
   );
