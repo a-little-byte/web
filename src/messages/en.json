@@ -428,6 +428,10 @@
         "loginError": {
           "title": "Error",
           "description": "Invalid email or password."
+        },
+        "accountSuspended": {
+          "title": "Account Suspended",
+          "description": "Your account has been suspended. Please contact support for assistance."
         }
       }
     },
@@ -754,6 +758,11 @@
       "email": "Email",
       "role": "Role",
       "verified": "Verified",
+      "status": "Status",
+      "active": "Active",
+      "suspended": "Suspended",
+      "suspend": "Suspend",
+      "unsuspend": "Unsuspend",
       "createdAt": "Created At",
       "actions": "Actions",
       "edit": "Edit",
@@ -776,9 +785,12 @@
       "error": "Error",
       "userUpdated": "User updated successfully",
       "userDeleted": "User deleted successfully",
+      "userSuspended": "User account has been suspended",
+      "userUnsuspended": "User account has been unsuspended",
       "errorFetchingUsers": "Failed to fetch users",
       "errorUpdatingUser": "Failed to update user",
-      "errorDeletingUser": "Failed to delete user"
+      "errorDeletingUser": "Failed to delete user",
+      "errorTogglingSuspension": "Failed to update suspension status"
     }
   },
   "dashboard": {

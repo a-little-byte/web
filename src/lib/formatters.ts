@@ -6,7 +6,7 @@
  */
 export const formatDate = (
   dateString: string,
-  locale: string = "en"
+  locale: string = "en",
 ): string => {
   const date = new Date(dateString);
   return new Intl.DateTimeFormat(locale, {
@@ -26,7 +26,7 @@ export const formatDate = (
 export const formatCurrency = (
   amount: number,
   locale: string = "en",
-  currency: string = "USD"
+  currency: string = "USD",
 ): string => {
   return new Intl.NumberFormat(locale, {
     style: "currency",

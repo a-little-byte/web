@@ -7,14 +7,12 @@ export const checkoutRouter = new Hono<{
   Variables: PrivateContextVariables;
 }>().post("/", async ({ var: { stripe, db, session: s }, json }) => {
   try {
-
     const cartItems = await db
-    .selectFrom("cart_items")
-    .leftJoin("services", "cart_items.service_id", "services.id")
-    .selectAll()
-    .where("user_id", "=", s.user.id)
-    .execute();
-
+      .selectFrom("cart_items")
+      .leftJoin("services", "cart_items.service_id", "services.id")
+      .selectAll()
+      .where("user_id", "=", s.user.id)
+      .execute();
 
     // if (!cartItems?.length) {
     //   return json({ error: "Cart is empty" }, 400);
@@ -57,15 +55,16 @@ export const checkoutRouter = new Hono<{
     //   };
     // });
     //
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = cartItems.map((item) => {
-      return {
-        price: item.stripe_id!,
-        quantity: item.quantity,
-      };
-    });
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] =
+      cartItems.map((item) => {
+        return {
+          price: item.stripe_id!,
+          quantity: item.quantity,
+        };
+      });
 
     const customer = await stripe.customers.create({
-       email: s.user.email,
+      email: s.user.email,
     });
 
     const session = await stripe.checkout.sessions.create({

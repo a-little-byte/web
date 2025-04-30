@@ -38,7 +38,7 @@ const PaymentMethods = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [currentMethod, setCurrentMethod] = useState<PaymentMethod | null>(
-    null
+    null,
   );
 
   const {
@@ -72,7 +72,7 @@ const PaymentMethods = () => {
       const { ciphertext, iv } = await encrypt(
         data.card_number,
         process.env.NEXT_PUBLIC_SECRET_KEY!,
-        [data.cvv, data.expiry_month, data.expiry_year, data.type]
+        [data.cvv, data.expiry_month, data.expiry_year, data.type],
       );
 
       return apiClient.account["payment-methods"].$post({

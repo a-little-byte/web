@@ -87,14 +87,14 @@ export const DashboardSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   const handleLogout = useCallback(async () => {
@@ -280,14 +280,14 @@ export const AdminSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [],
   );
 
   const handleLogout = useCallback(async () => {

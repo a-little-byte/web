@@ -15,7 +15,7 @@ export const paymentsRouter = new Hono<{
     z.object({
       startDate: z.string().datetime(),
       endDate: z.string().datetime(),
-    })
+    }),
   ),
   async ({ var: { db }, json, req }) => {
     const { startDate, endDate } = req.valid("query");
@@ -34,14 +34,14 @@ export const paymentsRouter = new Hono<{
                 eb
                   .selectFrom("services")
                   .selectAll(["services"])
-                  .whereRef("services.id", "=", "subscriptions.service_id")
-              ).as("service")
+                  .whereRef("services.id", "=", "subscriptions.service_id"),
+              ).as("service"),
             )
-            .whereRef("subscriptions.id", "=", "payments.subscription_id")
-        ).as("subscription")
+            .whereRef("subscriptions.id", "=", "payments.subscription_id"),
+        ).as("subscription"),
       )
       .execute();
 
     return json(payments);
-  }
+  },
 );

@@ -40,6 +40,7 @@ type User = {
   last_name: string;
   role: string;
   email_verified: string | null;
+  suspended_at: string | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -80,21 +81,15 @@ const UsersPage = () => {
 
     try {
       setIsLoading(true);
-      const updatedData = {
-        ...(firstName !== editingUser.first_name && { first_name: firstName }),
-        ...(lastName !== editingUser.last_name && { last_name: lastName }),
-        ...(email !== editingUser.email && { email }),
-        ...(role !== editingUser.role && { role }),
-      };
-
-      if (Object.keys(updatedData).length === 0) {
-        setIsEditDialogOpen(false);
-        return;
-      }
 
       const response = await apiClient.users[":id"].$patch({
         param: { id: editingUser.id },
-        json: updatedData,
+        json: {
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          role,
+        },
       });
       const user = await response.json();
 
@@ -144,6 +139,46 @@ const UsersPage = () => {
     }
   };
 
+  const handleToggleSuspension = async (user: User) => {
+    try {
+      setIsLoading(true);
+
+      // If already suspended, set to null to unsuspend
+      // Otherwise create new suspension with current date
+      const suspendedAt = user.suspended_at ? null : new Date().toISOString();
+
+      const response = await apiClient.users[":id"].suspend.$patch({
+        param: { id: user.id },
+      });
+      const updatedUser = await response.json();
+
+      if (updatedUser) {
+        await refetchUsers();
+        toast({
+          title: t("success"),
+          description: user.suspended_at
+            ? t("userUnsuspended")
+            : t("userSuspended"),
+        });
+      }
+    } catch (error) {
+      console.error("Error toggling user suspension:", error);
+      toast({
+        title: t("error"),
+        description: t("errorTogglingSuspension"),
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Helper function to display suspension date nicely
+  const displaySuspendedDate = (date: string | null) => {
+    if (!date) return "";
+    return formatDate(date);
+  };
+
   return (
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">{t("title")}</h1>
@@ -155,6 +190,7 @@ const UsersPage = () => {
             <TableHead>{t("email")}</TableHead>
             <TableHead>{t("role")}</TableHead>
             <TableHead>{t("verified")}</TableHead>
+            <TableHead>{t("status")}</TableHead>
             <TableHead>{t("createdAt")}</TableHead>
             <TableHead></TableHead>
           </TableRow>
@@ -186,6 +222,20 @@ const UsersPage = () => {
                     <span className="text-red-600">✗</span>
                   )}
                 </TableCell>
+                <TableCell>
+                  {user.suspended_at ? (
+                    <span
+                      className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700"
+                      title={`Suspended on: ${displaySuspendedDate(user.suspended_at)}`}
+                    >
+                      {t("suspended")}
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700">
+                      {t("active")}
+                    </span>
+                  )}
+                </TableCell>
                 <TableCell>{formatDate(user.createdAt)}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
@@ -195,6 +245,13 @@ const UsersPage = () => {
                       onClick={() => openEditDialog(user)}
                     >
                       {t("edit")}
+                    </Button>
+                    <Button
+                      variant={user.suspended_at ? "outline" : "secondary"}
+                      size="sm"
+                      onClick={() => handleToggleSuspension(user)}
+                    >
+                      {user.suspended_at ? t("unsuspend") : t("suspend")}
                     </Button>
                     <Button
                       variant="destructive"

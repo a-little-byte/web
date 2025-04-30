@@ -18,11 +18,11 @@ export const useQuery = <
     $get:
       | ((
           args: any,
-          options?: ClientRequestOptions
+          options?: ClientRequestOptions,
         ) => Promise<ClientResponse<any, number, "json">>)
       | ((
           args?: object,
-          options?: ClientRequestOptions
+          options?: ClientRequestOptions,
         ) => Promise<ClientResponse<any, number, "json">>);
     $url: (args?: any) => URL;
   },
@@ -32,7 +32,7 @@ export const useQuery = <
   options?: Omit<
     UndefinedInitialDataOptions<InferResponseType<T["$get"]>, PublicError>,
     "queryKey" | "queryFn"
-  >
+  >,
 ) => {
   const router = useRouter();
   return useQueryBase<
@@ -43,7 +43,7 @@ export const useQuery = <
     queryFn: async () => {
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)auth-token\s*\=\s*([^;]*).*$)|^.*$/,
-        "$1"
+        "$1",
       );
 
       const response = await request.$get(args, {

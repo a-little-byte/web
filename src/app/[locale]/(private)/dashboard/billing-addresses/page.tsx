@@ -65,7 +65,7 @@ const BillingAddressesPage = () => {
   const queryClient = useQueryClient();
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState<BillingAddress | null>(
-    null
+    null,
   );
 
   const form = useForm(billingAddressSchema, {
@@ -79,7 +79,7 @@ const BillingAddressesPage = () => {
   });
 
   const { data, isLoading, refetch } = useQuery(
-    apiClient.account["billing-addresses"]
+    apiClient.account["billing-addresses"],
   );
 
   const billingAddresses: BillingAddress[] = (() => {

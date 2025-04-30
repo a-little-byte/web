@@ -38,7 +38,7 @@ const Dashboard = () => {
   const t = useTranslations("admin.dashboard");
   const [timeFrame, setTimeFrame] = useQueryState(
     "timeFrame",
-    parseAsStringLiteral(TIME_FRAMES).withDefault("week")
+    parseAsStringLiteral(TIME_FRAMES).withDefault("week"),
   );
   const { data } = useSalesData(timeFrame);
 

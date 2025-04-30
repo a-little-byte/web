@@ -21,7 +21,7 @@ export async function register(
   page: Page,
   fullName: string,
   email: string,
-  password: string
+  password: string,
 ) {
   await page.goto("/auth/register");
   await page.fill('input[name="fullName"]', fullName);

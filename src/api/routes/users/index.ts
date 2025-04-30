@@ -16,6 +16,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         "last_name",
         "role",
         "email_verified",
+        "suspended_at",
         "createdAt",
         "updatedAt",
       ])
@@ -41,6 +42,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
           "last_name",
           "role",
           "email_verified",
+          "suspended_at",
           "createdAt",
           "updatedAt",
         ])
@@ -51,7 +53,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       }
 
       return json(user);
-    }
+    },
   )
   .patch(
     "/:id",
@@ -64,7 +66,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         last_name: z.string().min(1).optional(),
         email: emailValidator.optional(),
         role: z.enum(["admin", "user"]).optional(),
-      })
+      }),
     ),
     async ({ var: { db }, json, req }) => {
       const { id } = req.valid("param");
@@ -81,6 +83,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
           "last_name",
           "role",
           "email_verified",
+          "suspended_at",
           "createdAt",
           "updatedAt",
         ])
@@ -91,7 +94,34 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       }
 
       return json(updatedUser);
-    }
+    },
+  )
+  .patch(
+    "/:id/suspend",
+    checkPermissions("users.update"),
+    zValidator("param", z.object({ id: idValidator })),
+    async ({ var: { db }, json, req }) => {
+      const { id } = req.valid("param");
+
+      const updatedUser = await db
+        .updateTable("users")
+        .set({ suspended_at: new Date() })
+        .where("id", "=", id)
+        .returning([
+          "id",
+          "email",
+          "first_name",
+          "last_name",
+          "role",
+          "email_verified",
+          "suspended_at",
+          "createdAt",
+          "updatedAt",
+        ])
+        .executeTakeFirstOrThrow();
+
+      return json(updatedUser);
+    },
   )
   .delete(
     "/:id",
@@ -122,5 +152,5 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       await db.deleteFrom("users").where("id", "=", id).execute();
 
       return json({});
-    }
+    },
   );

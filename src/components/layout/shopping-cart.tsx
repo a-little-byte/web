@@ -29,7 +29,9 @@ type CartItemWithService = {
 
 export const ShoppingCart = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<CartItemWithService[] | null>(null);
+  const [cartItems, setCartItems] = useState<CartItemWithService[] | null>(
+    null,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const t = useTranslations("shoppingCart");
@@ -52,7 +54,7 @@ export const ShoppingCart = () => {
             ...item,
             createdAt: new Date(item.createdAt),
             updatedAt: new Date(item.updatedAt),
-          }))
+          })),
         );
       } else {
         setCartItems([]);
@@ -73,12 +75,10 @@ export const ShoppingCart = () => {
 
     setIsLoading(true);
     try {
-      await apiClient.account.cart[":id"].$patch(
-        {
-          param: { id: itemId },
-          json: { quantity },
-        }
-      );
+      await apiClient.account.cart[":id"].$patch({
+        param: { id: itemId },
+        json: { quantity },
+      });
       await fetchCartItems();
     } catch (error) {
       console.error("Error updating quantity:", error);
@@ -95,11 +95,9 @@ export const ShoppingCart = () => {
   const removeItem = (itemId: string) => async () => {
     setIsLoading(true);
     try {
-      await apiClient.account.cart[":id"].$delete(
-        {
-          param: { id: itemId },
-        },
-      );
+      await apiClient.account.cart[":id"].$delete({
+        param: { id: itemId },
+      });
       await fetchCartItems();
     } catch (error) {
       console.error("Error removing item:", error);
@@ -115,7 +113,7 @@ export const ShoppingCart = () => {
 
   const handleCheckout = async () => {
     try {
-      const response = await apiClient.checkout.$post({})
+      const response = await apiClient.checkout.$post({});
       const data = await response.json();
 
       if ("url" in data && data.url !== null) {
@@ -132,10 +130,11 @@ export const ShoppingCart = () => {
     }
   };
 
-  const total = cartItems?.reduce(
-    (sum, item) => sum + (item.services_price || 0) * item.quantity,
-    0
-  ) ?? 0;
+  const total =
+    cartItems?.reduce(
+      (sum, item) => sum + (item.services_price || 0) * item.quantity,
+      0,
+    ) ?? 0;
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>

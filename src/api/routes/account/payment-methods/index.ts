@@ -35,7 +35,7 @@ export const accountPaymentMethods = new Hono<{
         success: true,
         paymentMethods,
       });
-    }
+    },
   )
   .get(
     "/:id",
@@ -59,7 +59,7 @@ export const accountPaymentMethods = new Hono<{
         success: true,
         paymentMethod,
       });
-    }
+    },
   )
   .post(
     "/",
@@ -98,7 +98,7 @@ export const accountPaymentMethods = new Hono<{
         success: true,
         paymentMethod,
       });
-    }
+    },
   )
   .patch(
     "/:id",
@@ -112,7 +112,7 @@ export const accountPaymentMethods = new Hono<{
           expiry_year: z.number().int().min(2020).optional(),
           is_default: z.boolean().optional(),
         })
-        .strict()
+        .strict(),
     ),
     async ({ var: { db, session }, req, json }) => {
       const { id } = req.valid("param");
@@ -148,7 +148,7 @@ export const accountPaymentMethods = new Hono<{
       return json({
         success: true,
       });
-    }
+    },
   )
   .delete(
     "/:id",
@@ -194,5 +194,5 @@ export const accountPaymentMethods = new Hono<{
         success: true,
         message: "Payment method deleted successfully",
       });
-    }
+    },
   );

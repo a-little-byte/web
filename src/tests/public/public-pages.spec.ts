@@ -42,7 +42,7 @@ test.describe("Public Pages", () => {
     await page.fill('textarea[name="message"]', "This is a test message");
 
     await page.route("**/api/send", (route) =>
-      route.fulfill({ status: 200, body: JSON.stringify({ success: true }) })
+      route.fulfill({ status: 200, body: JSON.stringify({ success: true }) }),
     );
     await page.click('button[type="submit"]');
 

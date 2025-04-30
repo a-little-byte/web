@@ -207,6 +207,10 @@ export const authRouter = new Hono<{ Variables: PublicContextVariables }>()
         return json({ error: "Invalid credentials" }, 401);
       }
 
+      if (user.suspended_at) {
+        return json({ error: "Account suspended", suspended: true }, 403);
+      }
+
       const isPasswordValid = await Verify(
         password,
         user.password,

@@ -15,23 +15,22 @@ export const accountCartRouter = new Hono<{
 }>()
   .get("/", async ({ var: { db, session }, json }) => {
     const cart = await db
-    .selectFrom("cart_items")
-    .innerJoin("services", "cart_items.service_id", "services.id")
-    .select([
-      "cart_items.id",
-      "cart_items.user_id",
-      "cart_items.service_id",
-      "cart_items.quantity",
-      "services.name as services_name",
-      "services.price as services_price",
-      "cart_items.createdAt",
-      "cart_items.updatedAt"
-    ])
-    .where("cart_items.user_id", "=", session.user.id)
-    .execute();
+      .selectFrom("cart_items")
+      .innerJoin("services", "cart_items.service_id", "services.id")
+      .select([
+        "cart_items.id",
+        "cart_items.user_id",
+        "cart_items.service_id",
+        "cart_items.quantity",
+        "services.name as services_name",
+        "services.price as services_price",
+        "cart_items.createdAt",
+        "cart_items.updatedAt",
+      ])
+      .where("cart_items.user_id", "=", session.user.id)
+      .execute();
 
-  return json(cart);
-  
+    return json(cart);
   })
   .post(
     "/",

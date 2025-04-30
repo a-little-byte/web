@@ -11,6 +11,7 @@ export type User = {
   last_name: string;
   role: string;
   email_verified: Date | null;
+  suspended_at: Date | null;
   createdAt: CreatedAt;
   updatedAt: UpdatedAt;
 };

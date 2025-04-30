@@ -56,6 +56,14 @@ const Login = () => {
       const authData = await response.json();
 
       if ("error" in authData) {
+        if ("suspended" in authData && authData.suspended) {
+          toast({
+            title: t("toasts.accountSuspended.title"),
+            description: t("toasts.accountSuspended.description"),
+            variant: "destructive",
+          });
+          return;
+        }
         throw new Error(authData.error);
       }
 
