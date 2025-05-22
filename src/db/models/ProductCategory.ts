@@ -4,7 +4,7 @@ import type {
   Selectable,
   Updateable,
 } from "kysely";
-import { UUID } from "node:crypto";
+import type { UUID } from "node:crypto";
 
 export interface ProductCategory {
   id: GeneratedAlways<UUID>;

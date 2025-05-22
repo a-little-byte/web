@@ -34,7 +34,8 @@
       "description": "Failed to logout. Please try again."
     },
     "carousel": "Carousel",
-    "users": "Users"
+    "users": "Users",
+    "analytics": "Analytics"
   },
   "footer": {
     "allRightsReserved": "All rights reserved.",
@@ -791,6 +792,61 @@
       "errorUpdatingUser": "Failed to update user",
       "errorDeletingUser": "Failed to delete user",
       "errorTogglingSuspension": "Failed to update suspension status"
+    },
+    "analytics": {
+      "title": "Analytics",
+      "filters": {
+        "title": "Filters",
+        "description": "Filter analytics data by various criteria",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "statusCode": "Status Code",
+        "method": "HTTP Method",
+        "selectMethod": "Select method",
+        "url": "URL Filter",
+        "limit": "Results per page",
+        "clear": "Clear Filters"
+      },
+      "stats": {
+        "totalRequests": "Total Requests",
+        "avgResponseTime": "Avg Response Time",
+        "topBrowser": "Top Browser",
+        "topDevice": "Top Device"
+      },
+      "charts": {
+        "statusCodes": {
+          "title": "Requests by Status Code",
+          "description": "Distribution of HTTP status codes"
+        },
+        "methods": {
+          "title": "Requests by Method",
+          "description": "Distribution of HTTP methods"
+        },
+        "timeSeries": {
+          "title": "Requests Over Time",
+          "description": "Request volume and response times"
+        }
+      },
+      "table": {
+        "title": "Request Details",
+        "description": "Detailed analytics data with pagination",
+        "headers": {
+          "timestamp": "Timestamp",
+          "method": "Method",
+          "url": "URL",
+          "statusCode": "Status",
+          "responseTime": "Response Time",
+          "device": "Device",
+          "browser": "Browser"
+        },
+        "loading": "Loading...",
+        "noData": "No data available",
+        "showing": "Showing",
+        "of": "of",
+        "results": "results",
+        "previous": "Previous",
+        "next": "Next"
+      }
     }
   },
   "dashboard": {

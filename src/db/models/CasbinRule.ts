@@ -16,6 +16,11 @@ export type CasbinRuleInsert = Insertable<CasbinRule>;
 export type CasbinRuleUpdate = Updateable<CasbinRule>;
 
 export const ATTRIBUTES = {
+  analytics: {
+    read: "read",
+    write: "write",
+    delete: "delete",
+  },
   chat: {
     read: "read",
     send: "send",

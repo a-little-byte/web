@@ -1,3 +1,4 @@
+import type { Analytics } from "@/db/models/Analytics";
 import type { BillingAddress } from "@/db/models/BillingAddress";
 import type { CartItem } from "@/db/models/CartItem";
 import type { CasbinRule } from "@/db/models/CasbinRule";
@@ -31,6 +32,7 @@ export const db = new Kysely<Database>({
 });
 
 export interface Database {
+  analytics: Analytics;
   users: User;
   services: Service;
   billing_addresses: BillingAddress;

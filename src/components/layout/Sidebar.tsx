@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiClient } from "@/lib/apiClient";
 import { Link, usePathname, useRouter } from "@/lib/i18n/routing";
 import {
+  AreaChart,
   BookUser,
   CreditCard,
   Database,
@@ -87,14 +88,14 @@ export const DashboardSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   const handleLogout = useCallback(async () => {
@@ -234,6 +235,15 @@ export const AdminSidebar = () => {
         ),
       },
       {
+        href: "/admin/analytics",
+        children: (
+          <>
+            <AreaChart className="h-4 w-4" />
+            <span>{t("analytics")}</span>
+          </>
+        ),
+      },
+      {
         href: "/admin/services",
         children: (
           <>
@@ -280,14 +290,14 @@ export const AdminSidebar = () => {
       },
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
   const onClick = useCallback(
     (href: string) => () => {
       router.push(href);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [],
+    []
   );
 
   const handleLogout = useCallback(async () => {

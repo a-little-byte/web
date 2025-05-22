@@ -1,10 +1,10 @@
+import { apiConfig } from "@/api/config";
 import { PrivateContextVariables } from "@/api/types";
 import { UnauthorizedPublicError } from "@/errors";
 import { MiddlewareHandler } from "hono";
 import { getSignedCookie } from "hono/cookie";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import { UUID } from "node:crypto";
-import { apiConfig } from "../config";
+import type { UUID } from "node:crypto";
 
 export const authMiddleware: MiddlewareHandler<{
   Variables: PrivateContextVariables;
@@ -22,7 +22,7 @@ export const authMiddleware: MiddlewareHandler<{
 
     const decoded = jwt.verify(
       token,
-      process.env.JWT_SECRET || "your-secret-key",
+      process.env.JWT_SECRET || "your-secret-key"
     ) as { userId: UUID };
 
     const session = await db

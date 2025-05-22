@@ -1,6 +1,6 @@
-import { UUID } from "crypto";
-import { Generated, Insertable, Selectable, Updateable } from "kysely";
-import { CreatedAt } from "../utils";
+import type { CreatedAt } from "@/db/utils";
+import type { Generated, Insertable, Selectable, Updateable } from "kysely";
+import type { UUID } from "node:crypto";
 
 export type LoginAttempts = {
   id: Generated<UUID>;

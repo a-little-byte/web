@@ -34,7 +34,8 @@
       "description": "Échec de la déconnexion. Veuillez réessayer."
     },
     "carousel": "Carrousel",
-    "users": "Utilisateurs"
+    "users": "Utilisateurs",
+    "analytics": "Analytics"
   },
   "footer": {
     "description": "Protégez votre entreprise avec des solutions de cybersécurité de niveau professionnel. Notre suite complète d'outils protège vos données et sécurise votre entreprise.",
@@ -1223,6 +1224,61 @@
       "errorFetchingUsers": "Échec de récupération des utilisateurs",
       "errorUpdatingUser": "Échec de mise à jour de l'utilisateur",
       "errorDeletingUser": "Échec de suppression de l'utilisateur"
+    },
+    "analytics": {
+      "title": "Analytiques",
+      "filters": {
+        "title": "Filtres",
+        "description": "Filtrer les données analytiques par différents critères",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
+        "statusCode": "Code de statut",
+        "method": "Méthode HTTP",
+        "selectMethod": "Sélectionner la méthode",
+        "url": "Filtre URL",
+        "limit": "Résultats par page",
+        "clear": "Effacer les filtres"
+      },
+      "stats": {
+        "totalRequests": "Total des requêtes",
+        "avgResponseTime": "Temps de réponse moyen",
+        "topBrowser": "Navigateur principal",
+        "topDevice": "Appareil principal"
+      },
+      "charts": {
+        "statusCodes": {
+          "title": "Requêtes par code de statut",
+          "description": "Distribution des codes de statut HTTP"
+        },
+        "methods": {
+          "title": "Requêtes par méthode",
+          "description": "Distribution des méthodes HTTP"
+        },
+        "timeSeries": {
+          "title": "Requêtes dans le temps",
+          "description": "Volume de requêtes et temps de réponse"
+        }
+      },
+      "table": {
+        "title": "Détails des requêtes",
+        "description": "Données analytiques détaillées avec pagination",
+        "headers": {
+          "timestamp": "Horodatage",
+          "method": "Méthode",
+          "url": "URL",
+          "statusCode": "Statut",
+          "responseTime": "Temps de réponse",
+          "device": "Appareil",
+          "browser": "Navigateur"
+        },
+        "loading": "Chargement...",
+        "noData": "Aucune donnée disponible",
+        "showing": "Affichage",
+        "of": "sur",
+        "results": "résultats",
+        "previous": "Précédent",
+        "next": "Suivant"
+      }
     }
   }
 }
