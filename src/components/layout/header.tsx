@@ -60,9 +60,10 @@ const isAuthenticated = async () => {
   );
 };
 
+// https://ui.aceternity.com/components/resizable-navbar
+
 export const Header = async () => {
   const t = await getTranslations("navigation");
-  const cookie = await cookies();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
