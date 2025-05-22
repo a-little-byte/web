@@ -76,7 +76,7 @@ const Analytics = () => {
   const [url, setUrl] = useQueryState("url", parseAsString.withDefault(""));
   const [limit, setLimit] = useQueryState(
     "limit",
-    parseAsString.withDefault("100")
+    parseAsString.withDefault("50")
   );
   const [offset, setOffset] = useQueryState(
     "offset",

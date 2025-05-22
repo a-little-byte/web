@@ -103,9 +103,15 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
     async ({ var: { db }, json, req }) => {
       const { id } = req.valid("param");
 
+      const user = await db
+        .selectFrom("users")
+        .where("id", "=", id)
+        .select("suspended_at")
+        .executeTakeFirstOrThrow();
+
       const updatedUser = await db
         .updateTable("users")
-        .set({ suspended_at: new Date() })
+        .set({ suspended_at: user.suspended_at ? null : new Date() })
         .where("id", "=", id)
         .returning([
           "id",
