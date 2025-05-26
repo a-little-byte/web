@@ -1,3 +1,4 @@
+import { CacheService } from "@/api/services/cache";
 import type { Database } from "@/db";
 import type { UserSelect } from "@/db/models/User";
 import type { Enforcer } from "casbin";
@@ -9,6 +10,7 @@ export type PublicContextVariables = {
   db: Kysely<Database>;
   resend: Resend;
   stripe: Stripe;
+  cacheService: CacheService;
 };
 
 export type PrivateContextVariables = PublicContextVariables & {

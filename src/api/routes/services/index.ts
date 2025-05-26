@@ -10,6 +10,8 @@ const serviceSchema = z.object({
   description: z.string(),
   price: z.number(),
   period: z.string(),
+  stripe_id: z.string(),
+  features: z.array(z.string()),
 });
 
 export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
@@ -29,23 +31,26 @@ export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
         "/",
         checkPermissions("services.create"),
         zValidator("json", serviceSchema),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const data = req.valid("json");
 
           const service = await db
             .insertInto("services")
             .values(data)
+            .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("services", service.id, service);
+
           return json(service);
-        },
+        }
       )
       .patch(
         "/:id",
         checkPermissions("services.update"),
         zValidator("param", z.object({ id: idValidator })),
         zValidator("json", serviceSchema.partial()),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const { id } = req.valid("param");
           const data = req.valid("json");
 
@@ -53,16 +58,19 @@ export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
             .updateTable("services")
             .set(data)
             .where("id", "=", id)
+            .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("services", service.id, service);
+
           return json(service);
-        },
+        }
       )
       .delete(
         "/:id",
         checkPermissions("services.delete"),
         zValidator("param", z.object({ id: idValidator })),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const { id } = req.valid("param");
 
           const service = await db
@@ -70,7 +78,9 @@ export const servicesRouter = new Hono<{ Variables: PublicContextVariables }>()
             .where("id", "=", id)
             .executeTakeFirstOrThrow();
 
+          await cacheService.delete("services", id);
+
           return json(service);
-        },
-      ),
+        }
+      )
   );

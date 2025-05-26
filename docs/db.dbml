@@ -16,10 +16,12 @@ Table users {
   id uuid [primary key, default: `gen_random_uuid()`]
   email text [not null, unique]
   password text [not null]
+  password_salt text [not null]
   first_name text [not null]
   last_name text [not null]
   role text [default: 'user']
   email_verified timestamptz
+  suspended_at timestamptz
   createdAt timestamptz [default: `now()`]
   updatedAt timestamptz [default: `now()`]
 }
@@ -31,6 +33,7 @@ Table services {
   price numeric [not null]
   period text [not null]
   features jsonb [not null]
+  stripe_id text [not null]
   createdAt timestamptz [default: `now()`]
   updatedAt timestamptz [default: `now()`]
 }
@@ -80,7 +83,7 @@ Table cart_items {
   user_id uuid
   service_id uuid
   quantity integer [not null, default: 1]
-  duration text [not null, default: 1]
+  duration text [not null, default: '1']
   createdAt timestamptz [default: `now()`]
   updatedAt timestamptz [default: `now()`]
 }
@@ -113,6 +116,8 @@ Table payment_methods {
   last_four text [not null]
   expiry_month integer [not null]
   expiry_year integer [not null]
+  payment_token text [not null]
+  iv text [not null]
   is_default boolean [default: false]
   createdAt timestamptz [default: `now()`]
   updatedAt timestamptz [default: `now()`]
@@ -149,6 +154,40 @@ Table login_attempts {
   lock_expires_at timestamp
 }
 
+Table product_categories {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  name text [not null, unique]
+  created_at timestamptz [default: `now()`]
+  updated_at timestamptz [default: `now()`]
+}
+
+Table products {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  name text [not null]
+  category_id uuid [not null]
+  price numeric [not null]
+  created_at timestamptz [default: `now()`]
+  updated_at timestamptz [default: `now()`]
+}
+
+Table analytics {
+  id uuid [primary key, default: `gen_random_uuid()`]
+  url text [not null]
+  method text [not null]
+  status_code integer [not null]
+  response_time integer [not null]
+  user_agent text
+  ip_address text
+  user_id uuid
+  referer text
+  country text
+  city text
+  device_type text
+  browser text
+  os text
+  createdAt timestamptz [default: `now()`]
+}
+
 // Relationships
 Ref: subscriptions.user_id > users.id [delete: cascade]
 Ref: subscriptions.service_id > services.id [delete: cascade]
@@ -163,3 +202,5 @@ Ref: payments.billing_address_id > billing_addresses.id
 Ref: payments.payment_method_id > payment_methods.id
 Ref: invoices.payment_id > payments.id
 Ref: verification.user_id > users.id [delete: cascade]
+Ref: products.category_id > product_categories.id [delete: cascade]
+Ref: analytics.user_id > users.id [delete: set null]

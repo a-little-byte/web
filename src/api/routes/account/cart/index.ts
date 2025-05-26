@@ -1,3 +1,4 @@
+import { cacheQuery } from "@/api/lib/cache";
 import { PrivateContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
 import { zValidator } from "@hono/zod-validator";
@@ -35,14 +36,20 @@ export const accountCartRouter = new Hono<{
   .post(
     "/",
     zValidator("json", addToCartSchema),
-    async ({ var: { db, session }, json, req }) => {
+    async ({ var: { db, session, cacheService }, json, req }) => {
       const { serviceId, quantity, duration } = req.valid("json");
 
-      const service = await db
-        .selectFrom("services")
-        .where("id", "=", serviceId)
-        .selectAll()
-        .executeTakeFirstOrThrow();
+      const service = await cacheQuery(
+        cacheService,
+        "services",
+        serviceId,
+        (id) =>
+          db
+            .selectFrom("services")
+            .where("id", "=", id)
+            .selectAll()
+            .executeTakeFirstOrThrow()
+      );
 
       await db
         .insertInto("cart_items")
@@ -54,11 +61,13 @@ export const accountCartRouter = new Hono<{
         })
         .execute();
 
+      await cacheService.set("cart_items", service.id, service);
+
       return json({
         success: true,
         message: "Item added to cart successfully",
       });
-    },
+    }
   )
   .patch(
     "/:id",
@@ -66,10 +75,10 @@ export const accountCartRouter = new Hono<{
       "param",
       z.object({
         id: idValidator,
-      }),
+      })
     ),
     zValidator("json", z.object({ quantity: z.number().int().positive() })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
       const { quantity } = req.valid("json");
 
@@ -79,23 +88,27 @@ export const accountCartRouter = new Hono<{
         .where("id", "=", id)
         .execute();
 
+      await cacheService.set("cart_items", id, { id, quantity });
+
       return json({
         success: true,
         message: "Item updated in cart successfully",
       });
-    },
+    }
   )
   .delete(
     "/:id",
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
 
       await db.deleteFrom("cart_items").where("id", "=", id).execute();
+
+      await cacheService.delete("cart_items", id);
 
       return json({
         success: true,
         message: "Item removed from cart successfully",
       });
-    },
+    }
   );

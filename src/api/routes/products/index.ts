@@ -1,3 +1,4 @@
+import { cacheQuery } from "@/api/lib/cache";
 import { authMiddleware } from "@/api/middlewares/auth";
 import { checkPermissions } from "@/api/middlewares/checkPermissions";
 import { productCategoriesRouter } from "@/api/routes/products/categories";
@@ -21,7 +22,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
       .innerJoin(
         "product_categories",
         "products.category_id",
-        "product_categories.id",
+        "product_categories.id"
       )
       .select([
         "products.id",
@@ -40,34 +41,36 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
   .get(
     "/:id",
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
 
-      const product = await db
-        .selectFrom("products")
-        .leftJoin(
-          "product_categories",
-          "products.category_id",
-          "product_categories.id",
-        )
-        .select([
-          "products.id",
-          "products.name",
-          "products.price",
-          "products.category_id",
-          "products.created_at",
-          "products.updated_at",
-          "product_categories.name as categoryName",
-        ])
-        .where("products.id", "=", id)
-        .executeTakeFirst();
+      const product = await cacheQuery(cacheService, "products", id, (id) =>
+        db
+          .selectFrom("products")
+          .leftJoin(
+            "product_categories",
+            "products.category_id",
+            "product_categories.id"
+          )
+          .select([
+            "products.id",
+            "products.name",
+            "products.price",
+            "products.category_id",
+            "products.created_at",
+            "products.updated_at",
+            "product_categories.name as categoryName",
+          ])
+          .where("products.id", "=", id)
+          .executeTakeFirst()
+      );
 
       if (!product) {
         return json({ error: "Product not found" }, 404);
       }
 
       return json(product);
-    },
+    }
   )
   .route(
     "/",
@@ -77,7 +80,7 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
         "/",
         checkPermissions("products.create"),
         zValidator("json", productSchema),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const data = req.valid("json");
 
           const product = await db
@@ -86,15 +89,17 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
             .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("products", product.id, product);
+
           return json(product);
-        },
+        }
       )
       .patch(
         "/:id",
         checkPermissions("products.update"),
         zValidator("param", z.object({ id: idValidator })),
         zValidator("json", productSchema.partial()),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const { id } = req.valid("param");
           const data = req.valid("json");
 
@@ -105,14 +110,16 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
             .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("products", product.id, product);
+
           return json(product);
-        },
+        }
       )
       .delete(
         "/:id",
         checkPermissions("products.delete"),
         zValidator("param", z.object({ id: idValidator })),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const { id } = req.valid("param");
 
           await db
@@ -120,7 +127,9 @@ export const productsRouter = new Hono<{ Variables: PublicContextVariables }>()
             .where("id", "=", id)
             .executeTakeFirstOrThrow();
 
+          await cacheService.delete("products", id);
+
           return json({ success: true });
-        },
-      ),
+        }
+      )
   );

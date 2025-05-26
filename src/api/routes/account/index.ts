@@ -1,5 +1,6 @@
 import { Hash, Verify } from "@/api/c/hash";
 import { apiConfig } from "@/api/config";
+import { cacheQuery } from "@/api/lib/cache";
 import { accountBillingAddresses } from "@/api/routes/account/billing-addresses";
 import { accountCartRouter } from "@/api/routes/account/cart";
 import { accountPaymentMethods } from "@/api/routes/account/payment-methods";
@@ -33,20 +34,26 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
 
     return ctx.json({ success: true });
   })
-  .get("/", async ({ var: { db, session }, json }) => {
-    const user = await db
-      .selectFrom("users")
-      .where("id", "=", session.user.id)
-      .select([
-        "id",
-        "email",
-        "first_name",
-        "last_name",
-        "createdAt",
-        "updatedAt",
-        "role",
-      ])
-      .executeTakeFirstOrThrow();
+  .get("/", async ({ var: { db, session, cacheService }, json }) => {
+    const user = await cacheQuery(
+      cacheService,
+      "users",
+      session.user.id,
+      (id) =>
+        db
+          .selectFrom("users")
+          .where("id", "=", id)
+          .select([
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "createdAt",
+            "updatedAt",
+            "role",
+          ])
+          .executeTakeFirstOrThrow()
+    );
 
     return json(user);
   })
@@ -62,9 +69,9 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         .refine((data) => data.newPassword !== data.oldPassword, {
           message: "New password cannot be the same as the old password",
           path: ["newPassword"],
-        }),
+        })
     ),
-    async ({ var: { db, session }, json, req }) => {
+    async ({ var: { db, session, cacheService }, json, req }) => {
       const data = req.valid("json");
 
       const user = await db
@@ -81,7 +88,7 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         data.oldPassword,
         user.password,
         user.password_salt,
-        apiConfig.pepper,
+        apiConfig.pepper
       );
       if (!isOldPasswordValid) {
         return json({ error: "Invalid old password" }, 400);
@@ -95,8 +102,18 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         .where("id", "=", session.user.id)
         .execute();
 
+      const userCache = await cacheService.get("users", session.user.id);
+
+      if (userCache) {
+        await cacheService.set("users", session.user.id, {
+          ...userCache,
+          password: hash,
+          password_salt: salt,
+        });
+      }
+
       return json({});
-    },
+    }
   )
   .patch(
     "/",
@@ -108,9 +125,9 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
           last_name: z.string().min(1),
           email: emailValidator,
         })
-        .partial(),
+        .partial()
     ),
-    async ({ var: { db, session }, json, req }) => {
+    async ({ var: { db, session, cacheService }, json, req }) => {
       const data = req.valid("json");
 
       await db
@@ -119,11 +136,14 @@ export const accountRoute = new Hono<{ Variables: PrivateContextVariables }>()
         .where("id", "=", session.user.id)
         .execute();
 
+      await cacheService.set("users", session.user.id, data);
+
       return json({ success: true });
-    },
+    }
   )
-  .delete("/", async ({ var: { db, session }, json }) => {
+  .delete("/", async ({ var: { db, session, cacheService }, json }) => {
     await db.deleteFrom("users").where("id", "=", session.user.id).execute();
+    await cacheService.delete("users", session.user.id);
 
     return json({ success: true });
   });

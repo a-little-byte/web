@@ -32,9 +32,9 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
             button_link: z.string(),
             active: z.boolean(),
             order: z.number(),
-          }),
+          })
         ),
-        async ({ var: { db }, req, json }) => {
+        async ({ var: { db, cacheService }, req, json }) => {
           const body = req.valid("json");
 
           const result = await db
@@ -43,8 +43,10 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
             .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("hero_carousel", result.id, result);
+
           return json(result);
-        },
+        }
       )
       .patch(
         "/:id",
@@ -62,9 +64,9 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
               active: z.boolean(),
               order: z.number(),
             })
-            .partial(),
+            .partial()
         ),
-        async ({ var: { db }, req, json }) => {
+        async ({ var: { db, cacheService }, req, json }) => {
           const { id } = req.valid("param");
           const body = req.valid("json");
 
@@ -75,19 +77,23 @@ export const heroRouter = new Hono<{ Variables: PublicContextVariables }>()
             .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("hero_carousel", id, result);
+
           return json(result);
-        },
+        }
       )
       .delete(
         "/:id",
         checkPermissions("hero_carousel.delete"),
         zValidator("param", z.object({ id: idValidator })),
-        async ({ var: { db }, req, json }) => {
+        async ({ var: { db, cacheService }, req, json }) => {
           const { id } = req.valid("param");
 
           await db.deleteFrom("hero_carousel").where("id", "=", id).execute();
 
+          await cacheService.delete("hero_carousel", id);
+
           return json({});
-        },
-      ),
+        }
+      )
   );

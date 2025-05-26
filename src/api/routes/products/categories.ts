@@ -1,3 +1,4 @@
+import { cacheQuery } from "@/api/lib/cache";
 import { authMiddleware } from "@/api/middlewares/auth";
 import { checkPermissions } from "@/api/middlewares/checkPermissions";
 import { PrivateContextVariables, PublicContextVariables } from "@/api/types";
@@ -25,21 +26,27 @@ export const productCategoriesRouter = new Hono<{
   .get(
     "/:id",
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
 
-      const category = await db
-        .selectFrom("product_categories")
-        .selectAll()
-        .where("id", "=", id)
-        .executeTakeFirst();
+      const category = await cacheQuery(
+        cacheService,
+        "product_categories",
+        id,
+        (id) =>
+          db
+            .selectFrom("product_categories")
+            .selectAll()
+            .where("id", "=", id)
+            .executeTakeFirst()
+      );
 
       if (!category) {
         return json({ error: "Category not found" }, 404);
       }
 
       return json(category);
-    },
+    }
   )
   .route(
     "/",
@@ -49,7 +56,7 @@ export const productCategoriesRouter = new Hono<{
         "/",
         checkPermissions("products.create"),
         zValidator("json", categorySchema),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const data = req.valid("json");
 
           const category = await db
@@ -58,15 +65,17 @@ export const productCategoriesRouter = new Hono<{
             .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("product_categories", category.id, category);
+
           return json(category);
-        },
+        }
       )
       .patch(
         "/:id",
         checkPermissions("products.update"),
         zValidator("param", z.object({ id: idValidator })),
         zValidator("json", categorySchema.partial()),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const { id } = req.valid("param");
           const data = req.valid("json");
 
@@ -77,14 +86,16 @@ export const productCategoriesRouter = new Hono<{
             .returningAll()
             .executeTakeFirstOrThrow();
 
+          await cacheService.set("product_categories", id, category);
+
           return json(category);
-        },
+        }
       )
       .delete(
         "/:id",
         checkPermissions("products.delete"),
         zValidator("param", z.object({ id: idValidator })),
-        async ({ var: { db }, json, req }) => {
+        async ({ var: { db, cacheService }, json, req }) => {
           const { id } = req.valid("param");
 
           await db
@@ -92,7 +103,9 @@ export const productCategoriesRouter = new Hono<{
             .where("id", "=", id)
             .executeTakeFirstOrThrow();
 
+          await cacheService.delete("product_categories", id);
+
           return json({ success: true });
-        },
-      ),
+        }
+      )
   );

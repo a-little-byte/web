@@ -61,7 +61,6 @@ export const analyticsRouter = new Hono<{
         ])
         .orderBy("createdAt", "desc");
 
-      // Apply filters
       if (startDate) {
         query = query.where("createdAt", ">=", new Date(startDate));
       }
@@ -83,8 +82,6 @@ export const analyticsRouter = new Hono<{
       return json(analytics);
     }
   )
-
-  // Get analytics summary/stats
   .get(
     "/stats",
     checkPermissions("analytics.read"),
@@ -107,53 +104,48 @@ export const analyticsRouter = new Hono<{
         baseQuery = baseQuery.where("createdAt", "<=", new Date(endDate));
       }
 
-      // Get total requests
-      const totalRequests = await baseQuery
-        .select(db.fn.countAll().as("count"))
-        .executeTakeFirst();
-
-      // Get requests by status code
-      const statusStats = await baseQuery
-        .select(["status_code", db.fn.countAll().as("count")])
-        .groupBy("status_code")
-        .orderBy("count", "desc")
-        .execute();
-
-      // Get requests by method
-      const methodStats = await baseQuery
-        .select(["method", db.fn.countAll().as("count")])
-        .groupBy("method")
-        .orderBy("count", "desc")
-        .execute();
-
-      // Get top pages
-      const topPages = await baseQuery
-        .select(["url", db.fn.countAll().as("count")])
-        .groupBy("url")
-        .orderBy("count", "desc")
-        .limit(10)
-        .execute();
-
-      // Get browsers
-      const browserStats = await baseQuery
-        .select(["browser", db.fn.countAll().as("count")])
-        .where("browser", "is not", null)
-        .groupBy("browser")
-        .orderBy("count", "desc")
-        .execute();
-
-      // Get device types
-      const deviceStats = await baseQuery
-        .select(["device_type", db.fn.countAll().as("count")])
-        .where("device_type", "is not", null)
-        .groupBy("device_type")
-        .orderBy("count", "desc")
-        .execute();
-
-      // Get average response time
-      const avgResponseTime = await baseQuery
-        .select(db.fn.avg("response_time").as("avg_response_time"))
-        .executeTakeFirst();
+      const [
+        totalRequests,
+        statusStats,
+        methodStats,
+        topPages,
+        browserStats,
+        deviceStats,
+        avgResponseTime,
+      ] = await Promise.all([
+        baseQuery.select(db.fn.countAll().as("count")).executeTakeFirst(),
+        baseQuery
+          .select(["status_code", db.fn.countAll().as("count")])
+          .groupBy("status_code")
+          .orderBy("count", "desc")
+          .execute(),
+        baseQuery
+          .select(["method", db.fn.countAll().as("count")])
+          .groupBy("method")
+          .orderBy("count", "desc")
+          .execute(),
+        baseQuery
+          .select(["url", db.fn.countAll().as("count")])
+          .groupBy("url")
+          .orderBy("count", "desc")
+          .limit(10)
+          .execute(),
+        baseQuery
+          .select(["browser", db.fn.countAll().as("count")])
+          .where("browser", "is not", null)
+          .groupBy("browser")
+          .orderBy("count", "desc")
+          .execute(),
+        baseQuery
+          .select(["device_type", db.fn.countAll().as("count")])
+          .where("device_type", "is not", null)
+          .groupBy("device_type")
+          .orderBy("count", "desc")
+          .execute(),
+        baseQuery
+          .select(db.fn.avg("response_time").as("avg_response_time"))
+          .executeTakeFirst(),
+      ]);
 
       return json({
         totalRequests: Number(totalRequests?.count || 0),
@@ -167,7 +159,6 @@ export const analyticsRouter = new Hono<{
     }
   )
 
-  // Get simple time-series data for charts
   .get(
     "/timeseries",
     checkPermissions("analytics.read"),
@@ -190,13 +181,11 @@ export const analyticsRouter = new Hono<{
         baseQuery = baseQuery.where("createdAt", "<=", new Date(endDate));
       }
 
-      // Get simplified time-series data - return individual records for client-side grouping
       const timeSeries = await baseQuery
         .select(["createdAt", "response_time"])
         .orderBy("createdAt", "asc")
         .execute();
 
-      // Process data into hourly buckets on the server side
       const groupedData = timeSeries.reduce(
         (acc, record) => {
           const hour =
@@ -234,7 +223,6 @@ export const analyticsRouter = new Hono<{
     }
   )
 
-  // Delete analytics data (admin only)
   .delete(
     "/",
     checkPermissions("analytics.delete"),
@@ -264,19 +252,15 @@ export const analyticsPublicRouter = new Hono<{
   async ({ var: { db }, json, req }) => {
     const data = req.valid("json");
 
-    // Check if we should track this request
     if (!shouldTrackRequest(data.url)) {
       return json({ success: false, message: "Request not tracked" });
     }
 
     try {
-      // Extract IP from the current request (the tracking request)
       const ipAddress = extractClientIP(req.raw);
 
-      // Parse user agent
       const { browser, os, device_type } = parseUserAgent(data.user_agent);
 
-      // Insert analytics data into database
       await db
         .insertInto("analytics")
         .values({

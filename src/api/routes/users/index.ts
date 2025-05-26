@@ -1,3 +1,4 @@
+import { cacheQuery } from "@/api/lib/cache";
 import { checkPermissions } from "@/api/middlewares/checkPermissions";
 import { PrivateContextVariables } from "@/api/types";
 import { emailValidator, idValidator } from "@/lib/validators";
@@ -29,24 +30,26 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
     "/:id",
     checkPermissions("users.read"),
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
 
-      const user = await db
-        .selectFrom("users")
-        .where("id", "=", id)
-        .select([
-          "id",
-          "email",
-          "first_name",
-          "last_name",
-          "role",
-          "email_verified",
-          "suspended_at",
-          "createdAt",
-          "updatedAt",
-        ])
-        .executeTakeFirst();
+      const user = await cacheQuery(cacheService, "users", id, () =>
+        db
+          .selectFrom("users")
+          .where("id", "=", id)
+          .select([
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "role",
+            "email_verified",
+            "suspended_at",
+            "createdAt",
+            "updatedAt",
+          ])
+          .executeTakeFirst()
+      );
 
       if (!user) {
         return json({ error: "User not found" }, 404);
@@ -68,7 +71,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         role: z.string().optional(),
       })
     ),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
       const data = req.valid("json");
 
@@ -93,6 +96,8 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         return json({ error: "User not found" }, 404);
       }
 
+      await cacheService.set("users", id, updatedUser);
+
       return json(updatedUser);
     }
   )
@@ -100,7 +105,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
     "/:id/suspend",
     checkPermissions("users.update"),
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
 
       const user = await db
@@ -126,6 +131,8 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
         ])
         .executeTakeFirstOrThrow();
 
+      await cacheService.set("users", id, updatedUser);
+
       return json(updatedUser);
     }
   )
@@ -133,7 +140,7 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
     "/:id",
     checkPermissions("users.delete"),
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db }, json, req }) => {
+    async ({ var: { db, cacheService }, json, req }) => {
       const { id } = req.valid("param");
       const adminCount = await db
         .selectFrom("users")
@@ -156,6 +163,8 @@ export const usersRouter = new Hono<{ Variables: PrivateContextVariables }>()
       }
 
       await db.deleteFrom("users").where("id", "=", id).execute();
+
+      await cacheService.delete("users", id);
 
       return json({});
     }

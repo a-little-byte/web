@@ -1,3 +1,4 @@
+import { cacheQuery } from "@/api/lib/cache";
 import { checkPermissions } from "@/api/middlewares/checkPermissions";
 import { PrivateContextVariables } from "@/api/types";
 import { idValidator } from "@/lib/validators";
@@ -35,7 +36,7 @@ export const accountPaymentMethods = new Hono<{
         success: true,
         paymentMethods,
       });
-    },
+    }
   )
   .get(
     "/:id",
@@ -44,12 +45,14 @@ export const accountPaymentMethods = new Hono<{
     async ({ var: { db, session }, req, json }) => {
       const { id } = req.valid("param");
 
-      const paymentMethod = await db
-        .selectFrom("payment_methods")
-        .where("id", "=", id)
-        .where("user_id", "=", session.user.id)
-        .selectAll()
-        .executeTakeFirst();
+      const paymentMethod = await cacheQuery("payment_methods", id, (id) =>
+        db
+          .selectFrom("payment_methods")
+          .where("id", "=", id)
+          .where("user_id", "=", session.user.id)
+          .selectAll()
+          .executeTakeFirst()
+      );
 
       if (!paymentMethod) {
         return json({ error: "Payment method not found" }, 404);
@@ -59,13 +62,13 @@ export const accountPaymentMethods = new Hono<{
         success: true,
         paymentMethod,
       });
-    },
+    }
   )
   .post(
     "/",
     checkPermissions("payment_methods.create"),
     zValidator("json", paymentMethodValidator),
-    async ({ var: { db, session }, req, json }) => {
+    async ({ var: { db, session, cacheService }, req, json }) => {
       const paymentMethodData = req.valid("json");
 
       if (paymentMethodData.is_default) {
@@ -92,13 +95,20 @@ export const accountPaymentMethods = new Hono<{
           user_id: session.user.id,
           ...paymentMethodData,
         })
+        .returningAll()
         .executeTakeFirstOrThrow();
+
+      await cacheService.set(
+        "payment_methods",
+        paymentMethod.id,
+        paymentMethod
+      );
 
       return json({
         success: true,
         paymentMethod,
       });
-    },
+    }
   )
   .patch(
     "/:id",
@@ -112,9 +122,9 @@ export const accountPaymentMethods = new Hono<{
           expiry_year: z.number().int().min(2020).optional(),
           is_default: z.boolean().optional(),
         })
-        .strict(),
+        .strict()
     ),
-    async ({ var: { db, session }, req, json }) => {
+    async ({ var: { db, session, cacheService }, req, json }) => {
       const { id } = req.valid("param");
       const updateData = req.valid("json");
 
@@ -145,16 +155,18 @@ export const accountPaymentMethods = new Hono<{
         .where("user_id", "=", session.user.id)
         .executeTakeFirstOrThrow();
 
+      await cacheService.set("payment_methods", id, updateData);
+
       return json({
         success: true,
       });
-    },
+    }
   )
   .delete(
     "/:id",
     checkPermissions("payment_methods.delete"),
     zValidator("param", z.object({ id: idValidator })),
-    async ({ var: { db, session }, req, json }) => {
+    async ({ var: { db, session, cacheService }, req, json }) => {
       const { id } = req.valid("param");
       const methodToDelete = await db
         .selectFrom("payment_methods")
@@ -190,9 +202,11 @@ export const accountPaymentMethods = new Hono<{
         }
       }
 
+      await cacheService.delete("payment_methods", id);
+
       return json({
         success: true,
         message: "Payment method deleted successfully",
       });
-    },
+    }
   );

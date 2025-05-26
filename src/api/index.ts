@@ -15,6 +15,7 @@ import {
   subscriptionsRouter,
   usersRouter,
 } from "@/api/routes";
+import { CacheService } from "@/api/services/cache";
 import { enforcer } from "@/api/services/casbin";
 import { resend } from "@/api/services/resend";
 import { stripe } from "@/api/services/stripe";
@@ -34,6 +35,7 @@ const contextVariables: Omit<PrivateContextVariables, "session"> = {
   resend,
   stripe,
   enforcer,
+  cacheService: new CacheService(),
 };
 const { printMetrics, registerMetrics } = prometheus();
 

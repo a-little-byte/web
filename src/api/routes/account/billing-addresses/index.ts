@@ -26,7 +26,7 @@ export const accountBillingAddresses = new Hono<{
         state: z.string(),
         postal_code: z.string(),
         country: z.string(),
-      }),
+      })
     ),
     async ({ var: { db, session }, json, req }) => {
       const data = req.valid("json");
@@ -45,7 +45,7 @@ export const accountBillingAddresses = new Hono<{
         .execute();
 
       return json(billingAddress);
-    },
+    }
   )
   .patch(
     "/:billingAddressId",
@@ -53,7 +53,7 @@ export const accountBillingAddresses = new Hono<{
       "param",
       z.object({
         billingAddressId: idValidator,
-      }),
+      })
     ),
     zValidator(
       "json",
@@ -65,9 +65,9 @@ export const accountBillingAddresses = new Hono<{
           postal_code: z.string(),
           country: z.string(),
         })
-        .partial(),
+        .partial()
     ),
-    async ({ var: { db, session }, json, req }) => {
+    async ({ var: { db, session, cacheService }, json, req }) => {
       const { billingAddressId } = req.valid("param");
       const data = req.valid("json");
 
@@ -78,13 +78,19 @@ export const accountBillingAddresses = new Hono<{
         .where("user_id", "=", session.user.id)
         .executeTakeFirst();
 
+      await cacheService.set(
+        "billing_addresses",
+        billingAddressId,
+        billingAddress
+      );
+
       return json(billingAddress);
-    },
+    }
   )
   .delete(
     "/:billingAddressId",
     zValidator("param", z.object({ billingAddressId: idValidator })),
-    async ({ var: { db, session }, req, json }) => {
+    async ({ var: { db, session, cacheService }, req, json }) => {
       const { billingAddressId } = req.valid("param");
 
       await db
@@ -93,6 +99,8 @@ export const accountBillingAddresses = new Hono<{
         .where("user_id", "=", session.user.id)
         .execute();
 
+      await cacheService.delete("billing_addresses", billingAddressId);
+
       return json({ success: true });
-    },
+    }
   );
